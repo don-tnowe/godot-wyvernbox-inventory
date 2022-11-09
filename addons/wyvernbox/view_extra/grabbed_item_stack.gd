@@ -27,11 +27,7 @@ func grab(item_stack : ItemStack):
 		var max_count = item_stack.item_type.max_stack_count
 		if item_stack.count > max_count:
 			item_stack.inventory.add_items_to_stack(item_stack, -max_count)
-			item_stack = ItemStack.new(
-				item_stack.item_type,
-				max_count,
-				item_stack.extra_properties.duplicate(true)
-			)
+			item_stack = item_stack.duplicate_with_count(max_count)
 			
 		else:
 			item_stack.inventory.remove_stack(item_stack)
@@ -66,11 +62,7 @@ func drop_one():
 		return
 	
 	var one = grabbed_stack
-	var all_but_one = ItemStack.new(
-		grabbed_stack.item_type,
-		grabbed_stack.count - 1,
-		grabbed_stack.extra_properties.duplicate(true)
-	)
+	var all_but_one = grabbed_stack.duplicate_with_count(grabbed_stack.count - 1)
 	grabbed_stack.count = 1
 	# Drop first. This function changes grabbed_stack to whatever's returned.
 	_any_inventory_try_drop_stack(grabbed_stack)
@@ -151,11 +143,7 @@ func _drop_surface_input(event):
 			_set_grabbed_stack(null)
 			
 		if event.button_index == BUTTON_RIGHT:
-			drop_on_ground(ItemStack.new(
-				grabbed_stack.item_type,
-				1,
-				grabbed_stack.extra_properties.duplicate(true)
-			))
+			drop_on_ground(grabbed_stack.duplicate_with_count(1))
 			grabbed_stack.count -= 1
 			if grabbed_stack.count == 0:
 				_set_grabbed_stack(null)

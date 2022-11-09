@@ -188,11 +188,7 @@ func _quick_transfer_anywhere(stack : ItemStack, skip_inventories : int = 0):
 	
 	if stack.count > stack.item_type.max_stack_count:
 		inventory.add_items_to_stack(stack, -stack.item_type.max_stack_count)
-		stack = ItemStack.new(
-			stack.item_type,
-			stack.item_type.max_stack_count,
-			stack.extra_properties.duplicate(true)
-		)
+		stack = stack.duplicate_with_count(stack.item_type.max_stack_count)
 	
 	else:
 		emit_signal("grab_attempted", stack, true)

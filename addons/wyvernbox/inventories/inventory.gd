@@ -43,21 +43,16 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 		# If a stack got filled,
 		# create another stack from the items that did not fit.
 		total_deposited += deposited_through_stacking
-		return try_add_item(ItemStack.new(
-			item_type,
-			count - deposited_through_stacking,
-			stack.extra_properties.duplicate(true)
-		), total_deposited)
+		return try_add_item(
+			stack.duplicate_with_count(count - deposited_through_stacking),
+			total_deposited
+		)
 
 	var rect_pos := _get_free_position(item_type)
 	if rect_pos.x == -1:
 		return total_deposited
 	
-	stack = ItemStack.new(
-		item_type,
-		count,
-		stack.extra_properties.duplicate(true)
-	)
+	stack = stack.duplicate_with_count(count)
 	stack.position_in_inventory = rect_pos
 	_fill_stack_cells(stack)
 	_add_to_items_array(stack)

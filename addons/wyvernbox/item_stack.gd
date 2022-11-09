@@ -22,6 +22,14 @@ func _init(item, item_count = 1, item_extra_properties = null):
 	name_with_affixes = extra_properties.get("name", [null])
 
 
+func duplicate_with_count(new_count):
+	var new_stack = get_script().new(
+		item_type, new_count, extra_properties.duplicate(true)
+	)
+	new_stack.name_with_affixes = name_with_affixes.duplicate()
+	return new_stack
+
+
 func get_bottom_right() -> Vector2:
 	return Vector2(
 		position_in_inventory.x + item_type.in_inventory_width,
