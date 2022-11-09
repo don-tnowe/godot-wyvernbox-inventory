@@ -55,6 +55,10 @@ possible_items = [ ExtResource( 16 ), ExtResource( 7 ), ExtResource( 8 ), ExtRes
 inventory_path = NodePath("../../Inventory/Inventory")
 
 [node name="Node2D" type="Node2D" parent="Gameplay"]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="Char" type="KinematicBody2D" parent="Gameplay/Node2D"]
 position = Vector2( 322, 171 )
@@ -94,7 +98,7 @@ default_inventory = NodePath("../Inventory")
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_parent = NodePath("../../../Gameplay/Node2D/Items")
 drop_scene = ExtResource( 4 )
-drop_max_distance = null
+drop_max_distance = 256.0
 unit_size = Vector2( 14, 14 )
 
 [node name="Tooltip" parent="Inventory" instance=ExtResource( 19 )]
@@ -103,7 +107,7 @@ margin_left = 198.0
 margin_top = -23.0
 margin_right = 358.0
 margin_bottom = 52.0
-compare_to_inventory = NodePath("../Control/CenterContainer/TabContainer/menu_equip/Control/Equip")
+compare_to_inventory = NodePath("../Inventory/CenterContainer/TabContainer/menu_equip/Control/Equip")
 
 [connection signal="pressed" from="Gameplay/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]
 [connection signal="area_entered" from="Gameplay/Node2D/Char/ItemPickup" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]

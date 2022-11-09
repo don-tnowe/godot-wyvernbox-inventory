@@ -161,7 +161,7 @@ anchor_right = 0.5
 script = ExtResource( 5 )
 item_scene = ExtResource( 1 )
 enable_view_filters = false
-interaction_mode = 4
+interaction_mode = 5
 width = 7
 restricted_to_types = [ 131072, 262144, 32768, 65536, 1048576, 1048576, 524288 ]
 
@@ -234,5 +234,5 @@ scroll_horizontal_enabled = false
 
 [node name="StatsDisplay" parent="ScrollContainer" instance=ExtResource( 3 )]
 margin_right = 620.0
-margin_bottom = 149.0
+margin_bottom = 159.0
 equip_inventory_view = NodePath("../../Control/Equip")

@@ -20,3 +20,15 @@ func get_value(level : int = 1) -> float:
 
 	else:
 		return floor(bonus_init + bonus_linear * level + bonus_quad * level * level)
+
+
+func apply_to(stats_dict : Dictionary, level : int, multiplier : float = 1.0):
+	stats_dict[id] = stats_dict.get(id, 0.0) + get_value(level) * multiplier
+
+
+func append_affix(affixes_array : Array):
+	if affix_position < 0:
+		affixes_array.insert(0, id)
+
+	else:
+		affixes_array.append(id)

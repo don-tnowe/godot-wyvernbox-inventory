@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=1]
+[ext_resource path="res://example/custom/item_types/consumable/coin_purple.tres" type="Resource" id=2]
+[ext_resource path="res://example/custom/item_types/equipment/melee_sword.tres" type="Resource" id=3]
+
+[resource]
+script = ExtResource( 1 )
+name = "craft_forge_sword"
+input_types = [ ExtResource( 2 ) ]
+input_counts = [ 50 ]
+output_types = [ ExtResource( 3 ) ]
+output_ranges = [ Vector2( 1, 1 ) ]

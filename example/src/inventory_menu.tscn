@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/equipment_tab.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/wyvernbox/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=3]
 [ext_resource path="res://example/theme/default.tres" type="Theme" id=4]
 [ext_resource path="res://example/src/clear_all_inv_view_filters_button.gd" type="Script" id=5]
+[ext_resource path="res://example/src/crafting_tab.tscn" type="PackedScene" id=6]
 
 [node name="Inventory" type="Control"]
 anchor_right = 1.0
@@ -62,6 +63,9 @@ visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 
+[node name="Control" parent="CenterContainer/TabContainer/menu_craft" instance=ExtResource( 6 )]
+margin_right = 170.0
+
 [node name="menu_stash" type="CenterContainer" parent="CenterContainer/TabContainer"]
 visible = false
 anchor_right = 1.0
@@ -72,10 +76,10 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="Inventory" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource( 3 )]
-margin_left = 87.0
-margin_top = 115.0
-margin_right = 313.0
-margin_bottom = 341.0
+margin_left = 3.0
+margin_top = 17.0
+margin_right = 229.0
+margin_bottom = 243.0
 rect_min_size = Vector2( 226, 226 )
 width = 16
 height = 16
@@ -107,4 +111,6 @@ size_flags_horizontal = 3
 text = "Clear Filters (Alt+F)"
 script = ExtResource( 5 )
 
+[connection signal="item_stack_added" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
+[connection signal="item_stack_removed" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="pressed" from="HBoxContainer/Sort" to="Inventory" method="sort_inventory"]

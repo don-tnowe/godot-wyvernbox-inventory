@@ -65,11 +65,7 @@ func regenerate_view():
 	if !is_inside_tree() || Engine.editor_hint:
 		return
 
-	if !has_node("Cells"):
-		var new_node = Control.new()
-		new_node.name = "Cells"
-		new_node.owner = get_parent().owner
-		add_child(new_node)
+	assert(has_node("Cells"), "Inventories require a child node named Cell with Control-type children")
 
 
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
@@ -163,7 +159,7 @@ func _try_buy(stack : ItemStack):
 			x.inventory.count_items(counts)
 	
 	for k in price:
-		if counts.get(k, 0) < price[k]:
+		if counts.get(load(k), 0) < price[k]:
 			return false
 	
 	for x in inventories:

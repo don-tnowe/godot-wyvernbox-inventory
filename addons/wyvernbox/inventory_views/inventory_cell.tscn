@@ -20,6 +20,7 @@ fill_to = Vector2( 0.504167, 1 )
 [node name="Cell" type="TextureRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+rect_min_size = Vector2( 14, 14 )
 mouse_filter = 2
 texture = SubResource( 1 )
 expand = true

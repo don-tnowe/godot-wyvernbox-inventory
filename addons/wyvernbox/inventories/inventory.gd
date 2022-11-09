@@ -263,7 +263,7 @@ func consume_items(item_type_counts : Dictionary) -> Dictionary:
 	
 	var items_to_check = items
 	for x in items_to_check:
-		if !left_to_deduct.has(x.item_type):
+		if !left_to_deduct.has(x.item_type) || left_to_deduct[x.item_type] <= 0:
 			continue
 		
 		left_to_deduct[x.item_type] -= x.count

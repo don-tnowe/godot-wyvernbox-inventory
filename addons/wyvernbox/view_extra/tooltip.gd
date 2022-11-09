@@ -77,7 +77,7 @@ func _show_price(item_stack):
 			"\n[color=#"
 			+ k.default_properties.get("back_color", color_neutral).to_html()
 			+ "]"
-			+ tr("item_name_" + k.item_name) + "[/color] x"
+			+ tr("name_" + k.name) + "[/color] x"
 			+ str(price[k])
 		)
 		if counts.get(k, 0) < price[k]:
@@ -108,7 +108,7 @@ func display_custom(mouseover_node : Control, title : String, bbcode_description
 	$"%Desc".bbcode_text = bbcode_description
 
 	_update_rect(mouseover_node)
-	last_func = funcref(self, "display_item_upgrade_cost")
+	last_func = funcref(self, "display_custom")
 	last_func_args = [mouseover_node, title, bbcode_description]
 	call_deferred("_update_rect", mouseover_node)
 
@@ -197,7 +197,7 @@ func _append_bbcode_stats(displayed_stats, bonuses_label, hex_bonus, hex_neutral
 				+ (hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus))
 				+ "]"
 				+ ("+" if value >= 0.0 else "")
-				+ ("%.1f" % value)
+				+ ("%s" % value)
 			)
 			first = false
 		
