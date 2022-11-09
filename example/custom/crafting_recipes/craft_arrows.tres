@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=1]
+[ext_resource path="res://example/custom/item_types/consumable/wood.tres" type="Resource" id=2]
+[ext_resource path="res://example/custom/item_types/consumable/arrows.tres" type="Resource" id=3]
+[ext_resource path="res://example/custom/item_types/consumable/feather.tres" type="Resource" id=4]
+
+[resource]
+script = ExtResource( 1 )
+name = "craft_arrows"
+input_types = [ ExtResource( 2 ), ExtResource( 4 ) ]
+input_counts = [ 1, 4 ]
+output_types = [ ExtResource( 3 ) ]
+output_ranges = [ Vector2( 6, 10 ) ]

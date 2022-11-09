@@ -1,17 +1,18 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://example/src/test_2d_char.gd" type="Script" id=3]
 [ext_resource path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
-[ext_resource path="res://example/src/add_demo_basic_item.gd" type="Script" id=5]
-[ext_resource path="res://example/custom/item_types/consumable/potion_purple.tres" type="Resource" id=6]
+[ext_resource path="res://example/custom/item_types/consumable/metalscrap_iron.tres" type="Resource" id=5]
+[ext_resource path="res://example/custom/item_types/consumable/scroll_enchant.tres" type="Resource" id=6]
 [ext_resource path="res://example/custom/item_types/consumable/coin_gold.tres" type="Resource" id=7]
 [ext_resource path="res://example/custom/item_types/consumable/coin_purple.tres" type="Resource" id=8]
-[ext_resource path="res://example/custom/item_types/consumable/potion_red.tres" type="Resource" id=9]
 [ext_resource path="res://example/custom/item_types/consumable/magic_crystal.tres" type="Resource" id=10]
+[ext_resource path="res://addons/wyvernbox/crafting/item_generator.gd" type="Script" id=11]
+[ext_resource path="res://example/custom/item_types/consumable/feather.tres" type="Resource" id=12]
+[ext_resource path="res://example/custom/item_types/consumable/wood.tres" type="Resource" id=13]
 [ext_resource path="res://example/custom/item_types/consumable/herb.tres" type="Resource" id=15]
-[ext_resource path="res://example/custom/item_types/consumable/arrows.tres" type="Resource" id=16]
 [ext_resource path="res://addons/wyvernbox/view_extra/item_stack_view.tscn" type="PackedScene" id=17]
 [ext_resource path="res://addons/wyvernbox/ground/ground_items_manager.gd" type="Script" id=18]
 [ext_resource path="res://addons/wyvernbox/view_extra/tooltip.tscn" type="PackedScene" id=19]
@@ -23,6 +24,13 @@ colors = PoolColorArray( 0.09375, 0.0308418, 0.00622559, 1, 0.738281, 0.64915, 0
 [sub_resource type="GradientTexture2D" id=3]
 gradient = SubResource( 2 )
 fill_from = Vector2( 1, 1 )
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 11 )
+name = "Random Item"
+results = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 12 ), ExtResource( 15 ), ExtResource( 10 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 13 ) ]
+weights = [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+count_ranges = [ Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ) ]
 
 [sub_resource type="RectangleShape2D" id=4]
 
@@ -42,17 +50,15 @@ __meta__ = {
 layer = 0
 
 [node name="Generator" type="Button" parent="Gameplay"]
-margin_left = 266.0
-margin_top = 303.0
-margin_right = 373.0
-margin_bottom = 323.0
-rect_scale = Vector2( 1.00185, 1.02073 )
-focus_mode = 0
-size_flags_horizontal = 3
-text = "Loot!"
-script = ExtResource( 5 )
-possible_items = [ ExtResource( 16 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 15 ), ExtResource( 10 ), ExtResource( 6 ), ExtResource( 9 ) ]
-inventory_path = NodePath("../../Inventory/Inventory")
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -60.0
+margin_top = -63.0
+margin_right = 58.0
+margin_bottom = -43.0
+text = "Loot"
 
 [node name="Node2D" type="Node2D" parent="Gameplay"]
 __meta__ = {
@@ -64,6 +70,7 @@ __meta__ = {
 position = Vector2( 322, 171 )
 script = ExtResource( 3 )
 spawn_item = ExtResource( 4 )
+generator = SubResource( 5 )
 
 [node name="Shape" type="CollisionShape2D" parent="Gameplay/Node2D/Char"]
 shape = SubResource( 4 )

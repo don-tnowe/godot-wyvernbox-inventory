@@ -5,17 +5,16 @@
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 24, 12, 24 )
+region = Rect2( 60, 36, 24, 12 )
 
 [resource]
 script = ExtResource( 2 )
-item_name = "magic_crystal"
+item_name = "wood"
 max_stack_count = 20
-in_inventory_width = 1
-in_inventory_height = 2
+in_inventory_width = 2
+in_inventory_height = 1
 texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 513
 default_properties = {
-"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
 }

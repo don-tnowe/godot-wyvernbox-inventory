@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 export var movespeed := 128.0
 export var spawn_item : PackedScene
+export var generator : Resource
 
 var _mouse_pressed := false
 
@@ -33,7 +34,7 @@ func _unhandled_input(event):
 func _on_Generator_pressed():
 	for i in 8:
 		var new_node = spawn_item.instance()
-		new_node.set_stack($"../../Generator".get_random_item())
+		new_node.set_stack(generator.get_item())
 		new_node.position = position
 		new_node.connect("name_clicked", self, "_on_ItemPickup_area_entered", [new_node])
 		$"../Items".add_child(new_node)

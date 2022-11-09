@@ -29,10 +29,10 @@ func _resize_arrays(size):
 	weights.resize(size)
 	count_ranges.resize(size)
 	for i in size:
-		if weights[i] == 0.0:
+		if weights[i] == null || weights[i] == 0.0:
 			weights[i] = 1.0
 
-		if count_ranges[i] == Vector2.ZERO:
+		if count_ranges[i] == null || count_ranges[i] == Vector2.ZERO:
 			count_ranges[i] = Vector2.ONE
 
 

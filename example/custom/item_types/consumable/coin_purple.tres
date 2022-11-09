@@ -17,4 +17,5 @@ texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 65
 default_properties = {
+"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
 }
