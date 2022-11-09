@@ -12,7 +12,7 @@ enum InteractionFlags {
 signal item_stack_added(item_stack)
 signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
-signal grab_attempted(item_stack, success_state)
+signal grab_attempted(item_stack, success)
 
 export var cell_size := Vector2(14, 14) setget _set_cell_size
 export var item_scene : PackedScene = load("res://addons/wyvernbox/view_extra/item_stack_view.tscn")

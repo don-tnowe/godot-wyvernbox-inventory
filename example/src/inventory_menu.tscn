@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/equipment_tab.tscn" type="PackedScene" id=2]
@@ -6,6 +6,17 @@
 [ext_resource path="res://example/theme/default.tres" type="Theme" id=4]
 [ext_resource path="res://example/src/clear_all_inv_view_filters_button.gd" type="Script" id=5]
 [ext_resource path="res://example/src/crafting_tab.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/wyvernbox/crafting/vendor.gd" type="Script" id=7]
+[ext_resource path="res://example/custom/item_types/equipment/wand_purple.tres" type="Resource" id=8]
+[ext_resource path="res://example/custom/item_types/equipment/ring_1.tres" type="Resource" id=9]
+[ext_resource path="res://example/custom/item_types/equipment/ring_2.tres" type="Resource" id=10]
+[ext_resource path="res://example/custom/item_types/equipment/melee_battleaxe.tres" type="Resource" id=11]
+[ext_resource path="res://example/custom/item_types/equipment/head_helmet.tres" type="Resource" id=12]
+[ext_resource path="res://example/custom/item_types/equipment/head_wizardhat.tres" type="Resource" id=13]
+[ext_resource path="res://example/custom/item_types/equipment/chestplate_1.tres" type="Resource" id=14]
+[ext_resource path="res://example/custom/item_types/equipment/chestplate_2.tres" type="Resource" id=15]
+[ext_resource path="res://example/custom/item_types/equipment/belt_1.tres" type="Resource" id=16]
+[ext_resource path="res://example/custom/item_types/equipment/belt_2.tres" type="Resource" id=17]
 
 [node name="Inventory" type="Control"]
 anchor_right = 1.0
@@ -84,6 +95,33 @@ rect_min_size = Vector2( 226, 226 )
 width = 16
 height = 16
 
+[node name="menu_shop" type="CenterContainer" parent="CenterContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 26.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Inventory" parent="CenterContainer/TabContainer/menu_shop" instance=ExtResource( 3 )]
+margin_left = 59.0
+margin_top = 73.0
+margin_right = 173.0
+margin_bottom = 187.0
+rect_min_size = Vector2( 114, 114 )
+interaction_mode = 7
+width = 8
+
+[node name="ShopManager" type="Control" parent="CenterContainer/TabContainer/menu_shop"]
+visible = false
+margin_left = 116.0
+margin_top = 130.0
+margin_right = 116.0
+margin_bottom = 130.0
+script = ExtResource( 7 )
+stock = [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 10 ) ]
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -113,4 +151,5 @@ script = ExtResource( 5 )
 
 [connection signal="item_stack_added" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="item_stack_removed" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
+[connection signal="grab_attempted" from="CenterContainer/TabContainer/menu_shop/Inventory" to="CenterContainer/TabContainer/menu_shop/ShopManager" method="_on_Inventory_grab_attempted"]
 [connection signal="pressed" from="HBoxContainer/Sort" to="Inventory" method="sort_inventory"]

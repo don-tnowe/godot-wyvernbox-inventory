@@ -114,6 +114,7 @@ margin_left = 198.0
 margin_top = -23.0
 margin_right = 358.0
 margin_bottom = 52.0
+color_neutral = Color( 0.376471, 0.376471, 0.376471, 1 )
 compare_to_inventory = NodePath("../Inventory/CenterContainer/TabContainer/menu_equip/Control/Equip")
 
 [connection signal="pressed" from="Gameplay/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]

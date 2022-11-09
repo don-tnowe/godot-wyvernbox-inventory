@@ -72,15 +72,17 @@ func _show_price(item_stack):
 		if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
 			x.inventory.count_items(counts)
 	
+	var k_loaded  # Because for easier serialization, items are stored as paths
 	for k in price:
+		k_loaded = load(k)
 		stats_label.append_bbcode(
 			"\n[color=#"
-			+ k.default_properties.get("back_color", color_neutral).to_html()
+			+ k_loaded.default_properties.get("back_color", color_neutral).to_html()
 			+ "]"
-			+ tr("name_" + k.name) + "[/color] x"
+			+ tr("item_name_" + k_loaded.item_name) + "[/color] x"
 			+ str(price[k])
 		)
-		if counts.get(k, 0) < price[k]:
+		if counts.get(k_loaded, 0) < price[k]:
 			stats_label.append_bbcode(
 				" [color=#%s]%s[/color] " % [hex_malus, tr("item_tt_have_items") % counts.get(k, 0)]
 			)

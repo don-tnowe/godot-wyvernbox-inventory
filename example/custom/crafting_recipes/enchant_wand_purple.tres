@@ -45,7 +45,7 @@ weights = [ 1 ]
 count_ranges = [ Vector2( 1, 1 ) ]
 possible_affixes = [ ExtResource( 6 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 12 ), ExtResource( 14 ), ExtResource( 20 ), ExtResource( 8 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 21 ), ExtResource( 19 ), ExtResource( 5 ), ExtResource( 26 ), ExtResource( 30 ), ExtResource( 24 ), ExtResource( 27 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 31 ), ExtResource( 28 ), ExtResource( 29 ) ]
 affix_count_range = Vector2( 1, 4 )
-affix_level_range = null
+affix_level_range = Vector2( 1, 6 )
 
 [resource]
 script = ExtResource( 4 )

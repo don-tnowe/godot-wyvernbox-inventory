@@ -22,16 +22,22 @@ enum SlotFlags {
 	E_HELM = 1 << 17,
 	E_CHEST = 1 << 18,
 	E_BELT = 1 << 19,
-	E_RING = 1 << 20,
+	E_HANDS = 1 << 20,
+	E_FEET = 1 << 21,
+	E_RING = 1 << 22,
+	E_NECK = 1 << 23,
 }
 
 const EQUIPMENT_FLAGS := (
-	SlotFlags.E_BELT
-	| SlotFlags.E_CHEST
-	| SlotFlags.E_HELM
-	| SlotFlags.E_MAINHAND
+	SlotFlags.E_MAINHAND
 	| SlotFlags.E_OFFHAND
+	| SlotFlags.E_HELM
+	| SlotFlags.E_CHEST
+	| SlotFlags.E_BELT
+	| SlotFlags.E_HANDS
+	| SlotFlags.E_FEET
 	| SlotFlags.E_RING
+	| SlotFlags.E_NECK
 )
 
 export var item_name := ""
@@ -61,7 +67,10 @@ export(int, FLAGS,
 		"E_HELM",
 		"E_CHEST",
 		"E_BELT",
-		"E_RING"
+		"E_HANDS",
+		"E_FEET",
+		"E_RING",
+		"E_NECK"
 	) var slot_flags := 1
 export var default_properties : Dictionary
 
