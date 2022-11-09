@@ -59,7 +59,7 @@ func _on_button_pressed(index):
 		if grabbed.grabbed_stack == null:
 			grabbed.grab(output_stacks.pop_front())
 
-		elif grabbed.grabbed_stack.item_type == output_stacks[0].item_type:
+		elif grabbed.grabbed_stack.can_stack_with(output_stacks[0]):
 			var out_count = output_stacks[0].count
 			output_stacks[0].count = grabbed.grabbed_stack.get_overflow_if_added(out_count)
 			grabbed.grabbed_stack.count += grabbed.grabbed_stack.get_delta_if_added(out_count)
@@ -91,7 +91,7 @@ func get_recipe_bbcode(res):
 	var x
 	for i in res.input_types.size():
 		x = res.input_types[i]
-		# [icon]4 Red Potion (have 2)
+		# 4[icon] Red Potion (have 2)
 		result += "\n%s[img=12x12]%s[/img] %s [color=#%s]%s[/color]" % [
 			res.input_counts[i],
 			x.texture.resource_path,
@@ -104,7 +104,7 @@ func get_recipe_bbcode(res):
 	for i in res.output_types.size():
 		x = res.output_types[i]
 		var out_range = res.output_ranges[i]
-		# [icon]4-6 Red Potion
+		# 4-6[icon] Red Potion
 		result += "\n%s%s[img=12x12]%s[/img] %s" % [
 			out_range.x,
 			"-" + str(out_range.y) if out_range.x != out_range.y else "",

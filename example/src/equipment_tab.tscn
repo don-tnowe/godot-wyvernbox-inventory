@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/wyvernbox/view_extra/item_stack_view.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/wyvernbox/inventory_views/inventory_cell.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/wyvernbox/view_extra/equip_bonus_list.tscn" type="PackedScene" id=3]
+[ext_resource path="res://example/src/equip_bonus_list.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/wyvernbox/inventory_views/currency_inventory_view.gd" type="Script" id=4]
 [ext_resource path="res://addons/wyvernbox/inventory_views/restricted_inventory_view.gd" type="Script" id=5]
 [ext_resource path="res://example/custom/item_types/consumable/coin_gold.tres" type="Resource" id=6]

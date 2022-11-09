@@ -29,11 +29,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/crafting/equip_bonus.gd"
 }, {
-"base": "Control",
-"class": "EquipmentMaterials",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/view_extra/equipment_mats_view.gd"
-}, {
 "base": "Inventory",
 "class": "GridInventory",
 "language": "GDScript",
@@ -154,7 +149,6 @@ _global_script_class_icons={
 "CellEditorArray": "",
 "CurrencyInventory": "",
 "EquipBonus": "",
-"EquipmentMaterials": "",
 "GridInventory": "",
 "GroundItemStackView2D": "",
 "Inventory": "",

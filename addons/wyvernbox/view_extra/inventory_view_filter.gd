@@ -2,8 +2,6 @@ class_name InventoryFilter
 extends Resource
 
 export var union = true
-export var all_materials := {}
-export var any_materials = []
 export var any_bonus = []
 export var any_type = []
 
@@ -11,8 +9,6 @@ var always_show = []
 
 
 func clear():
-	all_materials = {}
-	any_materials = []
 	any_bonus = []
 	any_type = []
 	always_show = []
@@ -20,9 +16,7 @@ func clear():
 
 func is_clear():
 	return (
-		all_materials.size() == 0
-		&& any_materials.size() == 0
-		&& any_bonus.size() == 0
+		any_bonus.size() == 0
 		&& any_type.size() == 0
 		&& always_show.size() == 0
 	)
@@ -37,8 +31,6 @@ func apply(items):
 	
 	if all_true: return result
 	_apply_any_type(items, result)
-	_apply_all_materials(items, result)
-	_apply_any_materials(items, result)
 	_apply_any_bonus(items, result)
 	for x in always_show:
 		if items.size() > x.index_in_inventory && items[x.index_in_inventory] == x:
@@ -52,27 +44,6 @@ func _apply_any_type(items, result):
 	for i in items.size():
 		if union == (items[i].item_type in any_type):
 			result[i] = union
-
-
-func _apply_all_materials(items, result):
-	if all_materials.size() == 0: return
-	var item_props
-	for i in items.size():
-		if union == result[i]: continue
-		item_props = items[i].extra_properties
-		if item_props.has("mats"):
-			for k in all_materials:
-				if item_props["mats"].get(k, 0) >= all_materials[k]:
-					result[i] = true
-						# What a pretty staircase.
-
-					break
-		
-		elif !union: result[i] = false
-
-
-func _apply_any_materials(items, result):
-	_apply_any_property_filter(items, result, any_materials, "mats")
 
 
 func _apply_any_bonus(items, result):

@@ -37,6 +37,14 @@ func get_delta_if_added(count_delta) -> int:
 	return int(min(item_type.max_stack_count - count, count_delta))
 
 
+func can_stack_with(stack):
+	return (
+		item_type == stack.item_type
+		&& arrays_equal(name_with_affixes, stack.name_with_affixes)
+		&& extras_equal(extra_properties, stack.extra_properties)
+	)
+
+
 func get_name() -> String:
 	var trd := name_with_affixes.duplicate()
 	for i in trd.size():
@@ -56,3 +64,31 @@ func _to_string():
 		+ ", Data: \n" + str(extra_properties)
 		+ "\n"
 	)
+
+
+static func extras_equal(a : Dictionary, b : Dictionary) -> bool:
+	if a.size() != b.size(): return false
+	for k in a:
+		if !b.has(k): return false
+		if (
+			a[k] != b[k]
+			&& (!a[k] is Dictionary || !extras_equal(a[k], b[k]))
+			&& (!a[k] is Array || !arrays_equal(a[k], b[k]))
+		):
+			return false
+
+	return true
+
+
+static func arrays_equal(a : Array, b : Array) -> bool:
+	if a.size() != b.size(): return false
+	for i in a.size():
+		if (
+			a[i] != b[i]
+			&& (!a[i] is Dictionary || !extras_equal(a[i], b[i]))
+			&& (!a[i] is Array || !arrays_equal(a[i], b[i]))
+		):
+			return false
+
+	return true
+	

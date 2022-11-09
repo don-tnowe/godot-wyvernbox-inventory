@@ -186,10 +186,7 @@ func _drop_stack_on_stack(top : ItemStack, bottom : ItemStack) -> int:
 
 
 func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
-	if (
-		bottom.item_type != top.item_type
-		|| !extras_equal(top.extra_properties, bottom.extra_properties)
-	):
+	if !bottom.can_stack_with(top):
 		# If can't be stacked, just swap places.
 		remove_stack(bottom)
 		return bottom
@@ -200,33 +197,6 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 	
 	emit_signal("item_stack_changed", bottom, bottom_count_delta)
 	return top
-
-
-func extras_equal(a : Dictionary, b : Dictionary) -> bool:
-	if a.size() != b.size(): return false
-	for k in a:
-		if !b.has(k): return false
-		if (
-			a[k] != b[k]
-			&& (!a[k] is Dictionary || !extras_equal(a[k], b[k]))
-			&& (!a[k] is Array || !arrays_equal(a[k], b[k]))
-		):
-			return false
-
-	return true
-
-
-func arrays_equal(a : Array, b : Array) -> bool:
-	if a.size() != b.size(): return false
-	for i in a.size():
-		if (
-			a[i] != b[i]
-			&& (!a[i] is Dictionary || !extras_equal(a[i], b[i]))
-			&& (!a[i] is Array || !arrays_equal(a[i], b[i]))
-		):
-			return false
-
-	return true
 
 
 func get_stack_at_position(x : int, y : int) -> ItemStack:
