@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_13.tres" type="Texture" id=1]
+[ext_resource path="res://example/graphics/gradients/yelow1.tres" type="Texture" id=2]
+[ext_resource path="res://example/src/equip_bonus.gd" type="Script" id=3]
+
+[resource]
+script = ExtResource( 3 )
+id = "loot_gold"
+icon = ExtResource( 1 )
+icon_back = ExtResource( 2 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3

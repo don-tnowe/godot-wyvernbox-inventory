@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/wyvernbox/view_extra/tooltip.gd" type="Script" id=1]
+[ext_resource path="res://example/theme/default.tres" type="Theme" id=2]
+[ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=3]
+[ext_resource path="res://example/theme/font/font_body.tres" type="DynamicFont" id=4]
+
+[node name="Tooltip" type="MarginContainer" groups=["tooltip"]]
+margin_right = 64.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 160, 0 )
+mouse_filter = 2
+size_flags_horizontal = 5
+size_flags_vertical = 9
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+color_bonus = Color( 0.521569, 0.560784, 0.992157, 1 )
+color_malus = Color( 1, 0.376471, 0.376471, 1 )
+color_neutral = Color( 0.247059, 0.247059, 0.247059, 1 )
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+margin_right = 160.0
+margin_bottom = 56.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 160.0
+margin_bottom = 56.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="Title" type="PanelContainer" parent="VBoxContainer"]
+margin_right = 160.0
+margin_bottom = 22.0
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/Title"]
+unique_name_in_owner = true
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 153.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Cool Item"
+align = 1
+autowrap = true
+
+[node name="Desc" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 22.0
+margin_right = 160.0
+margin_bottom = 52.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]
+[color=#9999ff]+5[/color] a
+[/center]"
+text = "
++5 a
+"
+fit_content_height = true

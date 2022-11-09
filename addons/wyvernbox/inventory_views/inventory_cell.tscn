@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="Gradient" id=2]
+
+[sub_resource type="GradientTexture2D" id=1]
+gradient = SubResource( 2 )
+fill = 1
+fill_from = Vector2( 0.5, 0.5 )
+fill_to = Vector2( 4.85, 0.5 )
+
+[sub_resource type="Gradient" id=4]
+colors = PoolColorArray( 0.582031, 0.582031, 0.582031, 1, 0.339844, 0.339844, 0.339844, 1 )
+
+[sub_resource type="GradientTexture2D" id=3]
+gradient = SubResource( 4 )
+fill = 1
+fill_from = Vector2( 0.4875, 0 )
+fill_to = Vector2( 0.504167, 1 )
+
+[node name="Cell" type="TextureRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = SubResource( 1 )
+expand = true
+
+[node name="Inner" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
+mouse_filter = 2
+texture = SubResource( 3 )
+expand = true

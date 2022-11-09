@@ -1,0 +1,10 @@
+[gd_resource type="DynamicFont" load_steps=2 format=2]
+
+[ext_resource path="res://example/theme/font/ttf/Abaddon Bold.ttf" type="DynamicFontData" id=1]
+
+[resource]
+size = 12
+outline_size = 1
+outline_color = Color( 0, 0, 0, 0.74902 )
+extra_spacing_bottom = -6
+font_data = ExtResource( 1 )

@@ -1,0 +1,110 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
+[ext_resource path="res://example/src/equipment_tab.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/wyvernbox/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=3]
+[ext_resource path="res://example/theme/default.tres" type="Theme" id=4]
+[ext_resource path="res://example/src/clear_all_inv_view_filters_button.gd" type="Script" id=5]
+
+[node name="Inventory" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Inventory" parent="." instance=ExtResource( 3 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 57.0
+margin_top = -141.0
+margin_right = 311.0
+margin_bottom = 113.0
+rect_min_size = Vector2( 254, 254 )
+__meta__ = {
+"_edit_group_": true
+}
+interaction_mode = 13
+width = 18
+height = 18
+
+[node name="CenterContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -335.0
+margin_top = -159.0
+margin_right = -32.0
+margin_bottom = 131.0
+mouse_filter = 2
+alignment = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="TabContainer" type="TabContainer" parent="CenterContainer"]
+margin_left = 31.0
+margin_right = 271.0
+margin_bottom = 290.0
+rect_min_size = Vector2( 240, 0 )
+custom_fonts/font = ExtResource( 1 )
+
+[node name="menu_equip" parent="CenterContainer/TabContainer" instance=ExtResource( 2 )]
+margin_bottom = -4.0
+
+[node name="menu_craft" type="CenterContainer" parent="CenterContainer/TabContainer"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="menu_stash" type="CenterContainer" parent="CenterContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 26.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Inventory" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource( 3 )]
+margin_left = 87.0
+margin_top = 115.0
+margin_right = 313.0
+margin_bottom = 341.0
+rect_min_size = Vector2( 226, 226 )
+width = 16
+height = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -221.5
+margin_top = -31.0
+margin_right = 221.5
+margin_bottom = -12.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sort" type="Button" parent="HBoxContainer"]
+margin_right = 219.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "button_sort"
+
+[node name="ClearAllInvViewFilters" type="Button" parent="HBoxContainer"]
+margin_left = 223.0
+margin_right = 443.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Clear Filters (Alt+F)"
+script = ExtResource( 5 )
+
+[connection signal="pressed" from="HBoxContainer/Sort" to="Inventory" method="sort_inventory"]
