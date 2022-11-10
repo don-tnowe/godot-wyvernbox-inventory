@@ -16,6 +16,9 @@ in_inventory_height = 2
 texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 513
+default_properties_string = "{
+\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 )
+}"
 default_properties = {
 "back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
 }

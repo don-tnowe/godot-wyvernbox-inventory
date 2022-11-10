@@ -349,3 +349,6 @@ __meta__ = {
 "_edit_lock_": true
 }
 equip_inventory_view = NodePath("../../Control/Equip")
+
+[connection signal="item_stack_added" from="Control/Equip" to="ScrollContainer/StatsDisplay" method="_on_Equip_item_stack_added"]
+[connection signal="item_stack_removed" from="Control/Equip" to="ScrollContainer/StatsDisplay" method="_on_Equip_item_stack_removed"]

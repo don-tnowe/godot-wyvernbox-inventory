@@ -1,3 +1,4 @@
+tool
 class_name ItemType
 extends Resource
 
@@ -72,7 +73,20 @@ export(int, FLAGS,
 		"E_RING",
 		"E_NECK"
 	) var slot_flags := 1
-export var default_properties : Dictionary
+export(String, MULTILINE) var default_properties_string setget _set_default_properties_string
+export var default_properties : Dictionary setget _set_default_properties_dict
+
+
+func _set_default_properties_string(v):
+	var converted = str2var(v)
+	default_properties_string = v
+	if !converted is Dictionary: return
+	default_properties = converted
+
+
+func _set_default_properties_dict(v):
+	default_properties = v
+	default_properties_string = var2str(v)
 
 
 func get_size_in_inventory() -> Vector2:

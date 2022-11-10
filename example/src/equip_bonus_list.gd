@@ -32,11 +32,7 @@ func update_view():
 
 func _update_stat_view():
 	_update_hpmp()
-	var weapon = get_node(equip_inventory_view).inventory.get_stack_at_position(0, 0)
-	$"WeaponName".text = weapon.get_name() if weapon != null else "no_weapon"
-	$"Weapon/B/Dmg/Value".text = str(stats.get("weapon_damage", 0.0))
-	$"Weapon/B/Crit/Label".text = tr("stats_crit") % (stats.get("crit_power", 0.0) * 0.01)
-	$"Weapon/B/Crit/Value".text = str(stats.get("crit_chance", 0.0)) + "%"
+	_update_weapon_stats()
 	_update_nullable($"OffDef/Off/HBoxContainer/W", "weapon_damage")
 	_update_nullable($"OffDef/Off/HBoxContainer/S", "spell_damage")
 	_update_nullable($"OffDef/Def/HBoxContainer/Def", "defense")
@@ -66,7 +62,7 @@ func _update_stat_view():
 		other_list.append_bbcode(
 			"[color=#858ffd]"
 			+ ("%.1f" % (stats.get(k, 0.0)))
-			+ "[/color]"
+			+ "[/color] "
 			+ tr("item_bonus_" + k)
 			+ "\n"
 		)
@@ -91,6 +87,14 @@ func _update_hpmp():
 		magic_str,
 		stats.get("magic_regen", 0.0),
 	])
+
+
+func _update_weapon_stats():
+	var weapon = get_node(equip_inventory_view).inventory.get_stack_at_position(0, 0)
+	$"WeaponName".text = weapon.get_name() if weapon != null else "no_weapon"
+	$"Weapon/B/Dmg/Value".text = str(stats.get("weapon_damage", 0.0) * stats.get("weapon_speed", 1.0))
+	$"Weapon/B/Crit/Label".text = tr("stats_crit") % (stats.get("crit_power", 0.0) * 0.01)
+	$"Weapon/B/Crit/Value".text = str(stats.get("crit_chance", 0.0)) + "%"
 
 
 func _update_nullable(node, stat, prefix : String = "", add_to_value : float = 0.0, hide_if_zero : bool = false):

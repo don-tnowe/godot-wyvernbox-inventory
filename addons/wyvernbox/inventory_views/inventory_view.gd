@@ -169,7 +169,6 @@ func _try_buy(stack : ItemStack):
 			
 	for x in inventories:
 		if price.size() == 0: break
-		print(price)
 		price = x.inventory.consume_items(price)
 	
 	return true

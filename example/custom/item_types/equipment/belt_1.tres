@@ -16,6 +16,16 @@ in_inventory_height = 1
 texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 524294
+default_properties_string = "{
+\"back_color\": Color( 1, 0.65098, 0, 1 ),
+\"price\": {
+\"res://example/custom/item_types/consumable/coin_gold.tres\": 50,
+\"res://example/custom/item_types/consumable/coin_purple.tres\": 10
+},
+\"stats\": {
+\"dodgerate\": 12.0
+}
+}"
 default_properties = {
 "back_color": Color( 1, 0.65098, 0, 1 ),
 "price": {
@@ -23,7 +33,6 @@ default_properties = {
 "res://example/custom/item_types/consumable/coin_purple.tres": 10
 },
 "stats": {
-"weapon_damage": 8.0,
-"weapon_speed": 0.8
+"dodgerate": 12.0
 }
 }

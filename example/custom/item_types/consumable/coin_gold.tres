@@ -16,5 +16,7 @@ in_inventory_height = 1
 texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 65
+default_properties_string = "{
+}"
 default_properties = {
 }
