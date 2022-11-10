@@ -5,7 +5,7 @@ export var vendor_response := NodePath("Label")
 export var sale_inventory := NodePath("../../../../Inventory")
 export var price_markup := 2.0
 export var apply_to_all_stock : Resource
-export(Array, Resource) var stock setget _set_stock 
+export(Array, Resource) var stock setget _set_stock
 export var infinite_stock := true
 export(Array, int) var stock_counts setget _set_stock_counts 
 
@@ -116,16 +116,14 @@ func _on_Inventory_item_stack_added(item_stack):
 		return
 	
 	say("shopkeeper_sold", Color.green)
-	if !item_stack.extra_properties.has("price"):
-		return
-
-	var inventory = get_node(sale_inventory).inventory
-	var reward = item_stack.extra_properties["price"]
-	for k in reward:
-		inventory.try_add_item(ItemStack.new(load(k), reward[k]))
+	if item_stack.extra_properties.has("price"):
+		var inventory = get_node(sale_inventory).inventory
+		var reward = item_stack.extra_properties["price"]
+		for k in reward:
+			inventory.try_add_item(ItemStack.new(load(k), reward[k]))
 	
 	put_up_for_sale(item_stack, get_node(vendor_inventory).inventory, -1)
-		
+
 
 func say(text, color = Color(1.0, 0.9, 0.1, 1.0)):
 	if !has_node(vendor_response): return
