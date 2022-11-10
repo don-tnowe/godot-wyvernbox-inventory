@@ -151,22 +151,27 @@ func _try_buy(stack : ItemStack):
 	if (interaction_mode & InteractionFlags.VENDOR) == 0 || !stack.extra_properties.has("price"):
 		return true
 	
-	var price = stack.extra_properties["price"]
+	var price = stack.extra_properties["price"].duplicate()
 	var counts = {}
 	var inventories = get_tree().get_nodes_in_group("inventory_view")
 	for x in inventories:
 		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
 			x.inventory.count_items(counts)
 	
-	for k in price:
-		if counts.get(load(k), 0) < price[k]:
+	var k_loaded
+	for k in price.keys():
+		# Stored inside items as paths. When deducting, must use objects
+		k_loaded = load(k)
+		price[k_loaded] = price[k]
+		price.erase(k)
+		if counts.get(k_loaded, 0) < price[k_loaded]:
 			return false
-	
+			
 	for x in inventories:
 		if price.size() == 0: break
+		print(price)
 		price = x.inventory.consume_items(price)
 	
-	stack.extra_properties.erase("price")
 	return true
 
 

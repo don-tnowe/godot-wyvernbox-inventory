@@ -98,6 +98,7 @@ func _any_inventory_try_drop_stack(stack):
 			stack, x.global_position_to_cell(get_global_mouse_position(), stack)
 		)
 		if found_stack != stack:
+			get_tree().set_input_as_handled()
 			if found_stack == null:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			

@@ -66,26 +66,31 @@ func _show_price(item_stack):
 	stats_label.append_bbcode("\n[color=#" + color_bonus.to_html() + "]" + tr("item_tt_price") + "[/color]")
 	var price = item_stack.extra_properties["price"]
 	var hex_malus := color_malus.to_html(false)
-	var counts = {}
-	var inventories = get_tree().get_nodes_in_group("inventory_view")
-	for x in inventories:
-		if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
-			x.inventory.count_items(counts)
+	var hex_neutral := color_neutral.to_html(false)
+	var owned_item_counts = {}
+	if item_stack.extra_properties.has("seller"):
+		var inventories = get_tree().get_nodes_in_group("inventory_view")
+		for x in inventories:
+			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
+				x.inventory.count_items(owned_item_counts)
 	
 	var k_loaded  # Because for easier serialization, items are stored as paths
 	for k in price:
 		k_loaded = load(k)
 		stats_label.append_bbcode(
 			"\n[color=#"
-			+ k_loaded.default_properties.get("back_color", color_neutral).to_html()
+			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
 			+ "]"
 			+ tr("item_name_" + k_loaded.item_name) + "[/color] x"
 			+ str(price[k])
 		)
-		if counts.get(k_loaded, 0) < price[k]:
-			stats_label.append_bbcode(
-				" [color=#%s]%s[/color] " % [hex_malus, tr("item_tt_have_items") % counts.get(k, 0)]
-			)
+		if item_stack.extra_properties.has("seller"):
+			stats_label.append_bbcode(" [color=#%s]%s[/color] " % [
+				hex_malus if owned_item_counts.get(k_loaded, 0) < price[k] else hex_neutral,
+				tr("item_tt_have_items") % owned_item_counts.get(k_loaded, 0)
+			])
+
+	stats_label.append_bbcode("\n")
 
 
 func display_bonus(node : Control, bonus_res : Resource):
@@ -156,7 +161,7 @@ func _show_equip_stats(item_stack : ItemStack):
 		for k in displayed_stats:
 			displayed_stats[k] = [displayed_stats[k]]
 
-		_append_bbcode_stats(displayed_stats, $"%Desc", hex_bonus, hex_neutral, hex_malus)
+		_append_bbcode_stats(displayed_stats, hex_bonus, hex_neutral, hex_malus)
 		return
 
 	var compared := _get_compared_item_stats(item_stack)
@@ -164,7 +169,7 @@ func _show_equip_stats(item_stack : ItemStack):
 		for k in displayed_stats:
 			displayed_stats[k] = [displayed_stats[k]]
 
-		_append_bbcode_stats(displayed_stats, $"%Desc", hex_bonus, hex_neutral, hex_malus)
+		_append_bbcode_stats(displayed_stats, hex_bonus, hex_neutral, hex_malus)
 		return
 		
 	for k in displayed_stats:
@@ -183,31 +188,32 @@ func _show_equip_stats(item_stack : ItemStack):
 
 			displayed_stats[k][i] -= compared[i].get(k, 0.0)
 
-	_append_bbcode_stats(displayed_stats, $"%Desc", hex_bonus, hex_neutral, hex_malus)
+	_append_bbcode_stats(displayed_stats, hex_bonus, hex_neutral, hex_malus)
 
 
-func _append_bbcode_stats(displayed_stats, bonuses_label, hex_bonus, hex_neutral, hex_malus):
+func _append_bbcode_stats(displayed_stats, hex_bonus, hex_neutral, hex_malus):
 	var first := true
 	var value := 0.0
+	var text := ""
 	for k in displayed_stats:
 		first = true
 		for i in displayed_stats[k].size():
 			value = displayed_stats[k][i]
-			bonuses_label.append_bbcode(
-				("" if first else "/")
-				+ "[color=#"
-				+ (hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus))
-				+ "]"
-				+ ("+" if value >= 0.0 else "")
-				+ ("%s" % value)
-			)
+			text += ("%s[color=#%s]%s%s" % [
+				("" if first else "/"),
+				(hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus)),
+				("+" if value >= 0.0 else ""),
+				value
+			])
 			first = false
 		
-		bonuses_label.append_bbcode(
+		text += (
 			" "
 			+ tr("item_bonus_" + k)
-			+ "\n"
+			+ "[/color]\n"
 		)
+
+	$"%Desc".append_bbcode(text)
 
 
 func _input(event):
@@ -227,7 +233,10 @@ func _input(event):
 		var item_stack = last_func_args[0]
 
 		if Input.is_action_pressed(compare_input) && item_stack.extra_properties.has("price"):
-			var price = item_stack.extra_properties["price"]
+			var price = item_stack.extra_properties["price"].keys()
+			for i in price.size():
+				price[i] = load(price[i])
+
 			for x in get_tree().get_nodes_in_group("inventory_view"):
 				x.set_filter("any_type", price)
 				x.set_filter("always_show", [item_stack])

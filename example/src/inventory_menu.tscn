@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/equipment_tab.tscn" type="PackedScene" id=2]
@@ -17,6 +17,46 @@
 [ext_resource path="res://example/custom/item_types/equipment/chestplate_2.tres" type="Resource" id=15]
 [ext_resource path="res://example/custom/item_types/equipment/belt_1.tres" type="Resource" id=16]
 [ext_resource path="res://example/custom/item_types/equipment/belt_2.tres" type="Resource" id=17]
+[ext_resource path="res://example/custom/equip_bonuses/health.tres" type="Resource" id=18]
+[ext_resource path="res://example/custom/equip_bonuses/elemental_ice_damage.tres" type="Resource" id=19]
+[ext_resource path="res://example/custom/equip_bonuses/magic_regen.tres" type="Resource" id=20]
+[ext_resource path="res://example/custom/equip_bonuses/health_regen.tres" type="Resource" id=21]
+[ext_resource path="res://example/custom/equip_bonuses/crit_chance.tres" type="Resource" id=22]
+[ext_resource path="res://example/custom/equip_bonuses/loot_xp.tres" type="Resource" id=23]
+[ext_resource path="res://example/custom/equip_bonuses/elemental_lightning_damage.tres" type="Resource" id=24]
+[ext_resource path="res://example/custom/equip_bonuses/dodgerate.tres" type="Resource" id=25]
+[ext_resource path="res://example/custom/equip_bonuses/elemental_dark_damage.tres" type="Resource" id=26]
+[ext_resource path="res://example/custom/equip_bonuses/elemental_fire_damage.tres" type="Resource" id=27]
+[ext_resource path="res://example/custom/equip_bonuses/defense.tres" type="Resource" id=28]
+[ext_resource path="res://example/custom/equip_bonuses/loot_gear.tres" type="Resource" id=29]
+[ext_resource path="res://example/custom/equip_bonuses/crit_power.tres" type="Resource" id=30]
+[ext_resource path="res://example/custom/equip_bonuses/loot_gold.tres" type="Resource" id=31]
+[ext_resource path="res://example/custom/equip_bonuses/magic.tres" type="Resource" id=32]
+[ext_resource path="res://example/custom/equip_bonuses/resistance_fire.tres" type="Resource" id=33]
+[ext_resource path="res://example/custom/equip_bonuses/weapon_to_dark.tres" type="Resource" id=34]
+[ext_resource path="res://example/custom/item_types/consumable/coin_purple.tres" type="Resource" id=35]
+[ext_resource path="res://example/custom/equip_bonuses/weapon_to_ice.tres" type="Resource" id=36]
+[ext_resource path="res://example/custom/equip_bonuses/resistance_ice.tres" type="Resource" id=37]
+[ext_resource path="res://example/custom/equip_bonuses/resistance_dark.tres" type="Resource" id=38]
+[ext_resource path="res://example/custom/equip_bonuses/weapon_damage.tres" type="Resource" id=39]
+[ext_resource path="res://example/custom/equip_bonuses/resistance_lightning.tres" type="Resource" id=40]
+[ext_resource path="res://example/custom/equip_bonuses/weapon_to_fire.tres" type="Resource" id=41]
+[ext_resource path="res://example/custom/equip_bonuses/weapon_speed.tres" type="Resource" id=42]
+[ext_resource path="res://example/custom/equip_bonuses/weapon_to_lightning.tres" type="Resource" id=43]
+[ext_resource path="res://example/custom/equip_bonuses/spell_damage.tres" type="Resource" id=44]
+[ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=45]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 45 )
+name = "Enchant Item"
+results = [ null ]
+weights = [ 1.0 ]
+count_ranges = [ Vector2( 1, 1 ) ]
+possible_affixes = [ ExtResource( 22 ), ExtResource( 30 ), ExtResource( 28 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 19 ), ExtResource( 24 ), ExtResource( 18 ), ExtResource( 21 ), ExtResource( 29 ), ExtResource( 31 ), ExtResource( 23 ), ExtResource( 32 ), ExtResource( 20 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 37 ), ExtResource( 40 ), ExtResource( 44 ), ExtResource( 39 ), ExtResource( 42 ), ExtResource( 34 ), ExtResource( 41 ), ExtResource( 36 ), ExtResource( 43 ) ]
+affix_count_range = Vector2( 1, 4 )
+affix_level_range = Vector2( 1, 6 )
+price_increase_item = ExtResource( 35 )
+price_increase_per_level = 10
 
 [node name="Inventory" type="Control"]
 anchor_right = 1.0
@@ -77,6 +117,44 @@ margin_bottom = 40.0
 [node name="Control" parent="CenterContainer/TabContainer/menu_craft" instance=ExtResource( 6 )]
 margin_right = 170.0
 
+[node name="menu_shop" type="CenterContainer" parent="CenterContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 26.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Inventory" parent="CenterContainer/TabContainer/menu_shop" instance=ExtResource( 3 )]
+margin_left = 31.0
+margin_top = 73.0
+margin_right = 201.0
+margin_bottom = 187.0
+interaction_mode = 7
+
+[node name="ShopManager" type="Control" parent="CenterContainer/TabContainer/menu_shop"]
+margin_left = 116.0
+margin_top = 130.0
+margin_right = 116.0
+margin_bottom = 130.0
+script = ExtResource( 7 )
+apply_to_all_stock = SubResource( 1 )
+stock = [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 10 ) ]
+infinite_stock = false
+stock_counts = [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ]
+
+[node name="Label" type="Label" parent="CenterContainer/TabContainer/menu_shop/ShopManager"]
+margin_left = -57.0
+margin_top = 60.0
+margin_right = 57.0
+margin_bottom = 69.0
+grow_horizontal = 2
+custom_fonts/font = ExtResource( 1 )
+text = "shopkeeper_hello"
+align = 1
+autowrap = true
+
 [node name="menu_stash" type="CenterContainer" parent="CenterContainer/TabContainer"]
 visible = false
 anchor_right = 1.0
@@ -94,33 +172,6 @@ margin_bottom = 243.0
 rect_min_size = Vector2( 226, 226 )
 width = 16
 height = 16
-
-[node name="menu_shop" type="CenterContainer" parent="CenterContainer/TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 26.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="Inventory" parent="CenterContainer/TabContainer/menu_shop" instance=ExtResource( 3 )]
-margin_left = 59.0
-margin_top = 73.0
-margin_right = 173.0
-margin_bottom = 187.0
-rect_min_size = Vector2( 114, 114 )
-interaction_mode = 7
-width = 8
-
-[node name="ShopManager" type="Control" parent="CenterContainer/TabContainer/menu_shop"]
-visible = false
-margin_left = 116.0
-margin_top = 130.0
-margin_right = 116.0
-margin_bottom = 130.0
-script = ExtResource( 7 )
-stock = [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 10 ) ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5
@@ -152,4 +203,5 @@ script = ExtResource( 5 )
 [connection signal="item_stack_added" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="item_stack_removed" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="grab_attempted" from="CenterContainer/TabContainer/menu_shop/Inventory" to="CenterContainer/TabContainer/menu_shop/ShopManager" method="_on_Inventory_grab_attempted"]
+[connection signal="item_stack_added" from="CenterContainer/TabContainer/menu_shop/Inventory" to="CenterContainer/TabContainer/menu_shop/ShopManager" method="_on_Inventory_item_stack_added"]
 [connection signal="pressed" from="HBoxContainer/Sort" to="Inventory" method="sort_inventory"]

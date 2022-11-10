@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=34 format=2]
+[gd_resource type="Resource" load_steps=35 format=2]
 
 [ext_resource path="res://example/custom/item_types/equipment/melee_sword.tres" type="Resource" id=1]
 [ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=2]
@@ -31,6 +31,7 @@
 [ext_resource path="res://example/custom/equip_bonuses/weapon_to_fire.tres" type="Resource" id=29]
 [ext_resource path="res://example/custom/item_types/materials/scroll_enchant.tres" type="Resource" id=30]
 [ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=31]
+[ext_resource path="res://example/custom/item_types/consumable/coin_purple.tres" type="Resource" id=32]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 31 )
@@ -38,7 +39,7 @@ region = Rect2( 0, 72, 12, 36 )
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 2 )
-name = "Insert name or full locale string"
+name = "craft_enchant_melee_sword"
 texture = SubResource( 1 )
 results = [ ExtResource( 1 ) ]
 weights = [ 1 ]
@@ -46,6 +47,8 @@ count_ranges = [ Vector2( 1, 1 ) ]
 possible_affixes = [ ExtResource( 5 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 19 ), ExtResource( 7 ), ExtResource( 14 ), ExtResource( 12 ), ExtResource( 15 ), ExtResource( 20 ), ExtResource( 18 ), ExtResource( 3 ), ExtResource( 24 ), ExtResource( 28 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 23 ), ExtResource( 21 ), ExtResource( 29 ), ExtResource( 26 ), ExtResource( 27 ) ]
 affix_count_range = Vector2( 1, 4 )
 affix_level_range = Vector2( 1, 6 )
+price_increase_item = ExtResource( 32 )
+price_increase_per_level = 20
 
 [resource]
 script = ExtResource( 4 )

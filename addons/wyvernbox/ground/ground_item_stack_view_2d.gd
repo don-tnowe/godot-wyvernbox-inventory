@@ -11,6 +11,8 @@ export var spawn_jump_length_range := Vector2(48.0, 96.0)
 
 var item_stack : ItemStack
 
+var item_affixes := []
+
 
 func _set_item_type(v):
 	item_type = v
@@ -31,6 +33,7 @@ func set_stack(stack):
 	item_type = stack.item_type
 	item_count = stack.count
 	item_extra = stack.extra_properties
+	item_affixes = stack.name_with_affixes
 	_update_stack()
 
 
@@ -56,6 +59,7 @@ func _update_stack():
 	if !is_inside_tree(): return
 		
 	item_stack = ItemStack.new(item_type, item_count, item_extra)
+	item_stack.name_with_affixes = item_affixes
 	if !Engine.editor_hint:
 		$"Label/Label".text = item_stack.get_name()
 		
