@@ -3,6 +3,7 @@ extends Control
 export var vendor_inventory := NodePath("../Inventory")
 export var vendor_response := NodePath("Label")
 export var sale_inventory := NodePath("../../../../Inventory")
+export var remove_price_on_buy := false
 export var price_markup := 2.0
 export var apply_to_all_stock : Resource
 export(Array, Resource) var stock setget _set_stock
@@ -83,6 +84,9 @@ func _on_Inventory_grab_attempted(stack, success):
 	if success:
 		restock_item(stack, inventory)
 		remove_from_sale(stack)
+		if remove_price_on_buy:
+			stack.extra_properties.erase("price")
+		
 		say("shopkeeper_purchase", Color.darkturquoise)
 
 	else:
