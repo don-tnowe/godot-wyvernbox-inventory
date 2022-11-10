@@ -42,13 +42,16 @@ func refill_stock():
 		inventory.remove(x)
 
 	for i in stock.size():
-		var stack = (
-			stock[i].get_item(rng)
-			if stock[i] is ItemGenerator else
-			ItemStack.new(stock[i], 1, stock[i].default_properties.duplicate(true))
-		)
+		var stack = get_stock(i)
 		put_up_for_sale(stack, inventory, i)
 		inventory.try_add_item(stack)
+
+
+func get_stock(index):
+	if stock[index] is ItemGenerator:
+		return stock[index].get_item(rng)
+		
+	return ItemStack.new(stock[index], 1, stock[index].default_properties.duplicate(true))
 
 
 func put_up_for_sale(stack, inventory, stash_index):
@@ -96,9 +99,8 @@ func _on_Inventory_grab_attempted(stack, success):
 func restock_item(stack, inventory):
 	var stash_idx = stack.extra_properties["seller_stash_index"]
 	if stash_idx != -1:
-		var restock_item = stack.duplicate_with_count(stack.count)
+		var restock_item = get_stock(stash_idx)
 		restock_item.position_in_inventory = stack.position_in_inventory
-		remove_from_sale(restock_item)
 
 		# The item is not yet removed, only attempted to remove.
 		# Wait until the restock can be placed 
