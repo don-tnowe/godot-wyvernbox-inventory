@@ -2,6 +2,7 @@ tool
 extends InventoryView
 
 export(Array, Resource) var restricted_to_types := [] setget _set_restricted_to_types
+export var max_stack := 99999999
 
 
 func _set_restricted_to_types(v):
@@ -16,4 +17,4 @@ func _set_grid_width(v):
 
 func _ready2():
 	width = restricted_to_types.size()
-	_set_inventory(CurrencyInventory.new(restricted_to_types))
+	_set_inventory(CurrencyInventory.new(restricted_to_types, max_stack))

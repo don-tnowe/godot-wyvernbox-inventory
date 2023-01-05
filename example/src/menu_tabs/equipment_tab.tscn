@@ -64,6 +64,10 @@ margin_left = 49.0
 margin_top = 18.0
 margin_right = 49.0
 margin_bottom = 18.0
+__meta__ = {
+"_edit_group_": true
+}
+max_stack = 5000
 
 [node name="Potions" type="Control" parent="Control"]
 anchor_left = 0.5

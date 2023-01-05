@@ -35,62 +35,8 @@
 [ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=33]
 [ext_resource path="res://addons/wyvernbox/item_type.gd" type="Script" id=34]
 [ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=35]
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 32 )
-region = Rect2( 12, 72, 12, 48 )
-
-[sub_resource type="Resource" id=34]
-script = ExtResource( 34 )
-item_name = "melee_battleaxe"
-max_stack_count = 1
-in_inventory_width = 1
-in_inventory_height = 4
-texture = SubResource( 1 )
-texture_scale = 1.0
-slot_flags = 32774
-default_properties_string = "{
-\"back_color\": Color( 1, 0.65098, 0, 1 ),
-\"price\": {
-\"res://example/wyvernbox/item_types/consumable/coin_gold.tres\": 50,
-\"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 10
-},
-\"stats\": {
-\"weapon_damage\": 8.0,
-\"weapon_speed\": 0.8
-}
-}"
-default_properties = {
-"back_color": Color( 1, 0.65098, 0, 1 ),
-"price": {
-"res://example/wyvernbox/item_types/consumable/coin_gold.tres": 50,
-"res://example/wyvernbox/item_types/consumable/coin_purple.tres": 10
-},
-"stats": {
-"weapon_damage": 8.0,
-"weapon_speed": 0.8
-}
-}
-
-[sub_resource type="AtlasTexture" id=33]
-atlas = ExtResource( 32 )
-region = Rect2( 96, 24, 12, 24 )
-
-[sub_resource type="Resource" id=3]
-script = ExtResource( 34 )
-item_name = "scroll_enchant"
-max_stack_count = 20
-in_inventory_width = 1
-in_inventory_height = 2
-texture = SubResource( 33 )
-texture_scale = 1.0
-slot_flags = 1
-default_properties_string = "{
-\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 )
-}"
-default_properties = {
-"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
-}
+[ext_resource path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" type="Resource" id=36]
+[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=37]
 
 [sub_resource type="Resource" id=4]
 script = ExtResource( 29 )
@@ -450,6 +396,42 @@ default_properties = {
 "back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
 }
 
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 32 )
+region = Rect2( 12, 72, 12, 48 )
+
+[sub_resource type="Resource" id=34]
+script = ExtResource( 34 )
+item_name = "melee_battleaxe"
+max_stack_count = 1
+in_inventory_width = 1
+in_inventory_height = 4
+texture = SubResource( 1 )
+texture_scale = 1.0
+slot_flags = 32774
+default_properties_string = "{
+\"back_color\": Color( 1, 0.65098, 0, 1 ),
+\"price\": {
+\"res://example/wyvernbox/item_types/consumable/coin_gold.tres\": 50,
+\"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 10
+},
+\"stats\": {
+\"weapon_damage\": 8.0,
+\"weapon_speed\": 0.8
+}
+}"
+default_properties = {
+"back_color": Color( 1, 0.65098, 0, 1 ),
+"price": {
+"res://example/wyvernbox/item_types/consumable/coin_gold.tres": 50,
+"res://example/wyvernbox/item_types/consumable/coin_purple.tres": 10
+},
+"stats": {
+"weapon_damage": 8.0,
+"weapon_speed": 0.8
+}
+}
+
 [sub_resource type="AtlasTexture" id=35]
 atlas = ExtResource( 32 )
 region = Rect2( 12, 72, 12, 48 )
@@ -470,7 +452,7 @@ price_increase_per_level = 20
 [resource]
 script = ExtResource( 33 )
 name = "craft_enchant_melee_battleaxe"
-input_types = [ SubResource( 34 ), SubResource( 3 ) ]
+input_types = [ ExtResource( 36 ), ExtResource( 37 ) ]
 input_counts = [ 1, 4 ]
 output_types = [ SubResource( 2 ) ]
 output_ranges = [ Vector2( 1, 1 ) ]

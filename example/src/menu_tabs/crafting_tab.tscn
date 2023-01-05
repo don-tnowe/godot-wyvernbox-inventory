@@ -36,6 +36,7 @@ __meta__ = {
 cell_scene = ExtResource( 5 )
 item_conversions = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 9 ) ]
 target_inventory = NodePath("VBoxContainer/Output")
+source_inventory = NodePath("VBoxContainer/Output")
 
 [node name="Border" type="NinePatchRect" parent="."]
 show_behind_parent = true

@@ -65,13 +65,13 @@ func get_name() -> String:
 	return " ".join(trd)
 
 
-func _to_string():
-	return (
-		get_name()
-		+ "\nCount: " + str(count)
-		+ ", Data: \n" + str(extra_properties)
-		+ "\n"
-	)
+static func get_stack_overflow_if_added(count, added, maxcount) -> int:
+	return int(max(count + added - maxcount, 0))
+
+
+static func get_stack_delta_if_added(count, added, maxcount) -> int:
+	return int(min(maxcount - count, added))
+
 
 
 static func extras_equal(a : Dictionary, b : Dictionary) -> bool:
@@ -100,3 +100,11 @@ static func arrays_equal(a : Array, b : Array) -> bool:
 
 	return true
 	
+
+func _to_string():
+	return (
+		get_name()
+		+ "\nCount: " + str(count)
+		+ ", Data: \n" + str(extra_properties)
+		+ "\n"
+	)

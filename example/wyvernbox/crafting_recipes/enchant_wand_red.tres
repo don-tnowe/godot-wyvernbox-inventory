@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=69 format=2]
+[gd_resource type="Resource" load_steps=68 format=2]
 
 [ext_resource path="res://example/graphics/gradients/green1.tres" type="Texture" id=1]
 [ext_resource path="res://example/graphics/gradients/red1.tres" type="Texture" id=2]
@@ -36,26 +36,7 @@
 [ext_resource path="res://addons/wyvernbox/item_type.gd" type="Script" id=34]
 [ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=35]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/wand_red.tres" type="Resource" id=36]
-
-[sub_resource type="AtlasTexture" id=33]
-atlas = ExtResource( 32 )
-region = Rect2( 96, 24, 12, 24 )
-
-[sub_resource type="Resource" id=3]
-script = ExtResource( 34 )
-item_name = "scroll_enchant"
-max_stack_count = 20
-in_inventory_width = 1
-in_inventory_height = 2
-texture = SubResource( 33 )
-texture_scale = 1.0
-slot_flags = 1
-default_properties_string = "{
-\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 )
-}"
-default_properties = {
-"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
-}
+[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=37]
 
 [sub_resource type="Resource" id=4]
 script = ExtResource( 29 )
@@ -435,7 +416,7 @@ price_increase_per_level = 20
 [resource]
 script = ExtResource( 33 )
 name = "craft_enchant_wand_red"
-input_types = [ ExtResource( 36 ), SubResource( 3 ) ]
+input_types = [ ExtResource( 36 ), ExtResource( 37 ) ]
 input_counts = [ 1, 4 ]
 output_types = [ SubResource( 2 ) ]
 output_ranges = [ Vector2( 1, 1 ) ]
