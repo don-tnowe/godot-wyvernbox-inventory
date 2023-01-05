@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "PackedArrayPropertyEditor",
+"class": "ArrayPropertyEditor",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/array_property_editor.gd"
+}, {
+"base": "VBoxContainer",
+"class": "BaseCollectionPropertyEditor",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/base_property_editor.gd"
+}, {
 "base": "Reference",
 "class": "CellEditor",
 "language": "GDScript",
@@ -19,10 +29,40 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/resources_speadsheet_view/typed_cells/cell_editor_array.gd"
 }, {
+"base": "Button",
+"class": "CollectionHeaderButton",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/collection_header_button.gd"
+}, {
 "base": "Inventory",
 "class": "CurrencyInventory",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/inventories/currency_inventory.gd"
+}, {
+"base": "EditorResourcePicker",
+"class": "CustomResourcePicker",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/custom_resource_picker.gd"
+}, {
+"base": "PackedArrayPropertyEditor",
+"class": "DictPropertyEditor",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/dict_property_editor.gd"
+}, {
+"base": "EditorInspectorPlugin",
+"class": "DictionaryInspectorPlugin",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/inspector_plugin.gd"
+}, {
+"base": "EditorProperty",
+"class": "DictionaryInspectorProperty",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/inspector_property.gd"
+}, {
+"base": "Button",
+"class": "EditorArrayIndex",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/array_index.gd"
 }, {
 "base": "Resource",
 "class": "EquipBonus",
@@ -48,6 +88,16 @@ _global_script_classes=[ {
 "class": "InventoryFilter",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/view_extra/inventory_view_filter.gd"
+}, {
+"base": "Container",
+"class": "InventoryTooltip",
+"language": "GDScript",
+"path": "res://addons/wyvernbox/view_extra/tooltip.gd"
+}, {
+"base": "Control",
+"class": "InventoryVendor",
+"language": "GDScript",
+"path": "res://addons/wyvernbox/crafting/vendor.gd"
 }, {
 "base": "Control",
 "class": "InventoryView",
@@ -83,6 +133,16 @@ _global_script_classes=[ {
 "class": "ItemType",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/item_type.gd"
+}, {
+"base": "BaseCollectionPropertyEditor",
+"class": "ObjectPropertyEditor",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/object_property_editor.gd"
+}, {
+"base": "BaseCollectionPropertyEditor",
+"class": "PackedArrayPropertyEditor",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/packed_array_property_editor.gd"
 }, {
 "base": "Inventory",
 "class": "RestrictedInventory",
@@ -129,6 +189,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/resources_speadsheet_view/import_export/formats_import/import_csv.gd"
 }, {
+"base": "GridContainer",
+"class": "TensorPropertyEditor",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/tensor_property_editor.gd"
+}, {
 "base": "Reference",
 "class": "TextEditingUtils",
 "language": "GDScript",
@@ -143,16 +208,31 @@ _global_script_classes=[ {
 "class": "ThemeStylebox",
 "language": "GDScript",
 "path": "res://addons/resources_speadsheet_view/editor_stylebox_overrider.gd"
+}, {
+"base": "OptionButton",
+"class": "TypeOptionButton",
+"language": "GDScript",
+"path": "res://addons/dictionary_inspector/elements/type_option_button.gd"
 } ]
 _global_script_class_icons={
+"ArrayPropertyEditor": "",
+"BaseCollectionPropertyEditor": "",
 "CellEditor": "",
 "CellEditorArray": "",
+"CollectionHeaderButton": "",
 "CurrencyInventory": "",
+"CustomResourcePicker": "",
+"DictPropertyEditor": "",
+"DictionaryInspectorPlugin": "",
+"DictionaryInspectorProperty": "",
+"EditorArrayIndex": "",
 "EquipBonus": "",
 "GridInventory": "",
 "GroundItemStackView2D": "",
 "Inventory": "",
 "InventoryFilter": "",
+"InventoryTooltip": "",
+"InventoryVendor": "",
 "InventoryView": "",
 "ItemConversion": "",
 "ItemGenerator": "",
@@ -160,6 +240,8 @@ _global_script_class_icons={
 "ItemStack": "",
 "ItemStackView": "",
 "ItemType": "",
+"ObjectPropertyEditor": "",
+"PackedArrayPropertyEditor": "",
 "RestrictedInventory": "",
 "SettingsGrid": "",
 "SheetsDockEditor": "",
@@ -169,9 +251,11 @@ _global_script_class_icons={
 "SpreadsheetExportFormatCsv": "",
 "SpreadsheetImport": "",
 "SpreadsheetImportFormatCsv": "",
+"TensorPropertyEditor": "",
 "TextEditingUtils": "",
 "ThemeIconButton": "",
-"ThemeStylebox": ""
+"ThemeStylebox": "",
+"TypeOptionButton": ""
 }
 
 [addons]
@@ -198,7 +282,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/resources_speadsheet_view/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/dictionary_inspector/plugin.cfg", "res://addons/resources_speadsheet_view/plugin.cfg" )
 
 [gui]
 

@@ -1,7 +1,6 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://example/src/test_2d_char.gd" type="Script" id=3]
 [ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
 [ext_resource path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" type="Resource" id=5]
@@ -78,9 +77,17 @@ inventory_tooltip = NodePath("../../../Inventory/Tooltip")
 [node name="Shape" type="CollisionShape2D" parent="Gameplay/Node2D/Char"]
 shape = SubResource( 4 )
 
-[node name="Icon" type="Sprite" parent="Gameplay/Node2D/Char"]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+[node name="Vis" type="Node2D" parent="Gameplay/Node2D/Char"]
+position = Vector2( -1, -3 )
+scale = Vector2( 1.93173, 1.93173 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/Node2D/Char/Vis"]
+position = Vector2( 0, -2 )
+polygon = PoolVector2Array( -1.55301, -5.76507, -1, -3, 2, -3, 3, -7, 1, -8, -3.10602, -6.80042 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Gameplay/Node2D/Char/Vis"]
+position = Vector2( -1, 4 )
+polygon = PoolVector2Array( -1, -8, -5, -5, -3, -3, -1, -3, -2, 3, 1, 3, 2, 0, 3, 3, 6, 3, 5, -3, 7, -3, 8, -6, 5, -8 )
 
 [node name="ItemPickup" type="Area2D" parent="Gameplay/Node2D/Char"]
 

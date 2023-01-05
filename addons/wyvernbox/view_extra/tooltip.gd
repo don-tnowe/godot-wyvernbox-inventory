@@ -1,3 +1,4 @@
+class_name InventoryTooltip
 extends Container
 
 export var compare_input := "inventory_more"
@@ -61,38 +62,6 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	call_deferred("_update_rect", mouseover_node)
 
 
-func _show_price(item_stack):
-	var stats_label = $"%Desc"
-	stats_label.append_bbcode("\n[color=#" + color_bonus.to_html() + "]" + tr("item_tt_price") + "[/color]")
-	var price = item_stack.extra_properties["price"]
-	var hex_malus := color_malus.to_html(false)
-	var hex_neutral := color_neutral.to_html(false)
-	var owned_item_counts = {}
-	if item_stack.extra_properties.has("seller"):
-		var inventories = get_tree().get_nodes_in_group("inventory_view")
-		for x in inventories:
-			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
-				x.inventory.count_items(owned_item_counts)
-	
-	var k_loaded  # Because for easier serialization, items are stored as paths
-	for k in price:
-		k_loaded = load(k)
-		stats_label.append_bbcode(
-			"\n[color=#"
-			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
-			+ "]"
-			+ tr("item_name_" + k_loaded.item_name) + "[/color] x"
-			+ str(price[k])
-		)
-		if item_stack.extra_properties.has("seller"):
-			stats_label.append_bbcode(" [color=#%s]%s[/color] " % [
-				hex_malus if owned_item_counts.get(k_loaded, 0) < price[k] else hex_neutral,
-				tr("item_tt_have_items") % owned_item_counts.get(k_loaded, 0)
-			])
-
-	stats_label.append_bbcode("\n")
-
-
 func display_bonus(node : Control, bonus_res : Resource):
 	var desc = tr("item_bonus_desc_" + bonus_res.id)
 	if desc == "item_bonus_desc_" + bonus_res.id:
@@ -123,6 +92,47 @@ func display_custom(mouseover_node : Control, title : String, bbcode_description
 func display_last():
 	if last_func != null:
 		last_func.call_funcv(last_func_args)
+
+
+static func get_texture_bbcode(tex_path, tex_scale = 1.0):
+	var loaded = load(tex_path)
+	return "[img=%sx%s]%s[/img]" % [
+		loaded.get_width() * tex_scale,
+		loaded.get_height() * tex_scale,
+		tex_path,
+	]
+
+
+func _show_price(item_stack):
+	var stats_label = $"%Desc"
+	stats_label.append_bbcode("\n[color=#" + color_bonus.to_html() + "]" + tr("item_tt_price") + "[/color]")
+	var price = item_stack.extra_properties["price"]
+	var hex_malus := color_malus.to_html(false)
+	var hex_neutral := color_neutral.to_html(false)
+	var owned_item_counts = {}
+	if item_stack.extra_properties.has("seller"):
+		var inventories = get_tree().get_nodes_in_group("inventory_view")
+		for x in inventories:
+			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
+				x.inventory.count_items(owned_item_counts)
+	
+	var k_loaded  # Because for easier serialization, items are stored as paths
+	for k in price:
+		k_loaded = load(k)
+		stats_label.append_bbcode(
+			"\n[color=#"
+			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
+			+ "]"
+			+ tr("item_name_" + k_loaded.item_name) + "[/color] x"
+			+ str(price[k])
+		)
+		if item_stack.extra_properties.has("seller"):
+			stats_label.append_bbcode(" [color=#%s]%s[/color] " % [
+				hex_malus if owned_item_counts.get(k_loaded, 0) < price[k] else hex_neutral,
+				tr("item_tt_have_items") % owned_item_counts.get(k_loaded, 0)
+			])
+
+	stats_label.append_bbcode("\n")
 
 
 func _update_rect(mouseover_node):

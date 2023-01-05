@@ -13,5 +13,6 @@ export_presets.cfg
 .mono/
 mono_crash.*.json
 
-# I use this
+# Editor-only plugins
 addons/resources_speadsheet_view/
+addons/dictionary_inspector/
