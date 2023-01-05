@@ -4,6 +4,10 @@ export var movespeed := 128.0
 export var spawn_item : PackedScene
 export var generator : Resource
 
+export var inventory_menu := NodePath()
+export var inventory_view := NodePath()
+export var inventory_tooltip := NodePath()
+
 var _mouse_pressed := false
 
 
@@ -19,7 +23,7 @@ func _physics_process(delta):
 
 
 func _ready():
-	$"../../../Inventory/Inventory".hide()
+	get_node(inventory_menu).hide()
 
 
 func _unhandled_input(event):
@@ -27,8 +31,8 @@ func _unhandled_input(event):
 		_mouse_pressed = event.is_pressed()
 
 	if event.is_action("menu_inventory") && event.is_pressed():
-		$"../../../Inventory/Inventory".visible = !$"../../../Inventory/Inventory".visible
-		$"../../../Inventory/Tooltip".visible = false
+		get_node(inventory_menu).visible = !get_node(inventory_menu).visible
+		get_node(inventory_tooltip).visible = false
 
 
 func _on_Generator_pressed():
@@ -42,4 +46,6 @@ func _on_Generator_pressed():
 
 func _on_ItemPickup_area_entered(area : Area2D):
 	if area.is_in_group("ground_item"):
-		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
+		# Inventory? Inventory. Don't hard-code paths, kids.
+#		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
+		area.try_pickup(get_node(inventory_view).inventory)

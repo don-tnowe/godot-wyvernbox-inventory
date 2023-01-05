@@ -1,8 +1,13 @@
+class_name InventoryVendor
 extends Control
 
-export var vendor_inventory := NodePath("../Inventory")
-export var vendor_response := NodePath("Label")
-export var sale_inventory := NodePath("../../../../Inventory")
+signal item_received(item_stack)
+signal item_given(item_stack)
+signal item_cant_afford(item_stack)
+
+export var vendor_inventory := NodePath()
+export var vendor_response := NodePath()
+export var sell_reward_into_inventory := NodePath()
 export var remove_price_on_buy := false
 export var price_markup := 2.0
 export var apply_to_all_stock : Resource
@@ -33,7 +38,6 @@ func _ready():
 			stock[i] = buffer
 		
 	refill_stock()
-	call_deferred("say", "shopkeeper_hello", Color.green)
 
 
 func refill_stock():
@@ -82,25 +86,25 @@ func remove_from_sale(stack):
 	props.erase("seller_stash_index")
 
 
-func _on_Inventory_grab_attempted(stack, success):
+func _on_Inventory_grab_attempted(item_stack, success):
 	var inventory = get_node(vendor_inventory).inventory
 	if success:
-		restock_item(stack, inventory)
-		remove_from_sale(stack)
+		restock_item(item_stack, inventory)
+		remove_from_sale(item_stack)
 		if remove_price_on_buy:
-			stack.extra_properties.erase("price")
+			item_stack.extra_properties.erase("price")
 		
-		say("shopkeeper_purchase", Color.darkturquoise)
+		emit_signal("item_given", item_stack)
 
 	else:
-		say("shopkeeper_cant_afford", Color.red)
+		emit_signal("item_cant_afford", item_stack)
 
 
-func restock_item(stack, inventory):
-	var stash_idx = stack.extra_properties["seller_stash_index"]
+func restock_item(item_stack, inventory):
+	var stash_idx = item_stack.extra_properties["seller_stash_index"]
 	if stash_idx != -1:
 		var restock_item = get_stock(stash_idx)
-		restock_item.position_in_inventory = stack.position_in_inventory
+		restock_item.position_in_inventory = item_stack.position_in_inventory
 
 		# The item is not yet removed, only attempted to remove.
 		# Wait until the restock can be placed 
@@ -121,21 +125,11 @@ func _on_Inventory_item_stack_added(item_stack):
 		# Those are mine! Why would I give you money for MY items?!?!
 		return
 	
-	say("shopkeeper_sold", Color.green)
-	if item_stack.extra_properties.has("price"):
-		var inventory = get_node(sale_inventory).inventory
+	emit_signal("item_received", item_stack)
+	if item_stack.extra_properties.has("price") && has_node(sell_reward_into_inventory):
+		var inventory = get_node(sell_reward_into_inventory).inventory
 		var reward = item_stack.extra_properties["price"]
 		for k in reward:
 			inventory.try_add_item(ItemStack.new(load(k), reward[k]))
 	
 	put_up_for_sale(item_stack, get_node(vendor_inventory).inventory, -1)
-
-
-func say(text, color = Color(1.0, 0.9, 0.1, 1.0)):
-	if !has_node(vendor_response): return
-	var resp = get_node(vendor_response)
-	resp.text = text
-	resp.modulate = color
-
-	var tween = create_tween()
-	tween.tween_property(resp, "modulate", Color.white, 1)

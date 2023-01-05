@@ -1,0 +1,474 @@
+[gd_resource type="Resource" load_steps=70 format=2]
+
+[ext_resource path="res://example/graphics/gradients/green1.tres" type="Texture" id=1]
+[ext_resource path="res://example/graphics/gradients/red1.tres" type="Texture" id=2]
+[ext_resource path="res://example/graphics/gradients/irid1.tres" type="Texture" id=3]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_26.tres" type="Texture" id=4]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_15.tres" type="Texture" id=5]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_19.tres" type="Texture" id=6]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_20.tres" type="Texture" id=7]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_16.tres" type="Texture" id=8]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_23.tres" type="Texture" id=9]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_25.tres" type="Texture" id=10]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_8.tres" type="Texture" id=11]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_10.tres" type="Texture" id=12]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_11.tres" type="Texture" id=13]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_7.tres" type="Texture" id=14]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_9.tres" type="Texture" id=15]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_21.tres" type="Texture" id=16]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_2.tres" type="Texture" id=17]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_12.tres" type="Texture" id=18]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_5.tres" type="Texture" id=19]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_17.tres" type="Texture" id=20]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_4.tres" type="Texture" id=21]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_18.tres" type="Texture" id=22]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_13.tres" type="Texture" id=23]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_24.tres" type="Texture" id=24]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_6.tres" type="Texture" id=25]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_3.tres" type="Texture" id=26]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_22.tres" type="Texture" id=27]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_14.tres" type="Texture" id=28]
+[ext_resource path="res://addons/wyvernbox/crafting/equip_bonus.gd" type="Script" id=29]
+[ext_resource path="res://example/graphics/gradients/yelow1.tres" type="Texture" id=30]
+[ext_resource path="res://example/graphics/gradients/blue1.tres" type="Texture" id=31]
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=32]
+[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=33]
+[ext_resource path="res://addons/wyvernbox/item_type.gd" type="Script" id=34]
+[ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=35]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 32 )
+region = Rect2( 0, 48, 12, 24 )
+
+[sub_resource type="Resource" id=32]
+script = ExtResource( 34 )
+item_name = "wand_purple"
+max_stack_count = 1
+in_inventory_width = 1
+in_inventory_height = 2
+texture = SubResource( 1 )
+texture_scale = 1.0
+slot_flags = 65542
+default_properties_string = "{
+\"back_color\": Color( 1, 0.65098, 0, 1 ),
+\"price\": {
+\"res://example/wyvernbox/item_types/consumable/coin_gold.tres\": 50,
+\"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 10
+},
+\"stats\": {
+\"magic\": 16.0
+}
+}"
+default_properties = {
+"back_color": Color( 1, 0.65098, 0, 1 ),
+"price": {
+"res://example/wyvernbox/item_types/consumable/coin_gold.tres": 50,
+"res://example/wyvernbox/item_types/consumable/coin_purple.tres": 10
+},
+"stats": {
+"magic": 16.0
+}
+}
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 32 )
+region = Rect2( 96, 24, 12, 24 )
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 34 )
+item_name = "scroll_enchant"
+max_stack_count = 20
+in_inventory_width = 1
+in_inventory_height = 2
+texture = SubResource( 33 )
+texture_scale = 1.0
+slot_flags = 1
+default_properties_string = "{
+\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 )
+}"
+default_properties = {
+"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
+}
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 29 )
+id = "crit_chance"
+icon = ExtResource( 17 )
+icon_back = ExtResource( 1 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -1
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 29 )
+id = "crit_power"
+icon = ExtResource( 26 )
+icon_back = ExtResource( 1 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 29 )
+id = "defense"
+icon = ExtResource( 21 )
+icon_back = ExtResource( 2 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = true
+affix_position = -1
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 29 )
+id = "dodgerate"
+icon = ExtResource( 19 )
+icon_back = ExtResource( 1 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = true
+affix_position = 1
+
+[sub_resource type="Resource" id=8]
+script = ExtResource( 29 )
+id = "elemental_dark_damage"
+icon = ExtResource( 25 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -2
+
+[sub_resource type="Resource" id=9]
+script = ExtResource( 29 )
+id = "elemental_fire_damage"
+icon = ExtResource( 14 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -2
+
+[sub_resource type="Resource" id=10]
+script = ExtResource( 29 )
+id = "elemental_ice_damage"
+icon = ExtResource( 11 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -2
+
+[sub_resource type="Resource" id=11]
+script = ExtResource( 29 )
+id = "elemental_lightning_damage"
+icon = ExtResource( 15 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -2
+
+[sub_resource type="Resource" id=12]
+script = ExtResource( 29 )
+id = "health"
+icon = ExtResource( 12 )
+icon_back = ExtResource( 2 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = true
+affix_position = -1
+
+[sub_resource type="Resource" id=13]
+script = ExtResource( 29 )
+id = "health_regen"
+icon = ExtResource( 13 )
+icon_back = ExtResource( 2 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = false
+affix_position = -1
+
+[sub_resource type="Resource" id=14]
+script = ExtResource( 29 )
+id = "loot_gear"
+icon = ExtResource( 18 )
+icon_back = ExtResource( 30 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="Resource" id=15]
+script = ExtResource( 29 )
+id = "loot_gold"
+icon = ExtResource( 23 )
+icon_back = ExtResource( 30 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="Resource" id=16]
+script = ExtResource( 29 )
+id = "loot_xp"
+icon = ExtResource( 28 )
+icon_back = ExtResource( 30 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="Resource" id=17]
+script = ExtResource( 29 )
+id = "magic"
+icon = ExtResource( 5 )
+icon_back = ExtResource( 31 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = true
+affix_position = 1
+
+[sub_resource type="Resource" id=18]
+script = ExtResource( 29 )
+id = "magic_regen"
+icon = ExtResource( 8 )
+icon_back = ExtResource( 31 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=19]
+script = ExtResource( 29 )
+id = "resistance_dark"
+icon = ExtResource( 20 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=20]
+script = ExtResource( 29 )
+id = "resistance_fire"
+icon = ExtResource( 22 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=21]
+script = ExtResource( 29 )
+id = "resistance_ice"
+icon = ExtResource( 6 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=22]
+script = ExtResource( 29 )
+id = "resistance_lightning"
+icon = ExtResource( 7 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=23]
+script = ExtResource( 29 )
+id = "spell_damage"
+icon = ExtResource( 16 )
+icon_back = ExtResource( 31 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = 1
+
+[sub_resource type="Resource" id=24]
+script = ExtResource( 29 )
+id = "weapon_damage"
+icon = ExtResource( 27 )
+icon_back = ExtResource( 2 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -1
+
+[sub_resource type="Resource" id=25]
+script = ExtResource( 29 )
+id = "weapon_speed"
+icon = ExtResource( 27 )
+icon_back = ExtResource( 2 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = false
+integer_only = false
+affix_position = -1
+
+[sub_resource type="Resource" id=26]
+script = ExtResource( 29 )
+id = "weapon_to_dark"
+icon = ExtResource( 9 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="Resource" id=27]
+script = ExtResource( 29 )
+id = "weapon_to_fire"
+icon = ExtResource( 24 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="Resource" id=28]
+script = ExtResource( 29 )
+id = "weapon_to_ice"
+icon = ExtResource( 10 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="Resource" id=29]
+script = ExtResource( 29 )
+id = "weapon_to_lightning"
+icon = ExtResource( 4 )
+icon_back = ExtResource( 3 )
+max_level = 10
+bonus_init = 10.0
+bonus_linear = 5.0
+bonus_quad = 1.0
+is_percentage = true
+integer_only = false
+affix_position = -3
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 32 )
+region = Rect2( 0, 12, 12, 12 )
+
+[sub_resource type="Resource" id=31]
+script = ExtResource( 34 )
+item_name = "coin_purple"
+max_stack_count = 100
+in_inventory_width = 1
+in_inventory_height = 1
+texture = SubResource( 30 )
+texture_scale = 1.0
+slot_flags = 65
+default_properties_string = "{
+\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 )
+}"
+default_properties = {
+"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
+}
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 32 )
+region = Rect2( 0, 48, 12, 24 )
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 35 )
+name = "Insert name or full locale string"
+texture = SubResource( 34 )
+results = [ SubResource( 32 ) ]
+weights = [ 1 ]
+count_ranges = [ Vector2( 1, 1 ) ]
+possible_affixes = [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ]
+affix_count_range = Vector2( 1, 4 )
+affix_level_range = Vector2( 1, 6 )
+price_increase_item = SubResource( 31 )
+price_increase_per_level = 20
+
+[resource]
+script = ExtResource( 33 )
+name = "craft_enchant_wand_purple"
+input_types = [ SubResource( 32 ), SubResource( 3 ) ]
+input_counts = [ 1, 4 ]
+output_types = [ SubResource( 2 ) ]
+output_ranges = [ Vector2( 1, 1 ) ]

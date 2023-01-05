@@ -98,7 +98,13 @@ func _apply_filter(applied_filter):
 
 func _on_item_stack_added(item_stack : ItemStack):
 	var new_node := item_scene.instance()
-	add_child(new_node)
+	if !has_node("ItemViews"):
+		var item_views = Control.new()
+		item_views.name = "ItemViews"
+		add_child(item_views)
+		item_views.set_anchors_and_margins_preset(PRESET_WIDE)
+
+	get_node("ItemViews").add_child(new_node)
 	
 	_view_nodes.append(new_node)
 	_redraw_item(new_node, item_stack)
@@ -248,10 +254,7 @@ func _on_item_stack_mouse_entered(stack_index : int):
 		if inventory.items.size() > stack_index:
 			_quick_transfer_anywhere(inventory.items[stack_index])
 			
-		var new_event = InputEventMouseButton.new()
-		new_event.pressed = false
-		new_event.button_index = BUTTON_LEFT
-		get_tree().input_event(new_event)
+		force_drag(0, null)
 
 
 func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
@@ -261,13 +264,14 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 				_grab_stack(stack_index)
 
 			else:
-				var new_event = InputEventMouseButton.new()
-				new_event.pressed = false
-				new_event.button_index = BUTTON_LEFT
 				_quick_transfer_anywhere(inventory.items[stack_index])
-				get_tree().input_event(new_event)
+				force_drag(0, null)
 
 
+func can_drop_data(position, data):
+	return true
+				
+				
 func set_filter(key, value):
 	if view_filter == null: view_filter = InventoryFilter.new()
 	view_filter.set(key, value)

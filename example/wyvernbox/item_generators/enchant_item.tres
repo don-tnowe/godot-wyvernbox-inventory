@@ -1,0 +1,43 @@
+[gd_resource type="Resource" load_steps=29 format=2]
+
+[ext_resource path="res://example/wyvernbox/equip_bonuses/defense.tres" type="Resource" id=1]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/crit_chance.tres" type="Resource" id=2]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=3]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" type="Resource" id=4]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_lightning.tres" type="Resource" id=5]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" type="Resource" id=6]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_ice.tres" type="Resource" id=7]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_fire_damage.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" type="Resource" id=9]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_speed.tres" type="Resource" id=10]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" type="Resource" id=11]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/loot_xp.tres" type="Resource" id=12]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/crit_power.tres" type="Resource" id=13]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/health.tres" type="Resource" id=14]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_dark_damage.tres" type="Resource" id=15]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/health_regen.tres" type="Resource" id=16]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" type="Resource" id=17]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" type="Resource" id=18]
+[ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=19]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" type="Resource" id=20]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/loot_gold.tres" type="Resource" id=21]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/magic.tres" type="Resource" id=22]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_ice_damage.tres" type="Resource" id=23]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_lightning_damage.tres" type="Resource" id=24]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/magic_regen.tres" type="Resource" id=25]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_dark.tres" type="Resource" id=26]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_fire.tres" type="Resource" id=27]
+[ext_resource path="res://example/wyvernbox/equip_bonuses/loot_gear.tres" type="Resource" id=28]
+
+[resource]
+resource_name = "Enchant Item"
+script = ExtResource( 19 )
+name = "Enchant Item"
+results = [ null ]
+weights = [ 1.0 ]
+count_ranges = [ Vector2( 1, 1 ) ]
+possible_affixes = [ ExtResource( 2 ), ExtResource( 13 ), ExtResource( 1 ), ExtResource( 20 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 14 ), ExtResource( 16 ), ExtResource( 28 ), ExtResource( 21 ), ExtResource( 12 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 10 ), ExtResource( 17 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 18 ) ]
+affix_count_range = Vector2( 1, 4 )
+affix_level_range = Vector2( 1, 6 )
+price_increase_item = ExtResource( 3 )
+price_increase_per_level = 10

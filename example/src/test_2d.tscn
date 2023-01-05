@@ -3,19 +3,19 @@
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://example/src/test_2d_char.gd" type="Script" id=3]
-[ext_resource path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
-[ext_resource path="res://example/custom/item_types/materials/metalscrap_iron.tres" type="Resource" id=5]
-[ext_resource path="res://example/custom/item_types/materials/scroll_enchant.tres" type="Resource" id=6]
-[ext_resource path="res://example/custom/item_types/consumable/coin_gold.tres" type="Resource" id=7]
-[ext_resource path="res://example/custom/item_types/consumable/coin_purple.tres" type="Resource" id=8]
-[ext_resource path="res://example/custom/item_types/materials/magic_crystal.tres" type="Resource" id=10]
+[ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
+[ext_resource path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" type="Resource" id=5]
+[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=6]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=7]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/item_types/materials/magic_crystal.tres" type="Resource" id=10]
 [ext_resource path="res://addons/wyvernbox/crafting/item_generator.gd" type="Script" id=11]
-[ext_resource path="res://example/custom/item_types/materials/feather.tres" type="Resource" id=12]
-[ext_resource path="res://example/custom/item_types/materials/wood.tres" type="Resource" id=13]
-[ext_resource path="res://example/custom/item_types/materials/herb.tres" type="Resource" id=15]
-[ext_resource path="res://addons/wyvernbox/view_extra/item_stack_view.tscn" type="PackedScene" id=17]
+[ext_resource path="res://example/wyvernbox/item_types/materials/feather.tres" type="Resource" id=12]
+[ext_resource path="res://example/wyvernbox/item_types/materials/wood.tres" type="Resource" id=13]
+[ext_resource path="res://example/wyvernbox/item_types/materials/herb.tres" type="Resource" id=15]
+[ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=17]
 [ext_resource path="res://addons/wyvernbox/ground/ground_items_manager.gd" type="Script" id=18]
-[ext_resource path="res://addons/wyvernbox/view_extra/tooltip.tscn" type="PackedScene" id=19]
+[ext_resource path="res://addons/wyvernbox_prefabs/tooltip.tscn" type="PackedScene" id=19]
 [ext_resource path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" type="Script" id=20]
 
 [sub_resource type="Gradient" id=2]
@@ -71,6 +71,9 @@ position = Vector2( 322, 171 )
 script = ExtResource( 3 )
 spawn_item = ExtResource( 4 )
 generator = SubResource( 5 )
+inventory_menu = NodePath("../../../Inventory/InventoryMenu")
+inventory_view = NodePath("../../../Inventory/InventoryMenu/Inventory")
+inventory_tooltip = NodePath("../../../Inventory/Tooltip")
 
 [node name="Shape" type="CollisionShape2D" parent="Gameplay/Node2D/Char"]
 shape = SubResource( 4 )
@@ -90,9 +93,9 @@ item_scene = ExtResource( 4 )
 
 [node name="Inventory" type="CanvasLayer" parent="."]
 
-[node name="Inventory" parent="Inventory" instance=ExtResource( 1 )]
+[node name="InventoryMenu" parent="Inventory" instance=ExtResource( 1 )]
 
-[node name="GrabbedItem" parent="Inventory/Inventory" groups=["grabbed_item"] instance=ExtResource( 17 )]
+[node name="GrabbedItem" parent="Inventory/InventoryMenu" groups=["grabbed_item"] instance=ExtResource( 17 )]
 visible = false
 margin_left = 220.787
 margin_top = 69.0519
@@ -115,7 +118,7 @@ margin_top = -23.0
 margin_right = 358.0
 margin_bottom = 52.0
 color_neutral = Color( 0.376471, 0.376471, 0.376471, 1 )
-compare_to_inventory = NodePath("../Inventory/CenterContainer/TabContainer/menu_equip/Control/Equip")
+compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/menu_equip/Control/Equip")
 
 [connection signal="pressed" from="Gameplay/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]
 [connection signal="area_entered" from="Gameplay/Node2D/Char/ItemPickup" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]

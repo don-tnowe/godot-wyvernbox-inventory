@@ -83,10 +83,7 @@ func try_pickup(into_inventory):
 func _on_name_gui_input(event : InputEvent):
 	if event is InputEventMouseButton && event.is_pressed() && event.button_index == BUTTON_LEFT:
 		emit_signal("name_clicked")
-		var new_event = InputEventMouseButton.new()
-		new_event.pressed = false
-		new_event.button_index = BUTTON_LEFT
-		get_tree().input_event(new_event)
+		$"Label/Label".force_drag(0, null)
 
 	if event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(BUTTON_LEFT):

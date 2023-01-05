@@ -1,0 +1,262 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/wyvernbox/inventory_views/inventory_view.gd" type="Script" id=2]
+[ext_resource path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" type="PackedScene" id=3]
+
+[node name="Inventory" type="MarginContainer"]
+margin_right = 140.0
+margin_bottom = 68.0
+script = ExtResource( 2 )
+item_scene = ExtResource( 1 )
+interaction_mode = 5
+width = 8
+
+[node name="Cells" type="GridContainer" parent="."]
+margin_right = 140.0
+margin_bottom = 68.0
+columns = 8
+
+[node name="Cell" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 14.0
+margin_bottom = 14.0
+
+[node name="Cell2" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 18.0
+margin_right = 32.0
+margin_bottom = 14.0
+
+[node name="Cell3" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 36.0
+margin_right = 50.0
+margin_bottom = 14.0
+
+[node name="Cell4" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 54.0
+margin_right = 68.0
+margin_bottom = 14.0
+
+[node name="Cell5" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 72.0
+margin_right = 86.0
+margin_bottom = 14.0
+
+[node name="Cell6" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 90.0
+margin_right = 104.0
+margin_bottom = 14.0
+
+[node name="Cell7" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 108.0
+margin_right = 122.0
+margin_bottom = 14.0
+
+[node name="Cell8" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 126.0
+margin_right = 140.0
+margin_bottom = 14.0
+
+[node name="Cell9" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 18.0
+margin_right = 14.0
+margin_bottom = 32.0
+
+[node name="Cell10" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 18.0
+margin_top = 18.0
+margin_right = 32.0
+margin_bottom = 32.0
+
+[node name="Cell11" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 36.0
+margin_top = 18.0
+margin_right = 50.0
+margin_bottom = 32.0
+
+[node name="Cell12" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 54.0
+margin_top = 18.0
+margin_right = 68.0
+margin_bottom = 32.0
+
+[node name="Cell13" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 72.0
+margin_top = 18.0
+margin_right = 86.0
+margin_bottom = 32.0
+
+[node name="Cell14" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 90.0
+margin_top = 18.0
+margin_right = 104.0
+margin_bottom = 32.0
+
+[node name="Cell15" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 108.0
+margin_top = 18.0
+margin_right = 122.0
+margin_bottom = 32.0
+
+[node name="Cell16" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 126.0
+margin_top = 18.0
+margin_right = 140.0
+margin_bottom = 32.0
+
+[node name="Cell17" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 36.0
+margin_right = 14.0
+margin_bottom = 50.0
+
+[node name="Cell18" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 18.0
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 50.0
+
+[node name="Cell19" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 50.0
+margin_bottom = 50.0
+
+[node name="Cell20" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 54.0
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 50.0
+
+[node name="Cell21" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 72.0
+margin_top = 36.0
+margin_right = 86.0
+margin_bottom = 50.0
+
+[node name="Cell22" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 90.0
+margin_top = 36.0
+margin_right = 104.0
+margin_bottom = 50.0
+
+[node name="Cell23" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 108.0
+margin_top = 36.0
+margin_right = 122.0
+margin_bottom = 50.0
+
+[node name="Cell24" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 126.0
+margin_top = 36.0
+margin_right = 140.0
+margin_bottom = 50.0
+
+[node name="Cell25" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 54.0
+margin_right = 14.0
+margin_bottom = 68.0
+
+[node name="Cell26" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 18.0
+margin_top = 54.0
+margin_right = 32.0
+margin_bottom = 68.0
+
+[node name="Cell27" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 36.0
+margin_top = 54.0
+margin_right = 50.0
+margin_bottom = 68.0
+
+[node name="Cell28" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 54.0
+margin_top = 54.0
+margin_right = 68.0
+margin_bottom = 68.0
+
+[node name="Cell29" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 72.0
+margin_top = 54.0
+margin_right = 86.0
+margin_bottom = 68.0
+
+[node name="Cell30" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 90.0
+margin_top = 54.0
+margin_right = 104.0
+margin_bottom = 68.0
+
+[node name="Cell31" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 108.0
+margin_top = 54.0
+margin_right = 122.0
+margin_bottom = 68.0
+
+[node name="Cell32" parent="Cells" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 126.0
+margin_top = 54.0
+margin_right = 140.0
+margin_bottom = 68.0
