@@ -34,6 +34,13 @@ func get_height() -> int:
 func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 	var item_type = stack.item_type
 	var count = stack.count
+	var maxcount = get_max_count(item_type)
+	while count > maxcount:
+		var deposited_overflow = try_add_item(stack.duplicate_with_count(maxcount))
+		count -= maxcount
+		if deposited_overflow < maxcount:
+			return deposited_overflow + total_deposited
+
 	var deposited_through_stacking := _try_stack_item(item_type, count)
 	if deposited_through_stacking > 0:
 		# If all items deposited, return.
@@ -93,7 +100,7 @@ func _try_stack_item(item_type : ItemType, count_delta : int = 1) -> int:
 	var deposited_count := 0
 	for x in items:
 		if x.item_type == item_type:
-			deposited_count = x.get_delta_if_added(count_delta)
+			deposited_count = ItemStack.get_stack_delta_if_added(x.count, count_delta, get_max_count(item_type))
 			# If stack full, move on.
 			if deposited_count == 0: continue
 			x.count += deposited_count
@@ -143,6 +150,10 @@ func move_stack_to_pos(item_stack : ItemStack, pos : Vector2):
 	emit_signal("item_stack_changed", item_stack, 0)
 
 
+func get_max_count(item_type):
+	return item_type.max_stack_count
+
+
 func _clear_stack_cells(item_stack : ItemStack):
 	_cells[item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * _width] = null
 	item_stack.inventory = null
@@ -174,8 +185,8 @@ func _place_stackv(top : ItemStack, bottom : ItemStack, pos : Vector2) -> ItemSt
 
 func _drop_stack_on_stack(top : ItemStack, bottom : ItemStack) -> int:
 	var top_count = top.count
-	var bottom_count_delta = bottom.get_delta_if_added(top_count)
-	top.count = bottom.get_overflow_if_added(top_count)
+	var bottom_count_delta = ItemStack.get_stack_delta_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
+	top.count = ItemStack.get_stack_overflow_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
 	bottom.count += bottom_count_delta
 	return bottom_count_delta
 

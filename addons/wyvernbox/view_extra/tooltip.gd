@@ -1,6 +1,8 @@
 class_name InventoryTooltip
 extends Container
 
+const ITEM_SCALE := 0.5
+
 export var compare_input := "inventory_more"
 export var filter_input := "inventory_filter"
 export var clear_filter_mod_input := "inventory_less"
@@ -97,8 +99,8 @@ func display_last():
 static func get_texture_bbcode(tex_path, tex_scale = 1.0):
 	var loaded = load(tex_path)
 	return "[img=%sx%s]%s[/img]" % [
-		loaded.get_width() * tex_scale,
-		loaded.get_height() * tex_scale,
+		loaded.get_width() * tex_scale * ITEM_SCALE,
+		loaded.get_height() * tex_scale * ITEM_SCALE,
 		tex_path,
 	]
 

@@ -28,7 +28,7 @@ fill_from = Vector2( 1, 1 )
 script = ExtResource( 11 )
 name = "Random Item"
 results = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 12 ), ExtResource( 15 ), ExtResource( 10 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 13 ) ]
-weights = [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+weights = [ 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.5, 0.13 ]
 count_ranges = [ Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ) ]
 
 [sub_resource type="RectangleShape2D" id=4]

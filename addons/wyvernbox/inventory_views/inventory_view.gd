@@ -184,6 +184,9 @@ func try_place_stackv(stack : ItemStack, pos : Vector2):
 	if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 		return stack
 
+	if interaction_mode & InteractionFlags.VENDOR != 0 && !stack.extra_properties.has("price"):
+		return stack
+
 	return inventory.try_place_stackv(stack, pos)
 
 
@@ -203,7 +206,7 @@ func _quick_transfer_anywhere(stack : ItemStack, skip_inventories : int = 0):
 	else:
 		emit_signal("grab_attempted", stack, true)
 		inventory.remove_stack(stack)
-	
+
 	var grabbed_stack = target.inventory.try_quick_transfer(stack)
 	if grabbed_stack == null:
 		# No item returned - slot empty.
@@ -235,15 +238,16 @@ func _find_quick_transfer_target(stack, skip_inventories_left) -> InventoryView:
 	for x in get_tree().get_nodes_in_group("inventory_view"):
 		if (
 			x == self
-			|| (x.interaction_mode & InteractionFlags.CAN_PLACE == 0)
 			|| !x.is_visible_in_tree()
+			|| (x.interaction_mode & InteractionFlags.CAN_PLACE == 0)
+			|| (x.interaction_mode & InteractionFlags.VENDOR != 0 && !stack.extra_properties.has("price"))  # Stop using merchants as storage!!!
 		):
 			continue
 			
 		if skip_inventories_left > 0:
 			skip_inventories_left -= 1
 			continue
-		
+
 		return x
 
 	return null
