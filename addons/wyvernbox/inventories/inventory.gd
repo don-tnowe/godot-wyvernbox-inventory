@@ -221,25 +221,25 @@ func has_items(item_type_counts : Dictionary) -> bool:
 	return true
 
 
-func consume_items(item_type_counts : Dictionary) -> Dictionary:
-	var left_to_deduct := {}
-	for x in item_type_counts.keys():
-		left_to_deduct[x] = item_type_counts[x]
-	
-	var items_to_check = items
-	for x in items_to_check:
-		if !left_to_deduct.has(x.item_type) || left_to_deduct[x.item_type] <= 0:
+func consume_items(item_type_counts : Dictionary, check_only : bool = false) -> Dictionary:
+	var result_stacks = []
+	for x in items:
+		if !item_type_counts.has(x.item_type) || item_type_counts[x.item_type] <= 0:
 			continue
 		
-		left_to_deduct[x.item_type] -= x.count
-		if left_to_deduct[x.item_type] < 0:
-			add_items_to_stack(x, -x.count - left_to_deduct[x.item_type])
-			left_to_deduct.erase(x.item_type)
+		item_type_counts[x.item_type] -= x.count
+		if item_type_counts[x.item_type] < 0:
+			var deduced_count = x.count + item_type_counts[x.item_type]
+			result_stacks.append(x.duplicate_with_count(deduced_count))
+			add_items_to_stack(x, -deduced_count)
+			item_type_counts.erase(x.item_type)
 			continue
 
-		remove_stack(x)
+		if !check_only:
+			remove_stack(x)
+			result_stacks.append(x)
 
-	return left_to_deduct
+	return result_stacks
 
 
 func sort():

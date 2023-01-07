@@ -25,6 +25,7 @@ func _set_count_ranges(v):
 
 
 func _resize_arrays(size):
+	size = max(size, 1)
 	results.resize(size)
 	weights.resize(size)
 	count_ranges.resize(size)
@@ -36,17 +37,31 @@ func _resize_arrays(size):
 			count_ranges[i] = Vector2.ONE
 
 
-func get_item(rng : RandomNumberGenerator = null) -> ItemStack:
+func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], input_types : Array = []) -> Array:
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
 
-	var item_index = weighted_random(weights, rng)
-	return ItemStack.new(
-		results[item_index],
-		int(rng.randf_range(count_ranges[item_index].x, count_ranges[item_index].y)),
-		results[item_index].default_properties.duplicate(true)
-	)
+	if results[0] == null:
+		assert(input_stacks.size() > 0, "Generator with blank Result received no Inputs!\n\nPerhaps you called consume_inputs() without passing its return value to get_items()?")
+		assert(input_types.size() > 0, "Generator with blank Result received no Input Types!\n\nSome Generators need a list of input types to get the First to modify it.")
+
+	var item_index = weighted_random(weights, rng) if results.size() > 0 else 0
+	var item = results[item_index]
+	if item == null:
+		return []
+
+	if item is ItemType:
+		return [ItemStack.new(
+			item,
+			int(rng.randf_range(count_ranges[item_index].x, count_ranges[item_index].y)),
+			item.default_properties.duplicate(true)
+		)]
+
+	elif item is get_script():  # If nested ItemGenerator
+		return item.get_items(rng, input_stacks, input_types)
+
+	return []
 
 
 static func weighted_random(weights : Array, rng : RandomNumberGenerator = null) -> int:

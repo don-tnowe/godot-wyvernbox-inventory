@@ -31,6 +31,7 @@ func _set_output_ranges(v):
 
 func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, unsafe : bool = false) -> Array:
 	if !unsafe && !can_apply(draw_from_inventories): return []
+	var consumed_stacks = []
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
@@ -40,20 +41,19 @@ func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, un
 		if x is InventoryView:
 			x = x.inventory
 
-		left_to_draw = x.consume_items(left_to_draw)
-	
+		consumed_stacks.append_array(x.consume_items(left_to_draw))
+
 	var results = []
-	results.resize(output_ranges.size())
-	for i in results.size():
+	for i in output_types.size():
 		if output_types[i] is ItemType:
-			results[i] = ItemStack.new(
+			results.append(ItemStack.new(
 				output_types[i],
 				int(rng.randf_range(output_ranges[i].x, output_ranges[i].y)),
 				output_types[i].default_properties.duplicate(true)
-			)
-		
+			))
+
 		elif output_types[i] is ItemGenerator:
-			results[i] = output_types[i].get_item(rng)
+			results.append_array(output_types[i].get_items(rng, consumed_stacks, input_types))
 
 	return results
 

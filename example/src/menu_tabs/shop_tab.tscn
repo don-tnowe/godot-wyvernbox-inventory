@@ -1,38 +1,11 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://example/wyvernbox/equip_bonuses/defense.tres" type="Resource" id=1]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/crit_chance.tres" type="Resource" id=2]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_ice_damage.tres" type="Resource" id=3]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" type="Resource" id=4]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_lightning_damage.tres" type="Resource" id=5]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/loot_gear.tres" type="Resource" id=6]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/loot_gold.tres" type="Resource" id=7]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/magic.tres" type="Resource" id=8]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/magic_regen.tres" type="Resource" id=9]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_dark.tres" type="Resource" id=10]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_fire.tres" type="Resource" id=11]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/crit_power.tres" type="Resource" id=12]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/health.tres" type="Resource" id=13]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_fire_damage.tres" type="Resource" id=14]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/elemental_dark_damage.tres" type="Resource" id=15]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/health_regen.tres" type="Resource" id=16]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/loot_xp.tres" type="Resource" id=17]
+[ext_resource path="res://example/wyvernbox/item_generators/enchant_item.tres" type="Resource" id=1]
 [ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=19]
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=20]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" type="Resource" id=21]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" type="Resource" id=22]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" type="Resource" id=23]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" type="Resource" id=24]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_speed.tres" type="Resource" id=25]
-[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=26]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_ice.tres" type="Resource" id=27]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" type="Resource" id=28]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" type="Resource" id=29]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_lightning.tres" type="Resource" id=30]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" type="Resource" id=31]
 [ext_resource path="res://example/src/menu_tabs/vendor_response.gd" type="Script" id=32]
 [ext_resource path="res://addons/wyvernbox/crafting/vendor.gd" type="Script" id=33]
-[ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=35]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/ring_1.tres" type="Resource" id=36]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" type="Resource" id=37]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/ring_2.tres" type="Resource" id=38]
@@ -42,19 +15,6 @@
 [ext_resource path="res://example/wyvernbox/item_types/equipment/head_helmet.tres" type="Resource" id=42]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/chestplate_2.tres" type="Resource" id=43]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/chestplate_1.tres" type="Resource" id=44]
-
-[sub_resource type="Resource" id=1]
-resource_name = "Enchant Item"
-script = ExtResource( 35 )
-name = "Enchant Item"
-results = [ null ]
-weights = [ 1.0 ]
-count_ranges = [ Vector2( 1, 1 ) ]
-possible_affixes = [ ExtResource( 2 ), ExtResource( 12 ), ExtResource( 1 ), ExtResource( 4 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 17 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 27 ), ExtResource( 30 ), ExtResource( 24 ), ExtResource( 28 ), ExtResource( 25 ), ExtResource( 21 ), ExtResource( 31 ), ExtResource( 29 ), ExtResource( 23 ) ]
-affix_count_range = Vector2( 1, 4 )
-affix_level_range = Vector2( 1, 6 )
-price_increase_item = ExtResource( 26 )
-price_increase_per_level = 10
 
 [node name="Shop" type="CenterContainer"]
 anchor_right = 1.0
@@ -80,7 +40,7 @@ script = ExtResource( 33 )
 vendor_inventory = NodePath("../Inventory")
 vendor_response = NodePath("Label")
 sell_reward_into_inventory = NodePath("../../../../Inventory")
-apply_to_all_stock = SubResource( 1 )
+apply_to_all_stock = ExtResource( 1 )
 stock = [ ExtResource( 37 ), ExtResource( 22 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 44 ), ExtResource( 43 ), ExtResource( 42 ), ExtResource( 41 ), ExtResource( 36 ), ExtResource( 38 ) ]
 infinite_stock = false
 stock_counts = [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ]

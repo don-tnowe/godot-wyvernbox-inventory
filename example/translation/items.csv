@@ -37,6 +37,8 @@ item_name_wood;Wood;;
 item_name_feather;Feather;;
 item_name_gem_blue;Blue Jewel;;
 ;;;
+item_generator_item_enchanted;The Item, Enchanted;;
+;;;
 ;;;
 craft_brew_red_potion;Brew Red Potion;;
 craft_brew_purple_potion;Brew Purple Potion;;

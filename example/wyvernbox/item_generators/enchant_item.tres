@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=29 format=2]
+[gd_resource type="Resource" load_steps=31 format=2]
 
 [ext_resource path="res://example/wyvernbox/equip_bonuses/defense.tres" type="Resource" id=1]
 [ext_resource path="res://example/wyvernbox/equip_bonuses/crit_chance.tres" type="Resource" id=2]
@@ -28,11 +28,17 @@
 [ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_dark.tres" type="Resource" id=26]
 [ext_resource path="res://example/wyvernbox/equip_bonuses/resistance_fire.tres" type="Resource" id=27]
 [ext_resource path="res://example/wyvernbox/equip_bonuses/loot_gear.tres" type="Resource" id=28]
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=29]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 29 )
+region = Rect2( 96, 24, 12, 24 )
 
 [resource]
-resource_name = "Enchant Item"
+resource_name = "The Input, Enchanted"
 script = ExtResource( 19 )
-name = "Enchant Item"
+name = "item_generator_item_enchanted"
+texture = SubResource( 1 )
 results = [ null ]
 weights = [ 1.0 ]
 count_ranges = [ Vector2( 1, 1 ) ]

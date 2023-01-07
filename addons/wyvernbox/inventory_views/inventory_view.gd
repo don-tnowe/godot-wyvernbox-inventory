@@ -175,7 +175,7 @@ func _try_buy(stack : ItemStack):
 			
 	for x in inventories:
 		if price.size() == 0: break
-		price = x.inventory.consume_items(price)
+		x.inventory.consume_items(price)
 	
 	return true
 

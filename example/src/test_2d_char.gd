@@ -37,11 +37,12 @@ func _unhandled_input(event):
 
 func _on_Generator_pressed():
 	for i in 8:
-		var new_node = spawn_item.instance()
-		new_node.set_stack(generator.get_item())
-		new_node.position = position
-		new_node.connect("name_clicked", self, "_on_ItemPickup_area_entered", [new_node])
-		$"../Items".add_child(new_node)
+		for x in generator.get_items():
+			var new_node = spawn_item.instance()
+			new_node.set_stack(x)
+			new_node.position = position
+			new_node.connect("name_clicked", self, "_on_ItemPickup_area_entered", [new_node])
+			$"../Items".add_child(new_node)
 
 
 func _on_ItemPickup_area_entered(area : Area2D):

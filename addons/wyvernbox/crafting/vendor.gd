@@ -30,13 +30,6 @@ func _set_stock_counts(v):
 
 func _ready():
 	rng.randomize()
-	if apply_to_all_stock != null:
-		var buffer
-		for i in stock.size():
-			buffer = apply_to_all_stock.duplicate()
-			buffer.results[0] = stock[i]
-			stock[i] = buffer
-		
 	refill_stock()
 
 
@@ -53,9 +46,13 @@ func refill_stock():
 
 func get_stock(index):
 	if stock[index] is ItemGenerator:
-		return stock[index].get_item(rng)
-		
-	return ItemStack.new(stock[index], 1, stock[index].default_properties.duplicate(true))
+		return stock[index].get_items(rng)[0]
+
+	var stack = ItemStack.new(stock[index], 1, stock[index].default_properties.duplicate(true))
+	if apply_to_all_stock != null:
+		return apply_to_all_stock.get_items(rng, [stack], [stack.item_type])[0]
+
+	return stack
 
 
 func put_up_for_sale(stack, inventory, stash_index):

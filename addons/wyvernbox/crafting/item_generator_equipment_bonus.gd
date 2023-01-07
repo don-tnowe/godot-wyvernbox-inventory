@@ -9,16 +9,25 @@ export var price_increase_item : Resource
 export var price_increase_per_level := 20
 
 
-func get_item(rng = null):
-	var item = .get_item(rng)
+func get_items(rng = null, input_stacks = [], input_types = []):
+	var items = .get_items(rng, input_stacks, input_types)
+	if items.size() == 0:
+		items.resize(1)
+
+	if items[0] == null:
+		for x in input_stacks:
+			if x.item_type == input_types[0]:
+				items[0] = x
+				break
+
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
 
 	for i in int(rng.randf_range(affix_count_range.x, affix_count_range.y)):
-		add_affix(item, rng)
+		add_affix(items[0], rng)
 
-	return item
+	return items
 
 
 func add_affix(item, rng):
