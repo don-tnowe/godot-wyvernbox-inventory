@@ -13,22 +13,32 @@ enum {
 }
 
 var plugin : EditorPlugin
+var edited_object : Object
 
-var browse_button = Button.new()
-var browse_window
-var bottom = HBoxContainer.new()
-var grid_l = GridContainer.new()
-var grid_r = GridContainer.new()
-var columns_are_int = []
+var browse_button := Button.new()
+var browse_window : Popup
+var bottom := HBoxContainer.new()
+var grid_l := GridContainer.new()
+var grid_r := GridContainer.new()
+var columns_are_int := []
+var allowed_types := []
 
 var columns = {}
 
 
-func _init(plugin : EditorPlugin, columns : Dictionary, column_labels : Array, columns_int : Array = [], column_defaults : Array = []):
+func _init(
+	plugin : EditorPlugin,
+	edited_object : Object,
+	columns : Dictionary,
+	column_labels : Array,
+	columns_int : Array = [],
+	column_defaults : Array = []
+):
 	self.columns = columns
 	self.plugin = plugin
+	self.edited_object = edited_object
 
-	browse_button.text = "Browse..."
+	browse_button.text = "Browse Items..."
 	browse_button.flat = true
 	browse_button.connect("pressed", self, "_on_browse_pressed")
 	add_child(browse_button)
@@ -44,6 +54,7 @@ func _init(plugin : EditorPlugin, columns : Dictionary, column_labels : Array, c
 	_ensure_no_empty(column_defaults)
 	_init_headers(column_labels)
 	_init_items(columns_int)
+	_init_allowed_types()
 
 
 func _ensure_no_empty(column_defaults):
@@ -73,10 +84,10 @@ func can_drop_data(position, data):
 func drop_data(position, data):
 	for x in data["files"]:
 		var loaded = load(x)
-		if !loaded is ItemType && !loaded is ItemGenerator:
-			return
-
-		add_item(loaded)
+		for y in allowed_types:
+			if loaded is y:
+				add_item(loaded)
+				break
 
 
 func add_item(item):
@@ -284,6 +295,18 @@ func _init_column_count(columns):
 	grid_r.columns = column_count
 
 
+func _init_allowed_types():
+	if edited_object is ItemConversion:
+		if columns.has("input_types"):
+			allowed_types = [ItemType]  # [ItemType, ItemPattern]
+
+		if columns.has("output_types"):
+			allowed_types = [ItemType, ItemGenerator]
+
+	if edited_object is ItemGenerator:
+		allowed_types = [ItemType, ItemGenerator]
+
+
 func _on_delete_button_pressed(button):
 	remove_item(button.get_position_in_parent() / grid_r.columns)
 
@@ -315,10 +338,9 @@ func _on_browse_pressed():
 	if browse_window == null:
 		browse_window = load("res://addons/wyvernbox/editor/item_browser.tscn").instance()
 		browse_button.add_child(browse_window)
-		browse_window.initialize(plugin)
+		browse_window.initialize(plugin, allowed_types)
 		browse_window.popup()
 		browse_window.hide()
-
 
 	browse_window.visible = !browse_window.visible
 	browse_window.rect_position = Vector2(

@@ -22,7 +22,7 @@ func parse_property(object, type, path, hint, hint_text, usage):
 			"Inputs",
 			["input_types", "input_counts"],
 			property_script.new(
-				plugin,
+				plugin, object,
 				{
 					"input_types" : object.input_types,
 					"input_counts" : object.input_counts,
@@ -39,7 +39,7 @@ func parse_property(object, type, path, hint, hint_text, usage):
 			"Outputs",
 			["output_types", "output_ranges"],
 			property_script.new(
-				plugin,
+				plugin, object,
 				{
 					"output_types" : object.output_types,
 					"output_ranges" : object.output_ranges,
@@ -56,7 +56,7 @@ func parse_property(object, type, path, hint, hint_text, usage):
 			"Results",
 			["results", "weights", "count_ranges"],
 			property_script.new(
-				plugin,
+				plugin, object,
 				{
 					"results": object.results,
 					"weights": object.weights,

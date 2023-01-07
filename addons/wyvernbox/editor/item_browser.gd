@@ -1,6 +1,13 @@
 tool
 extends PopupPanel
 
+export var type_colors := {
+	ItemType : Color.white,
+	ItemGenerator : Color.gold,
+	# ItemPattern : Color.darkturquoise,
+}
+export var item_list_column_width := 48.0
+
 onready var folder_list : Tree = $"Box/Box/FolderList"
 onready var item_list : ItemList = $"Box/Panel/Box/Margins/ItemList"
 onready var path_text : Label = $"Box/Panel/Box/ItemPath"
@@ -12,6 +19,7 @@ var folders_hidden := {}
 var paths_in_list := []
 var filter := ""
 var tree_root : TreeItem
+var allowed_types := []
 
 
 func _ready():
@@ -22,14 +30,26 @@ func _ready():
 	tree_root.set_cell_mode(0, TreeItem.CELL_MODE_CHECK)
 	tree_root.set_text(0, "All Folders")
 	tree_root.set_checked(0, true)
+
+
+func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGenerator, null]):
+	self.plugin = plugin
+
+	var checkboxes = $"Box/Panel/Box/TypeFilter".get_children()
+	allowed_types = [
+		ItemType in types_allowed,
+		ItemGenerator in types_allowed,
+		false, #ItemPattern in types_allowed,
+	]
+	for i in checkboxes.size():
+		checkboxes[i].pressed = allowed_types[i]
+		checkboxes[i].connect("toggled", self, "_on_type_filter_toggled", [i])
+
+	var settings = plugin.get_editor_interface().get_editor_settings()
+	rect_size *= plugin.get_editor_interface().get_editor_scale()
+
 	_scan_item_folders()
 	_fill_item_list()
-
-
-func initialize(editor_plugin : EditorPlugin):
-	plugin = editor_plugin
-	var settings = editor_plugin.get_editor_interface().get_editor_settings()
-	rect_size *= editor_plugin.get_editor_interface().get_editor_scale()
 
 
 func _scan_item_folders():
@@ -75,11 +95,25 @@ func _fill_item_list():
 	item_list.clear()
 	paths_in_list.clear()
 
+	var label_color : Color
+	var type_colors_keys := type_colors.keys()
+	var type_allowed : bool
 	for k in items_by_dir:
 		if folders_hidden.has(k):
 			continue
 
 		for x in items_by_dir[k]:
+			type_allowed = true
+			for i in type_colors_keys.size():
+				if x is type_colors_keys[i]:
+					label_color = type_colors[type_colors_keys[i]]
+					if !allowed_types[i]:
+						type_allowed = false
+						continue
+
+			if !type_allowed:
+				continue
+
 			if filter != "" && x.resource_path.find(filter) == -1 && x.resource_name.find(filter) == -1:
 				continue
 
@@ -87,11 +121,17 @@ func _fill_item_list():
 				x.resource_name if x.resource_name != "" else x.resource_path.get_file().get_basename(),
 				x.texture
 			)
+			item_list.set_item_custom_fg_color(item_list.get_item_count() - 1, label_color)
 			paths_in_list.append(x.resource_path)
 
 	item_list.hide()
 	item_list.show()
-	item_list.fixed_column_width = item_list.rect_size.x / floor(item_list.rect_size.x / item_list.fixed_column_width)
+	item_list.fixed_column_width = item_list.rect_size.x / ceil(item_list.rect_size.x / item_list_column_width)
+
+
+func _on_visibility_changed():
+	if visible:
+		$"Box/Panel/Box/Filter".grab_focus()
 
 
 func _on_item_list_gui_input(event : InputEvent):
@@ -104,9 +144,11 @@ func _on_item_list_gui_input(event : InputEvent):
 		var item = load(paths_in_list[index])
 		path_text.text = item.resource_path
 		path_text.self_modulate = Color.white
-		if item is ItemGenerator:
-			path_text.self_modulate = Color.gold
-	
+
+		for k in type_colors:
+			if item is k:
+				path_text.self_modulate = type_colors[k]
+
 	elif event is InputEventMouseButton && event.pressed && event.button_index == BUTTON_LEFT:
 		var drag_preview = Label.new()
 		drag_preview.text = paths_in_list[index]
@@ -164,3 +206,8 @@ func _set_folder_hidden(tree_item, hidden):
 
 func _on_rescan_pressed():
 	_scan_item_folders()
+
+
+func _on_type_filter_toggled(toggled, type_index):
+	allowed_types[type_index] = toggled
+	_fill_item_list()

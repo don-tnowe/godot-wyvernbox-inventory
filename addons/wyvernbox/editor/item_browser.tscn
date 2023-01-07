@@ -3,7 +3,6 @@
 [ext_resource path="res://addons/wyvernbox/editor/item_browser.gd" type="Script" id=1]
 
 [node name="Browse" type="PopupPanel"]
-visible = true
 margin_left = -600.0
 margin_top = 8.0
 margin_right = -9.0
@@ -58,22 +57,63 @@ placeholder_text = "Filter items..."
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="Margins" type="MarginContainer" parent="Box/Panel/Box"]
+[node name="TypeFilter" type="HBoxContainer" parent="Box/Panel/Box"]
 margin_top = 28.0
+margin_right = 383.0
+margin_bottom = 52.0
+
+[node name="I" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
+margin_right = 125.0
+margin_bottom = 24.0
+hint_tooltip = "Show resources that define an item's properties"
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+pressed = true
+text = "Items"
+
+[node name="G" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
+margin_left = 129.0
+margin_right = 254.0
+margin_bottom = 24.0
+hint_tooltip = "Show resources that return items from their get_items() method"
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 1, 0.839216, 0, 1 )
+custom_colors/font_color = Color( 1, 0.839216, 0, 1 )
+custom_colors/font_color_pressed = Color( 1, 0.839216, 0, 1 )
+pressed = true
+text = "Generators"
+
+[node name="P" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
+margin_left = 258.0
+margin_right = 383.0
+margin_bottom = 24.0
+hint_tooltip = "Show resources that define the matches() method for comparing to ItemTypes."
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 0, 0.811765, 0.819608, 1 )
+custom_colors/font_color = Color( 0, 0.811765, 0.819608, 1 )
+custom_colors/font_color_pressed = Color( 0, 0.811765, 0.819608, 1 )
+pressed = true
+text = "Patterns"
+
+[node name="Margins" type="MarginContainer" parent="Box/Panel/Box"]
+margin_top = 56.0
 margin_right = 383.0
 margin_bottom = 318.0
 size_flags_vertical = 3
 
 [node name="Panel" type="Panel" parent="Box/Panel/Box/Margins"]
 margin_right = 383.0
-margin_bottom = 290.0
+margin_bottom = 262.0
 
 [node name="ItemList" type="ItemList" parent="Box/Panel/Box/Margins"]
 margin_right = 383.0
-margin_bottom = 290.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 allow_reselect = true
+max_text_lines = 2
 max_columns = 0
 fixed_column_width = 48
 icon_mode = 0
@@ -97,6 +137,7 @@ margin_right = 383.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="item_activated" from="Box/Box/FolderList" to="." method="_on_folder_list_item_activated"]
 [connection signal="item_selected" from="Box/Box/FolderList" to="." method="_on_folder_list_item_selected"]
 [connection signal="pressed" from="Box/Box/Rescan" to="." method="_on_rescan_pressed"]
