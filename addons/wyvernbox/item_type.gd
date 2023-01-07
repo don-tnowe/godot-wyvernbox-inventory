@@ -91,3 +91,7 @@ func _set_default_properties_dict(v):
 
 func get_size_in_inventory() -> Vector2:
 	return Vector2(in_inventory_width, in_inventory_height)
+
+
+func matches(stack) -> bool:
+	return stack.item_type == self

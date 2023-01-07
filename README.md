@@ -18,5 +18,4 @@ An addon for versatile inventory systems.
 - Crafting and shops:
   - Vending is a built-in feature of inventories, but for more configuration, use the `InventoryVendor` class!
   - Crafting recipes are defined through an `ItemConversion` - can give you pre-determined results, randomized counts, or a fresh new from an `ItemGenerator`!
-
-- (WIP) Inventory filters highlighting all items that match.
+  - Use `ItemPattern`s to match one of several items in filters or recipes, like different fuel types with different efficiency!

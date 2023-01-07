@@ -53,7 +53,7 @@ func _init(
 
 	_ensure_no_empty(column_defaults)
 	_init_headers(column_labels)
-	_init_items(columns_int)
+	_init_items(columns_int, column_defaults)
 	_init_allowed_types()
 
 
@@ -165,7 +165,7 @@ func _add_item_control(item):
 func _update_item_in_control(row_index, item):
 	if item == null:
 		item = ItemType.new()
-		item.resource_name = "[use input]"
+		item.resource_name = "[use input]" if edited_object is ItemGenerator else "[empty]"
 		item.texture = null
 
 	var icon = grid_l.get_child((row_index + 1) * grid_l.columns)
@@ -181,6 +181,9 @@ func _update_item_in_control(row_index, item):
 	label.hint_tooltip = item.resource_path
 	if item is ItemGenerator:
 		label.modulate = Color.gold
+
+	if item is ItemPattern:
+		label.modulate = Color.darkturquoise
 
 
 func _add_cell_control(value, property_name, is_int = false, vec_component = -1):
@@ -215,7 +218,7 @@ func _add_cell_control(value, property_name, is_int = false, vec_component = -1)
 	add_focusable(slider)
 
 	slider.connect("value_changed", self, "_on_cell_value_edited", [
-		grid_r.get_child_count() / grid_r.columns - 1,
+		slider,
 		property_name,
 		vec_component,
 	])
@@ -251,13 +254,13 @@ func _init_headers(column_labels):
 	grid_r.add_child(Control.new())
 
 
-func _init_items(columns_int):
+func _init_items(columns_int, column_defaults):
 	if columns_int.size() < columns.size() - 1:
 		columns_int.resize(columns.size())
 		columns_int.fill(false)
 
 	columns_are_int = columns_int
-	_init_column_count(columns)
+	_init_column_count(columns, column_defaults)
 
 	var column_keys = columns.keys()
 	var column_arrays = columns.values()
@@ -267,17 +270,28 @@ func _init_items(columns_int):
 				_add_item_control(column_arrays[0][i])
 
 			else:
-				_add_cell_control(column_arrays[j][i], column_keys[j], columns_int[j - 1])
+				_add_cell_control(
+					column_arrays[j][i] if column_arrays[j][i] != null else column_defaults[j - 1],
+					column_keys[j],
+					columns_int[j - 1]
+				)
 
 		_add_delete_button()
 
 
-func _init_column_count(columns):
+func _init_column_count(columns, column_defaults):
 	var column_count = 1
 	var value
-	for x in columns.values():
-		value = x[0]
-		if value is Object || value == null:
+	var arrays = columns.values()
+	for i in columns.size():
+		value = arrays[i][0]
+		if value == null:
+			if i == 0:
+				continue
+
+			value = column_defaults[i - 1]
+
+		if value is Object:
 			continue
 
 		if value is Vector2:
@@ -298,7 +312,7 @@ func _init_column_count(columns):
 func _init_allowed_types():
 	if edited_object is ItemConversion:
 		if columns.has("input_types"):
-			allowed_types = [ItemType]  # [ItemType, ItemPattern]
+			allowed_types = [ItemType, ItemPattern]
 
 		if columns.has("output_types"):
 			allowed_types = [ItemType, ItemGenerator]
@@ -306,12 +320,16 @@ func _init_allowed_types():
 	if edited_object is ItemGenerator:
 		allowed_types = [ItemType, ItemGenerator]
 
+	if edited_object is ItemPattern:
+		allowed_types = [ItemType, ItemPattern]
+
 
 func _on_delete_button_pressed(button):
 	remove_item(button.get_position_in_parent() / grid_r.columns)
 
 
-func _on_cell_value_edited(new_value, row_index, property_name, vec_component = -1):
+func _on_cell_value_edited(new_value, cell, property_name, vec_component = -1):
+	var row_index = cell.get_position_in_parent() / grid_r.columns - 1
 	var column_array = columns[property_name]
 	match vec_component:
 		-1:

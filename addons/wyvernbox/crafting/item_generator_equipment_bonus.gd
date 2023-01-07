@@ -16,7 +16,7 @@ func get_items(rng = null, input_stacks = [], input_types = []):
 
 	if items[0] == null:
 		for x in input_stacks:
-			if x.item_type == input_types[0]:
+			if input_types[0].matches(x):
 				items[0] = x
 				break
 

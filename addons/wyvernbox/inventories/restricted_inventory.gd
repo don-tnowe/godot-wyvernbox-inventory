@@ -9,9 +9,10 @@ func _init(restriction_array).(restriction_array.size(), 1):
 	restricted_to_types = restriction_array
 
 
-func _get_free_position(item_type : ItemType) -> Vector2:
+func _get_free_position(item_stack : ItemStack) -> Vector2:
+	var flags = item_stack.item_type.slot_flags
 	for i in _cells.size():
-		if _cells[i] == null && item_type.slot_flags & restricted_to_types[i] != 0:
+		if _cells[i] == null && flags & restricted_to_types[i] != 0:
 			return Vector2(i % _width, i / _width)
 
 	return Vector2(-1, -1)

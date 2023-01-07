@@ -4,7 +4,7 @@ extends PopupPanel
 export var type_colors := {
 	ItemType : Color.white,
 	ItemGenerator : Color.gold,
-	# ItemPattern : Color.darkturquoise,
+	ItemPattern : Color.darkturquoise,
 }
 export var item_list_column_width := 48.0
 
@@ -39,7 +39,7 @@ func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGe
 	allowed_types = [
 		ItemType in types_allowed,
 		ItemGenerator in types_allowed,
-		false, #ItemPattern in types_allowed,
+		ItemPattern in types_allowed,
 	]
 	for i in checkboxes.size():
 		checkboxes[i].pressed = allowed_types[i]
@@ -69,7 +69,7 @@ func _scan_item_folders():
 			
 			elif cur_item.ends_with(".tres"):
 				var loaded = load(cur_folder + cur_item)
-				if loaded is ItemType || loaded is ItemGenerator:
+				if loaded is ItemType || loaded is ItemGenerator || loaded is ItemPattern:
 					if !items_by_dir.has(cur_folder):
 						_add_item_folder(cur_folder)
 
@@ -143,8 +143,6 @@ func _on_item_list_gui_input(event : InputEvent):
 	if event is InputEventMouseMotion:
 		var item = load(paths_in_list[index])
 		path_text.text = item.resource_path
-		path_text.self_modulate = Color.white
-
 		for k in type_colors:
 			if item is k:
 				path_text.self_modulate = type_colors[k]

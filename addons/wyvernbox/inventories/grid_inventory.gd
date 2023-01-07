@@ -15,7 +15,8 @@ func _init2(width, height):
 		_cells[i].resize(height)
 
 
-func _get_free_position(item_type : ItemType) -> Vector2:
+func _get_free_position(item_stack : ItemStack) -> Vector2:
+	var item_type = item_stack.item_type
 	if item_type.in_inventory_height >= item_type.in_inventory_width:
 		for j in _height - item_type.in_inventory_height + 1:
 			for i in _width - item_type.in_inventory_width + 1:

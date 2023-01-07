@@ -53,6 +53,10 @@ func can_stack_with(stack):
 	)
 
 
+func matches(stack):
+	return can_stack_with(stack)
+
+
 func get_name() -> String:
 	var trd := name_with_affixes.duplicate()
 	for i in trd.size():

@@ -10,7 +10,7 @@ func _init(plugin):
 
 
 func can_handle(object):
-	return object is ItemConversion || object is ItemGenerator
+	return object is ItemConversion || object is ItemGenerator || object is ItemPattern
 
 
 func parse_property(object, type, path, hint, hint_text, usage):
@@ -68,5 +68,24 @@ func parse_property(object, type, path, hint, hint_text, usage):
 			)
 		)
 		return true
+
+	if object is ItemPattern:
+		if path == "coefficients": return true
+		if path == "items":
+			add_property_editor_for_multiple_properties(
+				"Matches",
+				["items", "efficiency"],
+				property_script.new(
+					plugin, object,
+					{
+						"items": object.items,
+						"efficiency" : object.efficiency,
+					},
+					["Efficiency"],
+					[false],
+					[1.0]
+				)
+			)
+			return true
 
 	return false

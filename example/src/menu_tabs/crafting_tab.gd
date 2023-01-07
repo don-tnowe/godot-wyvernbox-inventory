@@ -104,7 +104,7 @@ func get_recipe_bbcode(res):
 		# 4[icon] Red Potion (have 2)
 		result += "\n%s%s %s [color=#%s]%s[/color]" % [
 			res.input_counts[i],
-			InventoryTooltip.get_texture_bbcode(x.texture.resource_path),
+			InventoryTooltip.get_texture_bbcode(x.texture.resource_path) if x.texture != null else "",
 			tr("item_name_" + x.name),
 			("ff7f7f" if item_counts.get(x, 0) < res.input_counts[i] else "ffffff"),
 			tr("item_tt_have_items") % str(item_counts.get(x, 0)),

@@ -41,7 +41,7 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 		if deposited_overflow < maxcount:
 			return deposited_overflow + total_deposited
 
-	var deposited_through_stacking := _try_stack_item(item_type, count)
+	var deposited_through_stacking := _try_stack_item(stack, count)
 	if deposited_through_stacking > 0:
 		# If all items deposited, return.
 		if count - deposited_through_stacking <= 0:
@@ -55,7 +55,7 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 			total_deposited
 		)
 
-	var rect_pos := _get_free_position(item_type)
+	var rect_pos := _get_free_position(stack)
 	if rect_pos.x == -1:
 		return total_deposited
 	
@@ -86,7 +86,7 @@ func _add_to_items_array(item_stack):
 	emit_signal("item_stack_added", item_stack)
 
 
-func _get_free_position(item_type : ItemType) -> Vector2:
+func _get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
 		if _cells[i] == null:
 			return Vector2(i % _width, i / _width)
@@ -94,13 +94,13 @@ func _get_free_position(item_type : ItemType) -> Vector2:
 	return Vector2(-1, -1)
 
 
-func _try_stack_item(item_type : ItemType, count_delta : int = 1) -> int:
+func _try_stack_item(item_stack : ItemStack, count_delta : int = 1) -> int:
 	if count_delta == 0: return 0
 
 	var deposited_count := 0
 	for x in items:
-		if x.item_type == item_type:
-			deposited_count = ItemStack.get_stack_delta_if_added(x.count, count_delta, get_max_count(item_type))
+		if x.can_stack_with(item_stack):
+			deposited_count = ItemStack.get_stack_delta_if_added(x.count, count_delta, get_max_count(item_stack.item_type))
 			# If stack full, move on.
 			if deposited_count == 0: continue
 			x.count += deposited_count

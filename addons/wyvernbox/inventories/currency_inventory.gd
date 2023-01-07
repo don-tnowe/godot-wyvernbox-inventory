@@ -14,9 +14,9 @@ func get_max_count(item_type):
 	return max_stack
 
 
-func _get_free_position(item_type : ItemType) -> Vector2:
+func _get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
-		if _cells[i] == null && item_type == restricted_to_types[i]:
+		if _cells[i] == null && restricted_to_types[i] != null && restricted_to_types[i].matches(item_stack):
 			return Vector2(i, 0)
 
 	return Vector2(-1, -1)

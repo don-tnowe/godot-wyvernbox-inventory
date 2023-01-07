@@ -30,7 +30,9 @@ func _set_output_ranges(v):
 
 
 func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, unsafe : bool = false) -> Array:
-	if !unsafe && !can_apply(draw_from_inventories): return []
+	if !unsafe && !can_apply(draw_from_inventories):
+		return []
+
 	var consumed_stacks = []
 	if rng == null:
 		rng = RandomNumberGenerator.new()
@@ -83,7 +85,7 @@ static func count_all_inventories(inventories : Array) -> Dictionary:
 			x = x.inventory
 		
 		x.count_items(have_total)  # Collects counts into have_total
-		
+
 	return have_total
 	
 
