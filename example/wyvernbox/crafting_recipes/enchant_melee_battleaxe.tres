@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=70 format=2]
+[gd_resource type="Resource" load_steps=65 format=2]
 
 [ext_resource path="res://example/graphics/gradients/green1.tres" type="Texture" id=1]
 [ext_resource path="res://example/graphics/gradients/red1.tres" type="Texture" id=2]
@@ -33,10 +33,9 @@
 [ext_resource path="res://example/graphics/gradients/blue1.tres" type="Texture" id=31]
 [ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=32]
 [ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=33]
-[ext_resource path="res://addons/wyvernbox/item_type.gd" type="Script" id=34]
 [ext_resource path="res://addons/wyvernbox/crafting/item_generator_equipment_bonus.gd" type="Script" id=35]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" type="Resource" id=36]
-[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=37]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=38]
 
 [sub_resource type="Resource" id=4]
 script = ExtResource( 29 )
@@ -378,81 +377,26 @@ affix_position = -3
 
 [sub_resource type="AtlasTexture" id=30]
 atlas = ExtResource( 32 )
-region = Rect2( 0, 12, 12, 12 )
+region = Rect2( 12, 72, 12, 48 )
 
 [sub_resource type="Resource" id=31]
-script = ExtResource( 34 )
-item_name = "coin_purple"
-max_stack_count = 100
-in_inventory_width = 1
-in_inventory_height = 1
-texture = SubResource( 30 )
-texture_scale = 1.0
-slot_flags = 65
-default_properties_string = "{
-\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 )
-}"
-default_properties = {
-"back_color": Color( 0.67451, 0.270588, 0.972549, 1 )
-}
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 32 )
-region = Rect2( 12, 72, 12, 48 )
-
-[sub_resource type="Resource" id=34]
-script = ExtResource( 34 )
-item_name = "melee_battleaxe"
-max_stack_count = 1
-in_inventory_width = 1
-in_inventory_height = 4
-texture = SubResource( 1 )
-texture_scale = 1.0
-slot_flags = 32774
-default_properties_string = "{
-\"back_color\": Color( 1, 0.65098, 0, 1 ),
-\"price\": {
-\"res://example/wyvernbox/item_types/consumable/coin_gold.tres\": 50,
-\"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 10
-},
-\"stats\": {
-\"weapon_damage\": 8.0,
-\"weapon_speed\": 0.8
-}
-}"
-default_properties = {
-"back_color": Color( 1, 0.65098, 0, 1 ),
-"price": {
-"res://example/wyvernbox/item_types/consumable/coin_gold.tres": 50,
-"res://example/wyvernbox/item_types/consumable/coin_purple.tres": 10
-},
-"stats": {
-"weapon_damage": 8.0,
-"weapon_speed": 0.8
-}
-}
-
-[sub_resource type="AtlasTexture" id=35]
-atlas = ExtResource( 32 )
-region = Rect2( 12, 72, 12, 48 )
-
-[sub_resource type="Resource" id=2]
+resource_name = "Enchant Axe"
 script = ExtResource( 35 )
-name = "craft_enchant_melee_battleaxe"
-texture = SubResource( 35 )
-results = [ SubResource( 34 ) ]
-weights = [ 1 ]
+name = "Insert name or full locale string"
+texture = SubResource( 30 )
+results = [ null ]
+weights = [ 1.0 ]
 count_ranges = [ Vector2( 1, 1 ) ]
 possible_affixes = [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ]
 affix_count_range = Vector2( 1, 4 )
 affix_level_range = Vector2( 1, 6 )
-price_increase_item = SubResource( 31 )
+price_increase_item = ExtResource( 38 )
 price_increase_per_level = 20
 
 [resource]
 script = ExtResource( 33 )
 name = "craft_enchant_melee_battleaxe"
-input_types = [ ExtResource( 36 ), ExtResource( 37 ) ]
-input_counts = [ 1, 4 ]
-output_types = [ SubResource( 2 ) ]
+input_types = [ ExtResource( 36 ) ]
+input_counts = [ 1 ]
+output_types = [ SubResource( 31 ) ]
 output_ranges = [ Vector2( 1, 1 ) ]

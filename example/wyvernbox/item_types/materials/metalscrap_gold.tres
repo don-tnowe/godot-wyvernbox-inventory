@@ -9,12 +9,14 @@ region = Rect2( 36, 36, 12, 12 )
 
 [resource]
 script = ExtResource( 2 )
-item_name = "metalscrap_gold"
+name = "metalscrap_gold"
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 1
 texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 513
+default_properties_string = "{
+}"
 default_properties = {
 }

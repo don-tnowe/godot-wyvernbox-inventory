@@ -60,7 +60,7 @@ func get_name() -> String:
 			trd[i] = tr("item_affix_" + trd[i])
 
 		else:
-			trd[i] = tr("item_name_" + item_type.item_name)
+			trd[i] = tr("item_name_" + item_type.name)
 	
 	return " ".join(trd)
 

@@ -282,7 +282,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/dictionary_inspector/plugin.cfg", "res://addons/resources_speadsheet_view/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/dictionary_inspector/plugin.cfg", "res://addons/resources_speadsheet_view/plugin.cfg", "res://addons/wyvernbox/editor/plugin.cfg" )
 
 [gui]
 

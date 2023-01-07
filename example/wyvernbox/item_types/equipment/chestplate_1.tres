@@ -9,7 +9,7 @@ region = Rect2( 0, 120, 24, 36 )
 
 [resource]
 script = ExtResource( 1 )
-item_name = "chestplate_1"
+name = "chestplate_1"
 max_stack_count = 1
 in_inventory_width = 2
 in_inventory_height = 3

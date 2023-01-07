@@ -48,8 +48,8 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	# Description and prompts
 	stats_label.append_bbcode("\n[color=#ffffff]")
 	
-	var desc_tr = tr("item_desc_" + item_stack.item_type.item_name)
-	if desc_tr != "item_desc_" + item_stack.item_type.item_name:
+	var desc_tr = tr("item_desc_" + item_stack.item_type.name)
+	if desc_tr != "item_desc_" + item_stack.item_type.name:
 		stats_label.append_bbcode(desc_tr + "\n\n")
 
 	stats_label.append_bbcode(tr("item_tt_tutorial_filter") % ["F"])  # Input hint, replace with relevant InputEvent
@@ -123,7 +123,7 @@ func _show_price(item_stack):
 			"\n[color=#"
 			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
 			+ "]"
-			+ tr("item_name_" + k_loaded.item_name) + "[/color] x"
+			+ tr("item_name_" + k_loaded.name) + "[/color] x"
 			+ str(price[k])
 		)
 		if item_stack.extra_properties.has("seller"):

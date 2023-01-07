@@ -9,7 +9,7 @@ region = Rect2( 0, 24, 12, 24 )
 
 [resource]
 script = ExtResource( 2 )
-item_name = "magic_crystal"
+name = "magic_crystal"
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 2

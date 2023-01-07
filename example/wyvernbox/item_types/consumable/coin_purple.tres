@@ -9,7 +9,7 @@ region = Rect2( 0, 12, 12, 12 )
 
 [resource]
 script = ExtResource( 2 )
-item_name = "coin_purple"
+name = "coin_purple"
 max_stack_count = 100
 in_inventory_width = 1
 in_inventory_height = 1

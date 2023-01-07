@@ -9,12 +9,14 @@ region = Rect2( 60, 24, 24, 12 )
 
 [resource]
 script = ExtResource( 2 )
-item_name = "leather"
+name = "leather"
 max_stack_count = 20
 in_inventory_width = 2
 in_inventory_height = 1
 texture = SubResource( 1 )
 texture_scale = 1.0
 slot_flags = 513
+default_properties_string = "{
+}"
 default_properties = {
 }

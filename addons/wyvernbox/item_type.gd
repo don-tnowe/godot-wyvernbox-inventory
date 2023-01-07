@@ -41,7 +41,7 @@ const EQUIPMENT_FLAGS := (
 	| SlotFlags.E_NECK
 )
 
-export var item_name := ""
+export var name := ""
 export var max_stack_count := 1
 export var in_inventory_width := 1
 export var in_inventory_height := 1

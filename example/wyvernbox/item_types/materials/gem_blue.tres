@@ -9,7 +9,7 @@ region = Rect2( 84, 36, 12, 12 )
 
 [resource]
 script = ExtResource( 2 )
-item_name = "gem_blue"
+name = "gem_blue"
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 1
