@@ -35,8 +35,9 @@ func update_availability(arg0 = null, arg1 = null, arg2 = null):
 		# so it instead updates on visibility_changed(), connected in _ready()
 		return
 	
-	var item_counts = count_all_inventories()
+	var item_counts : Dictionary
 	for i in item_conversions.size():
+		item_counts = count_all_inventories(item_conversions[i].input_types)
 		recipe_list_node.get_child(i).disabled = (
 			!item_conversions[i].can_apply_with_items(item_counts)
 		)
@@ -97,7 +98,7 @@ func _on_button_mouse_entered(index):
 
 func get_recipe_bbcode(res):
 	var result = "\n[center]" + tr("item_tt_crafting_in")
-	var item_counts = count_all_inventories()
+	var item_counts = count_all_inventories(res.input_types)
 	var x
 	for i in res.input_types.size():
 		x = res.input_types[i]
@@ -125,13 +126,13 @@ func get_recipe_bbcode(res):
 	return result
 
 
-func count_all_inventories() -> Dictionary:
+func count_all_inventories(items_patterns) -> Dictionary:
 	if !input_from_all_takeable:
-		return ItemConversion.count_all_inventories([get_node(source_inventory)])
+		return ItemConversion.count_all_inventories([get_node(source_inventory)], items_patterns)
 
 	var all = get_tree().get_nodes_in_group("inventory_view")
 	var drawable = ItemConversion.get_drawable_inventories(all)
-	return ItemConversion.count_all_inventories(drawable)
+	return ItemConversion.count_all_inventories(drawable, items_patterns)
 
 
 func _on_button_mouse_exited():

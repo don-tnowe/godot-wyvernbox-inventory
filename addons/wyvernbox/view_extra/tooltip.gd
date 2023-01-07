@@ -116,8 +116,8 @@ func _show_price(item_stack):
 		var inventories = get_tree().get_nodes_in_group("inventory_view")
 		for x in inventories:
 			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
-				x.inventory.count_items(owned_item_counts)
-	
+				x.inventory.count_all_items(owned_item_counts)
+
 	var k_loaded  # Because for easier serialization, items are stored as paths
 	for k in price:
 		k_loaded = load(k)

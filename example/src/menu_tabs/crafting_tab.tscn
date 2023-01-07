@@ -1,9 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://example/src/menu_tabs/crafting_tab.gd" type="Script" id=1]
 [ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=2]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/craft_arrows.tres" type="Resource" id=3]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/pattern_test.tres" type="Resource" id=4]
 [ext_resource path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" type="PackedScene" id=5]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/enchant_wand_purple.tres" type="Resource" id=6]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/enchant_melee_battleaxe.tres" type="Resource" id=7]
@@ -35,11 +34,9 @@ __meta__ = {
 "_edit_lock_": true
 }
 cell_scene = ExtResource( 5 )
-item_conversions = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 4 ) ]
+item_conversions = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 9 ) ]
 target_inventory = NodePath("VBoxContainer/Output")
 source_inventory = NodePath("VBoxContainer/Output")
-input_from_all_takeable = null
-just_put_it_into_my_hand = null
 
 [node name="Border" type="NinePatchRect" parent="."]
 show_behind_parent = true

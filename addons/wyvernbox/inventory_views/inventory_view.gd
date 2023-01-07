@@ -160,9 +160,6 @@ func _try_buy(stack : ItemStack):
 	var price = stack.extra_properties["price"].duplicate()
 	var counts = {}
 	var inventories = get_tree().get_nodes_in_group("inventory_view")
-	for x in inventories:
-		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
-			x.inventory.count_items(counts)
 	
 	var k_loaded
 	for k in price.keys():
@@ -170,9 +167,15 @@ func _try_buy(stack : ItemStack):
 		k_loaded = load(k)
 		price[k_loaded] = price[k]
 		price.erase(k)
-		if counts.get(k_loaded, 0) < price[k_loaded]:
+
+	for x in inventories:
+		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
+			x.inventory.count_items(price, counts)
+
+	for k in price:
+		if !counts.has(k) || counts[k] < price[k]:
 			return false
-			
+
 	for x in inventories:
 		if price.size() == 0: break
 		x.inventory.consume_items(price)

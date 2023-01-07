@@ -11,17 +11,22 @@ export(Array, float) var efficiency = [] setget _set_efficiency
 
 func _set_items(v):
 	items = v
-	efficiency.resize(max(v.size(), 1))
+	_update_items(v.size())
 
 
 func _set_efficiency(v):
 	efficiency = v
-	items.resize(max(v.size(), 1))
+	_update_items(v.size())
+
+
+func _update_items(new_size):
+	efficiency.resize(max(new_size, 1))
+	items.resize(max(new_size, 1))
 
 
 func matches(item_stack : ItemStack) -> bool:
 	for x in items:
-		if item_stack == x:
+		if x.matches(item_stack):
 			return true
 
 	return false

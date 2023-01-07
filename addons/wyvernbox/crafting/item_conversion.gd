@@ -62,7 +62,7 @@ func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, un
 
 func can_apply(draw_from_inventories : Array) -> bool:
 	return dict_has_enough(
-		count_all_inventories(draw_from_inventories),
+		count_all_inventories(draw_from_inventories, input_types),
 		keys_values_to_dict(input_types, input_counts)
 	)
 
@@ -78,13 +78,13 @@ func get_inputs_as_dict():
 	return keys_values_to_dict(input_types, input_counts)
 
 
-static func count_all_inventories(inventories : Array) -> Dictionary:
+static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
 	var have_total = {}
 	for x in inventories:
 		if x is InventoryView:
 			x = x.inventory
-		
-		x.count_items(have_total)  # Collects counts into have_total
+
+		x.count_items(items_patterns, have_total)  # Collects counts into have_total
 
 	return have_total
 	

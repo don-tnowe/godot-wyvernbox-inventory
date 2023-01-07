@@ -95,3 +95,7 @@ func get_size_in_inventory() -> Vector2:
 
 func matches(stack) -> bool:
 	return stack.item_type == self
+
+
+func get_value(stack) -> int:
+	return stack.count

@@ -112,7 +112,7 @@ func _try_stack_item(item_stack : ItemStack, count_delta : int = 1) -> int:
 
 func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
 	item_stack.count += delta
-	if item_stack.count > 1:
+	if item_stack.count > 0:
 		emit_signal("item_stack_changed", item_stack, delta)
 
 	else:
@@ -216,15 +216,25 @@ func has_cell(x : int, y : int) -> bool:
 	return true
 
 
-func count_items(into_dict : Dictionary = {}) -> Dictionary:
+func count_all_items(into_dict : Dictionary = {}) -> Dictionary:
 	for x in items:
 		into_dict[x.item_type] = into_dict.get(x.item_type, 0) + x.count
 
 	return into_dict
 
 
-func has_items(item_type_counts : Dictionary) -> bool:
-	var owned_counts := count_items()
+func count_items(items_patterns, into_dict : Dictionary = {}) -> Dictionary:
+	var matched_pattern
+	for x in items:
+		matched_pattern = _get_match(x, items_patterns)
+		if matched_pattern == null: continue
+		into_dict[matched_pattern] = into_dict.get(matched_pattern, 0) + matched_pattern.get_value(x)
+
+	return into_dict
+
+
+func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
+	var owned_counts := count_items(items_patterns)
 	for k in owned_counts:
 		if owned_counts[k] < item_type_counts[k]:
 			return false
@@ -233,24 +243,41 @@ func has_items(item_type_counts : Dictionary) -> bool:
 
 
 func consume_items(item_type_counts : Dictionary, check_only : bool = false) -> Dictionary:
-	var result_stacks = []
-	for x in items:
-		if !item_type_counts.has(x.item_type) || item_type_counts[x.item_type] <= 0:
-			continue
-		
-		item_type_counts[x.item_type] -= x.count
-		if item_type_counts[x.item_type] < 0:
-			var deduced_count = x.count + item_type_counts[x.item_type]
-			result_stacks.append(x.duplicate_with_count(deduced_count))
-			add_items_to_stack(x, -deduced_count)
-			item_type_counts.erase(x.item_type)
+	var consumed_stacks = []
+	var matched_pattern
+	var stack_value : int
+	for x in items.duplicate():
+		if item_type_counts.size() == 0:
+			break
+
+		matched_pattern = _get_match(x, item_type_counts)
+		if matched_pattern == null:
 			continue
 
-		if !check_only:
+		stack_value = matched_pattern.get_value(x)
+		item_type_counts[matched_pattern] -= stack_value
+		if item_type_counts[matched_pattern] <= 0:
+			var consumed_from_stack = x.count + ceil(item_type_counts[matched_pattern] / (stack_value / x.count))
+			consumed_stacks.append(x.duplicate_with_count(consumed_from_stack))
+			add_items_to_stack(x, -consumed_from_stack)
+			item_type_counts.erase(matched_pattern)
+
+		elif !check_only:
 			remove_stack(x)
-			result_stacks.append(x)
+			consumed_stacks.append(x)
 
-	return result_stacks
+	return consumed_stacks
+
+
+func _get_match(item : ItemStack, items_patterns) -> Resource:
+	if items_patterns.has(item.item_type):
+		return item.item_type
+
+	for x in items_patterns:
+		if x.matches(item):
+			return x
+
+	return null
 
 
 func sort():
