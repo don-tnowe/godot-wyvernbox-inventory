@@ -221,7 +221,7 @@ func _quick_transfer_anywhere(stack : ItemStack, skip_inventories : int = 0):
 	
 	else:
 		emit_signal("grab_attempted", stack, true)
-		inventory.remove_stack(stack)
+		inventory.remove_item(stack)
 
 	var grabbed_stack = target.inventory.try_quick_transfer(stack)
 	if grabbed_stack == null:

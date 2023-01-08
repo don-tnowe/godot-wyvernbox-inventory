@@ -77,7 +77,6 @@ static func get_stack_delta_if_added(count, added, maxcount) -> int:
 	return int(min(maxcount - count, added))
 
 
-
 static func extras_equal(a : Dictionary, b : Dictionary) -> bool:
 	if a.size() != b.size(): return false
 	for k in a:

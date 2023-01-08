@@ -139,7 +139,7 @@ func restock_item(item_stack : ItemStack, inventory : Inventory):
 	yield(get_tree(), "idle_frame")
 
 	if !inventory.can_place_item(restock_item, restock_pos):
-		restock_pos = inventory._get_free_position(restock_item)
+		restock_pos = inventory.get_free_position(restock_item)
 
 	if infinite_restocks:
 		put_up_for_sale(restock_item, inventory, stash_idx)
@@ -155,7 +155,7 @@ func clear_sold_items():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items.duplicate():
 		if x.extra_properties["seller_stash_index"] == -1:
-			inventory.remove_stack(x)
+			inventory.remove_item(x)
 
 
 func _on_Inventory_item_stack_added(item_stack : ItemStack):

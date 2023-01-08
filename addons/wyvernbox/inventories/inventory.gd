@@ -55,7 +55,7 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 			total_deposited
 		)
 
-	var rect_pos := _get_free_position(stack)
+	var rect_pos := get_free_position(stack)
 	if rect_pos.x == -1:
 		return total_deposited
 	
@@ -79,19 +79,75 @@ func can_place_item(item : ItemStack, position : Vector2) -> bool:
 	return _cells[position.x + position.y * _width] == null
 
 
-func _add_to_items_array(item_stack):
-	item_stack.inventory = self
-	item_stack.index_in_inventory = items.size()
-	items.append(item_stack)
-	emit_signal("item_stack_added", item_stack)
+func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
+	item_stack.count += delta
+	if item_stack.count > 0:
+		emit_signal("item_stack_changed", item_stack, delta)
+
+	else:
+		remove_item(item_stack)
 
 
-func _get_free_position(item_stack : ItemStack) -> Vector2:
+func remove_item(item_stack : ItemStack):
+	items.remove(item_stack.index_in_inventory)
+	_clear_stack_cells(item_stack)
+
+	for i in items.size():
+		items[i].index_in_inventory = i
+
+	emit_signal("item_stack_removed", item_stack)
+
+
+func move_item_to_pos(item_stack : ItemStack, pos : Vector2):
+	if item_stack.count == 0: return
+
+	if item_stack.inventory == self:
+		_clear_stack_cells(item_stack)
+		remove_item(item_stack)
+		item_stack.position_in_inventory = pos
+		_add_to_items_array(item_stack)
+
+	else:
+		# If from another inv, remove it from there and add to here
+		if item_stack.inventory != null:
+			item_stack.inventory.remove_item(item_stack)
+
+		item_stack.position_in_inventory = pos
+		_add_to_items_array(item_stack)
+	
+	_fill_stack_cells(item_stack)
+	emit_signal("item_stack_changed", item_stack, 0)
+
+
+func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
+	if !has_cell(pos.x, pos.y): return item_stack
+
+	var found_stack := get_item_at_position(pos.x, pos.y)
+	return _place_stackv(item_stack, found_stack, pos)
+
+
+func get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
 		if _cells[i] == null:
 			return Vector2(i % _width, i / _width)
 
 	return Vector2(-1, -1)
+
+
+func get_item_at_position(x : int, y : int) -> ItemStack:
+	if !has_cell(x, y): return null
+	return _cells[y * _width + x]
+
+
+func get_max_count(item_type):
+	return item_type.max_stack_count
+
+
+func _add_to_items_array(item_stack):
+	item_stack.inventory = self
+	item_stack.index_in_inventory = items.size()
+	items.append(item_stack)
+	emit_signal("item_stack_added", item_stack)
 
 
 func _try_stack_item(item_stack : ItemStack, count_delta : int = 1) -> int:
@@ -110,50 +166,6 @@ func _try_stack_item(item_stack : ItemStack, count_delta : int = 1) -> int:
 	return 0
 
 
-func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
-	item_stack.count += delta
-	if item_stack.count > 0:
-		emit_signal("item_stack_changed", item_stack, delta)
-
-	else:
-		remove_stack(item_stack)
-
-
-func remove_stack(stack : ItemStack):
-	items.remove(stack.index_in_inventory)
-	_clear_stack_cells(stack)
-
-	for i in items.size():
-		items[i].index_in_inventory = i
-
-	emit_signal("item_stack_removed", stack)
-
-
-func move_stack_to_pos(item_stack : ItemStack, pos : Vector2):
-	if item_stack.count == 0: return
-
-	if item_stack.inventory == self:
-		_clear_stack_cells(item_stack)
-		remove_stack(item_stack)
-		item_stack.position_in_inventory = pos
-		_add_to_items_array(item_stack)
-
-	else:
-		# If from another inv, remove it from there and add to here
-		if item_stack.inventory != null:
-			item_stack.inventory.remove_stack(item_stack)
-
-		item_stack.position_in_inventory = pos
-		_add_to_items_array(item_stack)
-	
-	_fill_stack_cells(item_stack)
-	emit_signal("item_stack_changed", item_stack, 0)
-
-
-func get_max_count(item_type):
-	return item_type.max_stack_count
-
-
 func _clear_stack_cells(item_stack : ItemStack):
 	_cells[item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * _width] = null
 	item_stack.inventory = null
@@ -164,13 +176,6 @@ func _fill_stack_cells(item_stack : ItemStack):
 	item_stack.inventory = self
 
 
-func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
-	if !has_cell(pos.x, pos.y): return item_stack
-
-	var found_stack := get_stack_at_position(pos.x, pos.y)
-	return _place_stackv(item_stack, found_stack, pos)
-
-
 func _place_stackv(top : ItemStack, bottom : ItemStack, pos : Vector2) -> ItemStack:
 	# If placing on a cell with item, return that item or stacking remainder
 	if bottom != null:
@@ -178,7 +183,7 @@ func _place_stackv(top : ItemStack, bottom : ItemStack, pos : Vector2) -> ItemSt
 	
 	# Only move top item to slot if it's not stacking remainder
 	if top != bottom:
-		move_stack_to_pos(top, pos)
+		move_item_to_pos(top, pos)
 
 	return bottom
 
@@ -194,7 +199,7 @@ func _drop_stack_on_stack(top : ItemStack, bottom : ItemStack) -> int:
 func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 	if !bottom.can_stack_with(top):
 		# If can't be stacked, just swap places.
-		remove_stack(bottom)
+		remove_item(bottom)
 		return bottom
 	
 	var bottom_count_delta = _drop_stack_on_stack(top, bottom)
@@ -203,11 +208,6 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 	
 	emit_signal("item_stack_changed", bottom, bottom_count_delta)
 	return top
-
-
-func get_stack_at_position(x : int, y : int) -> ItemStack:
-	if !has_cell(x, y): return null
-	return _cells[y * _width + x]
 
 
 func has_cell(x : int, y : int) -> bool:
@@ -273,7 +273,7 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 			item_type_counts.erase(matched_pattern)
 
 		elif !check_only:
-			remove_stack(x)
+			remove_item(x)
 			consumed_stacks.append(x)
 
 	return consumed_stacks
@@ -302,7 +302,7 @@ func sort():
 			by_size_type[cur_size][x.item_type] = []
 
 		by_size_type[cur_size][x.item_type].append(x)
-		remove_stack(x)
+		remove_item(x)
 	
 	var sizes = by_size_type.keys()
 	sizes.sort_custom(self, "compare_size_sort")

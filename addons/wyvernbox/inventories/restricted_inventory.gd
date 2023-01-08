@@ -9,7 +9,7 @@ func _init(restriction_array).(restriction_array.size(), 1):
 	restricted_to_types = restriction_array
 
 
-func _get_free_position(item_stack : ItemStack) -> Vector2:
+func get_free_position(item_stack : ItemStack) -> Vector2:
 	var flags = item_stack.item_type.slot_flags
 	for i in _cells.size():
 		if _cells[i] == null && flags & restricted_to_types[i] != 0:
@@ -27,15 +27,15 @@ func _shift_contents(to_fit_item : ItemStack) -> ItemStack:
 		
 		if returned_item == null:
 			returned_item = _cells[i]
-			remove_stack(returned_item)
+			remove_item(returned_item)
 			last_viable_position = returned_item.position_in_inventory
 			continue
 		
 		var item_pos = _cells[i].position_in_inventory
-		move_stack_to_pos(_cells[i], last_viable_position)
+		move_item_to_pos(_cells[i], last_viable_position)
 		last_viable_position = item_pos
 
-	move_stack_to_pos(to_fit_item, last_viable_position)
+	move_item_to_pos(to_fit_item, last_viable_position)
 	return returned_item
 
 
@@ -68,5 +68,5 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if restricted_to_types[pos.x] & item_stack.item_type.slot_flags == 0:
 		return item_stack
 
-	var found_stack := get_stack_at_position(pos.x, pos.y)
+	var found_stack := get_item_at_position(pos.x, pos.y)
 	return _place_stackv(item_stack, found_stack, pos)

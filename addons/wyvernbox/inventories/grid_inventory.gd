@@ -15,7 +15,7 @@ func _init2(width, height):
 		_cells[i].resize(height)
 
 
-func _get_free_position(item_stack : ItemStack) -> Vector2:
+func get_free_position(item_stack : ItemStack) -> Vector2:
 	var item_type = item_stack.item_type
 	if item_type.in_inventory_height >= item_type.in_inventory_width:
 		for j in _height - item_type.in_inventory_height + 1:
@@ -79,7 +79,7 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	var found_stack = null
 	for i in range(pos.x, pos.x + item_stack.item_type.in_inventory_width):
 		for j in range(pos.y, pos.y + item_stack.item_type.in_inventory_height):
-			var found_now = get_stack_at_position(i, j)
+			var found_now = get_item_at_position(i, j)
 			if found_now == item_stack: continue
 			if found_now != found_stack:
 				if found_stack == null:
@@ -92,6 +92,6 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	return _place_stackv(item_stack, found_stack, pos)
 
 
-func get_stack_at_position(x : int, y : int) -> ItemStack:
+func get_item_at_position(x : int, y : int) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[x][y]

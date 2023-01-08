@@ -37,7 +37,7 @@ func grab(item_stack : ItemStack):
 			item_stack = item_stack.duplicate_with_count(max_count)
 			
 		else:
-			item_stack.inventory.remove_stack(item_stack)
+			item_stack.inventory.remove_item(item_stack)
 
 	get_tree().get_nodes_in_group("tooltip")[0].hide()
 	_set_grabbed_stack(item_stack)

@@ -90,7 +90,7 @@ func _update_hpmp():
 
 
 func _update_weapon_stats():
-	var weapon = get_node(equip_inventory_view).inventory.get_stack_at_position(0, 0)
+	var weapon = get_node(equip_inventory_view).inventory.get_item_at_position(0, 0)
 	$"WeaponName".text = weapon.get_name() if weapon != null else "no_weapon"
 	$"Weapon/B/Dmg/Value".text = str(stats.get("weapon_damage", 0.0) * stats.get("weapon_speed", 1.0))
 	$"Weapon/B/Crit/Label".text = tr("stats_crit") % (stats.get("crit_power", 0.0) * 0.01)
