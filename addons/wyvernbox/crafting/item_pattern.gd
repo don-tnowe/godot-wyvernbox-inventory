@@ -1,5 +1,5 @@
 tool
-class_name ItemPattern
+class_name ItemPattern, "res://addons/wyvernbox/icons/item_pattern.png"
 extends Resource
 
 export var name := "Insert name or full locale string"

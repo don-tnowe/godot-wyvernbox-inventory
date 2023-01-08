@@ -1,5 +1,5 @@
 tool
-class_name GroundItemStackView2D
+class_name GroundItemStackView2D, "res://addons/wyvernbox/icons/item_stack_view_2d.png"
 extends Area2D
 
 signal name_clicked()

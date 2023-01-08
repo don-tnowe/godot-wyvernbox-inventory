@@ -1,4 +1,5 @@
 tool
+class_name CurrencyInventoryView, "res://addons/wyvernbox/icons/currency_inventory.png"
 extends InventoryView
 
 export(Array, Resource) var restricted_to_types := [] setget _set_restricted_to_types

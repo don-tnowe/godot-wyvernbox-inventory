@@ -1,5 +1,5 @@
 tool
-class_name ItemConversion
+class_name ItemConversion, "res://addons/wyvernbox/icons/item_conversion.png"
 extends Resource
 
 export var name := "Insert name or full locale string"

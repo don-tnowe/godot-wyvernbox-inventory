@@ -1,7 +1,8 @@
+class_name GroundItemManager, "res://addons/wyvernbox/icons/ground_item_manager.png"
 extends Node
 
 
-export var item_scene : PackedScene = load("res://addons/wyvernbox/ground/ground_item_stack_view_2d.tscn")
+export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
 
 
 func load_from_array(array : Array):

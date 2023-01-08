@@ -1,4 +1,4 @@
-class_name InventoryTooltip
+class_name InventoryTooltip, "res://addons/wyvernbox/icons/tooltip.png"
 extends Container
 
 const ITEM_SCALE := 0.5

@@ -1,5 +1,5 @@
 tool
-class_name ItemGenerator
+class_name ItemGenerator, "res://addons/wyvernbox/icons/item_generator.png"
 extends Resource
 
 export var name := "Insert name or full locale string"

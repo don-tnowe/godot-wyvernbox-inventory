@@ -1,5 +1,5 @@
 tool
-class_name InventoryVendor
+class_name InventoryVendor, "res://addons/wyvernbox/icons/vendor.png"
 extends Control
 
 signal item_received(item_stack)

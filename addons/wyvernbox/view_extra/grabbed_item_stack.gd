@@ -1,3 +1,4 @@
+class_name GrabbedItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends ItemStackView
 
 export var default_inventory := NodePath("")

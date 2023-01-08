@@ -1,4 +1,4 @@
-class_name ItemStackView
+class_name ItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends Control
 
 onready var texture_rect := $"Crop/Texture"

@@ -1,4 +1,5 @@
 tool
+class_name RestrictedInventoryView, "res://addons/wyvernbox/icons/restricted_inventory.png"
 extends InventoryView
 
 export var allow_rotation := true setget _set_allow_rotation

@@ -1,4 +1,5 @@
 tool
+class_name GridInventoryView, "res://addons/wyvernbox/icons/grid_inventory.png"
 extends InventoryView
 
 export var height := 8 setget _set_grid_height
