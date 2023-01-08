@@ -129,5 +129,6 @@ text = "Clear Filters (Alt+F)"
 script = ExtResource( 5 )
 
 [connection signal="item_stack_added" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
+[connection signal="item_stack_changed" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="item_stack_removed" from="Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="pressed" from="HBoxContainer/Sort" to="Inventory" method="sort_inventory"]

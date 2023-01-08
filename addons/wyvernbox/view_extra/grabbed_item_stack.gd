@@ -8,6 +8,7 @@ export var drop_max_distance := 256.0
 export var unit_size := Vector2(18, 18)
 
 var grabbed_stack : ItemStack
+var drop_surface_node : Control
 
 
 func _ready():
@@ -15,11 +16,16 @@ func _ready():
 	new_node.set_anchors_preset(PRESET_WIDE)
 	new_node.connect("gui_input", self, "_drop_surface_input")
 	new_node.name = "DropSurface"
+	new_node.hide()
 	yield(get_tree(), "idle_frame")
 	get_parent().add_child(new_node)
 	for x in get_parent().get_children():
 		if x != new_node:
 			x.raise()
+
+	drop_surface_node = new_node
+	connect("visibility_changed", self, "_on_visibility_changed")
+	_on_visibility_changed()
 
 
 func grab(item_stack : ItemStack):
@@ -42,8 +48,10 @@ func _set_grabbed_stack(item_stack : ItemStack):
 	grabbed_stack = item_stack
 	set_deferred("visible", item_stack != null)
 	if item_stack == null:
+		drop_surface_node.hide()
 		return
 
+	drop_surface_node.show()
 	visible = true
 	rect_size = unit_size * item_stack.item_type.get_size_in_inventory()
 	texture_rect.texture = item_stack.item_type.texture
@@ -124,7 +132,6 @@ func drop_on_ground(stack):
 
 
 func _input(event):
-	if !visible: return
 	if event is InputEventMouseMotion:
 		_move_to_mouse()
 		
@@ -151,3 +158,11 @@ func _drop_surface_input(event):
 
 			else:
 				_set_grabbed_stack(grabbed_stack)
+
+
+func _on_visibility_changed():
+	var v = get_parent().is_visible_in_tree()
+	set_process_input(v && visible)
+	if !v && grabbed_stack != null:
+		drop_on_ground(grabbed_stack)
+		_set_grabbed_stack(null)
