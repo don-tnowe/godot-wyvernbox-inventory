@@ -30,12 +30,12 @@ margin_right = 85.0
 margin_bottom = 57.0
 script = ExtResource( 33 )
 vendor_inventory = NodePath("../Inventory")
-vendor_response = NodePath("Label")
 sell_reward_into_inventory = NodePath("../../../../Inventory")
 apply_to_all_stock = ExtResource( 1 )
 stock = [ ExtResource( 37 ), ExtResource( 22 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 44 ), ExtResource( 43 ), ExtResource( 42 ), ExtResource( 41 ), ExtResource( 36 ), ExtResource( 38 ) ]
-infinite_stock = false
-stock_counts = [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ]
+stock_counts = [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+stock_restocks = [ 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0 ]
+infinite_restocks = false
 
 [node name="Label" type="Label" parent="ShopManager"]
 margin_left = -57.0

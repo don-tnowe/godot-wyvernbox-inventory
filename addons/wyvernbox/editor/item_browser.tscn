@@ -3,6 +3,7 @@
 [ext_resource path="res://addons/wyvernbox/editor/item_browser.gd" type="Script" id=1]
 
 [node name="Browse" type="PopupPanel"]
+visible = true
 margin_left = -600.0
 margin_top = 8.0
 margin_right = -9.0
@@ -89,7 +90,7 @@ text = "Generators"
 margin_left = 258.0
 margin_right = 383.0
 margin_bottom = 24.0
-hint_tooltip = "Show resources that define the matches() method for comparing to ItemTypes."
+hint_tooltip = "Show resources that define the matches() and get_value() methods for defining flexible ItemConversion inputs."
 size_flags_horizontal = 3
 custom_colors/font_color_focus = Color( 0, 0.811765, 0.819608, 1 )
 custom_colors/font_color = Color( 0, 0.811765, 0.819608, 1 )

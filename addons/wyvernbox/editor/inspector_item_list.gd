@@ -323,6 +323,9 @@ func _init_allowed_types():
 	if edited_object is ItemPattern:
 		allowed_types = [ItemType, ItemPattern]
 
+	if "vendor_inventory" in edited_object:
+		allowed_types = [ItemType, ItemGenerator]
+
 
 func _on_delete_button_pressed(button):
 	remove_item(button.get_position_in_parent() / grid_r.columns)

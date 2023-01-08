@@ -13,6 +13,7 @@ button_sort;Sort;;
 input_click;Click;;
 ;;;
 item_tt_price;Price:;;
+item_tt_left_in_stock;In Stock: %s;;
 item_tt_crafting_in;[b]Requires:[/b];;
 item_tt_crafting_out;[b]Gives:[/b];;
 item_tt_have_items;(have %s);;

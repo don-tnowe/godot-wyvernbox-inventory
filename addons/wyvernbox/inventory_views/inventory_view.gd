@@ -15,7 +15,7 @@ signal item_stack_removed(item_stack)
 signal grab_attempted(item_stack, success)
 
 export var cell_size := Vector2(14, 14) setget _set_cell_size
-export var item_scene : PackedScene = load("res://addons/wyvernbox/view_extra/item_stack_view.tscn")
+export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
 export var show_backgrounds := true
 export var enable_view_filters := true
 export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
@@ -142,13 +142,16 @@ func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 
 
 func _grab_stack(stack_index : int):
+	var grabbed = get_tree().get_nodes_in_group("grabbed_item")[0]
+	if interaction_mode & InteractionFlags.VENDOR != 0 && grabbed.grabbed_stack != null:
+		return
+
 	var stack = inventory.items[stack_index]
-	if (interaction_mode & InteractionFlags.CAN_TAKE) == 0 || !_try_buy(stack):
+	if (interaction_mode & InteractionFlags.CAN_TAKE == 0 || !_try_buy(stack)):
 		emit_signal("grab_attempted", stack, false)
 		return
 
 	emit_signal("grab_attempted", stack, true)
-	var grabbed = get_tree().get_nodes_in_group("grabbed_item")[0]
 	if !grabbed.visible:
 		grabbed.grab(stack)
 
@@ -194,7 +197,10 @@ func try_place_stackv(stack : ItemStack, pos : Vector2):
 	if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 		return stack
 
-	if interaction_mode & InteractionFlags.VENDOR != 0 && !stack.extra_properties.has("price"):
+	if interaction_mode & InteractionFlags.VENDOR != 0 && (
+		!stack.extra_properties.has("price")
+		|| !inventory.can_place_item(stack, pos)
+	):
 		return stack
 
 	return inventory.try_place_stackv(stack, pos)

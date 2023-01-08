@@ -10,7 +10,10 @@ func _init(plugin):
 
 
 func can_handle(object):
-	return object is ItemConversion || object is ItemGenerator || object is ItemPattern
+	return (
+		object is ItemConversion || object is ItemGenerator || object is ItemPattern
+		|| "vendor_inventory" in object  # Because FOR SOME REASON the `is` operator does not work here
+	)
 
 
 func parse_property(object, type, path, hint, hint_text, usage):
@@ -84,6 +87,26 @@ func parse_property(object, type, path, hint, hint_text, usage):
 					["Efficiency"],
 					[false],
 					[1.0]
+				)
+			)
+			return true
+
+	if "vendor_inventory" in object:
+		if path == "stock_counts" || path == "stock_restocks": return true
+		if path == "stock":
+			add_property_editor_for_multiple_properties(
+				"Stock",
+				["stock", "stock_counts", "stock_restocks"],
+				property_script.new(
+					plugin, object,
+					{
+						"stock": object.stock,
+						"stock_counts": object.stock_counts,
+						"stock_restocks" : object.stock_restocks,
+					},
+					["Count", "Restocks"],
+					[true, true],
+					[1, 0]
 				)
 			)
 			return true

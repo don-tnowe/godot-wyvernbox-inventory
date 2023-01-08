@@ -105,19 +105,26 @@ static func get_texture_bbcode(tex_path, tex_scale = 1.0):
 	]
 
 
+
 func _show_price(item_stack):
 	var stats_label = $"%Desc"
-	stats_label.append_bbcode("\n[color=#" + color_bonus.to_html() + "]" + tr("item_tt_price") + "[/color]")
+
 	var price = item_stack.extra_properties["price"]
+	var item_for_sale = item_stack.extra_properties.has("for_sale")
+
 	var hex_malus := color_malus.to_html(false)
 	var hex_neutral := color_neutral.to_html(false)
 	var owned_item_counts = {}
-	if item_stack.extra_properties.has("seller"):
+	if item_for_sale:
 		var inventories = get_tree().get_nodes_in_group("inventory_view")
 		for x in inventories:
 			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
 				x.inventory.count_all_items(owned_item_counts)
 
+		if item_stack.extra_properties.has("left_in_stock"):
+			stats_label.append_bbcode("\n" + tr("item_tt_left_in_stock") % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties["left_in_stock"]]))
+
+	stats_label.append_bbcode("\n" + tr("item_tt_price") + "\n")
 	var k_loaded  # Because for easier serialization, items are stored as paths
 	for k in price:
 		k_loaded = load(k)
@@ -128,7 +135,7 @@ func _show_price(item_stack):
 			+ tr("item_name_" + k_loaded.name) + "[/color] x"
 			+ str(price[k])
 		)
-		if item_stack.extra_properties.has("seller"):
+		if item_for_sale:
 			stats_label.append_bbcode(" [color=#%s]%s[/color] " % [
 				hex_malus if owned_item_counts.get(k_loaded, 0) < price[k] else hex_neutral,
 				tr("item_tt_have_items") % owned_item_counts.get(k_loaded, 0)
