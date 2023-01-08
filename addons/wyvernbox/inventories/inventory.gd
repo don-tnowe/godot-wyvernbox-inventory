@@ -223,9 +223,15 @@ func count_all_items(into_dict : Dictionary = {}) -> Dictionary:
 	return into_dict
 
 
-func count_items(items_patterns, into_dict : Dictionary = {}) -> Dictionary:
+func count_items(items_patterns, into_dict : Dictionary = {}, prepacked_reqs : Dictionary = {}) -> Dictionary:
 	var matched_pattern
+	var check_reqs = prepacked_reqs.size() > 0
 	for x in items:
+		# Dictionary lookup is faster than _get_match(), which has an array search
+		# and a call on an array of type-unknown objects
+		if check_reqs && !prepacked_reqs.has(x.item_type):
+			continue
+
 		matched_pattern = _get_match(x, items_patterns)
 		if matched_pattern == null: continue
 		into_dict[matched_pattern] = into_dict.get(matched_pattern, 0) + matched_pattern.get_value(x)
@@ -242,13 +248,17 @@ func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
 	return true
 
 
-func consume_items(item_type_counts : Dictionary, check_only : bool = false) -> Dictionary:
+func consume_items(item_type_counts : Dictionary, check_only : bool = false, prepacked_reqs : Dictionary = {}) -> Dictionary:
 	var consumed_stacks = []
+	var check_reqs = prepacked_reqs.size() > 0
 	var matched_pattern
 	var stack_value : int
 	for x in items.duplicate():
 		if item_type_counts.size() == 0:
 			break
+
+		if check_reqs && !prepacked_reqs.has(x.item_type):
+			continue
 
 		matched_pattern = _get_match(x, item_type_counts)
 		if matched_pattern == null:

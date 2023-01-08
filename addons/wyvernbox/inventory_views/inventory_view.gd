@@ -172,14 +172,21 @@ func _try_buy(stack : ItemStack):
 		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
 			x.inventory.count_items(price, counts)
 
+	var items_to_check = {}
 	for k in price:
 		if !counts.has(k) || counts[k] < price[k]:
 			return false
 
+		if k is ItemPattern:
+			k.collect_item_dict(items_to_check)
+
+		else:
+			items_to_check[k] = true
+
 	for x in inventories:
 		if price.size() == 0: break
-		x.inventory.consume_items(price)
-	
+		x.inventory.consume_items(price, false, items_to_check)
+
 	return true
 
 

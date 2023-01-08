@@ -41,3 +41,14 @@ func get_value(of_stack : ItemStack) -> float:
 
 	if found_at == -1: return 0.0
 	return efficiency[found_at] * of_stack.count
+
+
+func collect_item_dict(dict : Dictionary = {}) -> Dictionary:
+	for x in items:
+		if x is ItemType:
+			dict[x] = true
+
+		else:
+			x.collect_item_dict(dict)
+
+	return dict

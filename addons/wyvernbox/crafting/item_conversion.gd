@@ -38,12 +38,13 @@ func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, un
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
 
+	var items_to_check = get_items_to_check(input_types)
 	var left_to_draw = keys_values_to_dict(input_types, input_counts)
 	for x in draw_from_inventories:
 		if x is InventoryView:
 			x = x.inventory
 
-		consumed_stacks.append_array(x.consume_items(left_to_draw))
+		consumed_stacks.append_array(x.consume_items(left_to_draw, false, items_to_check))
 
 	var results = []
 	for i in output_types.size():
@@ -80,11 +81,12 @@ func get_inputs_as_dict():
 
 static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
 	var have_total = {}
+	var items_to_check = get_items_to_check(items_patterns)
 	for x in inventories:
 		if x is InventoryView:
 			x = x.inventory
 
-		x.count_items(items_patterns, have_total)  # Collects counts into have_total
+		x.count_items(items_patterns, have_total, items_to_check)  # Collects counts into have_total
 
 	return have_total
 	
@@ -112,3 +114,15 @@ static func keys_values_to_dict(keys : Array, values : Array) -> Dictionary:
 		result[keys[i]] = values[i]
 
 	return result
+
+
+static func get_items_to_check(items_patterns) -> Dictionary:
+	var dict := {}
+	for x in items_patterns:
+		if x is ItemType:
+			dict[x] = true
+
+		else:
+			x.collect_item_dict(dict)
+
+	return dict
