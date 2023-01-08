@@ -47,7 +47,7 @@ func _on_button_pressed(index):
 	var output_stacks
 	if input_from_all_takeable:
 		var all_invs = get_tree().get_nodes_in_group("inventory_view")
-		var drawable_invs = ItemConversion.get_drawable_inventories(all_invs)
+		var drawable_invs = item_conversions[index].get_takeable_inventories_sorted(all_invs)
 		output_stacks = item_conversions[index].apply(
 			drawable_invs, rng,
 			false
@@ -131,7 +131,7 @@ func count_all_inventories(items_patterns) -> Dictionary:
 		return ItemConversion.count_all_inventories([get_node(source_inventory)], items_patterns)
 
 	var all = get_tree().get_nodes_in_group("inventory_view")
-	var drawable = ItemConversion.get_drawable_inventories(all)
+	var drawable = ItemConversion.get_takeable_inventories(all)
 	return ItemConversion.count_all_inventories(drawable, items_patterns)
 
 

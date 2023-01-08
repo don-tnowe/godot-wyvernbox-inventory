@@ -31,6 +31,7 @@ __meta__ = {
 "_edit_group_": true
 }
 interaction_mode = 13
+auto_take_priority = -32
 width = 18
 height = 18
 
@@ -93,9 +94,9 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="Inventory" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource( 3 )]
-margin_left = 3.0
+margin_left = 115.0
 margin_top = 17.0
-margin_right = 229.0
+margin_right = 341.0
 margin_bottom = 243.0
 rect_min_size = Vector2( 226, 226 )
 width = 16

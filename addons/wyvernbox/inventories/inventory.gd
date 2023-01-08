@@ -253,7 +253,7 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 	var check_reqs = prepacked_reqs.size() > 0
 	var matched_pattern
 	var stack_value : int
-	for x in items.duplicate():
+	for x in get_items_ordered():
 		if item_type_counts.size() == 0:
 			break
 
@@ -277,6 +277,12 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 			consumed_stacks.append(x)
 
 	return consumed_stacks
+
+
+func get_items_ordered():
+	var arr = items.duplicate()
+	arr.sort_custom(self, "compare_pos_sort")
+	return arr
 
 
 func _get_match(item : ItemStack, items_patterns) -> Resource:
@@ -313,5 +319,9 @@ func sort():
 				try_add_item(x)
 
 
-func compare_size_sort(a, b):
+func compare_size_sort(a : Vector2, b : Vector2):
 	return a.x + a.y * 1.01 > b.x + b.y * 1.01
+
+
+func compare_pos_sort(a : ItemStack, b : ItemStack):
+	return a.position_in_inventory.x + a.position_in_inventory.y * _width < b.position_in_inventory.x + b.position_in_inventory.y * _width

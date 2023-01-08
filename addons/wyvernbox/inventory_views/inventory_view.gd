@@ -19,6 +19,7 @@ export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_
 export var show_backgrounds := true
 export var enable_view_filters := true
 export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
+export var auto_take_priority := 0
 export var width := 12 setget _set_grid_width
 
 var inventory : Reference setget _set_inventory
@@ -163,7 +164,8 @@ func _try_buy(stack : ItemStack):
 	var price = stack.extra_properties["price"].duplicate()
 	var counts = {}
 	var inventories = get_tree().get_nodes_in_group("inventory_view")
-	
+	inventories.sort_custom(self, "_sort_inventories_priority")
+
 	var k_loaded
 	for k in price.keys():
 		# Stored inside items as paths. When deducting, must use objects
@@ -306,3 +308,7 @@ func clear_filters():
 
 func sort_inventory():
 	inventory.sort()
+
+
+func _compare_inventory_priority(a, b):
+	return a.auto_take_priority <= b.auto_take_priority

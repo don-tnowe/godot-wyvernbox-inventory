@@ -80,12 +80,11 @@ func get_stock(index : int):
 func put_up_for_sale(stack : ItemStack, inventory : Inventory, stash_index : int):
 	stack.extra_properties["seller_stash_index"] = stash_index
 	stack.extra_properties["for_sale"] = true
-	if stash_index != -1:
-		if !free_buyback:
-			apply_price_markup(stack)
+	if stash_index != -1 || !free_buyback:
+		apply_price_markup(stack)
 
-		if !infinite_restocks && stock_restocks[stash_index] > 0:
-			stack.extra_properties["left_in_stock"] = stock_restocks[stash_index]
+	if stash_index != -1 && !infinite_restocks && stock_restocks[stash_index] > 0:
+		stack.extra_properties["left_in_stock"] = stock_restocks[stash_index]
 
 
 func apply_price_markup(stack : ItemStack):

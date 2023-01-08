@@ -75,8 +75,10 @@ func can_apply_with_items(item_counts : Dictionary) -> bool:
 	)
 
 
-func get_inputs_as_dict():
-	return keys_values_to_dict(input_types, input_counts)
+func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
+	all_inventory_views = get_takeable_inventories(all_inventory_views)
+	all_inventory_views.sort_custom(self, "compare_priorities")
+	return all_inventory_views
 
 
 static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
@@ -99,7 +101,7 @@ static func dict_has_enough(dict : Dictionary, requirements : Dictionary) -> boo
 	return true
 
 
-static func get_drawable_inventories(all_inventory_views : Array) -> Array:
+static func get_takeable_inventories(all_inventory_views : Array) -> Array:
 	var result = []
 	for x in all_inventory_views:
 		if x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO != 0:
@@ -126,3 +128,7 @@ static func get_items_to_check(items_patterns) -> Dictionary:
 			x.collect_item_dict(dict)
 
 	return dict
+
+
+static func compare_priorities(inv_a, inv_b):
+	return inv_a.auto_take_priority > inv_b.auto_take_priority
