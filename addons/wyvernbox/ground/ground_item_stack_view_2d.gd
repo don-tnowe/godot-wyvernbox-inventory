@@ -98,7 +98,7 @@ func _on_name_gui_input(event : InputEvent):
 func _on_HoverRect_mouse_exited():
 	if !Input.is_action_pressed("inventory_less"):
 		$"Label/Label".hide()
-		get_tree().get_nodes_in_group("tooltip")[0].ground_item_released()
+		get_tree().get_nodes_in_group("tooltip")[0]._on_ground_item_released()
 
 
 func _on_HoverRect_mouse_entered():
