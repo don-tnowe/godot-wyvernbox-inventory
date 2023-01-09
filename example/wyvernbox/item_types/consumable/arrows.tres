@@ -9,7 +9,8 @@ region = Rect2( 12, 24, 24, 12 )
 
 [resource]
 script = ExtResource( 2 )
-name = "arrows"
+name = "item_name_arrows"
+description = "item_desc_arrows"
 max_stack_count = 20
 in_inventory_width = 2
 in_inventory_height = 1

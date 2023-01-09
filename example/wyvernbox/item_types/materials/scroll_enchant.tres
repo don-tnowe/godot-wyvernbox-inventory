@@ -9,7 +9,8 @@ region = Rect2( 96, 24, 12, 24 )
 
 [resource]
 script = ExtResource( 2 )
-name = "scroll_enchant"
+name = "item_name_scroll_enchant"
+description = "item_desc_scroll_enchant"
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 2

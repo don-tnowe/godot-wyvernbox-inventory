@@ -32,7 +32,7 @@ func _show_price(item_stack):
 			"\n[color=#"
 			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
 			+ "]"
-			+ tr("item_name_" + k_loaded.name) + "[/color] x"
+			+ tr(k_loaded.name) + "[/color] x"
 			+ str(price[k])
 		)
 		if item_for_sale:

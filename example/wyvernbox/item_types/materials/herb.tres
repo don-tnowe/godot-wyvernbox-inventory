@@ -9,7 +9,8 @@ region = Rect2( 12, 36, 24, 12 )
 
 [resource]
 script = ExtResource( 2 )
-name = "herb"
+name = "item_name_herb"
+description = "item_desc_herb"
 max_stack_count = 20
 in_inventory_width = 2
 in_inventory_height = 1

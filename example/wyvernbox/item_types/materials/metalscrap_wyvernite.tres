@@ -9,7 +9,8 @@ region = Rect2( 48, 36, 12, 12 )
 
 [resource]
 script = ExtResource( 2 )
-name = "metalscrap_wyvernite"
+name = "item_name_metalscrap_wyvernite"
+description = "item_desc_metalscrap_wyvernite"
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 1

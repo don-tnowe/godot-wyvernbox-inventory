@@ -61,10 +61,10 @@ func get_name() -> String:
 	var trd := name_with_affixes.duplicate()
 	for i in trd.size():
 		if trd[i] != null:
-			trd[i] = tr("item_affix_" + trd[i])
+			trd[i] = tr(trd[i])
 
 		else:
-			trd[i] = tr("item_name_" + item_type.name)
+			trd[i] = tr(item_type.name)
 	
 	return " ".join(trd)
 

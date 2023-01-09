@@ -106,7 +106,7 @@ func get_recipe_bbcode(res):
 		result += "\n%s%s %s [color=#%s]%s[/color]" % [
 			res.input_counts[i],
 			InventoryTooltip.get_texture_bbcode(x.texture.resource_path) if x.texture != null else "",
-			tr("item_name_" + x.name),
+			tr(x.name),
 			("ff7f7f" if item_counts.get(x, 0) < res.input_counts[i] else "ffffff"),
 			tr("item_tt_have_items") % str(item_counts.get(x, 0)),
 		]
@@ -120,7 +120,7 @@ func get_recipe_bbcode(res):
 			out_range.x,
 			"-" + str(out_range.y) if out_range.x != out_range.y else "",
 			InventoryTooltip.get_texture_bbcode(x.texture.resource_path),
-			tr("item_name_" + x.name if x is ItemType else x.name),
+			tr(x.name),
 		]
 	
 	return result

@@ -42,6 +42,7 @@ const EQUIPMENT_FLAGS := (
 )
 
 export var name := ""
+export(String, MULTILINE) var description := ""
 export var max_stack_count := 1
 export var in_inventory_width := 1
 export var in_inventory_height := 1
