@@ -151,7 +151,7 @@ func _input(event):
 	if event.is_action(filter_input) && event.is_pressed():
 		if Input.is_action_pressed(clear_filter_mod_input):
 			for x in get_tree().get_nodes_in_group("inventory_view"):
-				x.clear_filters()
+				x.clear_view_filters()
 
 			return
 		
@@ -173,24 +173,26 @@ func _input(event):
 func _apply_filter_to_inventories():
 	if last_func == null: return
 	if last_func.function == "display_bonus":
+		var pattern = ItemPatternEquipStat.new([], [], [last_func_args[1].id])
 		for x in get_tree().get_nodes_in_group("inventory_view"):
-			x.set_filter("any_bonus", [last_func_args[1].id])
+			x.view_filter_patterns = [pattern]
 
 	if last_func.function != "display_item": return
 	var item_stack = last_func_args[0]
 
 	if Input.is_action_pressed(compare_input) && item_stack.extra_properties.has("price"):
-		var price = item_stack.extra_properties["price"].keys()
-		for i in price.size():
-			price[i] = load(price[i])
+		var price_items = item_stack.extra_properties["price"].keys()
+		for i in price_items.size():
+			price_items[i] = load(price_items[i])
 
+		var pattern = ItemPatternHighlightStack.new(price_items, [], item_stack)
 		for x in get_tree().get_nodes_in_group("inventory_view"):
-			x.set_filter("any_type", price)
-			x.set_filter("always_show", [item_stack])
+			x.view_filter_patterns = [pattern]
 
 	else:
+		var pattern = ItemPattern.new([item_stack.item_type])
 		for x in get_tree().get_nodes_in_group("inventory_view"):
-			x.set_filter("any_type", [item_stack.item_type])
+			x.view_filter_patterns = [pattern]
 
 
 func _on_ground_item_released():

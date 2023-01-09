@@ -165,7 +165,7 @@ func _add_item_control(item):
 func _update_item_in_control(row_index, item):
 	if item == null:
 		item = ItemType.new()
-		item.resource_name = "[use input]" if edited_object is ItemGenerator else "[empty]"
+		item.resource_name = "[use input]" if edited_object is ItemGenerator else "[any item]" if edited_object is ItemPattern else "[empty]"
 		item.texture = null
 
 	var icon = grid_l.get_child((row_index + 1) * grid_l.columns)

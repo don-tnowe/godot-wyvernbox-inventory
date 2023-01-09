@@ -73,7 +73,7 @@ func parse_property(object, type, path, hint, hint_text, usage):
 		return true
 
 	if object is ItemPattern:
-		if path == "coefficients": return true
+		if path == "efficiency": return true
 		if path == "items":
 			add_property_editor_for_multiple_properties(
 				"Matches",

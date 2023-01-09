@@ -17,17 +17,17 @@ signal grab_attempted(item_stack, success)
 export var cell_size := Vector2(14, 14) setget _set_cell_size
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
 export var show_backgrounds := true
-export var enable_view_filters := true
 export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
 export var auto_take_priority := 0
 export var width := 12 setget _set_grid_width
+
+export var enable_view_filters := true
+export(Array, Resource) var view_filter_patterns setget _set_view_filter
 
 var inventory : Reference setget _set_inventory
 var _dragged_node : Control
 var _dragged_stack : ItemStack
 var _view_nodes := []
-
-var view_filter : InventoryFilter
 
 
 func _ready():
@@ -47,6 +47,11 @@ func _set_grid_width(v):
 func _set_cell_size(v):
 	cell_size = v
 	regenerate_view()
+
+
+func _set_view_filter(v):
+	view_filter_patterns = v
+	apply_view_filters()
 
 
 func _set_inventory(v):
@@ -89,14 +94,6 @@ func _position_item(node : Control, item_stack : ItemStack):
 	node.rect_size = cell.rect_size
 
 
-func _apply_filter(applied_filter):
-	if !enable_view_filters: return
-	if applied_filter == null: return
-	var vis = applied_filter.apply(inventory.items)
-	for i in vis.size():
-		_view_nodes[i].modulate = Color.white if vis[i] else Color(0.1, 0.15, 0.3, 0.75)
-
-
 func _on_item_stack_added(item_stack : ItemStack):
 	var new_node := item_scene.instance()
 	if !has_node("ItemViews"):
@@ -112,7 +109,7 @@ func _on_item_stack_added(item_stack : ItemStack):
 	new_node.connect("gui_input", self, "_on_item_stack_gui_input", [item_stack.index_in_inventory])
 	new_node.connect("mouse_entered", self, "_on_item_stack_mouse_entered", [item_stack.index_in_inventory])
 
-	_apply_filter(view_filter)
+	apply_view_filters()
 	emit_signal("item_stack_added", item_stack)
 
 
@@ -132,7 +129,7 @@ func _on_item_stack_removed(item_stack : ItemStack):
 		nodes[node_idx].connect("mouse_entered", self, "_on_item_stack_mouse_entered", [inv_idx])
 		_redraw_item(nodes[node_idx], inventory.items[inv_idx])
 
-	_apply_filter(view_filter)
+	apply_view_filters()
 	emit_signal("item_stack_removed", item_stack)
 
 
@@ -292,18 +289,27 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 
 func can_drop_data(position, data):
 	return true
-				
-				
-func set_filter(key, value):
-	if view_filter == null: view_filter = InventoryFilter.new()
-	view_filter.set(key, value)
-	_apply_filter(view_filter)
 
 
-func clear_filters():
-	if view_filter == null: return
-	view_filter.clear()
-	_apply_filter(view_filter)
+func clear_view_filters():
+	view_filter_patterns.clear()
+	apply_view_filters()
+
+
+func apply_view_filters(stack_index : int = -1):
+	if stack_index == -1:
+		for i in _view_nodes.size():
+			apply_view_filters(i)
+
+		return
+
+	var all_match := true
+	for x in view_filter_patterns:
+		if !x.matches(inventory.items[stack_index]):
+			all_match = false
+			break
+
+	_view_nodes[stack_index].modulate = Color.white if all_match else Color(0.1, 0.15, 0.3, 0.75)
 
 
 func sort_inventory():

@@ -225,10 +225,12 @@ func count_all_items(into_dict : Dictionary = {}) -> Dictionary:
 
 func count_items(items_patterns, into_dict : Dictionary = {}, prepacked_reqs : Dictionary = {}) -> Dictionary:
 	var matched_pattern
-	var check_reqs = prepacked_reqs.size() > 0
+	var check_reqs = prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
 	for x in items:
 		# Dictionary lookup is faster than _get_match(), which has an array search
 		# and a call on an array of type-unknown objects
+		# This check is not made if ItemPattern.collect_item_dict() added a null
+		# => pattern can match any item type, not just those in dict
 		if check_reqs && !prepacked_reqs.has(x.item_type):
 			continue
 
@@ -250,7 +252,8 @@ func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
 
 func consume_items(item_type_counts : Dictionary, check_only : bool = false, prepacked_reqs : Dictionary = {}) -> Dictionary:
 	var consumed_stacks = []
-	var check_reqs = prepacked_reqs.size() > 0
+	# See count_items().
+	var check_reqs = prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
 	var matched_pattern
 	var stack_value : int
 	for x in get_items_ordered():
