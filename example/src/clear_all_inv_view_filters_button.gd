@@ -11,5 +11,5 @@ func _on_search_text_changed(new_text : String):
   if new_text != "":
     filters = [ItemPatternName.new(new_text)]
 
-  for x in get_tree().get_nodes_in_group("inventory_view"):
+  for x in get_tree().get_nodes_in_group("view_filterable"):
     x.view_filter_patterns = filters

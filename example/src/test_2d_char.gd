@@ -34,6 +34,9 @@ func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		_mouse_pressed = event.is_pressed()
 
+	if event.is_action("ui_cancel") && event.is_pressed():
+		get_node(inventory_menu).hide()
+
 	if event.is_action("menu_inventory") && event.is_pressed():
 		get_node(inventory_menu).visible = !get_node(inventory_menu).visible
 		get_node(inventory_tooltip).visible = false
@@ -50,7 +53,7 @@ func _on_Generator_pressed():
 
 
 func _on_ItemPickup_area_entered(area : Area2D):
-	if area.is_in_group("ground_item"):
+	if area.is_in_group("ground_item") && !area.filter_hidden:
 		# Inventory? Inventory. Don't hard-code paths, kids.
 #		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
 		area.try_pickup(get_node(inventory_view).inventory)

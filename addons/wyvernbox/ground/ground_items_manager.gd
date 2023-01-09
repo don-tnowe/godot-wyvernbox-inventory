@@ -4,6 +4,19 @@ extends Node
 
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
 
+var view_filter_patterns := [] setget _set_view_filters
+
+
+func _set_view_filters(v):
+	view_filter_patterns = v
+	apply_view_filters()
+
+
+func _ready():
+	add_to_group("ground_item_manager")
+	add_to_group("view_filterable")
+	connect("child_entered_tree", self, "_on_child_entered_tree")
+
 
 func load_from_array(array : Array):
 	var new_node : Node
@@ -40,6 +53,7 @@ func align_labels():
 	rects.resize(nodes.size())
 
 	for i in nodes.size():
+		if nodes[i].filter_hidden: continue
 		var cur_label_rect = nodes[i].get_node("Label/Label/Rect")
 		cur_label_rect.get_parent().hide()
 		
@@ -61,12 +75,28 @@ func align_labels():
 		)
 
 
+func apply_view_filters(stack_index : int = -1):
+	if stack_index == -1:
+		for i in get_child_count():
+			apply_view_filters(i)
+
+		return
+
+	var all_match := true
+	for x in view_filter_patterns:
+		if !x.matches(get_child(stack_index).item_stack):
+			all_match = false
+			break
+
+	get_child(stack_index).filter_hidden = !all_match
+
+
 func _move_to_free_space(rect : Rect2, label_rects : Array, upwards_step : float) -> Rect2:
 	var touches_any = true
 	while touches_any:
 		touches_any = false
 		for x in label_rects:
-			if x == null: break
+			if x == null: continue
 			if x == rect:
 				continue
 			
@@ -83,3 +113,7 @@ func _unhandled_input(event):
 	if event.is_action("inventory_less"):
 		align_labels()
 		align_labels()  # Can't figure why it doesn't work the first time
+
+
+func _on_child_entered_tree(child):
+	call_deferred("apply_view_filters", child.get_position_in_parent())

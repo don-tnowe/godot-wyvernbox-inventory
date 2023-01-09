@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd" type="Script" id=1]
 [ext_resource path="res://example/theme/font/font_numbers.tres" type="DynamicFont" id=2]
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=3]
 
 [sub_resource type="Gradient" id=1]
 interpolation_mode = 2
@@ -30,6 +31,10 @@ width = 16
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
 fill_to = Vector2( 0.5, 1 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 12, 12, 12 )
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 5.0
@@ -156,6 +161,18 @@ tracks/9/keys = {
 "update": 0,
 "values": [ Color( 0.745098, 0.745098, 0.745098, 1 ) ]
 }
+tracks/10/type = "value"
+tracks/10/path = NodePath("VisItem/Icon:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "init"
@@ -257,6 +274,18 @@ tracks/7/keys = {
 "update": 0,
 "values": [ 1.0, 0.3, 0.6, 0.0, 0.0, 1.0 ]
 }
+tracks/8/type = "value"
+tracks/8/path = NodePath("VisItem/Icon:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Gradient" id=9]
 offsets = PoolRealArray( 1 )
@@ -294,6 +323,11 @@ texture = SubResource( 6 )
 rotation = 1.57079
 scale = Vector2( 0.25, 0.25 )
 texture = SubResource( 6 )
+
+[node name="Icon" type="Sprite" parent="VisItem"]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+scale = Vector2( 0.75, 0.75 )
+texture = SubResource( 11 )
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 visible = false

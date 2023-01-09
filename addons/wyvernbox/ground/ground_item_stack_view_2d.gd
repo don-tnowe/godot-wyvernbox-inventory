@@ -7,8 +7,11 @@ signal name_clicked()
 export(Resource) var item_type setget _set_item_type
 export var item_count := 1 setget _set_item_count
 export var item_extra : Dictionary setget _set_item_extra
-export var spawn_jump_length_range := Vector2(48.0, 96.0)
 
+export var spawn_jump_length_range := Vector2(48.0, 96.0)
+export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
+
+var filter_hidden := false setget _set_filter_hidden
 var item_stack : ItemStack
 
 var item_affixes := []
@@ -27,6 +30,11 @@ func _set_item_count(v):
 func _set_item_extra(v):
 	item_extra = v
 	_update_stack()
+
+
+func _set_filter_hidden(v):
+	filter_hidden = v
+	modulate = filter_hidden_color if v else Color.white
 
 
 func set_stack(stack):
@@ -56,10 +64,11 @@ func jump_to_pos(pos):
 
 func _update_stack():
 	if item_type == null: return
-	if !is_inside_tree(): return
-		
+	if !is_inside_tree(): yield(self, "ready")
+
 	item_stack = ItemStack.new(item_type, item_count, item_extra)
 	item_stack.name_with_affixes = item_affixes
+	$"VisItem/Icon".texture = item_type.texture
 	if !Engine.editor_hint:
 		$"Label/Label".text = item_stack.get_name()
 		
@@ -71,7 +80,7 @@ func _update_stack():
 
 	if item_count != 1:
 		$"Label/Label".text += " (" + str(item_count) + ")"
- 
+
 
 func try_pickup(into_inventory):
 	var deposited_count = into_inventory.try_add_item(item_stack)
@@ -102,6 +111,6 @@ func _on_HoverRect_mouse_exited():
 
 
 func _on_HoverRect_mouse_entered():
-	if !$"Label/Label".visible:
+	if !filter_hidden && !$"Label/Label".visible:
 		$"Label/Label".show()
 		$"Label".position = Vector2(0, -2)

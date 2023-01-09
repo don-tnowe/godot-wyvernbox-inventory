@@ -33,5 +33,5 @@ The `example/wyvernbox` folder contains some items and equipment stats to start.
   - Crafting recipes are defined through an `ItemConversion` - can give you pre-determined results, randomized counts, or a fresh new from an `ItemGenerator`!
   - Use `ItemPattern`s to match one of several items in filters or recipes, like different fuel types with different efficiency!
 
-- Inventory view/entry filtering via the versatile `ItemPattern` classes!
+- Filter ground and inventory items via the versatile `ItemPattern` classes!
 - Tooltips extensible with the `TooltipProperty` class!
