@@ -54,10 +54,26 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -60.0
-margin_top = -63.0
+margin_top = -84.0
 margin_right = 58.0
-margin_bottom = -43.0
+margin_bottom = -64.0
 text = "Loot"
+
+[node name="Label" type="Label" parent="Gameplay/Generator"]
+margin_left = -39.0
+margin_top = 22.0
+margin_right = 173.0
+margin_bottom = 36.0
+text = "(Press Tab or E to open inventory)"
+align = 1
+
+[node name="Label2" type="Label" parent="Gameplay/Generator"]
+margin_left = -39.0
+margin_top = 37.0
+margin_right = 175.0
+margin_bottom = 51.0
+text = "(Hold Alt to highlight items)"
+align = 1
 
 [node name="Node2D" type="Node2D" parent="Gameplay"]
 __meta__ = {

@@ -16,10 +16,14 @@ func _physics_process(delta):
 		move_and_slide(get_local_mouse_position().normalized() * movespeed)
 
 	else:
-		move_and_slide(Input.get_vector(
+		var input_vec = Input.get_vector(
 			"ui_left", "ui_right",
 			"ui_up", "ui_down"
-		) * movespeed)
+		) + Input.get_vector(
+			"move_left", "move_right",
+			"move_up", "move_down"
+		)
+		move_and_slide(input_vec.limit_length(1.0) * movespeed)
 
 
 func _ready():

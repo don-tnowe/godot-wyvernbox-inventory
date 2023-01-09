@@ -31,8 +31,8 @@ __meta__ = {
 
 [node name="Control" type="Control" parent="."]
 margin_right = 632.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 146, 120 )
+margin_bottom = 130.0
+rect_min_size = Vector2( 146, 130 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -52,18 +52,17 @@ __meta__ = {
 
 [node name="Equip" parent="Control" instance=ExtResource( 9 )]
 margin_left = 0.0
+margin_top = 6.0
 margin_right = 0.0
-__meta__ = {
-"_edit_lock_": true
-}
+margin_bottom = 6.0
 
 [node name="Money" parent="Control" instance=ExtResource( 4 )]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = 49.0
-margin_top = 18.0
+margin_top = 27.0
 margin_right = 49.0
-margin_bottom = 18.0
+margin_bottom = 27.0
 __meta__ = {
 "_edit_group_": true
 }
@@ -73,15 +72,11 @@ max_stack = 5000
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -84.0
-margin_top = 18.0
+margin_top = 26.0
 margin_right = -84.0
-margin_bottom = 18.0
+margin_bottom = 26.0
 mouse_filter = 2
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
 item_scene = ExtResource( 1 )
 interaction_mode = 5
 width = 6
@@ -143,8 +138,79 @@ margin_right = 32.0
 margin_bottom = 86.0
 rect_min_size = Vector2( 14, 26 )
 
+[node name="Labels" type="Control" parent="Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_top = 1.0
+margin_bottom = 1.0
+
+[node name="Label" type="Label" parent="Control/Labels"]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+margin_left = -171.0
+margin_top = 8.0
+margin_right = -54.0
+margin_bottom = 22.0
+text = "Potions"
+align = 2
+valign = 2
+
+[node name="Label2" type="Label" parent="Control/Labels"]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+margin_left = 51.0
+margin_top = 10.0
+margin_right = 148.0
+margin_bottom = 24.0
+text = "Ammo"
+valign = 2
+
+[node name="Label3" type="Label" parent="Control/Labels"]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+margin_left = 51.0
+margin_top = 64.0
+margin_right = 148.0
+margin_bottom = 78.0
+text = "Coins"
+valign = 2
+
+[node name="Label4" type="Label" parent="Control/Labels"]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+margin_left = -50.0
+margin_top = 2.0
+margin_right = 48.0
+margin_bottom = 16.0
+text = "Equipment"
+align = 1
+valign = 2
+
+[node name="Button" type="Button" parent="Control/Labels"]
+margin_left = 55.0
+margin_top = 42.0
+margin_right = 73.0
+margin_bottom = 62.0
+text = "?"
+
+[node name="Popup" type="AcceptDialog" parent="Control/Labels"]
+margin_left = -6.0
+margin_top = 30.0
+margin_right = 328.0
+margin_bottom = 156.0
+window_title = "Hint"
+
+[node name="Label2" type="Label" parent="Control/Labels/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+text = "Potions and Equipment use RestrictedInventory.
+-> They can only fit items with the matching flags;
+
+Ammo and Coins use CurrencyInventory.
+-> They can only fit item types specified per slot."
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_top = 124.0
+margin_top = 134.0
 margin_right = 632.0
 margin_bottom = 260.0
 rect_min_size = Vector2( 0, 96 )
@@ -164,3 +230,4 @@ equip_inventory_view = NodePath("../../Control/Equip")
 
 [connection signal="item_stack_added" from="Control/Equip" to="ScrollContainer/StatsDisplay" method="_on_Equip_item_stack_added"]
 [connection signal="item_stack_removed" from="Control/Equip" to="ScrollContainer/StatsDisplay" method="_on_Equip_item_stack_removed"]
+[connection signal="pressed" from="Control/Labels/Button" to="Control/Labels/Popup" method="popup_centered"]

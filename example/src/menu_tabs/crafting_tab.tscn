@@ -86,6 +86,50 @@ margin_top = 122.0
 margin_right = 640.0
 margin_bottom = 122.0
 
+[node name="Button" type="Button" parent="VBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 90.0
+margin_top = -25.0
+margin_right = 108.0
+margin_bottom = -5.0
+text = "?"
+
+[node name="Popup" type="AcceptDialog" parent="VBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 61.0
+margin_top = -78.0
+margin_right = 510.0
+margin_bottom = 201.0
+window_title = "Hint"
+
+[node name="Label2" type="Label" parent="VBoxContainer/Control/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+text = "Crafting can be done via ItemConversions.
+
+Most recipes here are defined purely through ItemTypes,
+but the Enchantments each use an ItemGeneratorEquipmentBonus.
+
+ItemGenerators allow output of a random item, or one generated
+through code, optionally based on inputs.
+
+It's also possible to use ItemPatterns to allow one of several items
+(optionally with different efficiency in a recipe, fuel for example),
+or any items matching a pattern.
+
+Unlike Vendors, Conversions apply Generators
+*after* the cost is consumed!"
+
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 margin_top = 126.0
 margin_right = 640.0
@@ -101,3 +145,4 @@ size_flags_horizontal = 3
 [connection signal="item_stack_added" from="VBoxContainer/Output" to="." method="update_availability"]
 [connection signal="item_stack_changed" from="VBoxContainer/Output" to="." method="update_availability"]
 [connection signal="item_stack_removed" from="VBoxContainer/Output" to="." method="update_availability"]
+[connection signal="pressed" from="VBoxContainer/Control/Button" to="VBoxContainer/Control/Popup" method="popup_centered"]

@@ -49,8 +49,34 @@ align = 1
 autowrap = true
 script = ExtResource( 32 )
 
+[node name="Button" type="Button" parent="ShopManager"]
+margin_left = 90.0
+margin_top = 35.0
+margin_right = 108.0
+margin_bottom = 55.0
+text = "?"
+
+[node name="Popup" type="AcceptDialog" parent="ShopManager"]
+margin_left = 90.0
+margin_top = 30.0
+margin_right = 488.0
+margin_bottom = 258.0
+window_title = "Hint"
+dialog_text = "Welcome to my humble Shop! I am an InventoryVendor.
+
+All inventories allow vendor functionality, but I'm special - I
+give extra options for configuration, as well as restocking!
+
+All my wares are enchanted! Not without help of an
+ItemGeneratorEquipmentBonus.
+
+Unlike Conversions, I apply ItemGenerators
+*before* the cost is consumed! Nothing shady, you get
+what you see."
+
 [connection signal="grab_attempted" from="Inventory" to="ShopManager" method="_on_Inventory_grab_attempted"]
 [connection signal="item_stack_added" from="Inventory" to="ShopManager" method="_on_Inventory_item_stack_added"]
 [connection signal="item_cant_afford" from="ShopManager" to="ShopManager/Label" method="_on_ShopManager_item_cant_afford"]
 [connection signal="item_given" from="ShopManager" to="ShopManager/Label" method="_on_ShopManager_item_given"]
 [connection signal="item_received" from="ShopManager" to="ShopManager/Label" method="_on_ShopManager_item_received"]
+[connection signal="pressed" from="ShopManager/Button" to="ShopManager/Popup" method="popup_centered"]
