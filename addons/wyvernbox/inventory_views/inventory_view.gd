@@ -22,7 +22,7 @@ export var auto_take_priority := 0
 export var width := 12 setget _set_grid_width
 
 export var enable_view_filters := true
-export(Array, Resource) var view_filter_patterns setget _set_view_filter
+export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
 
 var inventory : Reference setget _set_inventory
 var _dragged_node : Control
@@ -32,16 +32,12 @@ var _view_nodes := []
 
 func _ready():
 	call_deferred("add_to_group", "inventory_view")
+	call_deferred("add_to_group", "view_filterable")
 	_ready2()
 
 
 func _ready2():
 	_set_inventory(Inventory.new($"Cells".get_child_count(), 1))
-
-
-func _set_grid_width(v):
-	width = v
-	regenerate_view()
 
 
 func _set_cell_size(v):
@@ -89,7 +85,7 @@ func _redraw_item(node : Control, item_stack : ItemStack):
 
 
 func _position_item(node : Control, item_stack : ItemStack):
-	var cell = $"Cells".get_child(item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * width)
+	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
 	node.rect_position = cell.rect_position
 	node.rect_size = cell.rect_size
 

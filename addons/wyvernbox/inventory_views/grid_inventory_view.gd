@@ -2,16 +2,18 @@ tool
 class_name GridInventoryView, "res://addons/wyvernbox/icons/grid_inventory.png"
 extends InventoryView
 
+export var width := 12 setget _set_grid_width
 export var height := 8 setget _set_grid_height
 export var border_width := 1.0 setget _set_border_width
 
 
-func _set_grid_width(v):
-	._set_grid_width(v)
-
-
 func _set_cell_size(v):
 	._set_cell_size(v)
+
+
+func _set_grid_width(v):
+	width = v
+	regenerate_view()
 
 
 func _set_grid_height(v):
