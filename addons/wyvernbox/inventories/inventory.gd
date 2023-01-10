@@ -328,3 +328,49 @@ func compare_size_sort(a : Vector2, b : Vector2):
 
 func compare_pos_sort(a : ItemStack, b : ItemStack):
 	return a.position_in_inventory.x + a.position_in_inventory.y * _width < b.position_in_inventory.x + b.position_in_inventory.y * _width
+
+
+func load_from_array(array : Array):
+	var new_item : ItemStack
+	for x in array:
+		new_item = ItemStack.new_from_dict(x)
+		if new_item.position_in_inventory.x == -1:
+			try_add_item(new_item)
+
+		else:
+			try_place_stackv(new_item, new_item.position_in_inventory)
+
+
+func to_array():
+	var array = []
+	array.resize(items.size())
+	for i in array.size():
+		array[i] = items[i].to_dict()
+
+	return array
+
+
+func save_state(filename):
+	if filename == "": return
+	filename = "user://" + filename.trim_prefix("user://")
+
+	var file = File.new()
+	var dir = Directory.new()
+	if !dir.dir_exists(filename.get_base_dir()):
+		dir.make_dir_recursive(filename.get_base_dir())
+
+	file.open(filename, File.WRITE)
+	file.store_var(to_array())
+
+
+func load_state(filename):
+	if filename == "": return
+	filename = "user://" + filename.trim_prefix("user://")
+
+	var file = File.new()
+	var dir = Directory.new()
+	if !file.file_exists(filename):
+		return
+
+	file.open(filename, File.READ)
+	load_from_array(file.get_var())

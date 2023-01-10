@@ -112,6 +112,7 @@ shape = SubResource( 4 )
 
 [node name="Items" type="Node2D" parent="Gameplay/Node2D"]
 script = ExtResource( 18 )
+autosave_file_path = "items/ground.dat"
 item_scene = ExtResource( 4 )
 
 [node name="Inventory" type="CanvasLayer" parent="."]

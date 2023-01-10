@@ -102,7 +102,18 @@ static func arrays_equal(a : Array, b : Array) -> bool:
 			return false
 
 	return true
-	
+
+
+static func new_from_dict(dict):
+	var new_item = load("res://addons/wyvernbox/item_stack.gd").new(
+		load(dict["type"]),
+		dict["count"],
+		dict["extra"]
+	)
+	new_item.name_with_affixes = dict.get("name", [null])
+	new_item.position_in_inventory = dict.get("position", Vector2(-1, -1))
+	return new_item
+
 
 func _to_string():
 	return (
@@ -111,3 +122,13 @@ func _to_string():
 		+ ", Data: \n" + str(extra_properties)
 		+ "\n"
 	)
+
+
+func to_dict():
+	return {
+		"type" : item_type.resource_path,
+		"count" : count,
+		"extra" : extra_properties,
+		"name" : name_with_affixes,
+		"position" : position_in_inventory,
+	}

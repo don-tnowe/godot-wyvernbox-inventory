@@ -19,7 +19,15 @@ export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_
 export var show_backgrounds := true
 export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
 export var auto_take_priority := 0
-export var width := 12 setget _set_grid_width
+
+export var sync_with_inventory := NodePath()
+export var autosave_file_path := ""
+export(int,
+	"LO // Manually through save_state() calls",
+	"MID // On quit/scene change",
+	"HI // On open/close",
+	"Paranoic // On any item added/removed"
+) var autosave_intensity := 2
 
 export var enable_view_filters := true
 export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
@@ -33,11 +41,23 @@ var _view_nodes := []
 func _ready():
 	call_deferred("add_to_group", "inventory_view")
 	call_deferred("add_to_group", "view_filterable")
+	connect("visibility_changed", self, "_on_visibility_changed")
 	_ready2()
+	yield(get_tree(), "idle_frame")  # Clone source view might not have initialized
+	if has_node(sync_with_inventory):
+		_set_inventory(get_node(sync_with_inventory).inventory)
+
+	else:
+		load_state()
 
 
 func _ready2():
 	_set_inventory(Inventory.new($"Cells".get_child_count(), 1))
+
+
+func _exit_tree():
+	if autosave_intensity >= 1:
+		save_state()
 
 
 func _set_cell_size(v):
@@ -51,6 +71,7 @@ func _set_view_filter(v):
 
 
 func _set_inventory(v):
+	if Engine.editor_hint: return
 	if inventory != null:
 		inventory.disconnect("item_stack_added", self, "_on_item_stack_added")
 		inventory.disconnect("item_stack_changed", self, "_on_item_stack_changed")
@@ -108,6 +129,9 @@ func _on_item_stack_added(item_stack : ItemStack):
 	apply_view_filters()
 	emit_signal("item_stack_added", item_stack)
 
+	if autosave_intensity >= 3:
+		save_state()
+
 
 func _on_item_stack_removed(item_stack : ItemStack):
 	var nodes = _view_nodes.duplicate()
@@ -128,11 +152,17 @@ func _on_item_stack_removed(item_stack : ItemStack):
 	apply_view_filters()
 	emit_signal("item_stack_removed", item_stack)
 
+	if autosave_intensity >= 3:
+		save_state()
+
 
 func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 	var node = _view_nodes[item_stack.index_in_inventory]
 	_redraw_item(node, item_stack)
 	emit_signal("item_stack_changed", item_stack, count_delta)
+
+	if autosave_intensity >= 3:
+		save_state()
 
 
 func _grab_stack(stack_index : int):
@@ -312,5 +342,18 @@ func sort_inventory():
 	inventory.sort()
 
 
+func save_state(filepath = ""):
+	inventory.save_state(autosave_file_path if filepath == "" else filepath)
+
+
+func load_state(filepath = ""):
+	inventory.load_state(autosave_file_path if filepath == "" else filepath)
+
+
 func _compare_inventory_priority(a, b):
 	return a.auto_take_priority <= b.auto_take_priority
+
+
+func _on_visibility_changed():
+	if autosave_intensity >= 2:
+		save_state()

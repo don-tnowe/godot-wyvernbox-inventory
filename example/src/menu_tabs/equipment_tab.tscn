@@ -55,6 +55,7 @@ margin_left = 0.0
 margin_top = 6.0
 margin_right = 0.0
 margin_bottom = 6.0
+autosave_file_path = "items/hero/equip.dat"
 
 [node name="Money" parent="Control" instance=ExtResource( 4 )]
 anchor_left = 0.5
@@ -66,6 +67,7 @@ margin_bottom = 27.0
 __meta__ = {
 "_edit_group_": true
 }
+autosave_file_path = "items/hero/currency.dat"
 max_stack = 5000
 
 [node name="Potions" type="Control" parent="Control"]
@@ -79,7 +81,7 @@ mouse_filter = 2
 script = ExtResource( 5 )
 item_scene = ExtResource( 1 )
 interaction_mode = 5
-width = 6
+autosave_file_path = "items/hero/potions.dat"
 allow_rotation = false
 restricted_to_types = [ 16, 16, 16, 16, 16, 16 ]
 

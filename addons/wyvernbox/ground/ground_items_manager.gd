@@ -2,6 +2,7 @@ class_name GroundItemManager, "res://addons/wyvernbox/icons/ground_item_manager.
 extends Node
 
 
+export var autosave_file_path := ""
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
 
 var view_filter_patterns := [] setget _set_view_filters
@@ -16,6 +17,11 @@ func _ready():
 	add_to_group("ground_item_manager")
 	add_to_group("view_filterable")
 	connect("child_entered_tree", self, "_on_child_entered_tree")
+	load_state(autosave_file_path)
+
+
+func _exit_tree():
+	save_state(autosave_file_path)
 
 
 func load_from_array(array : Array):
@@ -23,21 +29,33 @@ func load_from_array(array : Array):
 	for x in array:
 		new_node = item_scene.instance()
 		add_child(new_node)
+		new_node.skip_spawn_animation()
+
 		new_node.item_type = load(x["type"])
 		new_node.item_count = x["count"]
 		new_node.item_extra = x["extra"]
-		new_node.global_translation = x["position"]
+		new_node.item_affixes = x.get("name", [null])
+		if new_node is Node2D:
+			new_node.global_position = x["position"]
+
+		else:
+			new_node.global_translation = x["position"]
 
 
 func to_array():
-	var array = get_children()
+	var children = get_children()
+	var array = []
+	array.resize(children.size())
 	for i in array.size():
 		array[i] = {
-			"type" : array[i].item_type.resource_path,
-			"count" : array[i].item_count,
-			"extra" : array[i].item_extra,
-			"position" : (array[i].global_position if (array[i] is Node2D) else array[i].global_translation)
+			"type" : children[i].item_type.resource_path,
+			"count" : children[i].item_count,
+			"extra" : children[i].item_extra,
+			"name" : children[i].item_affixes,
+			"position" : (children[i].global_position if (children[i] is Node2D) else children[i].global_translation)
 		}
+	
+	return array
 
 
 func align_labels():
@@ -89,6 +107,32 @@ func apply_view_filters(stack_index : int = -1):
 			break
 
 	get_child(stack_index).filter_hidden = !all_match
+
+
+func save_state(filename):
+	if filename == "": return
+	filename = "user://" + filename.trim_prefix("user://")
+
+	var file = File.new()
+	var dir = Directory.new()
+	if !dir.dir_exists(filename.get_base_dir()):
+		dir.make_dir_recursive(filename.get_base_dir())
+
+	file.open(filename, File.WRITE)
+	file.store_var(to_array())
+
+
+func load_state(filename):
+	if filename == "": return
+	filename = "user://" + filename.trim_prefix("user://")
+
+	var file = File.new()
+	var dir = Directory.new()
+	if !file.file_exists(filename):
+		return
+
+	file.open(filename, File.READ)
+	load_from_array(file.get_var())
 
 
 func _move_to_free_space(rect : Rect2, label_rects : Array, upwards_step : float) -> Rect2:

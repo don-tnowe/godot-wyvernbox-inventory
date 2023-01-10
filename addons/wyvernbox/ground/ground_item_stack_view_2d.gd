@@ -13,8 +13,9 @@ export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
 
 var filter_hidden := false setget _set_filter_hidden
 var item_stack : ItemStack
+var jump_tween : SceneTreeTween
 
-var item_affixes := []
+var item_affixes := [] setget _set_item_affixes
 
 
 func _set_item_type(v):
@@ -29,6 +30,11 @@ func _set_item_count(v):
 
 func _set_item_extra(v):
 	item_extra = v
+	_update_stack()
+
+
+func _set_item_affixes(v):
+	item_affixes = v
 	_update_stack()
 
 
@@ -55,11 +61,16 @@ func _ready():
 
 
 func jump_to_pos(pos):
-	var tween = create_tween()
-	tween.tween_property(
+	jump_tween = create_tween()
+	jump_tween.tween_property(
 		self, "position",
 		pos, 0.5
 	)
+
+
+func skip_spawn_animation():
+	jump_tween.kill()
+	$"Anim".advance(3600.0)
 
 
 func _update_stack():
