@@ -3,8 +3,7 @@ extends ItemStackView
 
 export var default_inventory := NodePath("")
 export var drop_at_node := NodePath("")
-export var drop_parent := NodePath("")
-export var drop_scene : PackedScene = load("res://addons/wyvernbox/ground/ground_item_stack_view_2d.tscn")
+export var drop_ground_item_manager := NodePath("")
 export var drop_max_distance := 256.0
 export var unit_size := Vector2(18, 18)
 
@@ -121,19 +120,9 @@ func _any_inventory_try_drop_stack(stack):
 
 
 func drop_on_ground(stack):
-	var new_node = drop_scene.instance()
-	new_node.set_stack(stack)
-	get_node(drop_parent).add_child(new_node)
-	if new_node is Node2D:
-		new_node.global_position = get_node(drop_at_node).global_position
-		new_node.jump_to_pos(new_node.global_position + (
-			get_global_mouse_position() - new_node.global_position
-		).limit_length(drop_max_distance))
-
-	else:
-		new_node.global_translation = get_node(drop_at_node).global_translation
-
-	new_node.connect("name_clicked", get_node(drop_at_node), "_on_ItemPickup_area_entered", [new_node])
+	var spawn_at_pos = get_node(drop_at_node).global_position
+	var throw_vec = (get_global_mouse_position() - spawn_at_pos).limit_length(drop_max_distance)
+	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 

@@ -53,11 +53,6 @@ func set_stack(stack):
 
 func _ready():
 	_update_stack()
-	if !Engine.editor_hint:
-		jump_to_pos(position + Vector2(
-				rand_range(spawn_jump_length_range.x, spawn_jump_length_range.y),
-				0
-		).rotated(randf() * TAU))
 
 
 func jump_to_pos(pos):
@@ -68,8 +63,15 @@ func jump_to_pos(pos):
 	)
 
 
+func get_random_jump_vector():
+	return Vector2(
+		rand_range(spawn_jump_length_range.x, spawn_jump_length_range.y),
+		0
+	).rotated(randf() * TAU)
+
+
 func skip_spawn_animation():
-	jump_tween.kill()
+	if jump_tween != null: jump_tween.kill()
 	$"Anim".advance(3600.0)
 
 

@@ -1,12 +1,12 @@
 extends KinematicBody2D
 
 export var movespeed := 128.0
-export var spawn_item : PackedScene
 export var generator : Resource
 
 export var inventory_menu := NodePath()
 export var inventory_view := NodePath()
 export var inventory_tooltip := NodePath()
+export var ground_items := NodePath()
 
 var _mouse_pressed := false
 
@@ -43,13 +43,10 @@ func _unhandled_input(event):
 
 
 func _on_Generator_pressed():
+	var item_manager = get_node(ground_items)
 	for i in 8:
 		for x in generator.get_items():
-			var new_node = spawn_item.instance()
-			new_node.set_stack(x)
-			new_node.position = position
-			new_node.connect("name_clicked", self, "_on_ItemPickup_area_entered", [new_node])
-			$"../Items".add_child(new_node)
+			item_manager.add_item(x, global_position)
 
 
 func _on_ItemPickup_area_entered(area : Area2D):

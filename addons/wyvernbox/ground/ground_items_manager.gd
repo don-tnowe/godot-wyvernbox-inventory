@@ -1,6 +1,7 @@
 class_name GroundItemManager, "res://addons/wyvernbox/icons/ground_item_manager.png"
 extends Node
 
+signal item_clicked(item_node)
 
 export var autosave_file_path := ""
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
@@ -22,6 +23,23 @@ func _ready():
 
 func _exit_tree():
 	save_state(autosave_file_path)
+
+
+func add_item(stack : ItemStack, global_pos, throw_vector = null):
+	var item_node = item_scene.instance()
+	item_node.set_stack(stack)
+	add_child(item_node)
+
+	if item_node is Node2D:
+		item_node.global_position = global_pos
+
+	else:
+		item_node.global_translation = global_pos
+
+	if throw_vector == null:
+		throw_vector = item_node.get_random_jump_vector()
+
+	item_node.jump_to_pos(global_pos + throw_vector)
 
 
 func load_from_array(array : Array):
@@ -160,4 +178,9 @@ func _unhandled_input(event):
 
 
 func _on_child_entered_tree(child):
+	child.connect("name_clicked", self, "_on_item_clicked", [child])
 	call_deferred("apply_view_filters", child.get_position_in_parent())
+
+
+func _on_item_clicked(item):
+	emit_signal("item_clicked", item)

@@ -84,11 +84,11 @@ __meta__ = {
 [node name="Char" type="KinematicBody2D" parent="Gameplay/Node2D"]
 position = Vector2( 322, 171 )
 script = ExtResource( 3 )
-spawn_item = ExtResource( 4 )
 generator = SubResource( 5 )
 inventory_menu = NodePath("../../../Inventory/InventoryMenu")
 inventory_view = NodePath("../../../Inventory/InventoryMenu/Inventory")
 inventory_tooltip = NodePath("../../../Inventory/Tooltip")
+ground_items = NodePath("../Items")
 
 [node name="Shape" type="CollisionShape2D" parent="Gameplay/Node2D/Char"]
 shape = SubResource( 4 )
@@ -130,8 +130,7 @@ mouse_filter = 2
 script = ExtResource( 20 )
 default_inventory = NodePath("../Inventory")
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
-drop_parent = NodePath("../../../Gameplay/Node2D/Items")
-drop_scene = ExtResource( 4 )
+drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0
 unit_size = Vector2( 14, 14 )
 
@@ -146,3 +145,4 @@ compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/m
 
 [connection signal="pressed" from="Gameplay/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]
 [connection signal="area_entered" from="Gameplay/Node2D/Char/ItemPickup" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]
+[connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]
