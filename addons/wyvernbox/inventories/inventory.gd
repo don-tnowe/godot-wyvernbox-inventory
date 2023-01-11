@@ -255,7 +255,7 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 	# See count_items().
 	var check_reqs = prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
 	var matched_pattern
-	var stack_value : int
+	var stack_value : float
 	for x in get_items_ordered():
 		if item_type_counts.size() == 0:
 			break

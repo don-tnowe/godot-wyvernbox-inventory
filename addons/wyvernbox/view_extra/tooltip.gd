@@ -130,6 +130,7 @@ static func get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus)
 
 static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0):
 	var loaded = load(tex_path)
+	if loaded == null: return ""
 	return "[img=%sx%s]%s[/img]" % [
 		loaded.get_width() * tex_scale * ITEM_SCALE,
 		loaded.get_height() * tex_scale * ITEM_SCALE,

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=10 format=2]
+
+[ext_resource path="res://addons/wyvernbox/crafting/item_pattern.gd" type="Script" id=1]
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=2]
+[ext_resource path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" type="Resource" id=4]
+[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=5]
+[ext_resource path="res://example/wyvernbox/item_types/materials/herb.tres" type="Resource" id=6]
+[ext_resource path="res://example/wyvernbox/item_types/materials/feather.tres" type="Resource" id=7]
+[ext_resource path="res://example/wyvernbox/item_types/materials/wood.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/item_types/materials/magic_crystal.tres" type="Resource" id=9]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 36, 36, 12, 12 )
+
+[resource]
+script = ExtResource( 1 )
+name = ""
+texture = SubResource( 1 )
+items = [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ]
+efficiency = [ 0.2, 0.2, 0.05, 0.02, 0.05, 0.1 ]

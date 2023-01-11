@@ -19,6 +19,7 @@ item_tt_left_in_stock;In Stock: %s;;
 item_tt_crafting_in;[b]Requires:[/b];;
 item_tt_crafting_out;[b]Gives:[/b];;
 item_tt_have_items;(have %s);;
+item_tt_items_or; or ;Mind the spaces.;
 item_tt_tutorial_filter;%s to highlight same items.;;
 item_tt_tutorial_filter_bonus;%s to highlight items with this.;;
 item_tt_tutorial_price_lite;%s to highlight what's left.;;

@@ -92,38 +92,8 @@ func _on_button_mouse_entered(index):
 	get_tree().call_group("tooltip", "display_custom",
 		recipe_list_node.get_child(index),
 		tr(item_conversions[index].name),
-		get_recipe_bbcode(item_conversions[index])
+		item_conversions[index].get_bbcode(count_all_inventories(item_conversions[index].input_types))
 	)
-
-
-func get_recipe_bbcode(res):
-	var result = "\n[center]" + tr("item_tt_crafting_in")
-	var item_counts = count_all_inventories(res.input_types)
-	var x
-	for i in res.input_types.size():
-		x = res.input_types[i]
-		# 4[icon] Red Potion (have 2)
-		result += "\n%s%s %s [color=#%s]%s[/color]" % [
-			res.input_counts[i],
-			InventoryTooltip.get_texture_bbcode(x.texture.resource_path) if x.texture != null else "",
-			tr(x.name),
-			("ff7f7f" if item_counts.get(x, 0) < res.input_counts[i] else "ffffff"),
-			tr("item_tt_have_items") % str(item_counts.get(x, 0)),
-		]
-		
-	result += "\n\n" + tr("item_tt_crafting_out")
-	for i in res.output_types.size():
-		x = res.output_types[i]
-		var out_range = res.output_ranges[i]
-		# 4-6[icon] Red Potion
-		result += "\n%s%s%s %s" % [
-			out_range.x,
-			"-" + str(out_range.y) if out_range.x != out_range.y else "",
-			InventoryTooltip.get_texture_bbcode(x.texture.resource_path),
-			tr(x.name),
-		]
-	
-	return result
 
 
 func count_all_inventories(items_patterns) -> Dictionary:

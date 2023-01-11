@@ -81,6 +81,54 @@ func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
 	return all_inventory_views
 
 
+func get_bbcode(owned_item_counts = {}):
+	var result = "\n[center]" + tr("item_tt_crafting_in")
+	var x
+	var item_text
+	for i in input_types.size():
+		x = input_types[i]
+		# 4[icon] Red Potion
+		item_text = ""
+		if x is ItemPattern && x.name == "":
+			# 4[icon] Red Potion OR 4[blue potion] OR 4[purple potion] (have 2)
+			for pattern_i in x.items.size():
+				if item_text != "": item_text += tr("item_tt_items_or")
+				item_text += "%s%s %s" % [
+					1 / (x.efficiency[pattern_i] * input_counts[i]),
+					InventoryTooltip.get_texture_bbcode(x.items[pattern_i].texture.resource_path),
+					tr(x.items[pattern_i].name),
+				]
+		
+		else:
+			item_text = "%s%s %s" % [
+				input_counts[i],
+				InventoryTooltip.get_texture_bbcode(x.texture.resource_path),
+				tr(x.name),
+			]
+
+		# 4[icon] Red Potion (have 2)
+		result += "\n%s [color=#%s]%s[/color]" % [
+			item_text,
+			("ff7f7f" if owned_item_counts.get(x, 0) < input_counts[i] else "ffffff"),
+			tr("item_tt_have_items") % str(owned_item_counts.get(x, 0)),
+		]
+		
+	result += "\n\n" + tr("item_tt_crafting_out")
+	for i in output_types.size():
+		x = output_types[i]
+		var out_range = output_ranges[i]
+		# 4-6[icon] Red Potion
+		result += "\n%s%s%s %s" % [
+			out_range.x,
+			"-" + str(out_range.y) if out_range.x != out_range.y else "",
+			InventoryTooltip.get_texture_bbcode(x.texture.resource_path),
+			tr(x.name),
+		]
+	
+	return result
+
+
+
 static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
 	var have_total = {}
 	var items_to_check = get_items_to_check(items_patterns)

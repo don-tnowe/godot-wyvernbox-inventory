@@ -47,6 +47,7 @@ craft_brew_purple_potion;Brew Purple Potion;;
 craft_forge_sword;Assemble Sword;;
 craft_forge_wand;Assemble Wand;;
 craft_arrows;Fletch Arrows;;
+craft_exchange_into_gold;Perform Aureal Alchemy;;
 ;;;
 craft_enchant_melee_battleaxe;Random Enchantment: Battle Axe;;
 craft_enchant_melee_sword;Random Enchantment: Longsword;;
