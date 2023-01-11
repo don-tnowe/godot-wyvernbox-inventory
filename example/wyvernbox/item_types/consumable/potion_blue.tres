@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=1]
+[ext_resource path="res://addons/wyvernbox/item_type.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 36, 0, 12, 24 )
+
+[resource]
+script = ExtResource( 2 )
+name = "item_name_potion_blue"
+description = "item_desc_potion_blue"
+max_stack_count = 20
+in_inventory_width = 1
+in_inventory_height = 2
+texture = SubResource( 1 )
+texture_scale = 1.0
+slot_flags = 17
+default_properties_string = "{
+\"back_color\": Color( 0.67451, 0.270588, 0.972549, 1 ),
+\"price\": {
+\"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 5
+}
+}"
+default_properties = {
+"back_color": Color( 0.67451, 0.270588, 0.972549, 1 ),
+"price": {
+"res://example/wyvernbox/item_types/consumable/coin_purple.tres": 5
+}
+}

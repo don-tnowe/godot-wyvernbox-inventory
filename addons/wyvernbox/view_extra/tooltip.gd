@@ -150,11 +150,11 @@ func _update_rect(mouseover_node):
 func _input(event):
 	if event.is_action(filter_input) && event.is_pressed():
 		if Input.is_action_pressed(clear_filter_mod_input):
-			for x in get_tree().get_nodes_in_group("inventory_view"):
-				x.clear_view_filters()
+			for x in get_tree().get_nodes_in_group("view_filterable"):
+				x.view_filter_patterns = []
 
 			return
-		
+
 		_apply_filter_to_inventories()
 
 	if event.is_action(compare_input):

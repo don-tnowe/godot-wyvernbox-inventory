@@ -166,18 +166,52 @@ func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 
 
 func _grab_stack(stack_index : int):
-	var grabbed = get_tree().get_nodes_in_group("grabbed_item")[0]
-	if interaction_mode & InteractionFlags.VENDOR != 0 && grabbed.grabbed_stack != null:
-		return
-
 	var stack = inventory.items[stack_index]
-	if (interaction_mode & InteractionFlags.CAN_TAKE == 0 || !_try_buy(stack)):
+	if interaction_mode & InteractionFlags.CAN_TAKE == 0:
+		# If configured as not takeable, emit the fail signal. (can register clicks on items)
 		emit_signal("grab_attempted", stack, false)
 		return
 
-	emit_signal("grab_attempted", stack, true)
-	if !grabbed.visible:
-		grabbed.grab(stack)
+	# First, handle stacking and swapping
+	var grabbed = get_tree().get_nodes_in_group("grabbed_item")[0]
+	if grabbed.grabbed_stack != null:
+		# With non-placeable invs, stack with the Grabbed stack instead of one in the inv.
+		var grabbed_stack = grabbed.grabbed_stack
+		if interaction_mode & InteractionFlags.CAN_PLACE == 0:
+			if grabbed_stack.can_stack_with(stack):
+				var transferred = grabbed_stack.get_delta_if_added(stack.count)
+				grabbed.add_items_to_stack(transferred)
+				inventory.add_items_to_stack(stack, -transferred)
+				emit_signal("grab_attempted", stack, true)
+
+			return
+
+		# With vendors though, only stack if can fit ALL items.
+		# Also, never swap items (if can't stack).
+		if interaction_mode & InteractionFlags.VENDOR != 0:
+			# Don't compare extras: price may be different,
+			# and vendor-specific properties may not be there
+			if (
+				grabbed_stack.can_stack_with(stack, false)
+				&& grabbed_stack.get_overflow_if_added(stack.count) <= 0
+			):
+				var purchase_successful = _try_buy(stack)
+				emit_signal("grab_attempted", stack, purchase_successful)
+				if purchase_successful:
+					inventory.remove_item(stack)
+					grabbed.add_items_to_stack(stack.count)
+
+			return
+
+	# If nothing grabbed, just take the item (or not if can't afford)
+	else:
+		if !_try_buy(stack):
+			emit_signal("grab_attempted", stack, false)
+			return
+
+		emit_signal("grab_attempted", stack, true)
+		if !grabbed.visible:
+			grabbed.grab(stack)
 
 
 func _try_buy(stack : ItemStack):
@@ -315,11 +349,6 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 
 func can_drop_data(position, data):
 	return true
-
-
-func clear_view_filters():
-	view_filter_patterns.clear()
-	apply_view_filters()
 
 
 func apply_view_filters(stack_index : int = -1):

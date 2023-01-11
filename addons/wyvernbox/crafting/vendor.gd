@@ -1,6 +1,6 @@
 tool
 class_name InventoryVendor, "res://addons/wyvernbox/icons/vendor.png"
-extends Control
+extends Node
 
 signal item_received(item_stack)
 signal item_given(item_stack)
@@ -48,7 +48,7 @@ func _ready():
 
 	rng.randomize()
 	refill_stock()
-	connect("visibility_changed", self, "_on_visibility_changed")
+	get_parent().connect("visibility_changed", self, "_on_visibility_changed")
 
 
 func refill_stock():
@@ -97,6 +97,16 @@ func apply_price_markup(stack : ItemStack):
 		price_dict[k] = int(price_dict[k] * price_markup)
 
 
+func multiply_price_by_count(stack : ItemStack, reverse : bool = false):
+	var coeff = float(stack.count)
+	if reverse:
+		coeff = 1 / coeff
+
+	var price_dict = stack.extra_properties["price"]
+	for k in price_dict:
+		price_dict[k] = int(price_dict[k] * coeff)
+
+
 func remove_from_sale(stack : ItemStack):
 	var props = stack.extra_properties
 	if props.has("price"):
@@ -104,7 +114,10 @@ func remove_from_sale(stack : ItemStack):
 			"real_price", props["price"]
 		)
 		props.erase("real_price")
-	
+
+	if props["seller_stash_index"] == -1:
+		multiply_price_by_count(stack, true)
+
 	props.erase("for_sale")
 	props.erase("seller_stash_index")
 	props.erase("left_in_stock")
@@ -167,12 +180,13 @@ func _on_Inventory_item_stack_added(item_stack : ItemStack):
 		var inventory = get_node(sell_reward_into_inventory).inventory
 		var reward = item_stack.extra_properties["price"]
 		for k in reward:
-			inventory.try_add_item(ItemStack.new(load(k), reward[k]))
+			inventory.try_add_item(ItemStack.new(load(k), reward[k] * item_stack.count))
 	
 	put_up_for_sale(item_stack, get_node(vendor_inventory).inventory, -1)
+	multiply_price_by_count(item_stack, false)
 
 
 func _on_visibility_changed():
-	if !is_visible_in_tree():
+	if !get_parent().is_visible_in_tree():
 		if clear_sold_items_when_hidden:
 			clear_sold_items()

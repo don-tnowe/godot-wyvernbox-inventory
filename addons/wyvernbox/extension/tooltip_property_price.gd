@@ -26,6 +26,7 @@ func _show_price(item_stack):
 
 	add_bbcode(tr("item_tt_price"))
 	var k_loaded  # Because for easier serialization, items are stored as paths
+	var multiplier = item_stack.count if !item_for_sale else 1
 	for k in price:
 		k_loaded = load(k)
 		add_bbcode(
@@ -33,7 +34,7 @@ func _show_price(item_stack):
 			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
 			+ "]"
 			+ tr(k_loaded.name) + "[/color] x"
-			+ str(price[k])
+			+ str(price[k] * multiplier)
 		)
 		if item_for_sale:
 			add_bbcode(" [color=#%s]%s[/color] " % [

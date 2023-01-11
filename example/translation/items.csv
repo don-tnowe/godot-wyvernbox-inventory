@@ -21,6 +21,8 @@ item_name_potion_red;Healing Potion;;
 item_desc_potion_red;Restores 10 Health.;;
 item_name_potion_purple;Arcane Potion;;
 item_desc_potion_purple;It emanates a mist of mystery...;;
+item_name_potion_blue;Crystal Dew;;
+item_desc_potion_blue;Simply fresh!;;
 ;;;
 item_name_coin_gold;Gold Coin;;
 item_name_coin_purple;Wyvernite Coin;;

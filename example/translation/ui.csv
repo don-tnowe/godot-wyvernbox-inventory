@@ -4,6 +4,8 @@ menu_forge;Forge;;
 menu_stash;Stash;;
 menu_craft;Craft;;
 menu_shop;Shop;;
+menu_shop_equipment;Equipment;;
+menu_shop_consumables;Consumables;;
 ;;;
 button_sell;Sell;;
 button_reroll_store;Refresh;;

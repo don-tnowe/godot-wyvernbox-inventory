@@ -45,11 +45,11 @@ func get_delta_if_added(count_delta) -> int:
 	return int(min(item_type.max_stack_count - count, count_delta))
 
 
-func can_stack_with(stack):
+func can_stack_with(stack, compare_extras : bool = true):
 	return (
 		item_type == stack.item_type
 		&& arrays_equal(name_with_affixes, stack.name_with_affixes)
-		&& extras_equal(extra_properties, stack.extra_properties)
+		&& (!compare_extras || extras_equal(extra_properties, stack.extra_properties))
 	)
 
 

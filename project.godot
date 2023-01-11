@@ -114,7 +114,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/view_extra/tooltip_property.gd"
 }, {
-"base": "Control",
+"base": "Node",
 "class": "InventoryVendor",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/crafting/vendor.gd"

@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://example/wyvernbox/item_generators/enchant_item.tres" type="Resource" id=1]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" type="Resource" id=2]
 [ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=19]
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=20]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" type="Resource" id=22]
@@ -20,28 +21,67 @@
 margin_right = 170.0
 margin_bottom = 114.0
 
-[node name="Inventory" parent="." instance=ExtResource( 19 )]
+[node name="TabContainer" type="TabContainer" parent="."]
+margin_right = 178.0
+margin_bottom = 150.0
+
+[node name="menu_shop_equipment" type="MarginContainer" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Inventory" parent="TabContainer/menu_shop_equipment" instance=ExtResource( 19 )]
 interaction_mode = 7
 
-[node name="ShopManager" type="Control" parent="."]
-margin_left = 85.0
-margin_top = 57.0
-margin_right = 85.0
-margin_bottom = 57.0
+[node name="ShopManager" type="Node" parent="TabContainer/menu_shop_equipment"]
 script = ExtResource( 33 )
 vendor_inventory = NodePath("../Inventory")
-sell_reward_into_inventory = NodePath("../../../../Inventory")
+sell_reward_into_inventory = NodePath("../../../../../../Inventory")
 apply_to_all_stock = ExtResource( 1 )
 stock = [ ExtResource( 37 ), ExtResource( 22 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 44 ), ExtResource( 43 ), ExtResource( 42 ), ExtResource( 41 ), ExtResource( 36 ), ExtResource( 38 ) ]
 stock_counts = [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
 stock_restocks = [ 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0 ]
 infinite_restocks = false
 
-[node name="Label" type="Label" parent="ShopManager"]
+[node name="menu_shop_consumables" type="MarginContainer" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Inventory" parent="TabContainer/menu_shop_consumables" instance=ExtResource( 19 )]
+interaction_mode = 7
+
+[node name="ShopManager" type="Node" parent="TabContainer/menu_shop_consumables"]
+script = ExtResource( 33 )
+vendor_inventory = NodePath("../Inventory")
+sell_reward_into_inventory = NodePath("../../../../../../Inventory")
+stock = [ ExtResource( 2 ) ]
+stock_counts = [ 1.0 ]
+stock_restocks = [ 3.0 ]
+
+[node name="Control" type="Control" parent="."]
+margin_left = 89.0
+margin_top = 75.0
+margin_right = 89.0
+margin_bottom = 75.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
 margin_left = -57.0
-margin_top = 60.0
+margin_top = 79.0
 margin_right = 57.0
-margin_bottom = 69.0
+margin_bottom = 88.0
 grow_horizontal = 2
 custom_fonts/font = ExtResource( 20 )
 text = "shopkeeper_hello"
@@ -49,18 +89,18 @@ align = 1
 autowrap = true
 script = ExtResource( 32 )
 
-[node name="Button" type="Button" parent="ShopManager"]
-margin_left = 90.0
-margin_top = 35.0
-margin_right = 108.0
-margin_bottom = 55.0
+[node name="Button" type="Button" parent="Control"]
+margin_left = 72.0
+margin_top = 79.0
+margin_right = 90.0
+margin_bottom = 99.0
 text = "?"
 
-[node name="Popup" type="AcceptDialog" parent="ShopManager"]
-margin_left = 90.0
-margin_top = 30.0
-margin_right = 488.0
-margin_bottom = 258.0
+[node name="Popup" type="AcceptDialog" parent="Control"]
+margin_left = 5.0
+margin_top = -13.0
+margin_right = 403.0
+margin_bottom = 215.0
 window_title = "Hint"
 dialog_text = "Welcome to my humble Shop! I am an InventoryVendor.
 
@@ -74,9 +114,14 @@ Unlike Conversions, I apply ItemGenerators
 *before* the cost is consumed! Nothing shady, you get
 what you see."
 
-[connection signal="grab_attempted" from="Inventory" to="ShopManager" method="_on_Inventory_grab_attempted"]
-[connection signal="item_stack_added" from="Inventory" to="ShopManager" method="_on_Inventory_item_stack_added"]
-[connection signal="item_cant_afford" from="ShopManager" to="ShopManager/Label" method="_on_ShopManager_item_cant_afford"]
-[connection signal="item_given" from="ShopManager" to="ShopManager/Label" method="_on_ShopManager_item_given"]
-[connection signal="item_received" from="ShopManager" to="ShopManager/Label" method="_on_ShopManager_item_received"]
-[connection signal="pressed" from="ShopManager/Button" to="ShopManager/Popup" method="popup_centered"]
+[connection signal="grab_attempted" from="TabContainer/menu_shop_equipment/Inventory" to="TabContainer/menu_shop_equipment/ShopManager" method="_on_Inventory_grab_attempted"]
+[connection signal="item_stack_added" from="TabContainer/menu_shop_equipment/Inventory" to="TabContainer/menu_shop_equipment/ShopManager" method="_on_Inventory_item_stack_added"]
+[connection signal="item_cant_afford" from="TabContainer/menu_shop_equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_cant_afford"]
+[connection signal="item_given" from="TabContainer/menu_shop_equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_given"]
+[connection signal="item_received" from="TabContainer/menu_shop_equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_received"]
+[connection signal="grab_attempted" from="TabContainer/menu_shop_consumables/Inventory" to="TabContainer/menu_shop_consumables/ShopManager" method="_on_Inventory_grab_attempted"]
+[connection signal="item_stack_added" from="TabContainer/menu_shop_consumables/Inventory" to="TabContainer/menu_shop_consumables/ShopManager" method="_on_Inventory_item_stack_added"]
+[connection signal="item_cant_afford" from="TabContainer/menu_shop_consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_cant_afford"]
+[connection signal="item_given" from="TabContainer/menu_shop_consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_given"]
+[connection signal="item_received" from="TabContainer/menu_shop_consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_received"]
+[connection signal="pressed" from="Control/Button" to="Control/Popup" method="popup_centered"]

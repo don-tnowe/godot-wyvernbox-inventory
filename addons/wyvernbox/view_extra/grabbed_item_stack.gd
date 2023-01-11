@@ -45,6 +45,11 @@ func grab(item_stack : ItemStack):
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 
+func add_items_to_stack(delta : int):
+	grabbed_stack.count += delta
+	_set_grabbed_stack(grabbed_stack)
+
+
 func _set_grabbed_stack(item_stack : ItemStack):
 	grabbed_stack = item_stack
 	set_deferred("visible", item_stack != null)
