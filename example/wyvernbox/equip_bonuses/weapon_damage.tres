@@ -7,6 +7,8 @@
 [resource]
 script = ExtResource( 3 )
 id = "weapon_damage"
+name = "item_bonus_weapon_damage"
+description = "item_bonus_desc_weapon_damage"
 affix = "item_affix_weapon_damage"
 affix_position = -1
 icon = ExtResource( 2 )

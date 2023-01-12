@@ -7,6 +7,8 @@
 [resource]
 script = ExtResource( 3 )
 id = "health"
+name = "item_bonus_health"
+description = "item_bonus_desc_health"
 affix = "item_affix_health"
 affix_position = -1
 icon = ExtResource( 2 )

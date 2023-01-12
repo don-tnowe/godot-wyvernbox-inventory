@@ -7,6 +7,8 @@
 [resource]
 script = ExtResource( 3 )
 id = "dodgerate"
+name = "item_bonus_dodgerate"
+description = "item_bonus_desc_dodgerate"
 affix = "item_affix_dodgerate"
 affix_position = 1
 icon = ExtResource( 2 )

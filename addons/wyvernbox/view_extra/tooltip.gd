@@ -66,13 +66,13 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 # Displays the name and description of an `EquipBonus`.
 # `node` is the `Control` this tooltip must be placed next to.
 func display_bonus(node : Control, bonus_res : Resource):
-	var desc = tr("item_bonus_desc_" + bonus_res.id)
-	if desc == "item_bonus_desc_" + bonus_res.id:
+	var desc = tr(bonus_res.description)
+	if desc == bonus_res.description:
 		desc = ""
 	
 	display_custom(
 		node,
-		tr("item_bonus_" + bonus_res.id),
+		tr(bonus_res.name),
 		"[center]\n" + desc + "\n\n"
 		+ tr("item_tt_tutorial_filter_bonus") % get_action_bbcode(filter_input)
 	)

@@ -7,6 +7,8 @@
 [resource]
 script = ExtResource( 3 )
 id = "elemental_lightning_damage"
+name = "item_bonus_elemental_lightning_damage"
+description = "item_bonus_desc_elemental_lightning_damage"
 affix = "item_affix_elemental_lightning_damage"
 affix_position = -2
 icon = ExtResource( 2 )
