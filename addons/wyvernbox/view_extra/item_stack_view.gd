@@ -1,8 +1,10 @@
 class_name ItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends Control
 
+# The `texture_rect` node displaying the `stack`'s type's texture.
 onready var texture_rect := $"Crop/Texture"
 
+# The displayed `ItemStack`.
 var stack : ItemStack
 
 

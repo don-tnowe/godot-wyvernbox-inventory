@@ -1,6 +1,7 @@
 class_name ItemPatternHighlightStack
 extends ItemPattern
 
+# Apart from `items`, also match this stack.
 var item : ItemStack
 
 

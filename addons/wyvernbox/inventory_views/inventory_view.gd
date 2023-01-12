@@ -3,10 +3,10 @@ class_name InventoryView, "res://addons/wyvernbox/icons/inventory.png"
 extends Control
 
 enum InteractionFlags {
-	CAN_TAKE = 1 << 0,
-	VENDOR = 1 << 1,
-	CAN_PLACE = 1 << 2,
-	CAN_TAKE_AUTO = 1 << 3,
+	CAN_TAKE = 1 << 0,  # Player can take items from here.
+	VENDOR = 1 << 1,  # The player can only take items if `CAN_TAKE_AUTO` inventories contain items from the item's `price` extra property. When taken, items will be consumed.
+	CAN_PLACE = 1 << 2, # Player can place items here.
+	CAN_TAKE_AUTO = 1 << 3, # `VENDOR` inventories can take from this inventory, and `ItemConversion.get_takeable_inventories` filters out inventories wihout this flag.
 }
 
 signal item_stack_added(item_stack)
@@ -14,14 +14,23 @@ signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
 signal grab_attempted(item_stack, success)
 
+# A slot's size, in pixels.
 export var cell_size := Vector2(14, 14) setget _set_cell_size
+# A scene with an `ItemStackView` in root, spawned to display items.
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
+# Whether to show item's "back_color" extra property as a background behind it.
 export var show_backgrounds := true
+# The `InteractionFlags` of this inventory.
 export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
+# For inventories with the `InteractionFlags.CAN_TAKE_AUTO` flag. Vendors and conversions consume from higher priorities first.
 export var auto_take_priority := 0
 
+# If set, displays this `InventoryView`'s inventory instead of its own.
 export var sync_with_inventory := NodePath()
+# File path to autosave into.
+# Only supports "user://" paths.
 export var autosave_file_path := ""
+# Defines which events trigger autosave, if `autosave_file_path` set.
 export(int,
 	"LO // Manually through save_state() calls",
 	"MID // On quit/scene change",
@@ -29,10 +38,14 @@ export(int,
 	"Paranoic // On any item added/removed"
 ) var autosave_intensity := 2
 
-export var enable_view_filters := true
+# The modulation to apply to items filtered out by `view_filter_patterns`. `Color(1, 1, 1, 1)` to disable.
+export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
+# Items that don't match these `ItemPattern`s or `ItemType`s will be dimmed out.
 export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
 
+# The `Inventory` this node displays.
 var inventory : Reference setget _set_inventory
+
 var _dragged_node : Control
 var _dragged_stack : ItemStack
 var _view_nodes := []
@@ -356,6 +369,10 @@ func can_drop_data(position, data):
 # Updates item visibility based on `view_filter_patterns`.
 func apply_view_filters(stack_index : int = -1):
 	if stack_index == -1:
+		if view_filter_color == Color(1, 1, 1, 1):
+			for i in _view_nodes.size():
+				_view_nodes[i].modulate = Color(1, 1, 1, 1)
+
 		for i in _view_nodes.size():
 			apply_view_filters(i)
 
@@ -367,7 +384,7 @@ func apply_view_filters(stack_index : int = -1):
 			all_match = false
 			break
 
-	_view_nodes[stack_index].modulate = Color.white if all_match else Color(0.1, 0.15, 0.3, 0.75)
+	_view_nodes[stack_index].modulate = Color(1, 1, 1, 1) if all_match else view_filter_color
 
 # Calls the `sort` method on the inventory.
 func sort_inventory():

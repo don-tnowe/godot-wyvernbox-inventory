@@ -2,10 +2,15 @@ tool
 class_name ItemGeneratorEquipmentBonus
 extends ItemGenerator
 
+# The `EquipBonus` objects that may be applied to the item.
 export(Array, Resource) var possible_affixes
+# Generates between `x` and `y` affixes.
 export var affix_count_range := Vector2(1, 1)
+# Generates affixes of levels between `x` and `y`. See `EquipBonus.get_value`.
 export var affix_level_range := Vector2(1, 6)
+# Item's "price" extra property will grow. It will cost more of this item.
 export var price_increase_item : Resource
+# Item's "price" extra property will grow by this, multiplied by sum of levels added.
 export var price_increase_per_level := 20
 
 # Returns a random `results` item with a random affix from `possible_affixes`.

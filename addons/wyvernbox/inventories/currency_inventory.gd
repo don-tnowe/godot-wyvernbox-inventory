@@ -1,7 +1,9 @@
 class_name CurrencyInventory
 extends Inventory
 
+# Each cell's `ItemType` or `ItemPattern`. Items that don't match won't fit in.
 var restricted_to_types := []
+# The custom capacity of all stacks in this inventory.
 var max_stack := 99999999
 
 

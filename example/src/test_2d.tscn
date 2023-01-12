@@ -128,7 +128,6 @@ margin_bottom = 69.0519
 rect_scale = Vector2( 1.5, 1.5 )
 mouse_filter = 2
 script = ExtResource( 20 )
-default_inventory = NodePath("../Inventory")
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0

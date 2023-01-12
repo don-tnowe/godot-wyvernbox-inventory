@@ -1,6 +1,8 @@
 class_name ItemPatternName
 extends ItemPattern
 
+# The string to search in the item's name, including affixes.
+# Note: This pattern does NOT tokenize strings (that is, a "Wyvernite Shard" item will not be matched by query of "Wy Shar")
 export var name_to_search := ""
 
 

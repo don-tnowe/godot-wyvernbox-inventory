@@ -1,23 +1,36 @@
 class_name InventoryTooltip, "res://addons/wyvernbox/icons/tooltip.png"
 extends Container
 
-const ITEM_SCALE := 0.5
+# The scale for in-text images drawn by `get_texture_bbcode`.
+const TEX_SCALE := 0.5
 
+# Action for comparing item stats and using quick-transfer (default `Shift`).
 export var compare_input := "inventory_more"
+# Action for attaching a view filter to visible inventories (default `F`).
 export var filter_input := "inventory_filter"
+# Action for the "Clear filter" mod. Hold, then press `filter_input` to clear all view filters (default `Alt`).
 export var clear_filter_mod_input := "inventory_less"
 
+# Color for positive/higher stat bonuses.
 export var color_bonus := Color.yellow
+# Color for negative/lower stat bonuses.
 export var color_malus := Color.red
+# Color for zero/equal stat bonuses.
 export var color_neutral := Color.darkgray
+# Color for the item's description.
 export var color_description := Color.white
+# Inventory to compare stats to when `compare_input` is held.
 export var compare_to_inventory : NodePath
 
+# List of `InventoryTooltipProperty` scripts to display items properties in this tooltip.
 export(Array, Script) var property_scripts
 
+# Last called display function. Either `display_item`, `display_bonus` or `display_custom`.
 var last_func : FuncRef
+# Last called display arguments.
 var last_func_args : Array
-var ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
+
+var _ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
 
 # Empties the display. Called before the tooltip must display something.
 func display_empty():
@@ -33,10 +46,10 @@ func display_empty():
 # `mouseover_node` is the `Control` this tooltip must be placed next to.
 func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_inventory : bool = true):
 	if shown_from_inventory:
-		ground_item_state = 0
+		_ground_item_state = 0
 	
 	else:
-		ground_item_state = 1
+		_ground_item_state = 1
 
 	if mouseover_node == null:
 		hide()
@@ -138,8 +151,8 @@ static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> St
 	var loaded = load(tex_path)
 	if loaded == null: return ""
 	return "[img=%sx%s]%s[/img]" % [
-		loaded.get_width() * tex_scale * ITEM_SCALE,
-		loaded.get_height() * tex_scale * ITEM_SCALE,
+		loaded.get_width() * tex_scale * TEX_SCALE,
+		loaded.get_height() * tex_scale * TEX_SCALE,
 		tex_path,
 	]
 
@@ -177,12 +190,12 @@ func _input(event):
 		_apply_filter_to_inventories()
 
 	if event.is_action(compare_input):
-		if ground_item_state == 1:
+		if _ground_item_state == 1:
 			if !event.is_pressed(): hide()
 			else: display_last()
 
-		elif ground_item_state == 2:
-			ground_item_state = 0
+		elif _ground_item_state == 2:
+			_ground_item_state = 0
 			hide()
 
 		elif visible:
@@ -216,4 +229,4 @@ func _get_filter_to_apply():
 
 
 func _on_ground_item_released():
-	ground_item_state = 2
+	_ground_item_state = 2

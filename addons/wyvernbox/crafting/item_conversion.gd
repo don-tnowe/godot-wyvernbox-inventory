@@ -2,10 +2,15 @@ tool
 class_name ItemConversion, "res://addons/wyvernbox/icons/item_conversion.png"
 extends Resource
 
+# Name of the conversion displayed in tooltips. Can be a locale string.
 export var name := "Insert name or full locale string"
+# The input `ItemType`s or `ItemPattern`s.
 export(Array, Resource) var input_types setget _set_input_types
+# The required count of input `ItemType`s or `ItemPattern`s.
 export(Array, int) var input_counts setget _set_input_counts
+# The output `ItemType`s or `ItemGenerator`s.
 export(Array, Resource) var output_types setget _set_output_types
+# The minimum and maximum counts of output `ItemType`s or `ItemGenerator`s.
 export(Array, Vector2) var output_ranges setget _set_output_ranges
 
 

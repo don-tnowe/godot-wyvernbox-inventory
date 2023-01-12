@@ -3,10 +3,14 @@ extends Node
 
 signal item_clicked(item_node)
 
+# File path to autosave into when the scene changes or game is closed.
+# Save can also be triggered manually via `save_state`.
+# Only supports "user://" paths.
 export var autosave_file_path := ""
+# Scene with a `GroundItemStackView2D` or `GroundItemStackView3D` root to instantiate when `add_item` gets called.
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
-
-var view_filter_patterns := [] setget _set_view_filters
+# Items that don't match these `ItemPattern`s or `ItemType`s will be dimmed out.
+export(Array, Resource) var view_filter_patterns setget _set_view_filters
 
 
 func _set_view_filters(v):

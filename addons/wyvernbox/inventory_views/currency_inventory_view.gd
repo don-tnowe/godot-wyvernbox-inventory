@@ -2,7 +2,9 @@ tool
 class_name CurrencyInventoryView, "res://addons/wyvernbox/icons/currency_inventory.png"
 extends InventoryView
 
+# `ItemType`s this inventory's each slot can store, in order.
 export(Array, Resource) var restricted_to_types := [] setget _set_restricted_to_types
+# Max stack size of this inventory.
 export var max_stack := 99999999
 
 

@@ -2,10 +2,15 @@ tool
 class_name ItemPattern, "res://addons/wyvernbox/icons/item_pattern.png"
 extends Resource
 
+# Name of the pattern displayed in tooltips. Can be a locale string.
 export var name := "Insert name or full locale string"
+# The pattern's icon displayed in tooltips.
 export var texture : Texture
 
+# The `ItemType`s or `ItemPattern`s this pattern matches.
 export(Array, Resource) var items = [] setget _set_items
+# How many items in an `ItemConversion` each item or pattern contributes.
+# Higher values means you would need less of an item.
 export(Array, float) var efficiency = [] setget _set_efficiency
 
 

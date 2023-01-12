@@ -1,23 +1,34 @@
 class_name ItemStack
 extends Reference
 
-
+# Array containing all affixes of this `ItemStack`. Can be locale strings.
+# A `null` value will be replaced by the `ItemType's name.
 var name_with_affixes := []
+# How many item are in this stack. To set, prefer `Inventory.add_items_to_stack`.
 var count := 1
+# The stack's index in the `Inventory.items` array of its `inventory`. Should not be set externally.
 var index_in_inventory := 1
+# The item's cell position. To set, prefer `InventoryView.try_place_stackv` or `Inventory.try_place_stackv`.
 var position_in_inventory := Vector2.ZERO
+# The `Inventory` this stack currently resides in. Should not be set externally.
 var inventory : Reference
+# The item's `ItemType`.
 var item_type : ItemType
+# The item's extra property dictionary.
+# Can contain various data for display in `InventoryTooltip` via its `InventoryTooltipProperty`, or other, game-specific uses.
+# `price` is used for vendor prices, selling and buying.
+# `back_color` is used to show a colored background in inventories and a glow on the ground.
 var extra_properties : Dictionary
 
-
-func _init(item, item_count = 1, item_extra_properties = null):
-	item_type = item
+# Creates an `ItemStack` with `item_count` items of type `item_type`.
+# If the `item_extra_properties` dictionary is not set, copies `item_type`'s `ItemType.default_properties`.
+func _init(item_type, item_count = 1, item_extra_properties = null):
+	self.item_type = item_type
 	count = item_count
 	extra_properties = (
 		item_extra_properties
 		if item_extra_properties != null && item_extra_properties.size() > 0 else
-		item.default_properties.duplicate(true)
+		item_type.default_properties.duplicate(true)
 	)
 	name_with_affixes = extra_properties.get("name", [null])
 

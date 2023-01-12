@@ -1,7 +1,9 @@
 class_name RestrictedInventory
 extends Inventory
 
+# If set and inventory full, quick-transferring into here will shift all items by one cell.
 var allow_rotation := true
+# Each cell's `ItemType.SlotFlags`. Items that don't match won't fit in.
 var restricted_to_types := []
 
 

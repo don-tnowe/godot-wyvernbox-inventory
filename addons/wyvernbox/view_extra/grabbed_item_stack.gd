@@ -1,13 +1,18 @@
 class_name GrabbedItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends ItemStackView
 
-export var default_inventory := NodePath("")
+# The node whose position `drop_on_ground` uses for spawning a ground item.
 export var drop_at_node := NodePath("")
+# The `GroundItemManager` the `drop_on_ground` method uses for spawning a ground item.
 export var drop_ground_item_manager := NodePath("")
+# The max distance an item dropped by `drop_on_ground` can fly.
 export var drop_max_distance := 256.0
+# The size of the item's texture, if its in-inventory size was `(1, 1)`.
 export var unit_size := Vector2(18, 18)
 
+# The stack currently grabbed, to be released on click.
 var grabbed_stack : ItemStack
+# The `Control` that will trigger `drop_on_ground` when clicked.
 var drop_surface_node : Control
 
 
@@ -119,9 +124,9 @@ func _any_inventory_try_drop_stack(stack):
 			return
 
 # Drop the specified stack on the ground at `drop_at_node`'s position as child of `drop_ground_item_manager`.
-func drop_on_ground(stack):
+func drop_on_ground(stack, global_pos):
 	var spawn_at_pos = get_node(drop_at_node).global_position
-	var throw_vec = (get_global_mouse_position() - spawn_at_pos).limit_length(drop_max_distance)
+	var throw_vec = (global_pos - spawn_at_pos).limit_length(drop_max_distance)
 	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -142,11 +147,11 @@ func _input(event):
 func _drop_surface_input(event):
 	if event is InputEventMouseButton && grabbed_stack != null && !event.pressed:
 		if event.button_index == BUTTON_LEFT:
-			drop_on_ground(grabbed_stack)
+			drop_on_ground(grabbed_stack, event.global_position)
 			_set_grabbed_stack(null)
 			
 		if event.button_index == BUTTON_RIGHT:
-			drop_on_ground(grabbed_stack.duplicate_with_count(1))
+			drop_on_ground(grabbed_stack.duplicate_with_count(1), event.global_position)
 			grabbed_stack.count -= 1
 			if grabbed_stack.count == 0:
 				_set_grabbed_stack(null)
@@ -159,5 +164,5 @@ func _on_visibility_changed():
 	var v = get_parent().is_visible_in_tree()
 	set_process_input(v && visible)
 	if !v && grabbed_stack != null:
-		drop_on_ground(grabbed_stack)
+		drop_on_ground(grabbed_stack, get_global_mouse_position())
 		_set_grabbed_stack(null)

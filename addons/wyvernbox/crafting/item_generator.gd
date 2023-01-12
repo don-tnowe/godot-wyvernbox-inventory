@@ -2,10 +2,16 @@ tool
 class_name ItemGenerator, "res://addons/wyvernbox/icons/item_generator.png"
 extends Resource
 
+# Name of the generator displayed in tooltips. Can be a locale string.
 export var name := "Insert name or full locale string"
+# The generator's icon displayed in tooltips.
 export var texture : Texture
+# The `ItemType`s or `ItemGenerator`s that can be generated.
 export(Array, Resource) var results setget _set_results
+# The non-normalized chances for each `ItemType` or `ItemGenerator` to appear.
+# (If equals [3, 1, 1], the item at index `0` will appear three times as often as each of the others)
 export(Array, float) var weights setget _set_weights
+# The counts of result `ItemType`s or repeats of result `ItemGenerator`s.
 export(Array, Vector2) var count_ranges setget _set_count_ranges
 
 

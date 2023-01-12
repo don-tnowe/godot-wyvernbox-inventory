@@ -4,18 +4,26 @@ extends Area2D
 
 signal name_clicked()
 
+# The `ItemType` of the displayed item.
 export(Resource) var item_type setget _set_item_type
+# The count of the displayed item.
 export var item_count := 1 setget _set_item_count
+# The extra properties of the displayed item - if not set, uses type's `itemType.default_properties`.
 export var item_extra : Dictionary setget _set_item_extra
 
+# Defines min and max length of `get_random_jump_vector`'s returned Vector2.
 export var spawn_jump_length_range := Vector2(48.0, 96.0)
+# The modulation to apply if filtered out by `GroundItemManager.view_filter_patterns`. `Color(1, 1, 1, 1)` to disable.
 export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
 
-var filter_hidden := false setget _set_filter_hidden
-var item_stack : ItemStack
-var jump_tween : SceneTreeTween
-
+# The `ItemStack.name_with_affixes` of the displayed item.
 var item_affixes := [] setget _set_item_affixes
+# `true` if hidden by parent's `GroundItemManager.view_filter_patterns`.
+var filter_hidden := false setget _set_filter_hidden
+# The `ItemStack` displayed by this node.
+var item_stack : ItemStack
+
+var _jump_tween : SceneTreeTween
 
 
 func _set_item_type(v):
@@ -56,8 +64,8 @@ func _ready():
 
 # Plays jump animation and moves to local position `pos`.
 func jump_to_pos(pos):
-	jump_tween = create_tween()
-	jump_tween.tween_property(
+	_jump_tween = create_tween()
+	_jump_tween.tween_property(
 		self, "position",
 		pos, 0.5
 	)
@@ -73,7 +81,7 @@ func get_random_jump_vector():
 
 # Interrupts the jump animation.
 func skip_spawn_animation():
-	if jump_tween != null: jump_tween.kill()
+	if _jump_tween != null: _jump_tween.kill()
 	$"Anim".advance(3600.0)
 
 

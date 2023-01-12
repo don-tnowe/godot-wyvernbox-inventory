@@ -1,9 +1,10 @@
 extends Control
 
-
+# The `EquipBonus` displayed here. Defines icon and tooltip contents.
 export var shown_res : Resource
 
-
+# Sets the displayed `EquipBonus` with `label` of `label_color`.
+# Optionally, pass a background texture. If not set, uses the bonus's default background.
 func show_bonus(bonus_res : Resource, label : String, label_color : Color = Color.white, background : Texture = null):
   shown_res = bonus_res
   show()

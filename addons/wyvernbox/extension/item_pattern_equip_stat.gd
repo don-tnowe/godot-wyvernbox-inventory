@@ -1,8 +1,11 @@
 class_name ItemPatternEquipStat
 extends ItemPattern
 
+# Items with this bonus in their "stats" extra property will match.
 export(Array, String) var bonuses_required setget _set_bonuses_required
+# Items which have each of `bonuses_required` no less than `bonuses_min`, will match.
 export(Array, float) var bonuses_min setget _set_bonuses_min
+# Ignores stat amounts in `bonuses_min` when matching.
 export var ignore_min_requirement := true
 
 

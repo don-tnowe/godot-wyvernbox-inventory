@@ -2,8 +2,11 @@ tool
 class_name GridInventoryView, "res://addons/wyvernbox/icons/grid_inventory.png"
 extends InventoryView
 
+# How many cells this inventory spans horizontally.
 export var width := 12 setget _set_grid_width
+# How many cells this inventory spans vertically.
 export var height := 8 setget _set_grid_height
+# The width of the border around the inventory's cells.
 export var border_width := 1.0 setget _set_border_width
 
 

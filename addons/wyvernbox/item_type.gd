@@ -28,7 +28,7 @@ enum SlotFlags {
 	E_RING = 1 << 22,
 	E_NECK = 1 << 23,
 }
-
+# Matches flags of all equipment slots (hands, helmet, chest, belt, handwear, footwear, ring and neck)
 const EQUIPMENT_FLAGS := (
 	SlotFlags.E_MAINHAND
 	| SlotFlags.E_OFFHAND
@@ -40,14 +40,21 @@ const EQUIPMENT_FLAGS := (
 	| SlotFlags.E_RING
 	| SlotFlags.E_NECK
 )
-
+# The item's name. Can be a locale string.
 export var name := ""
+# The item's descripting. Can be empty or a locale string.
 export(String, MULTILINE) var description := ""
+# How many items can fit into a single stack.
 export var max_stack_count := 1
+# How many cells, horizontally, this item occupies in a `GridInventory`.
 export var in_inventory_width := 1
+# How many cells, vertically, this item occupies in a `GridInventory`.
 export var in_inventory_height := 1
+# The item's texture.
 export var texture : Texture
-export var texture_scale := 1.5
+# The scale of the item's texture.
+export var texture_scale := 1.0
+# The `SlotFlags` of this item. Used in `RestrictedInvntory`.
 export(int, FLAGS,
 		"SMALL",
 		"LARGE",
@@ -74,7 +81,13 @@ export(int, FLAGS,
 		"E_RING",
 		"E_NECK"
 	) var slot_flags := 1
+# The string representation of the type's `default_properties`.
 export(String, MULTILINE) var default_properties_string setget _set_default_properties_string
+# The type's default property dictionary.
+# For editing, `default_properties_string` or the Dictionary Inspector addon are recommended.
+# Can contain various data for display in `InventoryTooltip` via its `InventoryTooltipProperty`, or other, game-specific uses.
+# `price` is used for vendor prices, selling and buying.
+# `back_color` is used to show a colored background in inventories and a glow on the ground.
 export var default_properties : Dictionary setget _set_default_properties_dict
 
 

@@ -8,6 +8,8 @@ signal item_stack_removed(item_stack)
 var _width := 8
 var _height := 1
 
+# The list of items in this inventory.
+# Setting and editing may lead to unpredictable behaviour.
 var items := []
 var _cells := []
 var _counts := {}
