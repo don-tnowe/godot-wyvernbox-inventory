@@ -320,6 +320,7 @@ resources_spreadsheet_view/array_min_width=128.0
 resources_spreadsheet_view/clip_headers=false
 resources_spreadsheet_view/dupe_arrays=true
 resources_spreadsheet_view/context_menu_on_leftclick=false
+docs_checklist/base_dir="res://addons/wyvernbox/"
 
 [application]
 
@@ -336,7 +337,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/dictionary_inspector/plugin.cfg", "res://addons/resources_speadsheet_view/plugin.cfg", "res://addons/wyvernbox/editor/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/dictionary_inspector/plugin.cfg", "res://addons/docs_checklist/plugin.cfg", "res://addons/wyvernbox/editor/plugin.cfg" )
 
 [gui]
 

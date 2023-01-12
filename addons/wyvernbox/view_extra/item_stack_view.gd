@@ -10,7 +10,9 @@ func _ready():
 	connect("mouse_entered", self, "_on_mouse_entered")
 	connect("mouse_exited", self, "_on_mouse_exited")
 
-
+# Sets the displayed stack.
+# `unit_size` is the width of the inventory's cells.
+# `show_background`, if not disabled, will make this `ItemStackView` show the stack's "back_color" extra property as background.
 func update_stack(item_stack, unit_size, show_background = true):
 	stack = item_stack
 	if item_stack == null: return

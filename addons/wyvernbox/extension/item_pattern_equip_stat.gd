@@ -21,7 +21,7 @@ func _set_bonuses_min(v):
 	bonuses_min = v
 	bonuses_min.resize(v.size())
 
-
+# Returns `true` if `item_stack`'s stats fulfill the requirements.
 func matches(item_stack : ItemStack) -> bool:
 	if !.matches(item_stack):
 		return false
@@ -42,7 +42,7 @@ func matches(item_stack : ItemStack) -> bool:
 
 	return true
 
-
+# Returns `0` if `item_stack`'s stats do not fulfill the requirements - otherwise, see `ItemPattern.get_value`.
 func get_value(of_stack : ItemStack) -> float:
 	if matches(of_stack): return .get_value(of_stack)
 	else: return 0.0

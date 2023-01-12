@@ -11,7 +11,7 @@ var view_filter_patterns := [] setget _set_view_filters
 
 func _set_view_filters(v):
 	view_filter_patterns = v
-	apply_view_filters()
+	_apply_view_filters()
 
 
 func _ready():
@@ -24,7 +24,9 @@ func _ready():
 func _exit_tree():
 	save_state(autosave_file_path)
 
-
+# Creates an in-world representation of stack `stack` at global position `global_pos`.
+# If `throw_vector` set, the item will also jump landing at position `global_pos + throw_vector`.
+# If `throw_vector` not set, item will land a random short distance nearby.
 func add_item(stack : ItemStack, global_pos, throw_vector = null):
 	var item_node = item_scene.instance()
 	item_node.set_stack(stack)
@@ -41,7 +43,7 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 
 	item_node.jump_to_pos(global_pos + throw_vector)
 
-
+# Loads ground items from `array` created via `to_array`.
 func load_from_array(array : Array):
 	var new_node : Node
 	for x in array:
@@ -59,7 +61,7 @@ func load_from_array(array : Array):
 		else:
 			new_node.global_translation = x["position"]
 
-
+# Returns all ground items as an array of dictionaries. Useful for serialization.
 func to_array():
 	var children = get_children()
 	var array = []
@@ -76,7 +78,7 @@ func to_array():
 	return array
 
 
-func align_labels():
+func _align_labels():
 	var nodes = get_children()
 	if !Input.is_action_pressed("inventory_less"):
 		for x in nodes:
@@ -111,10 +113,10 @@ func align_labels():
 		)
 
 
-func apply_view_filters(stack_index : int = -1):
+func _apply_view_filters(stack_index : int = -1):
 	if stack_index == -1:
 		for i in get_child_count():
-			apply_view_filters(i)
+			_apply_view_filters(i)
 
 		return
 
@@ -126,7 +128,8 @@ func apply_view_filters(stack_index : int = -1):
 
 	get_child(stack_index).filter_hidden = !all_match
 
-
+# Writes ground items to file `filename`.
+# Only `user://` paths are supported.
 func save_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
@@ -139,7 +142,8 @@ func save_state(filename):
 	file.open(filename, File.WRITE)
 	file.store_var(to_array())
 
-
+# Loads ground items from file `filename`.
+# Only `user://` paths are supported.
 func load_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
@@ -173,13 +177,13 @@ func _move_to_free_space(rect : Rect2, label_rects : Array, upwards_step : float
 func _unhandled_input(event):
 	if event.is_echo(): return
 	if event.is_action("inventory_less"):
-		align_labels()
-		align_labels()  # Can't figure why it doesn't work the first time
+		_align_labels()
+		_align_labels()  # Can't figure why it doesn't work the first time
 
 
 func _on_child_entered_tree(child):
 	child.connect("name_clicked", self, "_on_item_clicked", [child])
-	call_deferred("apply_view_filters", child.get_position_in_parent())
+	call_deferred("_apply_view_filters", child.get_position_in_parent())
 
 
 func _on_item_clicked(item):

@@ -62,7 +62,7 @@ func _exit_tree():
 
 func _set_cell_size(v):
 	cell_size = v
-	regenerate_view()
+	_regenerate_view()
 
 
 func _set_view_filter(v):
@@ -81,16 +81,17 @@ func _set_inventory(v):
 	v.connect("item_stack_added", self, "_on_item_stack_added")
 	v.connect("item_stack_changed", self, "_on_item_stack_changed")
 	v.connect("item_stack_removed", self, "_on_item_stack_removed")
-	regenerate_view()
+	_regenerate_view()
 
 
-func regenerate_view():
+func _regenerate_view():
 	if !is_inside_tree() || Engine.editor_hint:
 		return
 
 	assert(has_node("Cells"), "Inventories require a child node named Cell with Control-type children")
 
-
+# Returns the position of the cell clicked from `pos`. Vector's `x` equals to cell index, while `y` is always 0.
+# Returns `(-1, -1)` if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	var cells = $"Cells".get_children()
 	for i in cells.size():
@@ -251,8 +252,10 @@ func _try_buy(stack : ItemStack):
 
 	return true
 
-
-func try_place_stackv(stack : ItemStack, pos : Vector2):
+# Tries to place `stack` into a cell with position `pos`.
+# Returns the stack that appeared in hand after, which is `null` if slot was empty or the `stack` if it could not be placed.
+# Note: to convert from global coords into cell position, use `global_position_to_cell`.
+func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 		return stack
 
@@ -350,7 +353,7 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 func can_drop_data(position, data):
 	return true
 
-
+# Updates item visibility based on `view_filter_patterns`.
 func apply_view_filters(stack_index : int = -1):
 	if stack_index == -1:
 		for i in _view_nodes.size():
@@ -366,15 +369,15 @@ func apply_view_filters(stack_index : int = -1):
 
 	_view_nodes[stack_index].modulate = Color.white if all_match else Color(0.1, 0.15, 0.3, 0.75)
 
-
+# Calls the `sort` method on the inventory.
 func sort_inventory():
 	inventory.sort()
 
-
+# Saves the inventory to disk into the specified file, or the one set in `autosave_file_path`.
 func save_state(filepath = ""):
 	inventory.save_state(autosave_file_path if filepath == "" else filepath)
 
-
+# Loads the inventory from disk from the specified file, or the one set in `autosave_file_path`.
 func load_state(filepath = ""):
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)
 

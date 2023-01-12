@@ -36,7 +36,8 @@ func _resize_arrays(size):
 		if count_ranges[i] == null || count_ranges[i] == Vector2.ZERO:
 			count_ranges[i] = Vector2.ONE
 
-
+# Get a random `results` with random `count_ranges`, considering their random `weights`.
+# Override to define special item generators that modify results or `input_stacks`.
 func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], input_types : Array = []) -> Array:
 	if rng == null:
 		rng = RandomNumberGenerator.new()
@@ -63,7 +64,8 @@ func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], in
 
 	return []
 
-
+# Returns a random number. Non-normalized chances are defined inside `weights`.
+# If `rng` not set, uses global RNG.
 static func weighted_random(weights : Array, rng : RandomNumberGenerator = null) -> int:
 	var sum = 0.0
 	for i in weights.size():

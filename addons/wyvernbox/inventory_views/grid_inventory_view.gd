@@ -13,17 +13,17 @@ func _set_cell_size(v):
 
 func _set_grid_width(v):
 	width = v
-	regenerate_view()
+	_regenerate_view()
 
 
 func _set_grid_height(v):
 	height = v
-	regenerate_view()
+	_regenerate_view()
 
 
 func _set_border_width(v):
 	border_width = v
-	regenerate_view()
+	_regenerate_view()
 
 
 func _set_inventory(v):
@@ -36,7 +36,7 @@ func _ready2():
 	_set_inventory(GridInventory.new(width, height))
 
 
-func regenerate_view():
+func _regenerate_view():
 	if !is_inside_tree(): return
 	if item_scene == null: return
 	
@@ -50,7 +50,8 @@ func regenerate_view():
 	$"Border".rect_size = new_size
 	$"BG".rect_size = new_size - 2 * Vector2(border_width, border_width)
 
-
+# Returns the position of the cell clicked from `pos`.
+# `item`'s size is used for position correction.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	return (Vector2(
 		(pos.x - rect_global_position.x - border_width) / cell_size.x,

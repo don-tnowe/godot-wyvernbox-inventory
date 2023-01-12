@@ -8,7 +8,7 @@ export var max_stack := 99999999
 
 func _set_restricted_to_types(v):
 	restricted_to_types = v
-	regenerate_view()
+	_regenerate_view()
 
 
 func _ready2():

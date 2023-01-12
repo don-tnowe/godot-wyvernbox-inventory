@@ -8,7 +8,8 @@ export var affix_level_range := Vector2(1, 6)
 export var price_increase_item : Resource
 export var price_increase_per_level := 20
 
-
+# Returns a random `results` item with a random affix from `possible_affixes`.
+# If no `results` set, adds affix to the first of `input_types`.
 func get_items(rng = null, input_stacks = [], input_types = []):
 	var items = .get_items(rng, input_stacks, input_types)
 	if items.size() == 0:
@@ -29,8 +30,8 @@ func get_items(rng = null, input_stacks = [], input_types = []):
 
 	return items
 
-
-func add_affix(item, rng):
+# Adds a random affix to `item`.
+func add_affix(item, rng : RandomNumberGenerator):
 	var extras = item.extra_properties
 	var random_affix = possible_affixes[rng.randi() % possible_affixes.size()]
 	var random_level = int(rng.randf_range(affix_level_range.x, affix_level_range.y))

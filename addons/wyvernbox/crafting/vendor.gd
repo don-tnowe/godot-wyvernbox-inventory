@@ -50,7 +50,7 @@ func _ready():
 	refill_stock()
 	get_parent().connect("visibility_changed", self, "_on_visibility_changed")
 
-
+# Replenishes the inventory's contents with fresh stock from `get_stock`.
 func refill_stock():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items:
@@ -58,11 +58,13 @@ func refill_stock():
 
 	for i in stock.size():
 		var stack = get_stock(i)
-		put_up_for_sale(stack, inventory, i)
+		_put_up_for_sale(stack, inventory, i)
 		inventory.try_add_item(stack)
 
-
-func get_stock(index : int):
+# Returns stack with type from `stock` with count `stock_counts` purchasable `stock_restocks + 1` times.
+# If it's an `ItemGenerator`, adds first output stack of that.
+# If `apply_to_all_stock` set, always applies that.
+func get_stock(index : int) -> ItemStack:
 	var stack
 	if stock[index] is ItemGenerator:
 		stack = stock[index].get_items(rng)[0]
@@ -77,17 +79,17 @@ func get_stock(index : int):
 	return stack
 
 
-func put_up_for_sale(stack : ItemStack, inventory : Inventory, stash_index : int):
+func _put_up_for_sale(stack : ItemStack, inventory : Inventory, stash_index : int):
 	stack.extra_properties["seller_stash_index"] = stash_index
 	stack.extra_properties["for_sale"] = true
 	if stash_index != -1 || !free_buyback:
-		apply_price_markup(stack)
+		_apply_price_markup(stack)
 
 	if stash_index != -1 && !infinite_restocks && stock_restocks[stash_index] > 0:
 		stack.extra_properties["left_in_stock"] = stock_restocks[stash_index]
 
 
-func apply_price_markup(stack : ItemStack):
+func _apply_price_markup(stack : ItemStack):
 	if !stack.extra_properties.has("price"):
 		return
 	
@@ -97,7 +99,7 @@ func apply_price_markup(stack : ItemStack):
 		price_dict[k] = int(price_dict[k] * price_markup)
 
 
-func multiply_price_by_count(stack : ItemStack, reverse : bool = false):
+func _multiply_price_by_count(stack : ItemStack, reverse : bool = false):
 	var coeff = float(stack.count)
 	if reverse:
 		coeff = 1 / coeff
@@ -107,7 +109,7 @@ func multiply_price_by_count(stack : ItemStack, reverse : bool = false):
 		price_dict[k] = int(price_dict[k] * coeff)
 
 
-func remove_from_sale(stack : ItemStack):
+func _remove_from_sale(stack : ItemStack):
 	var props = stack.extra_properties
 	if props.has("price"):
 		props["price"] = props.get(
@@ -116,7 +118,7 @@ func remove_from_sale(stack : ItemStack):
 		props.erase("real_price")
 
 	if props["seller_stash_index"] == -1:
-		multiply_price_by_count(stack, true)
+		_multiply_price_by_count(stack, true)
 
 	props.erase("for_sale")
 	props.erase("seller_stash_index")
@@ -126,8 +128,8 @@ func remove_from_sale(stack : ItemStack):
 func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
 	var inventory = get_node(vendor_inventory).inventory
 	if success:
-		restock_item(item_stack, inventory)
-		remove_from_sale(item_stack)
+		_restock_item(item_stack, inventory)
+		_remove_from_sale(item_stack)
 		if remove_price_on_buy:
 			item_stack.extra_properties.erase("price")
 		
@@ -137,7 +139,7 @@ func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
 		emit_signal("item_cant_afford", item_stack)
 
 
-func restock_item(item_stack : ItemStack, inventory : Inventory):
+func _restock_item(item_stack : ItemStack, inventory : Inventory):
 	var stash_idx = item_stack.extra_properties["seller_stash_index"]
 	if stash_idx == -1:
 		return
@@ -154,15 +156,16 @@ func restock_item(item_stack : ItemStack, inventory : Inventory):
 		restock_pos = inventory.get_free_position(restock_item)
 
 	if infinite_restocks:
-		put_up_for_sale(restock_item, inventory, stash_idx)
+		_put_up_for_sale(restock_item, inventory, stash_idx)
 		inventory.try_place_stackv(restock_item, restock_pos)
 
 	elif left_in_stock > 1:
-		put_up_for_sale(restock_item, inventory, stash_idx)
+		_put_up_for_sale(restock_item, inventory, stash_idx)
 		restock_item.extra_properties["left_in_stock"] = left_in_stock - 1
 		inventory.try_place_stackv(restock_item, restock_pos)
 
-
+# Clears all items placed here by the player.
+# If `clear_sold_items_when_hidden`, gets called automatically when the parent `CanvasItem` gets hidden.
 func clear_sold_items():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items.duplicate():
@@ -182,8 +185,8 @@ func _on_Inventory_item_stack_added(item_stack : ItemStack):
 		for k in reward:
 			inventory.try_add_item(ItemStack.new(load(k), reward[k] * item_stack.count))
 	
-	put_up_for_sale(item_stack, get_node(vendor_inventory).inventory, -1)
-	multiply_price_by_count(item_stack, false)
+	_put_up_for_sale(item_stack, get_node(vendor_inventory).inventory, -1)
+	_multiply_price_by_count(item_stack, false)
 
 
 func _on_visibility_changed():

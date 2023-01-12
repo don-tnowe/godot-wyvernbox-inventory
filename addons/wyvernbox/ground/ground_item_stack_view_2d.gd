@@ -42,7 +42,7 @@ func _set_filter_hidden(v):
 	filter_hidden = v
 	modulate = filter_hidden_color if v else Color.white
 
-
+# Sets the displayed `ItemStack`.
 func set_stack(stack):
 	item_type = stack.item_type
 	item_count = stack.count
@@ -54,22 +54,24 @@ func set_stack(stack):
 func _ready():
 	_update_stack()
 
-
+# Plays jump animation and moves to local position `pos`.
 func jump_to_pos(pos):
 	jump_tween = create_tween()
 	jump_tween.tween_property(
 		self, "position",
 		pos, 0.5
 	)
+	$"Anim".play("init")
+	$"Anim".seek(0)
 
-
+# Returns a random vector with length between `spawn_jump_length_range.x` and `spawn_jump_length_range.y`.
 func get_random_jump_vector():
 	return Vector2(
 		rand_range(spawn_jump_length_range.x, spawn_jump_length_range.y),
 		0
 	).rotated(randf() * TAU)
 
-
+# Interrupts the jump animation.
 func skip_spawn_animation():
 	if jump_tween != null: jump_tween.kill()
 	$"Anim".advance(3600.0)
@@ -94,7 +96,7 @@ func _update_stack():
 	if item_count != 1:
 		$"Label/Label".text += " (" + str(item_count) + ")"
 
-
+# Tries to add item into `into_inventory`, freeing this node on full success.
 func try_pickup(into_inventory):
 	var deposited_count = into_inventory.try_add_item(item_stack)
 	item_count -= deposited_count

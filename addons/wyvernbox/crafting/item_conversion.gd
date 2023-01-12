@@ -28,7 +28,9 @@ func _set_output_ranges(v):
 	output_ranges = v
 	output_types.resize(v.size())
 
-
+# Applies conversion, consuming items from `draw_from_inventories`.
+# Set `rng` to define a generator to determine `ItemGenerator` outcomes; if not set, uses global RNG.
+# Set `unsafe` to avoid checking if all required items are present.
 func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, unsafe : bool = false) -> Array:
 	if !unsafe && !can_apply(draw_from_inventories):
 		return []
@@ -60,28 +62,28 @@ func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, un
 
 	return results
 
-
+# Returns `true` if all requirements are contained inside `draw_from_inventories`.
 func can_apply(draw_from_inventories : Array) -> bool:
 	return dict_has_enough(
 		count_all_inventories(draw_from_inventories, input_types),
 		keys_values_to_dict(input_types, input_counts)
 	)
 
-
+# Returns `true` if all item counts inside `item_counts` are sufficient.
 func can_apply_with_items(item_counts : Dictionary) -> bool:
 	return dict_has_enough(
 		item_counts,
 		keys_values_to_dict(input_types, input_counts)
 	)
 
-
+# Sorts `all_inventory_views` by their `auto_take_priority`.
 func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
 	all_inventory_views = get_takeable_inventories(all_inventory_views)
-	all_inventory_views.sort_custom(self, "compare_priorities")
+	all_inventory_views.sort_custom(self, "_compare_priorities")
 	return all_inventory_views
 
-
-func get_bbcode(owned_item_counts = {}):
+# Returns the Rich Text representation of this conversion's inputs and outputs.
+func get_bbcode(owned_item_counts = {}) -> String:
 	var result = "\n[center]" + tr("item_tt_crafting_in")
 	var x
 	var item_text
@@ -127,8 +129,7 @@ func get_bbcode(owned_item_counts = {}):
 	
 	return result
 
-
-
+# Counts types and patterns from `items_patterns` inside `inventories`.
 static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
 	var have_total = {}
 	var items_to_check = get_items_to_check(items_patterns)
@@ -139,8 +140,8 @@ static func count_all_inventories(inventories : Array, items_patterns) -> Dictio
 		x.count_items(items_patterns, have_total, items_to_check)  # Collects counts into have_total
 
 	return have_total
-	
 
+# Returns `true` if values inside `dict` are no less than values with matching keys in `requirements`.
 static func dict_has_enough(dict : Dictionary, requirements : Dictionary) -> bool:
 	for k in requirements:
 		if !dict.has(k) || dict[k] < requirements[k]:
@@ -148,7 +149,7 @@ static func dict_has_enough(dict : Dictionary, requirements : Dictionary) -> boo
 
 	return true
 
-
+# Returns a copy of `all_inventory_views` without inventories where `InventoryView.InteractionFlags.CAN_TAKE_AUTO` is not set.
 static func get_takeable_inventories(all_inventory_views : Array) -> Array:
 	var result = []
 	for x in all_inventory_views:
@@ -157,7 +158,7 @@ static func get_takeable_inventories(all_inventory_views : Array) -> Array:
 
 	return result
 
-
+# Constructs a dictionary where keys match `keys` and values match corresponding elements of `values`.
 static func keys_values_to_dict(keys : Array, values : Array) -> Dictionary:
 	var result = {}
 	for i in keys.size():
@@ -165,7 +166,7 @@ static func keys_values_to_dict(keys : Array, values : Array) -> Dictionary:
 
 	return result
 
-
+# Collects all required items for `Inventory.consume_items`.
 static func get_items_to_check(items_patterns) -> Dictionary:
 	var dict := {}
 	for x in items_patterns:
@@ -178,5 +179,5 @@ static func get_items_to_check(items_patterns) -> Dictionary:
 	return dict
 
 
-static func compare_priorities(inv_a, inv_b):
+static func _compare_priorities(inv_a, inv_b):
 	return inv_a.auto_take_priority > inv_b.auto_take_priority

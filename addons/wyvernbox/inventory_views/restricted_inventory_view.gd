@@ -8,7 +8,7 @@ export(Array, ItemType.SlotFlags) var restricted_to_types := [] setget _set_rest
 
 func _set_restricted_to_types(v):
 	restricted_to_types = v
-	regenerate_view()
+	_regenerate_view()
 
 
 func _set_allow_rotation(v):

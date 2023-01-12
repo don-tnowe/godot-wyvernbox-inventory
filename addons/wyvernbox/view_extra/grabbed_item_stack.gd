@@ -27,7 +27,7 @@ func _ready():
 	connect("visibility_changed", self, "_on_visibility_changed")
 	_on_visibility_changed()
 
-
+# Grabs a stack, removing it from its inventory.
 func grab(item_stack : ItemStack):
 	if item_stack.inventory != null:
 		var max_count = item_stack.item_type.max_stack_count
@@ -43,7 +43,7 @@ func grab(item_stack : ItemStack):
 	_move_to_mouse()
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-
+# Adds items to the grabbed stack, updating its visual representation.
 func add_items_to_stack(delta : int):
 	grabbed_stack.count += delta
 	_set_grabbed_stack(grabbed_stack)
@@ -62,12 +62,12 @@ func _set_grabbed_stack(item_stack : ItemStack):
 	texture_rect.texture = item_stack.item_type.texture
 	update_stack(item_stack, unit_size, false)
 
-
+# Drop the whole stack onto the first inventory under the cursor.
 func drop():
 	_any_inventory_try_drop_stack(grabbed_stack)
 	update_stack(grabbed_stack, unit_size, false)
 
-
+# Drop one item from the stack onto the first inventory under the cursor.
 func drop_one():
 	if grabbed_stack.count == 1:
 		_any_inventory_try_drop_stack(grabbed_stack)
@@ -118,7 +118,7 @@ func _any_inventory_try_drop_stack(stack):
 			_set_grabbed_stack(found_stack)
 			return
 
-
+# Drop the specified stack on the ground at `drop_at_node`'s position as child of `drop_ground_item_manager`.
 func drop_on_ground(stack):
 	var spawn_at_pos = get_node(drop_at_node).global_position
 	var throw_vec = (get_global_mouse_position() - spawn_at_pos).limit_length(drop_max_distance)

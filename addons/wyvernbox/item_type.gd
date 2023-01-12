@@ -89,14 +89,16 @@ func _set_default_properties_dict(v):
 	default_properties = v
 	default_properties_string = var2str(v)
 
-
+# Returns `in_inventory_width` and `in_inventory_height` as a `Vector2`.
 func get_size_in_inventory() -> Vector2:
 	return Vector2(in_inventory_width, in_inventory_height)
 
-
+# Returns `true` if stack has the same type.
+# For compatibility with `ItemPattern.matches`.
 func matches(stack) -> bool:
 	return stack.item_type == self
 
-
+# Returns the value it contributes to an `ItemConversion`. Equals to the stack's `ItemStack.count`.
+# For compatibility with `ItemPattern.get_value`.
 func get_value(stack) -> int:
 	return stack.count
