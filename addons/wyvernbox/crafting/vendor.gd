@@ -92,6 +92,29 @@ func get_stock(index : int) -> ItemStack:
 
 	return stack
 
+# Clears all items placed here by the player.
+# If `clear_sold_items_when_hidden`, gets called automatically when the parent `CanvasItem` gets hidden.
+func clear_sold_items():
+	var inventory = get_node(vendor_inventory).inventory
+	for x in inventory.items.duplicate():
+		if x.extra_properties["seller_stash_index"] == -1:
+			inventory.remove_item(x)
+
+# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+# The returned arrays must contain:
+# - Property editor label : String
+# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+# - Column labels : Array[String] (each vector array must have two/three)
+# - Columns are integer? : bool (each vector array map to one)
+# - Column default values : Variant
+# - Allowed resource types : Array[Script or Classname]
+func _get_wyvernbox_item_lists() -> Array:
+	return [[
+		"Stock", ["stock", "stock_counts", "stock_restocks"],
+		["Count", "Restocks"], [true, true], [1, 0],
+		[ItemType, ItemGenerator]
+	]]
+
 
 func _put_up_for_sale(stack : ItemStack, inventory : Inventory, stash_index : int):
 	stack.extra_properties["seller_stash_index"] = stash_index
@@ -177,14 +200,6 @@ func _restock_item(item_stack : ItemStack, inventory : Inventory):
 		_put_up_for_sale(restock_item, inventory, stash_idx)
 		restock_item.extra_properties["left_in_stock"] = left_in_stock - 1
 		inventory.try_place_stackv(restock_item, restock_pos)
-
-# Clears all items placed here by the player.
-# If `clear_sold_items_when_hidden`, gets called automatically when the parent `CanvasItem` gets hidden.
-func clear_sold_items():
-	var inventory = get_node(vendor_inventory).inventory
-	for x in inventory.items.duplicate():
-		if x.extra_properties["seller_stash_index"] == -1:
-			inventory.remove_item(x)
 
 
 func _on_Inventory_item_stack_added(item_stack : ItemStack):

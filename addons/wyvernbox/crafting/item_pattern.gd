@@ -76,3 +76,18 @@ func collect_item_dict(dict : Dictionary = {}) -> Dictionary:
 			dict[x] = true
 
 	return dict
+
+# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+# The returned arrays must contain:
+# - Property editor label : String
+# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+# - Column labels : Array[String] (each vector array must have two/three)
+# - Columns are integer? : bool (each vector array maps to one)
+# - Column default values : Variant
+# - Allowed resource types : Array[Script or Classname]
+func _get_wyvernbox_item_lists() -> Array:
+	return [[
+		"Matches", ["items", "efficiency"],
+		["Efficiency"], [false], [1],
+		[ItemType, load("res://addons/wyvernbox/crafting/item_pattern.gd")]
+	]]

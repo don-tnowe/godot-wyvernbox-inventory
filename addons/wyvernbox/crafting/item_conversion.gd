@@ -134,6 +134,28 @@ func get_bbcode(owned_item_counts = {}) -> String:
 	
 	return result
 
+# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+# The returned arrays must contain:
+# - Property editor label : String
+# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+# - Column labels : Array[String] (each vector array must have two/three)
+# - Columns are integer? : bool (each vector array maps to one)
+# - Column default values : Variant
+# - Allowed resource types : Array[Script or Classname]
+func _get_wyvernbox_item_lists() -> Array:
+	return [
+		[
+			"Inputs", ["input_types", "input_counts"],
+			["Count"], [true], [1],
+			[ItemType, ItemPattern]
+		],
+		[
+			"Outputs", ["output_types", "output_ranges"],
+			["Min", "Max"], [true], [Vector2(1, 1)],
+			[ItemType, ItemGenerator]
+		],
+	]
+
 # Counts types and patterns from `items_patterns` inside `inventories`.
 static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
 	var have_total = {}

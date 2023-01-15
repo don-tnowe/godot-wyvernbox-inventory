@@ -4,130 +4,54 @@ var property_script =	load("res://addons/wyvernbox/editor/inspector_item_list.gd
 
 var plugin
 
+var cur_object_settings
+
 
 func _init(plugin):
 	self.plugin = plugin
 
 
 func can_handle(object):
-	return (
-		object is ItemConversion || object is ItemGenerator || object is ItemPattern
-		|| "vendor_inventory" in object  # Because FOR SOME REASON the `is` operator does not work here
-	)
+	return object.has_method("_get_wyvernbox_item_lists")
+
+
+func parse_begin(object):
+	cur_object_settings = object._get_wyvernbox_item_lists()
 
 
 func parse_property(object, type, path, hint, hint_text, usage):
-	if path in ["input_counts", "output_ranges", "weights", "count_ranges"]:
-		return true
+	for x in cur_object_settings:
+		var path_found_at = x[1].find(path)
+		if path_found_at == -1:
+			# Property not found -> keep looking in other lists.
+			continue
 
-	if path == "input_types":
+		if path_found_at > 0:
+			# Property found -> display list only for the first item.
+			return true
+
+		# The returned arrays must contain:
+		# - Property editor label : String
+		# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+		# - Column labels : Array[String] (each vector array must have two/three)
+		# - Columns are integer? : bool (each vector array maps to one)
+		# - Column default values : Variant
+		# - Allowed resource types : Array[Script or Classname]
+		var columns_dict := {}
+		for y in x[1]:
+			columns_dict[y] = object.get(y)
+
 		add_property_editor_for_multiple_properties(
-			"Inputs",
-			["input_types", "input_counts"],
+			x[0],
+			x[1],
 			property_script.new(
-				plugin, object,
-				{
-					"input_types" : object.input_types,
-					"input_counts" : object.input_counts,
-				},
-				["Count"],
-				[true],
-				[1]
+				plugin, object, columns_dict,
+				x[2],
+				x[3],
+				x[4],
+				x[5]
 			)
 		)
 		return true
-
-	if path == "output_types":
-		add_property_editor_for_multiple_properties(
-			"Outputs",
-			["output_types", "output_ranges"],
-			property_script.new(
-				plugin, object,
-				{
-					"output_types" : object.output_types,
-					"output_ranges" : object.output_ranges,
-				},
-				["Min", "Max"],
-				[true],
-				[Vector2(1, 1)]
-			)
-		)
-		return true
-
-	if path == "results":
-		add_property_editor_for_multiple_properties(
-			"Results",
-			["results", "weights", "count_ranges"],
-			property_script.new(
-				plugin, object,
-				{
-					"results": object.results,
-					"weights": object.weights,
-					"count_ranges" : object.count_ranges,
-				},
-				["Weight", "Min", "Max"],
-				[false, true],
-				[1.0, Vector2(1, 1)]
-			)
-		)
-		return true
-
-	if object is ItemPattern:
-		if path == "efficiency": return true
-		if path == "items":
-			add_property_editor_for_multiple_properties(
-				"Matches",
-				["items", "efficiency"],
-				property_script.new(
-					plugin, object,
-					{
-						"items": object.items,
-						"efficiency" : object.efficiency,
-					},
-					["Efficiency"],
-					[false],
-					[1.0]
-				)
-			)
-			return true
-
-	if "affix_weights" in object:
-		if path == "affix_weights": return true
-		if path == "possible_affixes":
-			add_property_editor_for_multiple_properties(
-				"Bonuses",
-				["possible_affixes", "affix_weights"],
-				property_script.new(
-					plugin, object,
-					{
-						"possible_affixes": object.possible_affixes,
-						"affix_weights": object.affix_weights,
-					},
-					["Weight"],
-					[true],
-					[1.0]
-				)
-			)
-			return true
-
-	if "vendor_inventory" in object:
-		if path == "stock_counts" || path == "stock_restocks": return true
-		if path == "stock":
-			add_property_editor_for_multiple_properties(
-				"Stock",
-				["stock", "stock_counts", "stock_restocks"],
-				property_script.new(
-					plugin, object,
-					{
-						"stock": object.stock,
-						"stock_counts": object.stock_counts,
-						"stock_restocks" : object.stock_restocks,
-					},
-					["Count", "Restocks"],
-					[true, true],
-					[1, 0]
-				)
-			)
-			return true
 
 	return false

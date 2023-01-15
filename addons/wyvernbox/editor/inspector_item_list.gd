@@ -34,11 +34,13 @@ func _init(
 	columns : Dictionary,
 	column_labels : Array,
 	columns_int : Array = [],
-	column_defaults : Array = []
+	column_defaults : Array = [],
+	allowed_types : Array = [ItemType]
 ):
 	self.columns = columns
 	self.plugin = plugin
 	self.edited_object = edited_object
+	self.allowed_types = allowed_types
 
 	var property_buttons = HBoxContainer.new()
 	browse_button.text = "Browse Items..."
@@ -46,14 +48,20 @@ func _init(
 	browse_button.connect("pressed", self, "_on_browse_pressed")
 	browse_button.size_flags_horizontal = SIZE_EXPAND_FILL
 
+	var vis_button = Button.new()
+	vis_button.flat = true
+	vis_button.connect("pressed", self, "_on_vis_pressed")
+
 	add_child(property_buttons)
 	property_buttons.add_child(browse_button)
+	property_buttons.add_child(vis_button)
 	property_buttons.add_child(load("res://addons/wyvernbox/editor/inspector_item_list_options.gd").new(self))
 	add_focusable(browse_button)
 	add_focusable(options_button)
 
 	add_child(bottom)
 	set_bottom_editor(bottom)
+
 	grid_l.size_flags_horizontal = SIZE_EXPAND_FILL
 	grid_r.size_flags_horizontal = SIZE_EXPAND_FILL
 	bottom.add_child(grid_l)
@@ -62,7 +70,10 @@ func _init(
 	_ensure_no_empty(column_defaults)
 	_init_headers(column_labels)
 	_init_items(columns_int, column_defaults)
-	_init_allowed_types()
+
+	yield(self, "ready")
+
+	vis_button.icon = get_icon("GuiVisibilityVisible", "EditorIcons")
 
 
 func _ensure_no_empty(column_defaults):
@@ -386,26 +397,6 @@ func _init_column_count(columns, column_defaults):
 	grid_r.columns = column_count
 
 
-func _init_allowed_types():
-	if edited_object is ItemConversion:
-		if columns.has("input_types"):
-			allowed_types = [ItemType, ItemPattern]
-
-		if columns.has("output_types"):
-			allowed_types = [ItemType, ItemGenerator]
-
-	if edited_object is ItemGenerator:
-		allowed_types = [ItemType, ItemGenerator]
-		if !columns.has("results"):
-			allowed_types.append(ItemPattern)
-
-	if edited_object is ItemPattern:
-		allowed_types = [ItemType, ItemPattern]
-
-	if "vendor_inventory" in edited_object:
-		allowed_types = [ItemType, ItemGenerator]
-
-
 func _on_delete_button_pressed(button):
 	remove_item(button.get_position_in_parent() / grid_r.columns)
 
@@ -447,3 +438,8 @@ func _on_browse_pressed():
 		get_node("../../../..").rect_global_position.x - browse_window.rect_size.x - 8.0,
 		rect_global_position.y
 	)
+
+
+func _on_vis_pressed():
+	bottom.visible = !bottom.visible
+	get_child(0).get_child(1).icon = get_icon("GuiVisibilityVisible" if bottom.visible else "GuiVisibilityHidden", "EditorIcons")

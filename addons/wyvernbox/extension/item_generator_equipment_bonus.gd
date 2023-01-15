@@ -60,3 +60,14 @@ func add_affix(item, rng : RandomNumberGenerator):
 	)
 	random_affix.apply_to(extras["stats"], random_level, 1.0)
 	random_affix.append_affix(item.name_with_affixes)
+
+# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+# See `ItemGenerator._get_wyvernbox_item_lists`.
+func _get_wyvernbox_item_lists() -> Array:
+	var result = ._get_wyvernbox_item_lists()
+	result.append([
+		"Bonuses", ["possible_affixes", "affix_weights"],
+		["Weight"], [false], [1],
+		[]
+	])
+	return result

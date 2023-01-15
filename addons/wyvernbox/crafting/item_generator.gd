@@ -70,6 +70,21 @@ func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], in
 
 	return []
 
+# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+# The returned arrays must contain:
+# - Property editor label : String
+# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+# - Column labels : Array[String] (each vector array must have two/three)
+# - Columns are integer? : bool (each vector array maps to one)
+# - Column default values : Variant
+# - Allowed resource types : Array[Script or Classname]
+func _get_wyvernbox_item_lists() -> Array:
+	return [[
+		"Outcomes", ["results", "weights", "count_ranges"],
+		["Weight", "Min", "Max"], [false, true], [1],
+		[ItemType, load("res://addons/wyvernbox/crafting/item_generator.gd")]
+	]]
+
 # Returns a random number. Non-normalized chances are defined inside `weights`.
 # If `rng` not set, uses global RNG.
 static func weighted_random(weights : Array, rng : RandomNumberGenerator = null) -> int:
