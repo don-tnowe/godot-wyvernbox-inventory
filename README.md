@@ -35,3 +35,16 @@ The `example/wyvernbox` folder contains some items and equipment stats to start.
 
 - Filter ground and inventory items via the versatile `ItemPattern` classes!
 - Tooltips extensible with the `TooltipProperty` class!
+
+#
+Made by Don Tnowe in 2022.
+
+[My Website](https://redbladegames.netlify.app)
+
+[Itch](https://don-tnowe.itch.io)
+
+[Twitter](https://twitter.com/don_tnowe)
+
+Copying and Modification is allowed in accordance to the MIT license, unless otherwise specified. License text is included.
+
+Font in example is [Abaddon, Licensed under Creative Commons Attribution 3.0.](https://caffinate.itch.io/abaddon)

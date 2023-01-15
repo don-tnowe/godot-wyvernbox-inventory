@@ -37,10 +37,10 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 	add_child(item_node)
 
 	if item_node is Node2D:
-		item_node.global_position = global_pos
+		item_node.position = global_pos
 
 	else:
-		item_node.global_translation = global_pos
+		item_node.translation = global_pos
 
 	if throw_vector == null:
 		throw_vector = item_node.get_random_jump_vector()
@@ -60,10 +60,10 @@ func load_from_array(array : Array):
 		new_node.item_extra = x["extra"]
 		new_node.item_affixes = x.get("name", [null])
 		if new_node is Node2D:
-			new_node.global_position = x["position"]
+			new_node.position = x["position"]
 
 		else:
-			new_node.global_translation = x["position"]
+			new_node.translation = x["position"]
 
 # Returns all ground items as an array of dictionaries. Useful for serialization.
 func to_array():
