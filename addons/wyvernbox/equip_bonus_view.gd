@@ -8,7 +8,7 @@ export var shown_res : Resource
 func show_bonus(bonus_res : Resource, label : String, label_color : Color = Color.white, background : Texture = null):
   shown_res = bonus_res
   show()
-  $"Back".texture = bonus_res.icon_back if background == null else background
+  $"Back".texture = bonus_res.texture_back if background == null else background
   $"Icon".texture = bonus_res.icon
   $"Value".text = label
   $"Value".self_modulate = label_color

@@ -112,7 +112,7 @@ func drop_data(position, data):
 
 
 func _gui_input(event):
-	if event is InputEventMouseButton && event.pressed:
+	if event is InputEventMouseButton && event.pressed && event.button_index == BUTTON_LEFT:
 		var index_grabbed = _get_mouseover_item(event.global_position)
 		if index_grabbed < 0: return
 		# get_drag_data does not work :/
@@ -124,7 +124,7 @@ func _gui_input(event):
 
 func _get_mouseover_item(global_pos):
 	var icon = grid_l.get_child(grid_l.columns)
-	return floor((global_pos.y - icon.rect_global_position.y) / (icon.rect_size.y + 2))
+	return floor((global_pos.y - icon.rect_global_position.y) / (icon.rect_size.y + grid_l.get_constant("vseparation")))
 
 
 func add_item(item):
@@ -157,6 +157,8 @@ func move_item(from_index, to_index):
 
 	_clear_items()
 	_init_items(columns_are_int, [])
+	for k in columns:
+		emit_changed(k, columns[k], "", true)
 
 
 func remove_item(row_index):
@@ -252,6 +254,7 @@ func _resource_is_local(path):
 		|| path.left(path.rfind("::")) == edited_object.resource_path
 	)
 
+
 func _add_cell_control(value, property_name, is_int = false, vec_component = -1):
 	if value is Vector2:
 		_add_cell_control(value.x, property_name, is_int, COMPONENT_X)
@@ -326,10 +329,18 @@ func _init_items(columns_int, column_defaults):
 		columns_int.fill(false)
 
 	columns_are_int = columns_int
-	_init_column_count(columns, column_defaults)
-
 	var column_keys = columns.keys()
 	var column_arrays = columns.values()
+	for i in column_arrays.size():
+		if column_arrays[i] == null:
+			column_arrays[i] = []
+			columns[column_keys[i]] = column_arrays[i]
+			emit_changed(column_keys[i], column_arrays[i], "", false)
+
+		while column_arrays[i].size() < column_arrays[0].size():
+			column_arrays[i].append(column_defaults[i - 1])
+
+	_init_column_count(columns, column_defaults)
 	for i in column_arrays[0].size():
 		for j in columns.size():
 			if j == 0:
@@ -385,6 +396,8 @@ func _init_allowed_types():
 
 	if edited_object is ItemGenerator:
 		allowed_types = [ItemType, ItemGenerator]
+		if !columns.has("results"):
+			allowed_types.append(ItemPattern)
 
 	if edited_object is ItemPattern:
 		allowed_types = [ItemType, ItemPattern]

@@ -91,6 +91,25 @@ func parse_property(object, type, path, hint, hint_text, usage):
 			)
 			return true
 
+	if "affix_weights" in object:
+		if path == "affix_weights": return true
+		if path == "possible_affixes":
+			add_property_editor_for_multiple_properties(
+				"Bonuses",
+				["possible_affixes", "affix_weights"],
+				property_script.new(
+					plugin, object,
+					{
+						"possible_affixes": object.possible_affixes,
+						"affix_weights": object.affix_weights,
+					},
+					["Weight"],
+					[true],
+					[1.0]
+				)
+			)
+			return true
+
 	if "vendor_inventory" in object:
 		if path == "stock_counts" || path == "stock_restocks": return true
 		if path == "stock":

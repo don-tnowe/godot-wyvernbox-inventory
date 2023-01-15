@@ -11,10 +11,10 @@ export(String, MULTILINE) var description := "health"
 export var affix := ""
 # The position of the affix: `-1` if placed before name, `1` if after.
 export var affix_position := -1
-# The icon of this bonus. Displayed in the stat totals sheet.
-export var icon : Texture
-# The background texture of the icon. Unused.
-export var icon_back : Texture
+# The icon of this bonus.
+export var texture : Texture
+# The background texture of the icon.
+export var texture_back : Texture
 
 # The maximum level of the bonus.
 export var max_level := 10
