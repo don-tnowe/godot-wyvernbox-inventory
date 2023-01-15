@@ -3,7 +3,7 @@ class_name ItemGenerator, "res://addons/wyvernbox/icons/item_generator.png"
 extends Resource
 
 # Name of the generator displayed in tooltips. Can be a locale string.
-export var name := "Insert name or full locale string"
+export var name := ""
 # The generator's icon displayed in tooltips.
 export var texture : Texture
 # The `ItemType`s or `ItemGenerator`s that can be generated.

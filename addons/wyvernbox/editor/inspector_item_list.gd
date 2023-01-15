@@ -17,12 +17,14 @@ var edited_object : Object
 
 var browse_button := Button.new()
 var browse_window : Popup
+var options_button := Button.new()
+
 var bottom := HBoxContainer.new()
 var grid_l := GridContainer.new()
 var grid_r := GridContainer.new()
+
 var columns_are_int := []
 var allowed_types := []
-
 var columns = {}
 
 
@@ -38,11 +40,17 @@ func _init(
 	self.plugin = plugin
 	self.edited_object = edited_object
 
+	var property_buttons = HBoxContainer.new()
 	browse_button.text = "Browse Items..."
 	browse_button.flat = true
 	browse_button.connect("pressed", self, "_on_browse_pressed")
-	add_child(browse_button)
+	browse_button.size_flags_horizontal = SIZE_EXPAND_FILL
+
+	add_child(property_buttons)
+	property_buttons.add_child(browse_button)
+	property_buttons.add_child(load("res://addons/wyvernbox/editor/inspector_item_list_options.gd").new(self))
 	add_focusable(browse_button)
+	add_focusable(options_button)
 
 	add_child(bottom)
 	set_bottom_editor(bottom)
@@ -72,9 +80,12 @@ func _ensure_no_empty(column_defaults):
 
 
 func can_drop_data(position, data):
+	if data.has("inspector_item_list_drag_from"):
+		return true
+
 	if data.get("type", "") != "files":
 		return false
-	
+
 	if data.get("files", []).size() == 0:
 		return false
 
@@ -82,12 +93,38 @@ func can_drop_data(position, data):
 
 
 func drop_data(position, data):
-	for x in data["files"]:
+	if data.has("inspector_item_list_drag_from") && data["inside_list"] == self:
+		move_item(data["inspector_item_list_drag_from"], _get_mouseover_item(get_global_mouse_position()))
+		return
+
+	for x in data.get("files", []):
 		var loaded = load(x)
 		for y in allowed_types:
 			if loaded is y:
 				add_item(loaded)
 				break
+
+	for x in data.get("resources", []):
+		for y in allowed_types:
+			if x is y:
+				add_item(x)
+				break
+
+
+func _gui_input(event):
+	if event is InputEventMouseButton && event.pressed:
+		var index_grabbed = _get_mouseover_item(event.global_position)
+		if index_grabbed < 0: return
+		# get_drag_data does not work :/
+		call_deferred("force_drag",
+			{"inspector_item_list_drag_from" : index_grabbed, "inside_list" : self},
+			grid_l.get_child(grid_l.columns * (index_grabbed + 1) + 1).duplicate()
+		)
+
+
+func _get_mouseover_item(global_pos):
+	var icon = grid_l.get_child(grid_l.columns)
+	return floor((global_pos.y - icon.rect_global_position.y) / (icon.rect_size.y + 2))
 
 
 func add_item(item):
@@ -113,6 +150,15 @@ func add_item(item):
 	_add_delete_button()
 
 
+func move_item(from_index, to_index):
+	if from_index < 0 || to_index < 0: return
+	for x in columns.values():
+		x.insert(to_index, x.pop_at(from_index))
+
+	_clear_items()
+	_init_items(columns_are_int, [])
+
+
 func remove_item(row_index):
 	var column_properties = columns.keys()
 	var column_arrays = columns.values()
@@ -135,13 +181,23 @@ func remove_item(row_index):
 		emit_changed(column_properties[i], column_arrays[i], "", true)
 
 
+func _clear_items():
+	for x in grid_l.get_children():
+		if x.get_position_in_parent() >= grid_l.columns:
+			x.free()
+
+	for x in grid_r.get_children():
+		if x.get_position_in_parent() >= grid_r.columns:
+			x.free()
+
+
 func _add_item_control(item):
 	var icon = TextureRect.new()
 	icon.expand = true
 	grid_l.add_child(icon)
 
 	var label = Label.new()
-	label.mouse_filter = MOUSE_FILTER_PASS
+	# label.mouse_filter = MOUSE_FILTER_PASS
 	label.size_flags_horizontal = SIZE_EXPAND_FILL
 	label.clip_text = true
 	grid_l.add_child(label)
@@ -173,7 +229,11 @@ func _update_item_in_control(row_index, item):
 
 	var label = grid_l.get_child((row_index + 1) * grid_l.columns + 1)
 	if item.resource_name == "":
-		label.text = item.resource_path.get_file().get_basename()
+		if _resource_is_local(item.resource_path):
+			label.text = "New " + ("Generator" if item is ItemGenerator else "Pattern")
+
+		else:
+			label.text = item.resource_path.get_file().get_basename()
 
 	else:
 		label.text = item.resource_name
@@ -185,6 +245,12 @@ func _update_item_in_control(row_index, item):
 	if item is ItemPattern:
 		label.modulate = Color.darkturquoise
 
+
+func _resource_is_local(path):
+	return (
+		path == ""
+		|| path.left(path.rfind("::")) == edited_object.resource_path
+	)
 
 func _add_cell_control(value, property_name, is_int = false, vec_component = -1):
 	if value is Vector2:

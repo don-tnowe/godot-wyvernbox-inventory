@@ -53,6 +53,12 @@ func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGe
 
 
 func _scan_item_folders():
+	items_by_dir.clear()
+	while true:
+		var node = tree_root.get_children()
+		if node == null: break
+		node.free()
+
 	var dir = Directory.new()
 	var folder_queue = []
 	var cur_folder = "res://"

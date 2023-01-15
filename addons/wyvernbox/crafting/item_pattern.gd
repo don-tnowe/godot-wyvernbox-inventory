@@ -3,7 +3,7 @@ class_name ItemPattern, "res://addons/wyvernbox/icons/item_pattern.png"
 extends Resource
 
 # Name of the pattern displayed in tooltips. Can be a locale string.
-export var name := "Insert name or full locale string"
+export var name := ""
 # The pattern's icon displayed in tooltips.
 export var texture : Texture
 
