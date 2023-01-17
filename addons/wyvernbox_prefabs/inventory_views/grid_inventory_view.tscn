@@ -17,20 +17,24 @@ fill_to = Vector2( 0.5, 2 )
 [sub_resource type="ViewportTexture" id=5]
 viewport_path = NodePath("Viewport")
 
-[node name="Inventory" type="Control"]
+[node name="Inventory" type="MarginContainer"]
 margin_right = 170.0
 margin_bottom = 114.0
 rect_min_size = Vector2( 170, 114 )
+size_flags_horizontal = 6
+size_flags_vertical = 6
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_lock_": true
 }
 item_scene = ExtResource( 1 )
 interaction_mode = 5
+background_texture_node = NodePath("BG")
+tex_from_viewport = NodePath("Viewport")
 
 [node name="Border" type="NinePatchRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 170.0
+margin_bottom = 114.0
 texture = SubResource( 3 )
 patch_margin_left = 2
 patch_margin_top = 2
@@ -39,23 +43,6 @@ patch_margin_bottom = 2
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="BG" type="Control" parent="."]
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 169.0
-margin_bottom = 113.0
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="BG" type="TextureRect" parent="BG"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = SubResource( 5 )
-stretch_mode = 2
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 14, 14 )
@@ -67,3 +54,15 @@ anchor_bottom = 0.0
 margin_right = 14.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 0, 0 )
+
+[node name="BG" type="TextureRect" parent="."]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 169.0
+margin_bottom = 113.0
+rect_min_size = Vector2( 168, 112 )
+mouse_filter = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+texture = SubResource( 5 )
+stretch_mode = 2

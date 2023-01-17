@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=12 format=2]
+
+[ext_resource path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" type="Resource" id=1]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" type="Resource" id=3]
+[ext_resource path="res://addons/wyvernbox/crafting/item_generator.gd" type="Script" id=5]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/ring_1.tres" type="Resource" id=6]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/chestplate_2.tres" type="Resource" id=7]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/head_helmet.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/chestplate_1.tres" type="Resource" id=9]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/belt_1.tres" type="Resource" id=10]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/ring_2.tres" type="Resource" id=11]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/belt_2.tres" type="Resource" id=12]
+[ext_resource path="res://example/wyvernbox/item_types/equipment/head_wizardhat.tres" type="Resource" id=13]
+
+[resource]
+script = ExtResource( 5 )
+name = "Random Item"
+results = [ ExtResource( 10 ), ExtResource( 12 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 11 ), ExtResource( 1 ) ]
+weights = [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
+count_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]

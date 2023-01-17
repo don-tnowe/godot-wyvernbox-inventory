@@ -46,13 +46,19 @@ export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
 # The `Inventory` this node displays.
 var inventory : Reference setget _set_inventory
 
+# The latest autosave time, in seconds since startup.
+var last_autosave_sec := -1.0
+
 var _dragged_node : Control
 var _dragged_stack : ItemStack
 var _view_nodes := []
 
 
 func _ready():
-	if Engine.editor_hint: return
+	if Engine.editor_hint:
+		_regenerate_view()
+		return
+
 	call_deferred("add_to_group", "inventory_view")
 	call_deferred("add_to_group", "view_filterable")
 	connect("visibility_changed", self, "_on_visibility_changed")
@@ -95,6 +101,13 @@ func _set_inventory(v):
 	v.connect("item_stack_added", self, "_on_item_stack_added")
 	v.connect("item_stack_changed", self, "_on_item_stack_changed")
 	v.connect("item_stack_removed", self, "_on_item_stack_removed")
+	if has_node("ItemViews"):
+		for x in get_node("ItemViews").get_children():
+			x.queue_free()
+	
+	for x in inventory.items:
+		_on_item_stack_added(x)
+
 	_regenerate_view()
 
 
@@ -393,10 +406,15 @@ func sort_inventory():
 
 # Saves the inventory to disk into the specified file, or the one set in `autosave_file_path`.
 func save_state(filepath = ""):
+	if Engine.editor_hint: return  # Called in editor by connected signals
+	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
+
+	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 	inventory.save_state(autosave_file_path if filepath == "" else filepath)
 
 # Loads the inventory from disk from the specified file, or the one set in `autosave_file_path`.
 func load_state(filepath = ""):
+	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)
 
 

@@ -1,12 +1,14 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/wyvernbox_prefabs/item_instantiator.tscn" type="PackedScene" id=2]
 [ext_resource path="res://example/src/test_2d_char.gd" type="Script" id=3]
 [ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
 [ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=5]
+[ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=6]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=7]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" type="Resource" id=9]
 [ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=17]
 [ext_resource path="res://addons/wyvernbox/ground/ground_items_manager.gd" type="Script" id=18]
 [ext_resource path="res://addons/wyvernbox_prefabs/tooltip.tscn" type="PackedScene" id=19]
@@ -22,6 +24,7 @@ fill_from = Vector2( 1, 1 )
 [sub_resource type="RectangleShape2D" id=4]
 
 [sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 13.5, 10 )
 
 [node name="Node" type="Node"]
 
@@ -67,16 +70,17 @@ align = 1
 
 [node name="Node2D" type="Node2D" parent="Gameplay"]
 __meta__ = {
-"_edit_group_": true,
 "_edit_lock_": true
 }
 
 [node name="Char" type="KinematicBody2D" parent="Gameplay/Node2D"]
 position = Vector2( 322, 171 )
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
 generator = ExtResource( 5 )
 inventory_menu = NodePath("../../../Inventory/InventoryMenu")
-inventory_view = NodePath("../../../Inventory/InventoryMenu/Inventory")
 inventory_tooltip = NodePath("../../../Inventory/Tooltip")
 ground_items = NodePath("../Items")
 
@@ -102,7 +106,7 @@ shape = SubResource( 4 )
 
 [node name="Items" type="Node2D" parent="Gameplay/Node2D"]
 script = ExtResource( 18 )
-autosave_file_path = "items/ground.dat"
+autosave_file_path = "items/ground/area1.dat"
 item_scene = ExtResource( 4 )
 
 [node name="Loot" type="Node2D" parent="Gameplay/Node2D"]
@@ -263,6 +267,129 @@ item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 2
 randomize_locations = false
 spread_distance = 64.0
 
+[node name="Openable" type="Node2D" parent="Gameplay/Node2D"]
+
+[node name="Chest" type="Area2D" parent="Gameplay/Node2D/Openable" groups=["inworld_openable"]]
+position = Vector2( 307, 73 )
+
+[node name="Inventory" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource( 6 )]
+visible = false
+margin_left = -12.0
+margin_top = 71.0
+margin_right = 158.0
+margin_bottom = 185.0
+autosave_file_path = "items/world/chest1.dat"
+
+[node name="Control" type="Control" parent="Gameplay/Node2D/Openable/Chest/Inventory"]
+margin_left = 170.0
+margin_top = 114.0
+margin_right = 170.0
+margin_bottom = 114.0
+size_flags_horizontal = 10
+size_flags_vertical = 10
+
+[node name="Button" type="Button" parent="Gameplay/Node2D/Openable/Chest/Inventory/Control"]
+margin_left = 3.0
+margin_top = -22.0
+margin_right = 21.0
+margin_bottom = -2.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "?"
+
+[node name="InvInit" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource( 2 )]
+inventory_or_ground = NodePath("../Inventory")
+items_to_add = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
+item_repeat_ranges = [ Vector2( 8, 8 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ) ]
+item_chances = [ 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0 ]
+populate_when_ready = true
+delay_between_items = 0.0
+spread_distance = 64.0
+
+[node name="Visuals" type="Node2D" parent="Gameplay/Node2D/Openable/Chest"]
+
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/Node2D/Openable/Chest/Visuals"]
+position = Vector2( 0, -3 )
+polygon = PoolVector2Array( -10, -8, -14, 1, 15, 1, 10, -8 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Gameplay/Node2D/Openable/Chest/Visuals"]
+position = Vector2( 0, -3 )
+polygon = PoolVector2Array( -14, 3, -13, 13, 14, 13, 15, 3, 3, 3, 3, 6, -2, 6, -2, 3 )
+
+[node name="Shape" type="CollisionShape2D" parent="Gameplay/Node2D/Openable/Chest"]
+position = Vector2( 0.5, 0 )
+shape = SubResource( 6 )
+
+[node name="Button" type="Button" parent="Gameplay/Node2D/Openable/Chest"]
+visible = false
+margin_left = -23.0
+margin_top = -43.0
+margin_right = 24.0
+margin_bottom = -23.0
+text = "Open"
+
+[node name="Another Chest" type="Area2D" parent="Gameplay/Node2D/Openable" groups=["inworld_openable"]]
+position = Vector2( 374, 80 )
+
+[node name="Inventory" parent="Gameplay/Node2D/Openable/Another Chest" instance=ExtResource( 6 )]
+visible = false
+margin_left = -12.0
+margin_top = 71.0
+margin_right = 156.0
+margin_bottom = 241.0
+rect_min_size = Vector2( 114, 170 )
+autosave_file_path = "items/world/chest2.dat"
+width = 8
+height = 12
+
+[node name="Control2" type="Control" parent="Gameplay/Node2D/Openable/Another Chest/Inventory"]
+margin_left = 168.0
+margin_top = 170.0
+margin_right = 168.0
+margin_bottom = 170.0
+size_flags_horizontal = 10
+size_flags_vertical = 10
+
+[node name="Button" type="Button" parent="Gameplay/Node2D/Openable/Another Chest/Inventory/Control2"]
+margin_left = 3.0
+margin_top = -22.0
+margin_right = 21.0
+margin_bottom = -2.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "?"
+
+[node name="InvInit" parent="Gameplay/Node2D/Openable/Another Chest" instance=ExtResource( 2 )]
+inventory_or_ground = NodePath("../Inventory")
+items_to_add = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
+item_repeat_ranges = [ Vector2( 8, 8 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ) ]
+item_chances = [ 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0 ]
+populate_when_ready = true
+delay_between_items = 0.0
+spread_distance = 64.0
+
+[node name="Visuals" type="Node2D" parent="Gameplay/Node2D/Openable/Another Chest"]
+
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/Node2D/Openable/Another Chest/Visuals"]
+position = Vector2( 0, -3 )
+polygon = PoolVector2Array( -10, -8, -14, 1, 15, 1, 10, -8 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Gameplay/Node2D/Openable/Another Chest/Visuals"]
+position = Vector2( 0, -3 )
+polygon = PoolVector2Array( -14, 3, -13, 13, 14, 13, 15, 3, 3, 3, 3, 6, -2, 6, -2, 3 )
+
+[node name="Shape" type="CollisionShape2D" parent="Gameplay/Node2D/Openable/Another Chest"]
+position = Vector2( 0.5, 0 )
+shape = SubResource( 6 )
+
+[node name="Button" type="Button" parent="Gameplay/Node2D/Openable/Another Chest"]
+visible = false
+margin_left = -23.0
+margin_top = -43.0
+margin_right = 24.0
+margin_bottom = -23.0
+text = "Open"
+
 [node name="Inventory" type="CanvasLayer" parent="."]
 
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource( 1 )]
@@ -282,6 +409,24 @@ drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0
 unit_size = Vector2( 14, 14 )
 
+[node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -225.5
+margin_top = -71.5
+margin_right = 225.5
+margin_bottom = 71.5
+window_title = "Hint"
+dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.
+These can also drop items to the ground.
+
+The chest's contents are displayed here by duplicating the chest's
+InventoryView. Setting the duplicate's inventory to the original's
+inventory synchronizes the inventories, so they can be reopened
+and saved."
+
 [node name="Tooltip" parent="Inventory" instance=ExtResource( 19 )]
 visible = false
 margin_left = 198.0
@@ -293,4 +438,7 @@ compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/m
 
 [connection signal="pressed" from="Gameplay/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]
 [connection signal="area_entered" from="Gameplay/Node2D/Char/ItemPickup" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]
+[connection signal="area_exited" from="Gameplay/Node2D/Char/ItemPickup" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_exited"]
 [connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]
+[connection signal="pressed" from="Gameplay/Node2D/Openable/Chest/Inventory/Control/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="show"]
+[connection signal="pressed" from="Gameplay/Node2D/Openable/Another Chest/Inventory/Control2/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="show"]

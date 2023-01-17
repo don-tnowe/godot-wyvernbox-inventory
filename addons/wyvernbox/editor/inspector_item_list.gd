@@ -263,6 +263,7 @@ func _resource_is_local(path):
 	return (
 		path == ""
 		|| (edited_object is Resource && path.left(path.rfind("::")) == edited_object.resource_path)
+		|| (edited_object is Node && path.left(path.rfind("::")) == edited_object.owner.filename)
 	)
 
 

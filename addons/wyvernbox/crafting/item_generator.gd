@@ -61,12 +61,17 @@ func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], in
 	if item is ItemType:
 		return [ItemStack.new(
 			item,
-			int(rng.randf_range(count_ranges[item_index].x, count_ranges[item_index].y)),
+			rng.randi_range(count_ranges[item_index].x, count_ranges[item_index].y),
 			item.default_properties.duplicate(true)
 		)]
 
-	elif item is get_script():  # If nested ItemGenerator
-		return item.get_items(rng, input_stacks, input_types)
+	else:  # If nested ItemGenerator
+		var repeats = rng.randi_range(count_ranges[item_index].x, count_ranges[item_index].y)
+		var arr = []
+		for i in repeats:
+			arr.append_array(item.get_items(rng, input_stacks, input_types))
+
+		return arr
 
 	return []
 

@@ -139,7 +139,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/extension/item_generator_equipment_bonus.gd"
 }, {
-"base": "Reference",
+"base": "Node",
 "class": "ItemInstantiator",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/item_instantiator.gd"
@@ -291,7 +291,7 @@ _global_script_class_icons={
 "ItemConversion": "res://addons/wyvernbox/icons/item_conversion.png",
 "ItemGenerator": "res://addons/wyvernbox/icons/item_generator.png",
 "ItemGeneratorEquipmentBonus": "",
-"ItemInstantiator": "",
+"ItemInstantiator": "res://addons/wyvernbox/icons/item_instantiator.png",
 "ItemPattern": "res://addons/wyvernbox/icons/item_pattern.png",
 "ItemPatternEquipStat": "",
 "ItemPatternHighlightStack": "",
