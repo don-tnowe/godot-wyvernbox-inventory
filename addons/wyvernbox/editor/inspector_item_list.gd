@@ -262,7 +262,7 @@ func _update_item_in_control(row_index, item):
 func _resource_is_local(path):
 	return (
 		path == ""
-		|| path.left(path.rfind("::")) == edited_object.resource_path
+		|| (edited_object is Resource && path.left(path.rfind("::")) == edited_object.resource_path)
 	)
 
 

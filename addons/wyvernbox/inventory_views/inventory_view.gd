@@ -52,6 +52,7 @@ var _view_nodes := []
 
 
 func _ready():
+	if Engine.editor_hint: return
 	call_deferred("add_to_group", "inventory_view")
 	call_deferred("add_to_group", "view_filterable")
 	connect("visibility_changed", self, "_on_visibility_changed")

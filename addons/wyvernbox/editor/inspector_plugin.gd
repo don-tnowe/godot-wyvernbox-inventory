@@ -4,7 +4,7 @@ var property_script =	load("res://addons/wyvernbox/editor/inspector_item_list.gd
 
 var plugin
 
-var cur_object_settings
+var cur_object_settings := []
 
 
 func _init(plugin):
@@ -16,6 +16,12 @@ func can_handle(object):
 
 
 func parse_begin(object):
+	# Non-tool scripts can't run in editor... unless instantiated in the editor.
+	cur_object_settings = []
+	if !object.get_script().is_tool():
+		object = object.get_script().new()
+		object.call_deferred("free")
+
 	cur_object_settings = object._get_wyvernbox_item_lists()
 
 

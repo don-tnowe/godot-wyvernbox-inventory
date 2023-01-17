@@ -1,5 +1,5 @@
 tool
-class_name ItemType
+class_name ItemType, "res://addons/wyvernbox/icons/item_type.png"
 extends Resource
 
 enum SlotFlags {

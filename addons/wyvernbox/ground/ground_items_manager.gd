@@ -81,7 +81,7 @@ func to_array():
 			"count" : children[i].item_count,
 			"extra" : children[i].item_extra,
 			"name" : children[i].item_affixes,
-			"position" : (children[i].global_position if (children[i] is Node2D) else children[i].global_translation)
+			"position" : (children[i].position if (children[i] is Node2D) else children[i].translation)
 		}
 	
 	return array

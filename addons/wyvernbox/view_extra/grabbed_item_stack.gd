@@ -74,6 +74,8 @@ func drop():
 
 # Drop one item from the stack onto the first inventory under the cursor.
 func drop_one():
+	# If you right-click before scene loads, APPARENTLY an error is thrown here.
+	if grabbed_stack == null: return
 	if grabbed_stack.count == 1:
 		_any_inventory_try_drop_stack(grabbed_stack)
 		update_stack(grabbed_stack, unit_size, false)
@@ -108,7 +110,15 @@ func _move_to_mouse():
 
 func _any_inventory_try_drop_stack(stack):
 	var found_stack : ItemStack
-	for x in get_tree().get_nodes_in_group("inventory_view"):
+	var invs = get_tree().get_nodes_in_group("inventory_view")
+	var invs_reversed = []
+	# Nodes initialized later are placed above (well, if nothing gets created after the initial scene load)
+	# So reversing the array has a higher chance of a correct order
+	invs_reversed.resize(invs.size())
+	for i in invs.size():
+		invs_reversed[i] = invs[invs.size() - 1 - i]
+
+	for x in invs_reversed:
 		if !x.is_visible_in_tree():
 			continue
 		
