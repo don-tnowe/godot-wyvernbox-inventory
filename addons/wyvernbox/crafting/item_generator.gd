@@ -6,12 +6,12 @@ extends Resource
 export var name := ""
 # The generator's icon displayed in tooltips.
 export var texture : Texture
-# The `ItemType`s or `ItemGenerator`s that can be generated.
+# The [ItemType]s or [ItemGenerator]s that can be generated.
 export(Array, Resource) var results setget _set_results
-# The non-normalized chances for each `ItemType` or `ItemGenerator` to appear.
-# (If equals [3, 1, 1], the item at index `0` will appear three times as often as each of the others)
+# The non-normalized chances for each [ItemType] or [ItemGenerator] to appear.
+# (If equals [3, 1, 1], the item at index 0 will appear three times as often as each of the others)
 export(Array, float) var weights setget _set_weights
-# The counts of result `ItemType`s or repeats of result `ItemGenerator`s.
+# The counts of result [ItemType]s or repeats of result [ItemGenerator]s.
 export(Array, Vector2) var count_ranges setget _set_count_ranges
 
 
@@ -42,8 +42,8 @@ func _resize_arrays(size):
 		if count_ranges[i] == null || count_ranges[i] == Vector2.ZERO:
 			count_ranges[i] = Vector2.ONE
 
-# Get a random `results` with random `count_ranges`, considering their random `weights`.
-# Override to define special item generators that modify results or `input_stacks`.
+# Get a random item from [member results] with random [member count_ranges], considering their random [member weights].
+# Override to define special item generators that modify results or [code]input_stacks[/code].
 func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], input_types : Array = []) -> Array:
 	if rng == null:
 		rng = RandomNumberGenerator.new()
@@ -90,8 +90,8 @@ func _get_wyvernbox_item_lists() -> Array:
 		[ItemType, load("res://addons/wyvernbox/crafting/item_generator.gd")]
 	]]
 
-# Returns a random number. Non-normalized chances are defined inside `weights`.
-# If `rng` not set, uses global RNG.
+# Returns a random number. Non-normalized chances are defined inside [member weights].
+# If [code]rng[/code] not set, uses global RNG.
 static func weighted_random(weights : Array, rng : RandomNumberGenerator = null) -> int:
 	var sum = 0.0
 	for i in weights.size():

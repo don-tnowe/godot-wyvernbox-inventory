@@ -11,10 +11,10 @@ export var height := 8 setget _set_grid_height
 # The width of the border around the inventory's cells.
 export var border_width := 1.0 setget _set_border_width
 
-# The node 
+# The [TextureRect] to be stretched to the view's size, with [member border_width] as margins.
 export var background_texture_node : NodePath
 
-#
+# The [Viewport] whose contents will be displayed on [member background_texture_node]. The first [Control] inside will be resized.
 export var tex_from_viewport : NodePath
 
 
@@ -54,7 +54,9 @@ func _regenerate_view():
 	if item_scene == null: return
 	
 	var tex_viewport = get_node(tex_from_viewport)
-	tex_viewport.get_child(0).rect_size = cell_size
+	if tex_viewport.get_child(0) is Control:
+		tex_viewport.get_child(0).rect_size = cell_size
+
 	tex_viewport.size = cell_size
 	
 	var new_size := Vector2(border_width * 2, border_width * 2) + cell_size * Vector2(width, height)
@@ -72,8 +74,8 @@ func _regenerate_view():
 
 	get_node(background_texture_node).texture = vp_tex
 
-# Returns the position of the cell clicked from `pos`.
-# `item`'s size is used for position correction.
+# Returns the position of the cell clicked from [code]pos[/code].
+# [code]item[/code]'s size is used for position correction.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	var topleft = get_node(background_texture_node).rect_global_position
 	return (Vector2(

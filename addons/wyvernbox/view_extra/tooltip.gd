@@ -1,36 +1,49 @@
 class_name InventoryTooltip, "res://addons/wyvernbox/icons/tooltip.png"
 extends Container
 
-# The scale for in-text images drawn by `get_texture_bbcode`.
+# The scale for in-text images drawn by [member get_texture_bbcode].
 const TEX_SCALE := 0.5
 
-# Action for comparing item stats and using quick-transfer (default `Shift`).
+
+# Action for comparing item stats and using quick-transfer (default [kbd]Shift[/kbd]).
 export var compare_input := "inventory_more"
-# Action for attaching a view filter to visible inventories (default `F`).
+
+# Action for attaching a view filter to visible inventories (default [kbd]F[/kbd]).
 export var filter_input := "inventory_filter"
-# Action for the "Clear filter" mod. Hold, then press `filter_input` to clear all view filters (default `Alt`).
+
+# Action for the "Clear filter" mod. Hold, then press [member filter_input] to clear all view filters (default [kbd]Alt[/kbd]).
 export var clear_filter_mod_input := "inventory_less"
+
 
 # Color for positive/higher stat bonuses.
 export var color_bonus := Color.yellow
+
 # Color for negative/lower stat bonuses.
 export var color_malus := Color.red
+
 # Color for zero/equal stat bonuses.
 export var color_neutral := Color.darkgray
+
 # Color for the item's description.
 export var color_description := Color.white
-# Inventory to compare stats to when `compare_input` is held.
+
+# Inventory to compare stats to when [member compare_input] is held.
 export var compare_to_inventory : NodePath
 
-# List of `InventoryTooltipProperty` scripts to display items properties in this tooltip.
+
+
+# List of [InventoryTooltipProperty] scripts to display items properties in this tooltip.
 export(Array, Script) var property_scripts
 
-# Last called display function. Either `display_item`, `display_bonus` or `display_custom`.
+
+# Last called display function. Either [method display_item], [method display_bonus] or [method display_custom].
 var last_func : FuncRef
+
 # Last called display arguments.
 var last_func_args : Array
 
 var _ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
+
 
 # Empties the display. Called before the tooltip must display something.
 func display_empty():
@@ -42,8 +55,8 @@ func display_empty():
 
 	show()
 
-# Displays an item's name and calls all `property_scripts` display methods.
-# `mouseover_node` is the `Control` this tooltip must be placed next to.
+# Displays an item's name and calls all [member property_scripts] display methods.
+# [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
 func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_inventory : bool = true):
 	if shown_from_inventory:
 		_ground_item_state = 0
@@ -76,8 +89,8 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	last_func_args = [item_stack, mouseover_node, shown_from_inventory]
 	call_deferred("_update_rect", mouseover_node)
 
-# Displays the name and description of an `EquipBonus`.
-# `node` is the `Control` this tooltip must be placed next to.
+# Displays the name and description of an [EquipBonus].
+# [code]node[/code] is the [Control] this tooltip must be placed next to.
 func display_bonus(node : Control, bonus_res : Resource):
 	var desc = tr(bonus_res.description)
 	if desc == bonus_res.description:
@@ -94,7 +107,7 @@ func display_bonus(node : Control, bonus_res : Resource):
 	last_func_args = [node, bonus_res]
 
 # Custom display of a title and a rich text description.
-# `mouseover_node` is the `Control` this tooltip must be placed next to.
+# [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
 func display_custom(mouseover_node : Control, title : String, bbcode_description : String):
 	display_empty()
 	$"%Title".text = title
@@ -110,7 +123,7 @@ func display_last():
 	if last_func != null:
 		last_func.call_funcv(last_func_args)
 
-# Returns the visual representation of an `InputEvent` of the specified `action`.
+# Returns the visual representation of an [InputEvent] of the specified [code]action[/code].
 func get_action_bbcode(action : String) -> String:
 	# TODO: detect when there is a joystick input and show that
 	for x in InputMap.get_action_list(action):
@@ -120,7 +133,7 @@ func get_action_bbcode(action : String) -> String:
 	return "[color=#aaa]%s[/color]" % action.capitalize()
 
 # Turns a dictionary of stat bonuses or differences into rich text.
-# `hex_bonus`, `hex_neutral` and `hex_malus` are used for added stats, zeroes, and reduced stats.
+# [code]hex_bonus[/code], [code]hex_neutral[/code] and [code]hex_malus[/code] are used for added stats, zeroes, and reduced stats respectively.
 static func get_stats_bbcode(displayed_stats : Dictionary, hex_bonus : String, hex_neutral : String, hex_malus : String) -> String:
 	var first := true
 	var value := 0.0
@@ -145,8 +158,8 @@ static func get_stats_bbcode(displayed_stats : Dictionary, hex_bonus : String, h
 
 	return text
 
-# Turns a `Texture` into rich text.
-# Allows to specify scale. For a fixed height, see `get_fixheight_texture_bbcode`.
+# Turns a [Texture] into rich text.
+# Allows to specify scale. For a fixed height, see [method get_fixheight_texture_bbcode].
 static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> String:
 	var loaded = load(tex_path)
 	if loaded == null: return ""
@@ -156,8 +169,8 @@ static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> St
 		tex_path,
 	]
 
-# Turns a `Texture` into rich text.
-# Allows to specify a fixed height, in pixels. For a fixed pixel size, see `get_texture_bbcode`.
+# Turns a [Texture] into rich text.
+# Allows to specify a fixed height, in pixels. For a fixed pixel size, see [method get_texture_bbcode].
 static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) -> String:
 	var loaded = load(tex_path)
 	if loaded == null: return ""

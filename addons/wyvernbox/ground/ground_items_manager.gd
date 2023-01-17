@@ -4,17 +4,17 @@ extends Node
 signal item_clicked(item_node)
 
 # File path to autosave into when the scene changes or game is closed.
-# Save can also be triggered manually via `save_state`.
+# Save can also be triggered manually via [method save_state].
 # Only supports "user://" paths.
 export var autosave_file_path := ""
 
-# Scene with a `GroundItemStackView2D` or `GroundItemStackView3D` root to instantiate when `add_item` gets called.
+# Scene with a [GroundItemStackView2D] or [GroundItemStackView3D] root to instantiate when [method add_item] gets called.
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
 
-# Items that don't match these `ItemPattern`s or `ItemType`s will be dimmed out.
+# Items that don't match these ItemPatterns or ItemTypes will be dimmed out.
 export(Array, Resource) var view_filter_patterns setget _set_view_filters
 
-# Defines min and max distance items jump with unset `throw_vector`.
+# Defines min and max distance items jump with unset [code]throw_vector[/code].
 export var spawn_jump_length_range := Vector2(48.0, 96.0)
 
 
@@ -33,9 +33,9 @@ func _ready():
 func _exit_tree():
 	save_state(autosave_file_path)
 
-# Creates an in-world representation of stack `stack` at global position `global_pos`.
-# If `throw_vector` set, the item will also jump landing at position `global_pos + throw_vector`.
-# If `throw_vector` not set, item will land a random short distance nearby.
+# Creates an in-world representation of stack [code]stack[/code] at global position [code]global_pos[/code].
+# If [code]throw_vector[/code] set, the item will also jump landing at position [code]global_pos + throw_vector[/code].
+# If [code]throw_vector[/code] not set, item will land a random short distance nearby.
 func add_item(stack : ItemStack, global_pos, throw_vector = null):
 	var item_node = item_scene.instance()
 	item_node.set_stack(stack)
@@ -52,7 +52,7 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 
 	item_node.jump_to_pos(global_pos + throw_vector)
 
-# Loads ground items from `array` created via `to_array`.
+# Loads ground items from [code]array[/code] created via [method to_array].
 func load_from_array(array : Array):
 	var new_node : Node
 	for x in array:
@@ -137,8 +137,8 @@ func _apply_view_filters(stack_index : int = -1):
 
 	get_child(stack_index).filter_hidden = !all_match
 
-# Writes ground items to file `filename`.
-# Only `user://` paths are supported.
+# Writes ground items to file [code]filename[/code].
+# Only [code]user://[/code] paths are supported.
 func save_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
@@ -151,8 +151,8 @@ func save_state(filename):
 	file.open(filename, File.WRITE)
 	file.store_var(to_array())
 
-# Loads ground items from file `filename`.
-# Only `user://` paths are supported.
+# Loads ground items from file [code]filename[/code].
+# Only [code]user://[/code] paths are supported.
 func load_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")

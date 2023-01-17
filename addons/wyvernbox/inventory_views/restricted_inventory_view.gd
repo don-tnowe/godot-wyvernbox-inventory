@@ -4,7 +4,8 @@ extends InventoryView
 
 # If set and inventory full, quick-transferring into here will shift all items by one cell.
 export var allow_rotation := true setget _set_allow_rotation
-# Each cell's `ItemType.SlotFlags`. Items that don't match won't fit in.
+
+# Each cell's [member ItemType.slot_flags]. Items that don't match won't fit in.
 export(Array, ItemType.SlotFlags) var restricted_to_types := [] setget _set_restricted_to_types
 
 

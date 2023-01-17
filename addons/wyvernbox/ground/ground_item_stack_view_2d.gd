@@ -4,21 +4,25 @@ extends Area2D
 
 signal name_clicked()
 
-# The `ItemType` of the displayed item.
+# The [ItemType] of the displayed item.
 export(Resource) var item_type setget _set_item_type
+
 # The count of the displayed item.
 export var item_count := 1 setget _set_item_count
-# The extra properties of the displayed item - if not set, uses type's `itemType.default_properties`.
+
+# The extra properties of the displayed item - if not set, uses type's [member ItemType.default_properties].
 export var item_extra : Dictionary setget _set_item_extra
 
-# The modulation to apply if filtered out by `GroundItemManager.view_filter_patterns`. `Color(1, 1, 1, 1)` to disable.
+
+# The modulation to apply if filtered out by [member GroundItemManager.view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
 export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
 
-# The `ItemStack.name_with_affixes` of the displayed item.
+
+# The [member ItemStack.name_with_affixes] of the displayed item.
 var item_affixes := [] setget _set_item_affixes
-# `true` if hidden by parent's `GroundItemManager.view_filter_patterns`.
+# [code]true[/code] if hidden by parent's [member GroundItemManager.view_filter_patterns].
 var filter_hidden := false setget _set_filter_hidden
-# The `ItemStack` displayed by this node.
+# The [ItemStack] displayed by this node.
 var item_stack : ItemStack
 
 var _jump_tween : SceneTreeTween
@@ -48,7 +52,7 @@ func _set_filter_hidden(v):
 	filter_hidden = v
 	modulate = filter_hidden_color if v else Color.white
 
-# Sets the displayed `ItemStack`.
+# Sets the displayed [ItemStack].
 func set_stack(stack):
 	item_type = stack.item_type
 	item_count = stack.count
@@ -60,7 +64,7 @@ func set_stack(stack):
 func _ready():
 	_update_stack()
 
-# Plays jump animation and moves to local position `pos`.
+# Plays jump animation and moves to local position [code]pos[/code].
 func jump_to_pos(pos):
 	_jump_tween = create_tween()
 	_jump_tween.tween_property(
@@ -70,7 +74,7 @@ func jump_to_pos(pos):
 	$"Anim".play("init")
 	$"Anim".seek(0)
 
-# Returns a random vector with length between `dist_min` and `dist_max`.
+# Returns a random vector with length between [code]dist_min[/code] and [code]dist_max[/code].
 func get_random_jump_vector(dist_min : float, dist_max : float):
 	return Vector2(
 		rand_range(dist_min, dist_max),
@@ -102,7 +106,7 @@ func _update_stack():
 	if item_count != 1:
 		$"Label/Label".text += " (" + str(item_count) + ")"
 
-# Tries to add item into `into_inventory`, freeing this node on full success.
+# Tries to add item into [code]into_inventory[/code], freeing this node on full success.
 func try_pickup(into_inventory):
 	var deposited_count = into_inventory.try_add_item(item_stack)
 	item_count -= deposited_count

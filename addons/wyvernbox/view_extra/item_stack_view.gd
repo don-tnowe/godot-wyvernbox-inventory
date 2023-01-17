@@ -1,10 +1,10 @@
 class_name ItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends Control
 
-# The `texture_rect` node displaying the `stack`'s type's texture.
+# The [TextureRect] node displaying the [member stack]'s type's texture.
 onready var texture_rect := $"Crop/Texture"
 
-# The displayed `ItemStack`.
+# The displayed [ItemStack].
 var stack : ItemStack
 
 
@@ -13,8 +13,8 @@ func _ready():
 	connect("mouse_exited", self, "_on_mouse_exited")
 
 # Sets the displayed stack.
-# `unit_size` is the width of the inventory's cells.
-# `show_background`, if not disabled, will make this `ItemStackView` show the stack's "back_color" extra property as background.
+# [code]unit_size[/code] is the width of the inventory's cells.
+# [code]show_background[/code], if not disabled, will make this [ItemStackView] show the stack's "back_color" extra property as background.
 func update_stack(item_stack, unit_size, show_background = true):
 	stack = item_stack
 	if item_stack == null: return

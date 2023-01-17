@@ -14,7 +14,7 @@ func _init2(width, height):
 		_cells[i] = []
 		_cells[i].resize(height)
 
-# Returns the top-left of the first position the `item_stack` can fit into.
+# Returns the top-left of the first position the [code]item_stack[/code] can fit into.
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	var item_type = item_stack.item_type
 	if item_type.in_inventory_height >= item_type.in_inventory_width:
@@ -58,7 +58,7 @@ func _clear_stack_cells(item_stack : ItemStack):
 
 	item_stack.inventory = null
 
-# Returns `true` if cells under the `item` are free.
+# Returns [code]true[/code] if cells under the [code]item[/code] are free.
 func can_place_item(item : ItemStack, position : Vector2) -> bool:
 	return _is_rect_free(
 		position.x,
@@ -67,8 +67,8 @@ func can_place_item(item : ItemStack, position : Vector2) -> bool:
 		item.item_type.in_inventory_height
 	)
 
-# Tries to place `item_stack` into a cell with position `pos`.
-# Returns the stack that appeared in hand after, which is `null` if rect was empty or the `item_stack` if it could not be placed.
+# Tries to place [code]item_stack[/code] into cell [code]pos[/code].
+# Returns the stack that appeared in hand after, which is [code]null[/code] if rect was empty or the [code]item_stack[/code] if it could not be placed.
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if !has_cell(pos.x, pos.y): return item_stack
 	if !has_cell(
@@ -92,7 +92,7 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	
 	return _place_stackv(item_stack, found_stack, pos)
 
-# Returns the `ItemStack` in cell `(x, y)`; `null` if cell empty or out of bounds.
+# Returns the [ItemStack] in cell [code](x, y)[/code]; [code]null[/code] if cell empty or out of bounds.
 func get_item_at_position(x : int, y : int) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[x][y]

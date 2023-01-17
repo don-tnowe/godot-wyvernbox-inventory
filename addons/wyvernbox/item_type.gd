@@ -42,19 +42,26 @@ const EQUIPMENT_FLAGS := (
 )
 # The item's name. Can be a locale string.
 export var name := ""
-# The item's descripting. Can be empty or a locale string.
+
+# The item's description. Can be empty or a locale string.
 export(String, MULTILINE) var description := ""
+
 # How many items can fit into a single stack.
 export var max_stack_count := 1
-# How many cells, horizontally, this item occupies in a `GridInventory`.
+
+# How many cells, horizontally, this item occupies in a [GridInventory].
 export var in_inventory_width := 1
-# How many cells, vertically, this item occupies in a `GridInventory`.
+
+# How many cells, vertically, this item occupies in a [GridInventory].
 export var in_inventory_height := 1
+
 # The item's texture.
 export var texture : Texture
+
 # The scale of the item's texture.
 export var texture_scale := 1.0
-# The `SlotFlags` of this item. Used in `RestrictedInvntory`.
+
+# The [code]SlotFlags[/code] of this item. Used in [RestrictedInventory].
 export(int, FLAGS,
 		"SMALL",
 		"LARGE",
@@ -81,13 +88,14 @@ export(int, FLAGS,
 		"E_RING",
 		"E_NECK"
 	) var slot_flags := 1
-# The string representation of the type's `default_properties`.
+# The string representation of the type's [member default_properties].
 export(String, MULTILINE) var default_properties_string setget _set_default_properties_string
+
 # The type's default property dictionary.
-# For editing, `default_properties_string` or the Dictionary Inspector addon are recommended.
-# Can contain various data for display in `InventoryTooltip` via its `InventoryTooltipProperty`, or other, game-specific uses.
-# `price` is used for vendor prices, selling and buying.
-# `back_color` is used to show a colored background in inventories and a glow on the ground.
+# For editing, [default_properties_string] or the Dictionary Inspector addon are recommended.
+# Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses.
+# [code]price[/code] is used for vendor prices, selling and buying.
+# [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground.
 export var default_properties : Dictionary setget _set_default_properties_dict
 
 
@@ -102,16 +110,16 @@ func _set_default_properties_dict(v):
 	default_properties = v
 	default_properties_string = var2str(v)
 
-# Returns `in_inventory_width` and `in_inventory_height` as a `Vector2`.
+# Returns [member in_inventory_width] and [member in_inventory_height] as a [code]Vector2[/code].
 func get_size_in_inventory() -> Vector2:
 	return Vector2(in_inventory_width, in_inventory_height)
 
-# Returns `true` if stack has the same type.
-# For compatibility with `ItemPattern.matches`.
+# Returns [code]true[/code] if stack has the same type.
+# For compatibility with [method ItemPattern.matches].
 func matches(stack) -> bool:
 	return stack.item_type == self
 
-# Returns the value it contributes to an `ItemConversion`. Equals to the stack's `ItemStack.count`.
-# For compatibility with `ItemPattern.get_value`.
+# Returns the value it contributes to an [ItemConversion]. Equals to the stack's [member ItemStack.count].
+# For compatibility with [method ItemPattern.get_value].
 func get_value(stack) -> int:
 	return stack.count

@@ -4,9 +4,9 @@ extends Control
 
 enum InteractionFlags {
 	CAN_TAKE = 1 << 0,  # Player can take items from here.
-	VENDOR = 1 << 1,  # The player can only take items if `CAN_TAKE_AUTO` inventories contain items from the item's `price` extra property. When taken, items will be consumed.
+	VENDOR = 1 << 1,  # The player can only take items if CAN_TAKE_AUTO inventories contain items from the item's price extra property. When taken, items will be consumed.
 	CAN_PLACE = 1 << 2, # Player can place items here.
-	CAN_TAKE_AUTO = 1 << 3, # `VENDOR` inventories can take from this inventory, and `ItemConversion.get_takeable_inventories` filters out inventories wihout this flag.
+	CAN_TAKE_AUTO = 1 << 3, # VENDOR inventories can take from this inventory, and ItemConversion.get_takeable_inventories filters out inventories wihout this flag.
 }
 
 signal item_stack_added(item_stack)
@@ -16,21 +16,28 @@ signal grab_attempted(item_stack, success)
 
 # A slot's size, in pixels.
 export var cell_size := Vector2(14, 14) setget _set_cell_size
-# A scene with an `ItemStackView` in root, spawned to display items.
+
+# A scene with an [ItemStackView] in root, spawned to display items.
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
+
 # Whether to show item's "back_color" extra property as a background behind it.
 export var show_backgrounds := true
-# The `InteractionFlags` of this inventory.
+
+# The [code]InteractionFlags[/code] of this inventory.
 export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
-# For inventories with the `InteractionFlags.CAN_TAKE_AUTO` flag. Vendors and conversions consume from higher priorities first.
+
+# For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
 export var auto_take_priority := 0
 
-# If set, displays this `InventoryView`'s inventory instead of its own.
+
+# If set, displays this [InventoryView]'s inventory instead of its own.
 export var sync_with_inventory := NodePath()
+
 # File path to autosave into.
 # Only supports "user://" paths.
 export var autosave_file_path := ""
-# Defines which events trigger autosave, if `autosave_file_path` set.
+
+# Defines which events trigger autosave, if [member autosave_file_path] set.
 export(int,
 	"LO // Manually through save_state() calls",
 	"MID // On quit/scene change",
@@ -38,16 +45,20 @@ export(int,
 	"Paranoic // On any item added/removed"
 ) var autosave_intensity := 2
 
-# The modulation to apply to items filtered out by `view_filter_patterns`. `Color(1, 1, 1, 1)` to disable.
+
+# The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
 export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
-# Items that don't match these `ItemPattern`s or `ItemType`s will be dimmed out.
+
+# Items that don't match these [ItemPattern]s or [ItemType]s will be dimmed out.
 export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
 
-# The `Inventory` this node displays.
+
+# The [Inventory] this node displays.
 var inventory : Reference setget _set_inventory
 
 # The latest autosave time, in seconds since startup.
 var last_autosave_sec := -1.0
+
 
 var _dragged_node : Control
 var _dragged_stack : ItemStack
@@ -117,8 +128,8 @@ func _regenerate_view():
 
 	assert(has_node("Cells"), "Inventories require a child node named Cell with Control-type children")
 
-# Returns the position of the cell clicked from `pos`. Vector's `x` equals to cell index, while `y` is always 0.
-# Returns `(-1, -1)` if no cell found.
+# Returns the position of the cell clicked from [code]pos[/code]. Vector's [code]x[/code] equals to cell index, while [code]y[/code] is always 0.
+# Returns [code](-1, -1)[/code] if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	var cells = $"Cells".get_children()
 	for i in cells.size():
@@ -279,9 +290,9 @@ func _try_buy(stack : ItemStack):
 
 	return true
 
-# Tries to place `stack` into a cell with position `pos`.
-# Returns the stack that appeared in hand after, which is `null` if slot was empty or the `stack` if it could not be placed.
-# Note: to convert from global coords into cell position, use `global_position_to_cell`.
+# Tries to place [code]stack[/code] into a cell with position [code]pos[/code].
+# Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]stack[/code] if it could not be placed.
+# Note: to convert from global coords into cell position, use [method global_position_to_cell].
 func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 		return stack
@@ -380,7 +391,7 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 func can_drop_data(position, data):
 	return true
 
-# Updates item visibility based on `view_filter_patterns`.
+# Updates item visibility based on [member view_filter_patterns].
 func apply_view_filters(stack_index : int = -1):
 	if stack_index == -1:
 		if view_filter_color == Color(1, 1, 1, 1):
@@ -400,11 +411,11 @@ func apply_view_filters(stack_index : int = -1):
 
 	_view_nodes[stack_index].modulate = Color(1, 1, 1, 1) if all_match else view_filter_color
 
-# Calls the `sort` method on the inventory.
+# Calls the [method Inventory.sort] method on the inventory.
 func sort_inventory():
 	inventory.sort()
 
-# Saves the inventory to disk into the specified file, or the one set in `autosave_file_path`.
+# Saves the inventory to disk into the specified file, or the one set in [member autosave_file_path].
 func save_state(filepath = ""):
 	if Engine.editor_hint: return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
@@ -412,7 +423,7 @@ func save_state(filepath = ""):
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 	inventory.save_state(autosave_file_path if filepath == "" else filepath)
 
-# Loads the inventory from disk from the specified file, or the one set in `autosave_file_path`.
+# Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
 func load_state(filepath = ""):
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)

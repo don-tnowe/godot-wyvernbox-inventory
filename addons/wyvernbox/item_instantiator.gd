@@ -18,12 +18,12 @@ export(Array, float) var item_chances
 export var apply_to_all_results : Resource
 
 # Defines order of [member item_repeat_ranges] and [member item_chances].
-# If [true], spawns [x]-[y] items if spawn succeeds, and none otherwise.
-# If [false], checks chance [x]-[y] times and spawn once for every success.
+# If [code]true[/code], spawns [code]x-y[/code] items if spawn succeeds, and none otherwise.
+# If [code]false[/code], checks chance [code]x-y[/code] times and spawn once for every success.
 export var repeat_post_chance := true
 
-# If [true], spawn items at random positions.
-# If [false], an [InventoryView] will receive items in first available slots with stacking,
+# If [code]true[/code], spawn items at random positions.
+# If [code]false[/code], an [InventoryView] will receive items in first available slots with stacking,
 # and a [GroundItemManager] will spawn items in a circle or arc.
 export var randomize_locations := true
 
@@ -34,7 +34,7 @@ export var delete_when_activates := true
 export var populate_when_ready := false
 
 
-# Delay between item spawns when a [populate_*] method is called.
+# Delay between item spawns when a [code]populate_*[/code] method is called.
 export(float, 0.0, 60.0) var delay_between_items := 0.1
 
 # For ground drops, sets the max distance the items get spread on the ground.
@@ -48,6 +48,8 @@ export(float, 0, 360) var spread_angle_degrees := 0.0
 
 # The [RandomNumberGenerator] this object uses to randomize drops.
 var rng : RandomNumberGenerator = null
+
+var _temp_parent
 
 
 func _ready():
@@ -63,7 +65,7 @@ func _ready():
 
 # Instantiates items inside the attached [InventoryView] or [GroundItemManager].
 # Connect signals here to activate when they are emitted.
-# If [delete_when_activates], also gets freed.
+# If [code]delete_when_activates[/code], also gets freed.
 func activate(arg1 = null, arg2 = null, arg3 = null, arg4 = null, arg5 = null):
 	var attached_node = get_node(inventory_or_ground)
 	var generated_items
@@ -80,7 +82,7 @@ func activate(arg1 = null, arg2 = null, arg3 = null, arg4 = null, arg5 = null):
 	if delete_when_activates:
 		yield(get_tree().create_timer(delay_between_items * generated_items.size()), "timeout")
 		queue_free()
-		if get_parent().name == "ItemPopulatorTempNode":
+		if _temp_parent != null:
 			get_parent().queue_free()
 
 # Reparents the node to the deleted node's parent so it won't get destroyed with its original parent.
@@ -97,8 +99,9 @@ func escape_deletion(of_node : Node):
 		of_node.get_parent().add_child(new_node)
 		new_node.global_translation = get_parent().global_translation
 	
-	new_node.name == "ItemPopulatorTempNode"
 	get_parent().remove_child(self)
+	_temp_parent = new_node
+	new_node.name = "ItemInstantiatorTempNode"
 	new_node.add_child(self)
 
 

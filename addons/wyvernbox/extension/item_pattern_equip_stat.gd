@@ -3,9 +3,9 @@ extends ItemPattern
 
 # Items with this bonus in their "stats" extra property will match.
 export(Array, String) var bonuses_required setget _set_bonuses_required
-# Items which have each of `bonuses_required` no less than `bonuses_min`, will match.
+# Items which have each of [member bonuses_required] no less than [member bonuses_min], will match.
 export(Array, float) var bonuses_min setget _set_bonuses_min
-# Ignores stat amounts in `bonuses_min` when matching.
+# Ignores stat amounts in [member bonuses_min] when matching.
 export var ignore_min_requirement := true
 
 
@@ -24,7 +24,7 @@ func _set_bonuses_min(v):
 	bonuses_min = v
 	bonuses_min.resize(v.size())
 
-# Returns `true` if `item_stack`'s stats fulfill the requirements.
+# Returns [code]true[/code] if [code]item_stack[/code]'s stats fulfill the requirements.
 func matches(item_stack : ItemStack) -> bool:
 	if !.matches(item_stack):
 		return false
@@ -45,7 +45,7 @@ func matches(item_stack : ItemStack) -> bool:
 
 	return true
 
-# Returns `0` if `item_stack`'s stats do not fulfill the requirements - otherwise, see `ItemPattern.get_value`.
+# Returns [code]0[/code] if [code]item_stack[/code]'s stats do not fulfill the requirements - otherwise, see [method ItemPattern.get_value].
 func get_value(of_stack : ItemStack) -> float:
 	if matches(of_stack): return .get_value(of_stack)
 	else: return 0.0

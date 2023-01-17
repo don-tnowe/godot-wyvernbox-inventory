@@ -3,15 +3,16 @@ extends Inventory
 
 # If set and inventory full, quick-transferring into here will shift all items by one cell.
 var allow_rotation := true
-# Each cell's `ItemType.SlotFlags`. Items that don't match won't fit in.
+
+# Each cell's [member ItemType.slot_flags]. Items that don't match won't fit in.
 var restricted_to_types := []
 
 
 func _init(restriction_array).(restriction_array.size(), 1):
 	restricted_to_types = restriction_array
 
-# Returns the first cell the `item_stack` can be placed without stacking.
-# Returns `(-1, -1)` if no empty cells in inventory, or the item type doesn't fit due to flags.
+# Returns the first cell the [code]item_stack[/code] can be placed without stacking.
+# Returns [code](-1, -1)[/code] if no empty cells in inventory, or the item type doesn't fit due to flags.
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	var flags = item_stack.item_type.slot_flags
 	for i in _cells.size():
@@ -49,9 +50,9 @@ func _has_fitting_slot(flags : int) -> bool:
 
 	return false
 
-# Tries to insert items here after a `Shift+Click` on a stack elsewhere.
-# If `allow_rotation` is set, this will shift the items by 1 cell if the inventory is full.
-# Returns the stack that appears where the clicked stack was, which is `null` on success and the same stack on fail.
+# Tries to insert items here after a [kbd]Shift+Click[/code] on a stack elsewhere.
+# If [member allow_rotation] is set, this will shift the items by 1 cell if the inventory is full.
+# Returns the stack that appears where the clicked stack was, which is [code]null[/code] on success and the same stack on fail.
 func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 	var init_count = item_stack.count
 	var count_transferred := try_add_item(item_stack)
@@ -67,8 +68,8 @@ func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 
 	else: return null
 
-# Tries to place `item_stack` into a cell with position `pos`.
-# Returns the stack that appeared in hand after, which is `null` if slot was empty or the `item_stack` if it could not be placed.
+# Tries to place [code]item_stack[/code] into a cell with position [code]pos[/code].
+# Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]item_stack[/code] if it could not be placed.
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if !has_cell(pos.x, pos.y): return item_stack
 	if restricted_to_types[pos.x] & item_stack.item_type.slot_flags == 0:

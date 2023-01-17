@@ -6,14 +6,14 @@ signal item_received(item_stack)
 signal item_given(item_stack)
 signal item_cant_afford(item_stack)
 
-# The `InventoryView` I can place my stock into!
+# The [InventoryView] I can place my stock into!
 export var vendor_inventory := NodePath()
-# The `InventoryView` where I can place the price of items I receive!
+# The [InventoryView] where I can place the price of items I receive!
 export var sell_reward_into_inventory := NodePath()
 # How expensive and prestige my wares are!
 # Price will be from the item's "price" extra property multiplied by this.
 export var price_markup := 2.0
-# Apply this `ItemGenerator` to all of my stock!
+# Apply this [ItemGenerator] to all of my stock!
 export var apply_to_all_stock : Resource
 # My precious wares that your player can buy!
 export(Array, Resource) var stock setget _set_stock
@@ -27,12 +27,12 @@ export var infinite_restocks := true
 # If set, I will remove the price tag off my items, so they can not be re-sold anywhere!
 export var remove_price_on_buy := false
 # If set, items the Player sells me will be gone forever once they look away! (or my parent node becomes invisible)
-# `clear_sold_items` can be called manually to clear on demand.
+# [method clear_sold_items] can be called manually to clear on demand.
 export var clear_sold_items_when_hidden := true
-# If set, my `price_markup` will not get applied to items the Player sells to me!
+# If set, my [member price_markup] will not get applied to items the Player sells to me!
 export var free_buyback := true
 
-# The `RandomNumberGenerator` used by my intricate `ItemGenerator`s!
+# The [RandomNumberGenerator] used by my intricate [ItemGenerator]s!
 var rng = RandomNumberGenerator.new()
 
 
@@ -64,7 +64,7 @@ func _ready():
 	refill_stock()
 	get_parent().connect("visibility_changed", self, "_on_visibility_changed")
 
-# Replenishes the inventory's contents with fresh stock from `get_stock`.
+# Replenishes the inventory's contents with fresh stock from get_stock.
 func refill_stock():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items:
@@ -75,9 +75,9 @@ func refill_stock():
 		_put_up_for_sale(stack, inventory, i)
 		inventory.try_add_item(stack)
 
-# Returns stack with type from `stock` with count `stock_counts` purchasable `stock_restocks + 1` times.
-# If it's an `ItemGenerator`, adds first output stack of that.
-# If `apply_to_all_stock` set, always applies that.
+# Returns stack with type from [member stock] with count [member stock_counts] purchasable [member stock_restocks] + 1 times.
+# If it's an [ItemGenerator], adds first output stack of that.
+# If [member apply_to_all_stock] set, always applies that.
 func get_stock(index : int) -> ItemStack:
 	var stack
 	if stock[index] is ItemGenerator:
@@ -93,7 +93,7 @@ func get_stock(index : int) -> ItemStack:
 	return stack
 
 # Clears all items placed here by the player.
-# If `clear_sold_items_when_hidden`, gets called automatically when the parent `CanvasItem` gets hidden.
+# If [member clear_sold_items_when_hidden], gets called automatically when the parent [CanvasItem] gets hidden.
 func clear_sold_items():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items.duplicate():

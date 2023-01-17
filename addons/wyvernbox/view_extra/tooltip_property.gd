@@ -1,7 +1,7 @@
 class_name InventoryTooltipProperty
 extends Reference
 
-# The `InventoryTooltip` this script must display on. Use this property to access Tooltip configuration.
+# The [InventoryTooltip] this script must display on. Use this property to access Tooltip configuration.
 # The class contains many useful methods for generating BBCode.
 var tooltip : InventoryTooltip
 
@@ -9,7 +9,7 @@ var _tooltip_last_label
 
 
 # Override to define tooltip content.
-# Call `add_bbcode()` and `add_node()` from here, and
+# Call [method add_bbcode] and [method add_node] from here. You can acces the tooltip node through the [member tooltip] property.
 func _display(item_stack):
 	pass
 

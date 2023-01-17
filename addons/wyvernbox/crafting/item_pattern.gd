@@ -7,9 +7,9 @@ export var name := ""
 # The pattern's icon displayed in tooltips.
 export var texture : Texture
 
-# The `ItemType`s or `ItemPattern`s this pattern matches.
+# The ItemTypes or ItemPatterns this pattern matches.
 export(Array, Resource) var items = [] setget _set_items
-# How many items in an `ItemConversion` each item or pattern contributes.
+# How many items in an ItemConversion each item or pattern contributes.
 # Higher values means you would need less of an item.
 export(Array, float) var efficiency = [] setget _set_efficiency
 
@@ -36,7 +36,7 @@ func _init(items := [], efficiency := []):
 		efficiency.resize(items.size())
 		efficiency.fill(1.0)
 
-# Returns `true` if `item_stack` present in `items`.
+# Returns [code]true[/code] if [code]item_stack[/code] present in [member items].
 # Override to define special item patterns that match stacks with specific properties.
 func matches(item_stack : ItemStack) -> bool:
 	if items.size() == 0: return true
@@ -46,8 +46,8 @@ func matches(item_stack : ItemStack) -> bool:
 
 	return false
 
-# Returns `efficiency` for the stack's type, or first pattern that matches it. Multiplied by stack's count.
-# Used to define how many of an item is needed to fulfill an `ItemConversion`'s requirement.
+# Returns [member efficiency] for the stack's type, or first pattern that matches it. Multiplied by stack's count.
+# Used to define how many of an item is needed to fulfill an [ItemConversion]'s requirement.
 # Override to define special item patterns that define value based on specific properties..
 func get_value(of_stack : ItemStack) -> float:
 	var found_at = -1
@@ -59,8 +59,8 @@ func get_value(of_stack : ItemStack) -> float:
 	if found_at == -1: return 0.0
 	return efficiency[found_at] * of_stack.count
 
-# Collects all item types that can ever be matched by this pattern. Used in `Inventory.consume_items`.
-# Add a `null` key if this pattern can match ANY item. This, however, can make conversion with this run slower.
+# Collects all item types that can ever be matched by this pattern. Used in [method Inventory.consume_items].
+# Add a [code]null[/code] key if this pattern can match ANY item. This, however, can make conversion with this run slower.
 func collect_item_dict(dict : Dictionary = {}) -> Dictionary:
 	if items.size() == 0:
 		# Tells Inventory that consume_items() must not check the dict this returns: 

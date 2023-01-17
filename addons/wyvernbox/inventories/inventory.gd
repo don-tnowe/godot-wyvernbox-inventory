@@ -11,6 +11,7 @@ var _height := 1
 # The list of items in this inventory.
 # Setting and editing may lead to unpredictable behaviour.
 var items := []
+
 var _cells := []
 
 
@@ -31,9 +32,9 @@ func get_width() -> int:
 func get_height() -> int:
 	return _height
 
-# Tries to place `stack` into first possible stacks or cells.
-# Returns the number of items deposited, which equates to stack's `ItemStack.count` on success and `0` if inventory was full.
-# `total_deposited` should not be set, as it is used internally.
+# Tries to place [code]stack[/code] into first possible stacks or cells.
+# Returns the number of items deposited, which equates to stack's [member ItemStack.count] on success and [code]0[/code] if inventory was full.
+# [code]total_deposited[/code] should not be set, as it is used internally.
 func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 	var item_type = stack.item_type
 	var count = stack.count
@@ -68,8 +69,8 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 	_add_to_items_array(stack)
 	return count + total_deposited
 
-# Tries to insert items here after a `Shift+Click` on a stack elsewhere.
-# Returns the stack that appears where the clicked stack was, which is `null` on success and the same stack on fail.
+# Tries to insert items here after a [kbd]Shift+Click[/kbd] on a stack elsewhere.
+# Returns the stack that appears where the clicked stack was, which is null on success and the same stack on fail.
 func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 	var count_transferred := try_add_item(item_stack)
 	item_stack.count -= count_transferred
@@ -78,11 +79,11 @@ func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 
 	else: return null
 
-# Returns `true` if cell at `position` is free.
+# Returns [code]true[/code] if cell at [code]position[/code] is free.
 func can_place_item(item : ItemStack, position : Vector2) -> bool:
 	return _cells[position.x + position.y * _width] == null
 
-# Adds `delta` or removes `-delta` items to `item_stack`, removing the stack if it becomes empty and emitting `item_stack_changed` otherwise.
+# Adds [code]delta[/code] or removes [code]-delta[/code] items to [code]item_stack[/code], removing the stack if it becomes empty and emitting [signal item_stack_changed] otherwise.
 func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
 	item_stack.count += delta
 	if item_stack.count > 0:
@@ -101,7 +102,7 @@ func remove_item(item_stack : ItemStack):
 
 	emit_signal("item_stack_removed", item_stack)
 
-# Moves `item_stack` to cell `pos` in this inventory, removing it from its old inventory if needed.
+# Moves [code]item_stack[/code] to cell [code]pos[/code] in this inventory, removing it from its old inventory if needed.
 func move_item_to_pos(item_stack : ItemStack, pos : Vector2):
 	if item_stack.count == 0: return
 
@@ -122,16 +123,16 @@ func move_item_to_pos(item_stack : ItemStack, pos : Vector2):
 	_fill_stack_cells(item_stack)
 	emit_signal("item_stack_changed", item_stack, 0)
 
-# Tries to place `item_stack` into a cell with position `pos`.
-# Returns the stack that appeared in hand after, which is `null` if slot was empty or the `item_stack` if it could not be placed.
+# Tries to place [code]item_stack[/code] into a cell with position [code]pos[/code].
+# Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]item_stack[/code] if it could not be placed.
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if !has_cell(pos.x, pos.y): return item_stack
 
 	var found_stack := get_item_at_position(pos.x, pos.y)
 	return _place_stackv(item_stack, found_stack, pos)
 
-# Returns the first cell the `item_stack` can be placed without stacking.
-# Returns `(-1, -1)` if no empty cells in inventory.
+# Returns the first cell the [code]item_stack[/code] can be placed without stacking.
+# Returns [code](-1, -1)[/code] if no empty cells in inventory.
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
 		if _cells[i] == null:
@@ -139,7 +140,7 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 	return Vector2(-1, -1)
 
-# Returns the `ItemStack` in cell `(x, y)`; `null` if cell empty or out of bounds.
+# Returns the [ItemStack] in cell [code](x, y)[/code]; [code]null[/code] if cell empty or out of bounds.
 func get_item_at_position(x : int, y : int) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[y * _width + x]
@@ -216,13 +217,13 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 	emit_signal("item_stack_changed", bottom, bottom_count_delta)
 	return top
 
-# Returns `false` if cell out of bounds.
+# Returns [code]false[/code] if cell out of bounds.
 func has_cell(x : int, y : int) -> bool:
 	if x < 0 || y < 0: return false
 	if x > _width || y > _height: return false
 	return true
 
-# Counts all items, incrementing entries in `into_dict`.
+# Counts all items, incrementing entries in [code]into_dict[/code].
 # Note: this modifies the passed dictionary.
 func count_all_items(into_dict : Dictionary = {}) -> Dictionary:
 	for x in items:
@@ -230,8 +231,8 @@ func count_all_items(into_dict : Dictionary = {}) -> Dictionary:
 
 	return into_dict
 
-# Counts all item types and patterns inside `items_patterns`, incrementing entries in `into_dict`.
-# If `prepacked_reqs` set, checks only items (not patterns!) in the keys. In most cases, it makes the method work faster.
+# Counts all item types and patterns inside [code]items_patterns[/code], incrementing entries in [code]into_dict[/code].
+# If [code]prepacked_reqs[/code] set, checks only items (not patterns!) in the keys. In most cases, it makes the method work faster.
 # Note: this method modifies the passed dictionary.
 func count_items(items_patterns, into_dict : Dictionary = {}, prepacked_reqs : Dictionary = {}) -> Dictionary:
 	var matched_pattern
@@ -250,7 +251,7 @@ func count_items(items_patterns, into_dict : Dictionary = {}, prepacked_reqs : D
 
 	return into_dict
 
-# Returns `true` if the counts of `items_patterns` items and patterns are no less that those in `item_type_counts`.
+# Returns [code]true[/code] if the counts of [code]items_patterns[/code] items and patterns are no less that those in [code]item_type_counts[/code].
 func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
 	var owned_counts := count_items(items_patterns)
 	for k in owned_counts:
@@ -259,11 +260,11 @@ func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
 			
 	return true
 
-# Consumes items matching types and patterns inside `item_type_counts`.
+# Consumes items matching types and patterns inside [code]item_type_counts[/code].
 # Returns all stacks consumed.
-# Set `check_only` to not actually consume items - this is useful to highlight stacks that would be affected, or show which items are not of sufficient amount.
-# Note: this method modifies the `item_type_counts` dictionary. The resulting values will match the types/patterns that could not be fully fulfilled.
-# If `prepacked_reqs` set, checks only items (not patterns!) in the keys. In most cases, it makes the method work faster.
+# Set [code]check_only[/code] to not actually consume items - this is useful to highlight stacks that would be affected, or show which items are not of sufficient amount.
+# Note: this method modifies the [code]item_type_counts[/code] dictionary. The resulting values will match the types/patterns that could not be fully fulfilled.
+# If [code]prepacked_reqs[/code] set, checks only items (not patterns!) in the keys. In most cases, it makes the method work faster.
 func consume_items(item_type_counts : Dictionary, check_only : bool = false, prepacked_reqs : Dictionary = {}) -> Array:
 	var consumed_stacks = []
 	# See count_items().
@@ -355,7 +356,7 @@ func _compare_size_sort(a : Vector2, b : Vector2):
 func _compare_pos_sort(a : ItemStack, b : ItemStack):
 	return a.position_in_inventory.x + a.position_in_inventory.y * _width < b.position_in_inventory.x + b.position_in_inventory.y * _width
 
-# Loads contents from an array created via `to_array`.
+# Loads contents from an array created via [code]to_array[/code].
 func load_from_array(array : Array):
 	var new_item : ItemStack
 	for x in items.duplicate():
@@ -378,8 +379,8 @@ func to_array() -> Array:
 
 	return array
 
-# Writes inventory contents to file `filename`.
-# Only `user://` paths are supported.
+# Writes inventory contents to file [code]filename[/code].
+# Only [code]user://[/code] paths are supported.
 func save_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
@@ -392,8 +393,8 @@ func save_state(filename):
 	file.open(filename, File.WRITE)
 	file.store_var(to_array())
 
-# Loads inventory contents from file `filename`.
-# Only `user://` paths are supported.
+# Loads inventory contents from file [code]filename[/code].
+# Only [code]user://[/code] paths are supported.
 func load_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")

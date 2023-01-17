@@ -1,18 +1,23 @@
 class_name GrabbedItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends ItemStackView
 
-# The node whose position `drop_on_ground` uses for spawning a ground item.
+# The node whose position [method drop_on_ground] uses for spawning a ground item.
 export var drop_at_node := NodePath("")
-# The `GroundItemManager` the `drop_on_ground` method uses for spawning a ground item.
+
+# The [GroundItemManager] the [method drop_on_ground] method uses for spawning a ground item.
 export var drop_ground_item_manager := NodePath("")
-# The max distance an item dropped by `drop_on_ground` can fly.
+
+# The max distance an item dropped by [method drop_on_ground] can fly.
 export var drop_max_distance := 256.0
-# The size of the item's texture, if its in-inventory size was `(1, 1)`.
+
+# The size of the item's texture, if its in-inventory size was [code](1, 1)[/code].
 export var unit_size := Vector2(18, 18)
+
 
 # The stack currently grabbed, to be released on click.
 var grabbed_stack : ItemStack
-# The `Control` that will trigger `drop_on_ground` when clicked.
+
+# The [Control] that will trigger [method drop_on_ground] when clicked. Created automatically.
 var drop_surface_node : Control
 
 
@@ -133,7 +138,7 @@ func _any_inventory_try_drop_stack(stack):
 			_set_grabbed_stack(found_stack)
 			return
 
-# Drop the specified stack on the ground at `drop_at_node`'s position as child of `drop_ground_item_manager`.
+# Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
 func drop_on_ground(stack, global_pos):
 	var spawn_at_pos = get_node(drop_at_node).global_position
 	var throw_vec = (global_pos - spawn_at_pos).limit_length(drop_max_distance)
