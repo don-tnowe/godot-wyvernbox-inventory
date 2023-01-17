@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=1]
+
+[node name="ItemInit" type="Node"]
+script = ExtResource( 1 )
+items_to_add = [ null ]
+item_repeat_ranges = [ Vector2( 1, 1 ) ]
+item_chances = [ 100.0 ]

@@ -96,3 +96,19 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 func get_item_at_position(x : int, y : int) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[x][y]
+
+# Returns position vectors of all free cells in the inventory.
+func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
+	var free_cells := {}
+	for i in _width - for_size_x + 1:
+		for j in _height - for_size_y + 1:
+			free_cells[Vector2(i, j)] = true
+
+	for i in _width:
+		for j in _height:
+			if get_item_at_position(i, j) != null:
+				for item_i in for_size_x:
+					for item_j in for_size_y:
+						free_cells.erase(Vector2(i - item_i, j - item_j))
+	
+	return free_cells.keys()

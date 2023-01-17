@@ -12,7 +12,6 @@ var _height := 1
 # Setting and editing may lead to unpredictable behaviour.
 var items := []
 var _cells := []
-var _counts := {}
 
 
 func _init(width, height):
@@ -303,6 +302,16 @@ func get_items_ordered():
 	var arr = items.duplicate()
 	arr.sort_custom(self, "_compare_pos_sort")
 	return arr
+
+# Returns position vectors of all free cells in the inventory.
+func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
+	var free_cells := []
+	for i in _width:
+		for j in _height:
+			if get_item_at_position(i, j) == null:
+				free_cells.append(Vector2(i, j))
+	
+	return free_cells
 
 
 func _get_match(item : ItemStack, items_patterns) -> Resource:

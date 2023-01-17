@@ -11,8 +11,6 @@ export var item_count := 1 setget _set_item_count
 # The extra properties of the displayed item - if not set, uses type's `itemType.default_properties`.
 export var item_extra : Dictionary setget _set_item_extra
 
-# Defines min and max length of `get_random_jump_vector`'s returned Vector2.
-export var spawn_jump_length_range := Vector2(48.0, 96.0)
 # The modulation to apply if filtered out by `GroundItemManager.view_filter_patterns`. `Color(1, 1, 1, 1)` to disable.
 export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
 
@@ -72,10 +70,10 @@ func jump_to_pos(pos):
 	$"Anim".play("init")
 	$"Anim".seek(0)
 
-# Returns a random vector with length between `spawn_jump_length_range.x` and `spawn_jump_length_range.y`.
-func get_random_jump_vector():
+# Returns a random vector with length between `dist_min` and `dist_max`.
+func get_random_jump_vector(dist_min : float, dist_max : float):
 	return Vector2(
-		rand_range(spawn_jump_length_range.x, spawn_jump_length_range.y),
+		rand_range(dist_min, dist_max),
 		0
 	).rotated(randf() * TAU)
 

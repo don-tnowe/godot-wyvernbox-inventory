@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/menu_tabs/equipment_tab.tscn" type="PackedScene" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://example/src/clear_all_inv_view_filters_button.gd" type="Script" id=5]
 [ext_resource path="res://example/src/menu_tabs/crafting_tab.tscn" type="PackedScene" id=6]
 [ext_resource path="res://example/src/menu_tabs/shop_tab.tscn" type="PackedScene" id=7]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=9]
+[ext_resource path="res://addons/wyvernbox_prefabs/item_instantiator.tscn" type="PackedScene" id=10]
+[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=11]
+[ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=12]
 
 [node name="InventoryMenu" type="Control"]
 anchor_right = 1.0
@@ -42,6 +47,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 5.0
 margin_bottom = 31.0
+rect_pivot_offset = Vector2( -463, -233 )
 clear_button_enabled = true
 placeholder_text = "Filter by name..."
 
@@ -94,7 +100,7 @@ margin_top = 26.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="menu_stash" type="CenterContainer" parent="CenterContainer/TabContainer"]
+[node name="menu_stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -102,16 +108,43 @@ margin_left = 4.0
 margin_top = 26.0
 margin_right = -4.0
 margin_bottom = -4.0
+size_flags_horizontal = 6
 
 [node name="Inventory" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource( 3 )]
-margin_left = 3.0
-margin_top = 17.0
-margin_right = 229.0
-margin_bottom = 243.0
-rect_min_size = Vector2( 226, 226 )
+margin_right = 232.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 226, 170 )
 autosave_file_path = "items/hero/stash1.dat"
 width = 16
-height = 16
+height = 12
+
+[node name="Label" type="Label" parent="CenterContainer/TabContainer/menu_stash"]
+margin_top = 174.0
+margin_right = 232.0
+margin_bottom = 183.0
+text = "Random goodies:"
+align = 1
+
+[node name="Income" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource( 3 )]
+margin_left = 31.0
+margin_top = 187.0
+margin_right = 201.0
+margin_bottom = 245.0
+rect_min_size = Vector2( 170, 58 )
+size_flags_horizontal = 4
+autosave_intensity = 0
+view_filter_color = Color( 0.101961, 0.14902, 0.301961, 0.74902 )
+height = 4
+
+[node name="IncomeInit" parent="CenterContainer/TabContainer/menu_stash/Income" instance=ExtResource( 10 )]
+script = ExtResource( 11 )
+items_to_add = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 12 ) ]
+item_repeat_ranges = [ Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 16, 16 ) ]
+item_chances = [ 100.0, 100.0, 100.0 ]
+inventory_or_ground = NodePath("..")
+populate_when_ready = true
+delay_between_items = 0.0
+spread_distance = 64.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5

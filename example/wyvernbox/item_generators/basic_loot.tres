@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=10 format=2]
+
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=1]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=2]
+[ext_resource path="res://example/wyvernbox/item_types/materials/feather.tres" type="Resource" id=3]
+[ext_resource path="res://example/wyvernbox/item_types/materials/wood.tres" type="Resource" id=4]
+[ext_resource path="res://addons/wyvernbox/crafting/item_generator.gd" type="Script" id=5]
+[ext_resource path="res://example/wyvernbox/item_types/materials/magic_crystal.tres" type="Resource" id=6]
+[ext_resource path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" type="Resource" id=7]
+[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=8]
+[ext_resource path="res://example/wyvernbox/item_types/materials/herb.tres" type="Resource" id=9]
+
+[resource]
+script = ExtResource( 5 )
+name = "Random Item"
+results = [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 9 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ]
+weights = [ 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.5, 0.13 ]
+count_ranges = [ Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ), Vector2( 1, 20 ) ]

@@ -139,6 +139,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/extension/item_generator_equipment_bonus.gd"
 }, {
+"base": "Reference",
+"class": "ItemInstantiator",
+"language": "GDScript",
+"path": "res://addons/wyvernbox/item_instantiator.gd"
+}, {
 "base": "Resource",
 "class": "ItemPattern",
 "language": "GDScript",
@@ -286,13 +291,14 @@ _global_script_class_icons={
 "ItemConversion": "res://addons/wyvernbox/icons/item_conversion.png",
 "ItemGenerator": "res://addons/wyvernbox/icons/item_generator.png",
 "ItemGeneratorEquipmentBonus": "",
+"ItemInstantiator": "",
 "ItemPattern": "res://addons/wyvernbox/icons/item_pattern.png",
 "ItemPatternEquipStat": "",
 "ItemPatternHighlightStack": "",
 "ItemPatternName": "",
 "ItemStack": "",
 "ItemStackView": "res://addons/wyvernbox/icons/grabbed_item_stack.png",
-"ItemType": "",
+"ItemType": "res://addons/wyvernbox/icons/item_type.png",
 "ObjectPropertyEditor": "",
 "PackedArrayPropertyEditor": "",
 "RestrictedInventory": "",
@@ -320,7 +326,7 @@ resources_spreadsheet_view/array_min_width=128.0
 resources_spreadsheet_view/clip_headers=false
 resources_spreadsheet_view/dupe_arrays=true
 resources_spreadsheet_view/context_menu_on_leftclick=false
-docs_checklist/base_dir="res://addons/wyvernbox/"
+docs_checklist/base_dir="res:///"
 
 [application]
 

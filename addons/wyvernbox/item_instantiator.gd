@@ -1,0 +1,239 @@
+class_name ItemInstantiator, "res://addons/wyvernbox/icons/item_instantiator.png"
+extends Node
+
+# Path to the [InventoryView] or [GroundItemManager] to populate when [method populate] is called.
+export var inventory_or_ground := NodePath()
+
+# The [ItemTypes] or [ItemGenerators] to instantiate.
+export(Array, Resource) var items_to_add
+
+# The minimum and maximum repeat counts of each item instantiated.
+export(Array, Vector2) var item_repeat_ranges
+
+# The percentage chances for each item to be instantiated. 100 is "Always", 0 is "Never".
+# If you need only one of the items to spawn with different chances, add an [ItemGenerator] instead.
+export(Array, float) var item_chances
+
+# Optionally, a generator to modify all instantiated items.
+export var apply_to_all_results : Resource
+
+# Defines order of [member item_repeat_ranges] and [member item_chances].
+# If [true], spawns [x]-[y] items if spawn succeeds, and none otherwise.
+# If [false], checks chance [x]-[y] times and spawn once for every success.
+export var repeat_post_chance := true
+
+# If [true], spawn items at random positions.
+# If [false], an [InventoryView] will receive items in first available slots with stacking,
+# and a [GroundItemManager] will spawn items in a circle or arc.
+export var randomize_locations := true
+
+# If true, makes this instantiator single-use, and calling populate will free this object.
+export var delete_when_activates := true
+
+# If true, makes this instantiator activate immediately.
+export var populate_when_ready := false
+
+
+# Delay between item spawns when a [populate_*] method is called.
+export(float, 0.0, 60.0) var delay_between_items := 0.1
+
+# For ground drops, sets the max distance the items get spread on the ground.
+export var spread_distance := 32.0
+
+# For ground drops, sets the angle range the items get thrown in.
+export(float, 0, 360) var spread_cone_degrees := 360.0
+
+# For cone-shaped ground drops, sets the median angle the items get thrown in.
+export(float, 0, 360) var spread_angle_degrees := 0.0
+
+# The [RandomNumberGenerator] this object uses to randomize drops.
+var rng : RandomNumberGenerator = null
+
+
+func _ready():
+	if rng == null:
+		rng = RandomNumberGenerator.new()
+		rng.randomize()
+
+	if populate_when_ready:
+		if !has_node(inventory_or_ground):
+			return
+
+		call_deferred("activate")
+
+# Instantiates items inside the attached [InventoryView] or [GroundItemManager].
+# Connect signals here to activate when they are emitted.
+# If [delete_when_activates], also gets freed.
+func activate(arg1 = null, arg2 = null, arg3 = null, arg4 = null, arg5 = null):
+	var attached_node = get_node(inventory_or_ground)
+	var generated_items
+	if attached_node is InventoryView:
+		generated_items = populate_inventory(attached_node.inventory, rng)
+
+	if attached_node is GroundItemManager:
+		generated_items = populate_ground(attached_node, rng)
+
+	# Can be async - see [member delay_between_items]
+	if generated_items is GDScriptFunctionState:
+		generated_items = yield(generated_items, "completed")
+
+	if delete_when_activates:
+		yield(get_tree().create_timer(delay_between_items * generated_items.size()), "timeout")
+		queue_free()
+		if get_parent().name == "ItemPopulatorTempNode":
+			get_parent().queue_free()
+
+# Reparents the node to the deleted node's parent so it won't get destroyed with its original parent.
+# Doing this is needed if [member delay_between_items] is non-zero.
+func escape_deletion(of_node : Node):
+	var new_node
+	if get_parent() is Node2D:
+		new_node = Node2D.new()
+		of_node.get_parent().add_child(new_node)
+		new_node.global_position = get_parent().global_position
+
+	else:
+		new_node = Spatial.new()
+		of_node.get_parent().add_child(new_node)
+		new_node.global_translation = get_parent().global_translation
+	
+	new_node.name == "ItemPopulatorTempNode"
+	get_parent().remove_child(self)
+	new_node.add_child(self)
+
+
+# Adds listed items to the inventory.
+func populate_inventory(inventory : Inventory, rng : RandomNumberGenerator = null):
+	var generated_items = get_items(rng)
+	if !randomize_locations:
+		for x in generated_items:
+			inventory.try_add_item(x)
+			if delay_between_items > 0.0:
+				yield(get_tree().create_timer(delay_between_items), "timeout")
+
+	else:
+		# TODO: optimize this heckin' chonker
+		# Takes ~69 ms for 64 stacks, which is HUGE - think of the loading times
+		#     if there are many inventories in the level generated at start
+
+		# Both loops on generated_items take similar times.
+
+		# var start_time = OS.get_ticks_usec()
+		var free_cells := {}
+		var is_grid := inventory is GridInventory
+
+		# Get possible positions for all item sizes present
+		var cur_size : Vector2
+		var cur_free_cells : Array
+		for x in generated_items:
+			cur_size = x.item_type.get_size_in_inventory()
+			free_cells[Vector2.ONE] = inventory.get_all_free_positions()
+
+			if !free_cells.has(cur_size):
+				free_cells[cur_size] = {}
+				if is_grid:
+					free_cells[cur_size] = inventory.get_all_free_positions(cur_size.x, cur_size.y)
+
+				else:
+					free_cells[cur_size] = free_cells[Vector2.ONE]
+
+		# Actually place the items. Clear cells that matching sizes won't be able to be placed in
+		var place_in_cell : Vector2
+		for x in generated_items:
+			cur_size = x.item_type.get_size_in_inventory()
+			cur_free_cells = free_cells[cur_size]
+			if cur_free_cells.size() == 0:
+				continue
+
+			place_in_cell = cur_free_cells[randi() % cur_free_cells.size()]
+			if inventory is GridInventory:
+				for k in free_cells:
+					for i in cur_size.x + k.x - 1:
+						for j in cur_size.y + k.y - 1:
+							free_cells[k].erase(place_in_cell - k + Vector2.ONE + Vector2(i, j))
+
+			else:
+				for k in free_cells:
+					free_cells[k].erase(place_in_cell)
+
+			inventory.try_place_stackv(x, place_in_cell)
+			if delay_between_items > 0.0:
+				yield(get_tree().create_timer(delay_between_items), "timeout")
+
+		# print(start_time - OS.get_ticks_usec())
+
+	return generated_items
+
+# Drops listed items to the ground.
+func populate_ground(ground : GroundItemManager, rng : RandomNumberGenerator = null):
+	var generated_items := get_items(rng)
+	var spawn_origin = get_parent().global_position if get_parent() is Node2D else get_parent().global_translation
+
+	var spread_rad := deg2rad(spread_cone_degrees) * 0.5
+	var dir_rad := deg2rad(spread_angle_degrees)
+	var dist_range := ground.spawn_jump_length_range / ground.spawn_jump_length_range.y * spread_distance
+	var cur_throw := Transform2D()
+
+	if randomize_locations:
+		for x in generated_items:
+			cur_throw = Transform2D(rand_range(dir_rad - spread_rad, dir_rad + spread_rad), Vector2.ZERO)
+			cur_throw = cur_throw.scaled(Vector2.ONE * rand_range(dist_range.x, dist_range.y))
+			ground.add_item(x, spawn_origin, cur_throw * Vector2.RIGHT)
+			if delay_between_items > 0.0:
+				yield(get_tree().create_timer(delay_between_items), "timeout")
+
+	else:
+		cur_throw = Transform2D(dir_rad - spread_rad, Vector2.ZERO)
+		cur_throw = cur_throw.scaled(Vector2(spread_distance, spread_distance))
+		var rotate_by = Transform2D(spread_rad * 2.0 / generated_items.size(), Vector2.ZERO)
+		for x in generated_items:
+			ground.add_item(x, spawn_origin, cur_throw * Vector2.RIGHT)
+			cur_throw = rotate_by * cur_throw
+			if delay_between_items > 0.0:
+				yield(get_tree().create_timer(delay_between_items), "timeout")
+
+	return generated_items
+
+# Returns a list filled with [member items_to_add] with [member item_chances] percent chances repeated [member item_repeat_ranges] times.
+# Used internally, but you can use this manually to define custom spawning behaviour.
+func get_items(rng : RandomNumberGenerator = null) -> Array:
+	if rng == null: rng = self.rng
+
+	var generated_items := []
+	for i in items_to_add.size():
+		var item = items_to_add[i]
+		var repeats := rng.randi_range(item_repeat_ranges[i].x, item_repeat_ranges[i].y)
+
+		for i_pre in repeats if !repeat_post_chance else 1:
+			if rng.randf() > item_chances[i] * 0.01: continue
+			if item is ItemGenerator:
+				for i_post in repeats if repeat_post_chance else 1:
+					generated_items.append_array(item.get_items(rng))
+
+			else:
+				generated_items.append(ItemStack.new(item, repeats if repeat_post_chance else 1, item.default_properties))
+
+	if apply_to_all_results == null:
+		return generated_items
+
+	var actual_generated_items := []
+	for x in generated_items:
+		actual_generated_items.append_array(apply_to_all_results.get_items(rng, [x], [x.item_type]))
+
+	return actual_generated_items
+
+
+# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+# The returned arrays must contain:
+# - Property editor label : String
+# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+# - Column labels : Array[String] (each vector array must have two/three)
+# - Columns are integer? : bool (each vector array maps to one)
+# - Column default values : Variant
+# - Allowed resource types : Array[Script or Classname]
+func _get_wyvernbox_item_lists() -> Array:
+	return [[
+		"Items To Add", ["items_to_add", "item_repeat_ranges", "item_chances"],
+		["Min", "Max", "Chance"], [true, false], [Vector2(1, 1), 100.0],
+		[ItemType, ItemGenerator]
+	]]

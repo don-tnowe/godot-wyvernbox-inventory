@@ -54,3 +54,9 @@ func _on_ItemPickup_area_entered(area : Area2D):
 		# Inventory? Inventory. Don't hard-code paths, kids.
 #		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
 		area.try_pickup(get_node(inventory_view).inventory)
+
+	if area.is_in_group("touch_loot"):
+		var item_init = area.get_node("ItemInit")
+		item_init.activate()
+		item_init.escape_deletion(area)
+		area.queue_free()

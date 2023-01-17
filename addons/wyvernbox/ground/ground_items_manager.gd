@@ -7,10 +7,15 @@ signal item_clicked(item_node)
 # Save can also be triggered manually via `save_state`.
 # Only supports "user://" paths.
 export var autosave_file_path := ""
+
 # Scene with a `GroundItemStackView2D` or `GroundItemStackView3D` root to instantiate when `add_item` gets called.
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
+
 # Items that don't match these `ItemPattern`s or `ItemType`s will be dimmed out.
 export(Array, Resource) var view_filter_patterns setget _set_view_filters
+
+# Defines min and max distance items jump with unset `throw_vector`.
+export var spawn_jump_length_range := Vector2(48.0, 96.0)
 
 
 func _set_view_filters(v):
@@ -43,7 +48,7 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 		item_node.translation = global_pos
 
 	if throw_vector == null:
-		throw_vector = item_node.get_random_jump_vector()
+		throw_vector = item_node.get_random_jump_vector(spawn_jump_length_range.x, spawn_jump_length_range.y)
 
 	item_node.jump_to_pos(global_pos + throw_vector)
 
