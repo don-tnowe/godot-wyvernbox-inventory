@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/menu_tabs/equipment_tab.tscn" type="PackedScene" id=2]
@@ -12,6 +12,23 @@
 [ext_resource path="res://addons/wyvernbox_prefabs/item_instantiator.tscn" type="PackedScene" id=10]
 [ext_resource path="res://example/src/inventory_menu.gd" type="Script" id=11]
 [ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=12]
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=13]
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 13 )
+region = Rect2( 12, 192, 12, 12 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 13 )
+region = Rect2( 60, 36, 24, 12 )
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 12, 12, 12 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 13 )
+region = Rect2( 36, 36, 12, 12 )
 
 [node name="InventoryMenu" type="Control"]
 anchor_right = 1.0
@@ -22,12 +39,17 @@ script = ExtResource( 11 )
 __meta__ = {
 "_edit_lock_": true
 }
+tab_icons = [ null, SubResource( 2 ), SubResource( 3 ), SubResource( 1 ), SubResource( 4 ) ]
 
 [node name="Box" type="VBoxContainer" parent="."]
-margin_left = 348.0
-margin_top = 31.0
-margin_right = 602.0
-margin_bottom = 315.0
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -285.0
+margin_top = -142.0
+margin_right = -31.0
+margin_bottom = 142.0
 
 [node name="MainInventory" parent="Box" instance=ExtResource( 3 )]
 margin_right = 254.0
@@ -51,14 +73,12 @@ clear_button_enabled = true
 placeholder_text = "Filter by name..."
 
 [node name="CenterContainer" type="HBoxContainer" parent="."]
-anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -306.0
-margin_top = -159.0
-margin_right = -66.0
-margin_bottom = 131.0
+margin_left = 30.0
+margin_top = -145.0
+margin_right = 270.0
+margin_bottom = 145.0
 mouse_filter = 2
 alignment = 1
 

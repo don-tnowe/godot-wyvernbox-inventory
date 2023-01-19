@@ -1,13 +1,21 @@
 extends Control
 
+export(Array, Texture) var tab_icons
+
 onready var inventory = $"Box/MainInventory".inventory
 onready var inworld_inventory_container := $"CenterContainer/TabContainer/Inworld"
+
 
 var opened_inventory_view : Control
 
 
 func _ready():
-	inworld_inventory_container.get_parent().set_tab_hidden(0, true)
+	var tabs = inworld_inventory_container.get_parent()
+	tabs.set_tab_hidden(0, true)
+	for i in tab_icons.size():
+		if tab_icons[i] == null: continue
+		tabs.set_tab_icon(i, tab_icons[i])
+		tabs.set_tab_title(i, "")
 
 
 func open_inworld_inventory(inventory_view : InventoryView, name : String):

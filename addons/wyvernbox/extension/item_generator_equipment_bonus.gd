@@ -4,16 +4,25 @@ extends ItemGenerator
 
 # The [EquipBonus] objects that may be applied to the item.
 export(Array, Resource) var possible_affixes
+
 # The non-normalized chances for each [EquipBonus] to be applied.
 export(Array, float) var affix_weights
+
 # Generates between [code]x[/code] and [code]y[/code] affixes.
 export var affix_count_range := Vector2(1, 1)
+
 # Generates affixes of levels between [code]x[/code] and [code]y[/code]. See [EquipBonus.get_value].
 export var affix_level_range := Vector2(1, 6)
+
+# If [code]true[/code], don't append the affix to the name if there is already an affix at that position.
+export var only_one_affix := true
+
 # Item's "price" extra property will grow. It will cost more of this item.
 export var price_increase_item : Resource
+
 # Item's "price" extra property will grow by this, multiplied by sum of levels added.
 export var price_increase_per_level := 20
+
 
 # Returns a random [member results] item with a random affix from [member possible_affixes].
 # If no [member results] set, adds affix to the first of [code]input_types[/code].
@@ -59,7 +68,7 @@ func add_affix(item, rng : RandomNumberGenerator):
 		+ random_level * price_increase_per_level
 	)
 	random_affix.apply_to(extras["stats"], random_level, 1.0)
-	random_affix.append_affix(item.name_with_affixes)
+	random_affix.append_affix(item.name_with_affixes, only_one_affix)
 
 # Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
 # See [method ItemGenerator._get_wyvernbox_item_lists].

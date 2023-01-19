@@ -56,10 +56,12 @@ func get_value(level : int = 1) -> float:
 func apply_to(stats_dict : Dictionary, level : int, multiplier : float = 1.0):
 	stats_dict[id] = stats_dict.get(id, 0.0) + get_value(level) * multiplier
 
-# Add the affix to an item's name array.
-func append_affix(affixes_array : Array):
+# Add the affix to an item's name array. If [code]only_if_empty[/code], only append if there's no affix at the same position.
+func append_affix(affixes_array : Array, only_if_empty : bool = false):
 	if affix_position < 0:
-		affixes_array.insert(0, affix)
+		if !only_if_empty || affixes_array[0] == null:
+			affixes_array.insert(0, affix)
 
 	else:
-		affixes_array.append(affix)
+		if !only_if_empty || affixes_array[-1] == null:
+			affixes_array.append(affix)

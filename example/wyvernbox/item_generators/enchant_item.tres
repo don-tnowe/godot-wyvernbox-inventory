@@ -46,5 +46,6 @@ possible_affixes = [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 20 ), ExtR
 affix_weights = [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]
 affix_count_range = Vector2( 1, 4 )
 affix_level_range = Vector2( 1, 6 )
+only_one_affix = false
 price_increase_item = ExtResource( 3 )
 price_increase_per_level = 10
