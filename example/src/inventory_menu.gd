@@ -1,6 +1,6 @@
 extends Control
 
-onready var inventory = $"Box/Inventory".inventory
+onready var inventory = $"Box/MainInventory".inventory
 onready var inworld_inventory_container := $"CenterContainer/TabContainer/Inworld"
 
 var opened_inventory_view : Control

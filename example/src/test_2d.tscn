@@ -50,6 +50,8 @@ margin_left = -60.0
 margin_top = -84.0
 margin_right = 58.0
 margin_bottom = -64.0
+focus_mode = 1
+enabled_focus_mode = 1
 text = "Loot"
 
 [node name="Label" type="Label" parent="Gameplay/Generator"]
@@ -57,7 +59,7 @@ margin_left = -39.0
 margin_top = 22.0
 margin_right = 173.0
 margin_bottom = 36.0
-text = "(Press Tab or E to open inventory)"
+text = "(Press Tab or I to open inventory)"
 align = 1
 
 [node name="Label2" type="Label" parent="Gameplay/Generator"]
@@ -293,8 +295,10 @@ margin_left = 3.0
 margin_top = -22.0
 margin_right = 21.0
 margin_bottom = -2.0
+focus_mode = 0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+enabled_focus_mode = 0
 text = "?"
 
 [node name="InvInit" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource( 2 )]
@@ -326,6 +330,8 @@ margin_left = -23.0
 margin_top = -43.0
 margin_right = 24.0
 margin_bottom = -23.0
+focus_mode = 0
+enabled_focus_mode = 0
 text = "Open"
 
 [node name="Another Chest" type="Area2D" parent="Gameplay/Node2D/Openable" groups=["inworld_openable"]]
@@ -335,7 +341,7 @@ position = Vector2( 374, 80 )
 visible = false
 margin_left = -12.0
 margin_top = 71.0
-margin_right = 156.0
+margin_right = 102.0
 margin_bottom = 241.0
 rect_min_size = Vector2( 114, 170 )
 autosave_file_path = "items/world/chest2.dat"
@@ -343,9 +349,9 @@ width = 8
 height = 12
 
 [node name="Control2" type="Control" parent="Gameplay/Node2D/Openable/Another Chest/Inventory"]
-margin_left = 168.0
+margin_left = 114.0
 margin_top = 170.0
-margin_right = 168.0
+margin_right = 114.0
 margin_bottom = 170.0
 size_flags_horizontal = 10
 size_flags_vertical = 10
@@ -355,8 +361,10 @@ margin_left = 3.0
 margin_top = -22.0
 margin_right = 21.0
 margin_bottom = -2.0
+focus_mode = 0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+enabled_focus_mode = 0
 text = "?"
 
 [node name="InvInit" parent="Gameplay/Node2D/Openable/Another Chest" instance=ExtResource( 2 )]
@@ -388,6 +396,8 @@ margin_left = -23.0
 margin_top = -43.0
 margin_right = 24.0
 margin_bottom = -23.0
+focus_mode = 0
+enabled_focus_mode = 0
 text = "Open"
 
 [node name="Inventory" type="CanvasLayer" parent="."]

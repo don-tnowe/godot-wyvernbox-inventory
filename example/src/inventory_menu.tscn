@@ -29,7 +29,7 @@ margin_top = 31.0
 margin_right = 602.0
 margin_bottom = 315.0
 
-[node name="Inventory" parent="Box" instance=ExtResource( 3 )]
+[node name="MainInventory" parent="Box" instance=ExtResource( 3 )]
 margin_right = 254.0
 margin_bottom = 254.0
 rect_min_size = Vector2( 254, 254 )
@@ -105,6 +105,27 @@ margin_top = 26.0
 margin_right = -4.0
 margin_bottom = -4.0
 
+[node name="TabContainer" parent="CenterContainer/TabContainer/menu_shop" index="0"]
+margin_left = 112.0
+margin_top = 114.0
+margin_right = 120.0
+margin_bottom = 145.0
+
+[node name="menu_shop_equipment" parent="CenterContainer/TabContainer/menu_shop/TabContainer" index="0"]
+margin_top = 27.0
+
+[node name="ShopManager" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_equipment" index="1"]
+sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
+
+[node name="ShopManager" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_consumables" index="1"]
+sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
+
+[node name="Control" parent="CenterContainer/TabContainer/menu_shop" index="1"]
+margin_left = 116.0
+margin_top = 130.0
+margin_right = 116.0
+margin_bottom = 130.0
+
 [node name="menu_stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
 anchor_right = 1.0
@@ -179,8 +200,10 @@ size_flags_horizontal = 3
 text = "Clear Filters (Alt+F)"
 script = ExtResource( 5 )
 
-[connection signal="item_stack_added" from="Box/Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
-[connection signal="item_stack_changed" from="Box/Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
-[connection signal="item_stack_removed" from="Box/Inventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
+[connection signal="item_stack_added" from="Box/MainInventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
+[connection signal="item_stack_changed" from="Box/MainInventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
+[connection signal="item_stack_removed" from="Box/MainInventory" to="CenterContainer/TabContainer/menu_craft/Control" method="update_availability"]
 [connection signal="text_changed" from="Box/NameFilter" to="HBoxContainer/ClearAllInvViewFilters" method="_on_search_text_changed"]
-[connection signal="pressed" from="HBoxContainer/Sort" to="Box/Inventory" method="sort_inventory"]
+[connection signal="pressed" from="HBoxContainer/Sort" to="Box/MainInventory" method="sort_inventory"]
+
+[editable path="CenterContainer/TabContainer/menu_shop"]

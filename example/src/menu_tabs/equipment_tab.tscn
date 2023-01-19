@@ -197,19 +197,12 @@ margin_top = 30.0
 margin_right = 328.0
 margin_bottom = 156.0
 window_title = "Hint"
-
-[node name="Label2" type="Label" parent="Control/Labels/Popup"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -36.0
-text = "Potions and Equipment use RestrictedInventory.
--> They can only fit items with the matching flags;
+dialog_text = "Potions and Equipment use RestrictedInventory.
+-> They can only fit items with the matching flags, like \"Potion\", \"Chestplate\" or \"Main-Hand\";
 
 Ammo and Coins use CurrencyInventory.
--> They can only fit item types specified per slot."
+-> They can only fit specific item types, which could be \"Red Potion\", \"Iron Chestplate\" or \"Longsword\".
+A CurrencyInventory can also use ItemPatterns to accept one of several items in a slot, or filter by a custom condition."
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_top = 134.0
