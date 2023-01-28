@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://example/src/world/inworld_container.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 13.5, 10 )
+
+[node name="Chest" type="Area2D" groups=["inworld_openable"]]
+script = ExtResource( 3 )
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="Visuals"]
+position = Vector2( 0, -3 )
+polygon = PoolVector2Array( -10, -8, -14, 1, 15, 1, 10, -8 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Visuals"]
+position = Vector2( 0, -3 )
+polygon = PoolVector2Array( -14, 3, -13, 13, 14, 13, 15, 3, 3, 3, 3, 6, -2, 6, -2, 3 )
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 0 )
+shape = SubResource( 6 )
+
+[node name="Button" type="Button" parent="."]
+visible = false
+margin_left = -23.0
+margin_top = -43.0
+margin_right = 24.0
+margin_bottom = -23.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Open"

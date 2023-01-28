@@ -10,9 +10,9 @@ export var ground_items := NodePath()
 var _mouse_pressed := false
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if _mouse_pressed:
-		move_and_slide(get_local_mouse_position().normalized() * movespeed)
+		var _new_velocity = move_and_slide(get_local_mouse_position().normalized() * movespeed)
 
 	else:
 		var input_vec = Input.get_vector(
@@ -22,7 +22,7 @@ func _physics_process(delta):
 			"move_left", "move_right",
 			"move_up", "move_down"
 		)
-		move_and_slide(input_vec.limit_length(1.0) * movespeed)
+		var _new_velocity = move_and_slide(input_vec.limit_length(1.0) * movespeed)
 
 
 func _ready():
@@ -52,24 +52,13 @@ func _on_ItemPickup_area_entered(area : Area2D):
 	if area.is_in_group("ground_item") && !area.filter_hidden:
 		# Inventory? Inventory. Don't hard-code paths, kids.
 #		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
-		area.try_pickup(get_node(inventory_menu).inventory)
+		area.try_pickup(get_node(inventory_menu).main_inventory)
 
 	if area.is_in_group("touch_loot"):
 		var item_init = area.get_node("ItemInit")
 		item_init.activate()
 		item_init.escape_deletion(area)
 		area.queue_free()
-
-	if area.is_in_group("inworld_openable"):
-		area.get_node("Button").show()
-		area.get_node("Button").connect("pressed", self, "_on_inworld_inv_button_pressed", [area.get_node("Inventory"), area.name])
-
-
-func _on_ItemPickup_area_exited(area : Area2D):
-	if area.is_in_group("inworld_openable"):
-		area.get_node("Button").hide()
-		area.get_node("Button").disconnect("pressed", self, "_on_inworld_inv_button_pressed")
-		get_node(inventory_menu).close_inworld_inventory(area.get_node("Inventory"))
 
 
 func _on_inworld_inv_button_pressed(inventory_view, name):

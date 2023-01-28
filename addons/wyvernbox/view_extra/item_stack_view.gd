@@ -1,9 +1,6 @@
 class_name ItemStackView, "res://addons/wyvernbox/icons/grabbed_item_stack.png"
 extends Control
 
-# The [TextureRect] node displaying the [member stack]'s type's texture.
-onready var texture_rect := $"Crop/Texture"
-
 # The displayed [ItemStack].
 var stack : ItemStack
 
@@ -18,8 +15,8 @@ func _ready():
 func update_stack(item_stack, unit_size, show_background = true):
 	stack = item_stack
 	if item_stack == null: return
-	texture_rect.texture = item_stack.item_type.texture
-	texture_rect.rect_scale = Vector2.ONE * item_stack.item_type.texture_scale
+	$"Crop/Texture".texture = item_stack.item_type.texture
+	$"Crop/Texture".rect_scale = Vector2.ONE * item_stack.item_type.texture_scale
 	rect_size = unit_size * item_stack.item_type.get_size_in_inventory()
 	
 	$"Count".text = str(item_stack.count)

@@ -14,7 +14,7 @@ var rng = RandomNumberGenerator.new()
 
 func _ready():
 	rng.randomize()
-	connect("visibility_changed", self, "update_availability")
+	var _1 = connect("visibility_changed", self, "update_availability")
 	var new_btn
 	for i in item_conversions.size():
 		new_btn = Button.new()
@@ -27,7 +27,7 @@ func _ready():
 		recipe_list_node.add_child(new_btn)
 
 
-func update_availability(arg0 = null, arg1 = null, arg2 = null):
+func update_availability(_arg0 = null, _arg1 = null, _arg2 = null):
 	# Empty args allow signals with parameters to be connected here.
 	# I recommend connecting the three "item_stack_*" signals of visible inventories
 	if !is_visible_in_tree():

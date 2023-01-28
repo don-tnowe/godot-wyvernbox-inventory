@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/menu_tabs/equipment_tab.tscn" type="PackedScene" id=2]
@@ -37,13 +37,6 @@ resource_name = "GridInventory"
 script = ExtResource( 14 )
 width = 18
 height = 18
-
-[sub_resource type="Resource" id=10]
-resource_local_to_scene = true
-resource_name = "GridInventory"
-script = ExtResource( 14 )
-width = 12
-height = 8
 
 [sub_resource type="Gradient" id=11]
 offsets = PoolRealArray( 0, 0.66 )
@@ -111,7 +104,7 @@ margin_top = 1.0
 margin_right = 253.0
 margin_bottom = 253.0
 rect_min_size = Vector2( 252, 252 )
-size_flags_horizontal = 6
+size_flags_vertical = 1
 __meta__ = {
 "_edit_group_": true
 }
@@ -151,17 +144,6 @@ margin_top = 26.0
 margin_right = -4.0
 margin_bottom = -4.0
 mouse_filter = 2
-
-[node name="Inventory" parent="CenterContainer/TabContainer/Inworld" instance=ExtResource( 3 )]
-margin_left = 32.0
-margin_top = 66.0
-margin_right = 200.0
-margin_bottom = 178.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-inventory = SubResource( 10 )
-interaction_mode = 5
-autosave_intensity = 3
 
 [node name="BG" type="TextureRect" parent="CenterContainer/TabContainer/Inworld"]
 show_behind_parent = true

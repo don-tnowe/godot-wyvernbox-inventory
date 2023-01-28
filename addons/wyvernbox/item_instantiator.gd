@@ -169,6 +169,8 @@ func populate_inventory(inventory : Inventory, rng : RandomNumberGenerator = nul
 
 # Drops listed items to the ground.
 func populate_ground(ground : GroundItemManager, rng : RandomNumberGenerator = null):
+	yield(get_tree(), "idle_frame")  # Ground items tend to have phys objects and be created when something's destroyed
+
 	var generated_items := get_items(rng)
 	var spawn_origin = get_parent().global_position if get_parent() is Node2D else get_parent().global_translation
 

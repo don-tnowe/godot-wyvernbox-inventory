@@ -29,6 +29,8 @@ viewport_path = NodePath("Viewport")
 margin_right = 168.0
 margin_bottom = 112.0
 rect_min_size = Vector2( 168, 112 )
+size_flags_horizontal = 6
+size_flags_vertical = 6
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true

@@ -2,15 +2,15 @@ extends Control
 
 export(Array, Texture) var tab_icons
 
-onready var inventory = $"Box/MainInventory".inventory
-onready var inworld_inventory_container := $"CenterContainer/TabContainer/Inworld"
+onready var main_inventory = $"Box/MainInventory".inventory
+onready var ui_inventory := $"CenterContainer/TabContainer/Inworld"
+onready var tabs = ui_inventory.get_parent()
 
 
-var opened_inventory_view : Control
+var opened_container
 
 
 func _ready():
-	var tabs = inworld_inventory_container.get_parent()
 	tabs.set_tab_hidden(0, true)
 	for i in tab_icons.size():
 		if tab_icons[i] == null: continue
@@ -19,26 +19,31 @@ func _ready():
 
 
 func open_inworld_inventory(inventory_view : InventoryView, name : String):
-	if opened_inventory_view != null:
-		close_inworld_inventory(opened_inventory_view)
+	if opened_container != null:
+		close_inworld_inventory(opened_container)
 
-	var tabs = inworld_inventory_container.get_parent()
 	tabs.set_tab_hidden(0, false)
 	tabs.current_tab = 0
 
-	inworld_inventory_container.get_child(0).inventory = inventory_view.inventory
-	inworld_inventory_container.name = name
-	opened_inventory_view = inventory_view
+	var copied_inventory = inventory_view.duplicate()
+	ui_inventory.add_child(copied_inventory)
+	copied_inventory.name = "Inventory"
+	copied_inventory.show()
+
+	ui_inventory.name = name
+	opened_container = inventory_view
 	show()
 
 
 func close_inworld_inventory(inventory_view : InventoryView):
-	if opened_inventory_view != inventory_view: return
+	if opened_container != inventory_view: return
 
-	var tabs = inworld_inventory_container.get_parent()
+	inventory_view.save_state()
 	tabs.set_tab_hidden(0, true)
 	if tabs.current_tab == 0:
 		tabs.current_tab = 1
 
-	# inworld_inventory_container.get_child(0).queue_free()
-	opened_inventory_view = null
+	if ui_inventory.has_node("Inventory"):
+		ui_inventory.get_node("Inventory").free()
+
+	opened_container = null

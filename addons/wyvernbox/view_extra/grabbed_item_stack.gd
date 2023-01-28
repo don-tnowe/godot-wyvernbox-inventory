@@ -68,8 +68,6 @@ func _set_grabbed_stack(item_stack : ItemStack):
 
 	drop_surface_node.show()
 	visible = true
-	rect_size = unit_size * item_stack.item_type.get_size_in_inventory()
-	texture_rect.texture = item_stack.item_type.texture
 	update_stack(item_stack, unit_size, false)
 
 # Drop the whole stack onto the first inventory under the cursor.

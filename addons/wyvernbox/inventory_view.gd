@@ -107,6 +107,7 @@ func _set_inventory(v):
 	v.connect("item_stack_changed", self, "_on_item_stack_changed")
 	v.connect("item_stack_removed", self, "_on_item_stack_removed")
 
+	if !is_inside_tree(): yield(self, "ready")
 	if has_node("Cells"):
 		if !v is GridInventory:
 			v.width = get_node("Cells").get_child_count()
