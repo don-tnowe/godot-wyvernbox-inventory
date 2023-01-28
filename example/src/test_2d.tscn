@@ -327,5 +327,6 @@ margin_bottom = 52.0
 color_neutral = Color( 0.376471, 0.376471, 0.376471, 1 )
 compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/menu_equip/Control/Equip")
 
+[connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Chest/Inventory/Control2/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Another Chest/Inventory/Control/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
