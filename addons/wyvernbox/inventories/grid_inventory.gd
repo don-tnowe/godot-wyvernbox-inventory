@@ -1,5 +1,5 @@
 tool
-class_name GridInventory
+class_name GridInventory, "res://addons/wyvernbox/icons/grid_inventory.png"
 extends Inventory
 
 export var height := 1 setget _set_height

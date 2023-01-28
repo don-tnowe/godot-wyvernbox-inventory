@@ -1,5 +1,5 @@
 tool
-class_name CurrencyInventory
+class_name CurrencyInventory, "res://addons/wyvernbox/icons/currency_inventory.png"
 extends Inventory
 
 # Each cell's [ItemType] or [ItemPattern]. Items that don't match won't fit in.

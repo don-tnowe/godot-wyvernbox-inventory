@@ -1,5 +1,5 @@
 tool
-class_name RestrictedInventory
+class_name RestrictedInventory, "res://addons/wyvernbox/icons/restricted_inventory.png"
 extends Inventory
 
 # If set and inventory full, quick-transferring into here will shift all items by one cell.

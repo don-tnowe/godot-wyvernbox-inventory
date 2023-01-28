@@ -1,5 +1,5 @@
 tool
-class_name InventoryView, "res://addons/wyvernbox/icons/inventory.png"
+class_name InventoryView, "res://addons/wyvernbox/icons/inventory_view.png"
 extends Control
 
 enum InteractionFlags {

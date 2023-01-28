@@ -1,5 +1,5 @@
 tool
-class_name Inventory
+class_name Inventory, "res://addons/wyvernbox/icons/inventory.png"
 extends Resource
 
 signal item_stack_added(item_stack)
