@@ -2,11 +2,16 @@ tool
 extends EditorPlugin
 
 
-var inspector_plugin = load("res://addons/wyvernbox/editor/inspector_plugin.gd").new(self)
+var inspector_plugins = [
+	load("res://addons/wyvernbox/editor/inspector_plugin_inventory_creator.gd").new(self),
+	load("res://addons/wyvernbox/editor/inspector_plugin_item_tables.gd").new(self),
+]
 
 
 func _enter_tree():
-	add_inspector_plugin(inspector_plugin)
+	for x in inspector_plugins:
+		add_inspector_plugin(x)
+
 	initialize_setting("input/menu_inventory", {
 		"deadzone" : 0.2,
 		"events" : [
@@ -39,7 +44,8 @@ func _enter_tree():
 
 
 func _exit_tree():
-	remove_inspector_plugin(inspector_plugin)
+	for x in inspector_plugins:
+		remove_inspector_plugin(x)
 
 
 func initialize_setting(key, value):
