@@ -20,15 +20,17 @@ func _ready():
 	hint_node.get_node("Box/Box/Box/Button2").icon = get_icon("Add", "EditorIcons")
 	hint_node.get_node("Box/Box/Box/Button3").icon = get_icon("Add", "EditorIcons")
 	hint_node.get_node("Box/Box/Box/Button4").icon = get_icon("Add", "EditorIcons")
+	hint_node.get_node("Box/Box2/Button").icon = get_icon("Add", "EditorIcons")
 
 	hint_node.get_node("Box/Box/Box/Button").connect("pressed", self, "_on_create_pressed", [Inventory, "Inventory"])
 	hint_node.get_node("Box/Box/Box/Button2").connect("pressed", self, "_on_create_pressed", [GridInventory, "GridInventory"])
 	hint_node.get_node("Box/Box/Box/Button3").connect("pressed", self, "_on_create_pressed", [RestrictedInventory, "RestrictedInventory"])
 	hint_node.get_node("Box/Box/Box/Button4").connect("pressed", self, "_on_create_pressed", [CurrencyInventory, "CurrencyInventory"])
+	hint_node.get_node("Box/Box2/Button").connect("pressed", self, "_on_add_contents_pressed")
 
-	label = "---"
 	hide()
 	_update_property()
+
 
 
 func _on_create_pressed(inv_class, inv_name):
@@ -38,5 +40,21 @@ func _on_create_pressed(inv_class, inv_name):
 	_update_property()
 
 
+func _on_add_contents_pressed():
+	var instantiator = ItemInstantiator.new()
+	instantiator.resource_name = "Contents"
+	call_deferred("emit_changed", "contents", instantiator)
+	call_deferred("_update_property")
+
+
 func _update_property():
-	hint_node.visible = get_edited_object()[get_edited_property()] == null
+	var obj = get_edited_object()
+	var needs_inv = obj[get_edited_property()] == null
+	var needs_inst = "contents" in obj && obj["contents"] == null
+
+	hint_node.get_node("Box/Label").visible = needs_inv
+	hint_node.get_node("Box/Box").visible = needs_inv
+	hint_node.get_node("Box/Label2").visible = needs_inv
+	hint_node.get_node("Box/Box2").visible = needs_inst
+
+	hint_node.visible = needs_inv || needs_inst

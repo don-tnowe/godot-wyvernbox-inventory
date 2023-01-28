@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://example/src/menu_tabs/equipment_tab.tscn" type="PackedScene" id=2]
@@ -9,11 +9,11 @@
 [ext_resource path="res://example/src/menu_tabs/shop_tab.tscn" type="PackedScene" id=7]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=8]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=9]
-[ext_resource path="res://addons/wyvernbox_prefabs/item_instantiator.tscn" type="PackedScene" id=10]
 [ext_resource path="res://example/src/inventory_menu.gd" type="Script" id=11]
 [ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=12]
 [ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=13]
 [ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=14]
+[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=16]
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 13 )
@@ -75,6 +75,18 @@ resource_name = "GridInventory"
 script = ExtResource( 14 )
 width = 16
 height = 4
+
+[sub_resource type="Resource" id=13]
+script = ExtResource( 16 )
+items_to_add = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 12 ) ]
+item_repeat_ranges = [ Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 16, 16 ) ]
+item_chances = [ 100.0, 100.0, 100.0 ]
+repeat_post_chance = true
+randomize_locations = true
+delay_between_items = 0.0
+spread_distance = 32.0
+spread_cone_degrees = 360.0
+spread_angle_degrees = 0.0
 
 [node name="InventoryMenu" type="Control"]
 anchor_right = 1.0
@@ -244,18 +256,10 @@ margin_bottom = 243.0
 rect_min_size = Vector2( 224, 56 )
 size_flags_horizontal = 4
 inventory = SubResource( 9 )
+contents = SubResource( 13 )
 interaction_mode = 5
 autosave_intensity = 0
 view_filter_color = Color( 0.101961, 0.14902, 0.301961, 0.74902 )
-
-[node name="IncomeInit" parent="CenterContainer/TabContainer/menu_stash/Income" instance=ExtResource( 10 )]
-inventory_or_ground = NodePath("..")
-items_to_add = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 12 ) ]
-item_repeat_ranges = [ Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 16, 16 ) ]
-item_chances = [ 100.0, 100.0, 100.0 ]
-populate_when_ready = true
-delay_between_items = 0.0
-spread_distance = 64.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5

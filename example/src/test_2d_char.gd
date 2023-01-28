@@ -54,12 +54,6 @@ func _on_ItemPickup_area_entered(area : Area2D):
 #		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
 		area.try_pickup(get_node(inventory_menu).main_inventory)
 
-	if area.is_in_group("touch_loot"):
-		var item_init = area.get_node("ItemInit")
-		item_init.activate()
-		item_init.escape_deletion(area)
-		area.queue_free()
-
 
 func _on_inworld_inv_button_pressed(inventory_view, name):
 		get_node(inventory_menu).open_inworld_inventory(inventory_view, name)

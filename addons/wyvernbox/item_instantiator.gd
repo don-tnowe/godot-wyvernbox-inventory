@@ -1,8 +1,5 @@
 class_name ItemInstantiator, "res://addons/wyvernbox/icons/item_instantiator.png"
-extends Node
-
-# Path to the [InventoryView] or [GroundItemManager] to populate when [method populate] is called.
-export var inventory_or_ground := NodePath()
+extends Resource
 
 # The [ItemTypes] or [ItemGenerators] to instantiate.
 export(Array, Resource) var items_to_add
@@ -27,15 +24,9 @@ export var repeat_post_chance := true
 # and a [GroundItemManager] will spawn items in a circle or arc.
 export var randomize_locations := true
 
-# If true, makes this instantiator single-use, and calling populate will free this object.
-export var delete_when_activates := true
-
-# If true, makes this instantiator activate immediately.
-export var populate_when_ready := false
-
 
 # Delay between item spawns when a [code]populate_*[/code] method is called.
-export(float, 0.0, 60.0) var delay_between_items := 0.1
+export(float, 0.0, 60.0) var delay_between_items := 0.0
 
 # For ground drops, sets the max distance the items get spread on the ground.
 export var spread_distance := 32.0
@@ -49,70 +40,25 @@ export(float, 0, 360) var spread_angle_degrees := 0.0
 # The [RandomNumberGenerator] this object uses to randomize drops.
 var rng : RandomNumberGenerator = null
 
-var _temp_parent
 
-
-func _ready():
+func get_rng(passed_rng):
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
 
-	if populate_when_ready:
-		if !has_node(inventory_or_ground):
-			return
-
-		call_deferred("activate")
-
-# Instantiates items inside the attached [InventoryView] or [GroundItemManager].
-# Connect signals here to activate when they are emitted.
-# If [code]delete_when_activates[/code], also gets freed.
-func activate(arg1 = null, arg2 = null, arg3 = null, arg4 = null, arg5 = null):
-	var attached_node = get_node(inventory_or_ground)
-	var generated_items
-	if attached_node is InventoryView:
-		generated_items = populate_inventory(attached_node.inventory, rng)
-
-	if attached_node is GroundItemManager:
-		generated_items = populate_ground(attached_node, rng)
-
-	# Can be async - see [member delay_between_items]
-	if generated_items is GDScriptFunctionState:
-		generated_items = yield(generated_items, "completed")
-
-	if delete_when_activates:
-		yield(get_tree().create_timer(delay_between_items * generated_items.size()), "timeout")
-		queue_free()
-		if _temp_parent != null:
-			get_parent().queue_free()
-
-# Reparents the node to the deleted node's parent so it won't get destroyed with its original parent.
-# Doing this is needed if [member delay_between_items] is non-zero.
-func escape_deletion(of_node : Node):
-	var new_node
-	if get_parent() is Node2D:
-		new_node = Node2D.new()
-		of_node.get_parent().add_child(new_node)
-		new_node.global_position = get_parent().global_position
-
-	else:
-		new_node = Spatial.new()
-		of_node.get_parent().add_child(new_node)
-		new_node.global_translation = get_parent().global_translation
-	
-	get_parent().remove_child(self)
-	_temp_parent = new_node
-	new_node.name = "ItemInstantiatorTempNode"
-	new_node.add_child(self)
+	return rng if passed_rng == null else passed_rng
 
 
 # Adds listed items to the inventory.
-func populate_inventory(inventory : Inventory, rng : RandomNumberGenerator = null):
+func populate_inventory(inventory_view : InventoryView, rng : RandomNumberGenerator = null):
+	rng = get_rng(rng)
+	var inventory = inventory_view.inventory
 	var generated_items = get_items(rng)
 	if !randomize_locations:
 		for x in generated_items:
 			inventory.try_add_item(x)
 			if delay_between_items > 0.0:
-				yield(get_tree().create_timer(delay_between_items), "timeout")
+				yield(inventory_view.get_tree().create_timer(delay_between_items), "timeout")
 
 	else:
 		# TODO: optimize this heckin' chonker
@@ -161,18 +107,19 @@ func populate_inventory(inventory : Inventory, rng : RandomNumberGenerator = nul
 
 			inventory.try_place_stackv(x, place_in_cell)
 			if delay_between_items > 0.0:
-				yield(get_tree().create_timer(delay_between_items), "timeout")
+				yield(inventory_view.get_tree().create_timer(delay_between_items), "timeout")
 
 		# print(start_time - OS.get_ticks_usec())
 
 	return generated_items
 
 # Drops listed items to the ground.
-func populate_ground(ground : GroundItemManager, rng : RandomNumberGenerator = null):
-	yield(get_tree(), "idle_frame")  # Ground items tend to have phys objects and be created when something's destroyed
-
+func populate_ground(origin : Node, ground : GroundItemManager, rng : RandomNumberGenerator = null):
+	rng = get_rng(rng)
+	var tree = ground.get_tree()
 	var generated_items := get_items(rng)
-	var spawn_origin = get_parent().global_position if get_parent() is Node2D else get_parent().global_translation
+	var spawn_origin = origin.global_position if origin is Node2D else origin.global_translation
+	yield(tree, "idle_frame")  # Ground items tend to have phys objects and be created when something's destroyed
 
 	var spread_rad := deg2rad(spread_cone_degrees) * 0.5
 	var dir_rad := deg2rad(spread_angle_degrees)
@@ -185,7 +132,7 @@ func populate_ground(ground : GroundItemManager, rng : RandomNumberGenerator = n
 			cur_throw = cur_throw.scaled(Vector2.ONE * rand_range(dist_range.x, dist_range.y))
 			ground.add_item(x, spawn_origin, cur_throw * Vector2.RIGHT)
 			if delay_between_items > 0.0:
-				yield(get_tree().create_timer(delay_between_items), "timeout")
+				yield(tree.create_timer(delay_between_items), "timeout")
 
 	else:
 		cur_throw = Transform2D(dir_rad - spread_rad, Vector2.ZERO)
@@ -195,7 +142,7 @@ func populate_ground(ground : GroundItemManager, rng : RandomNumberGenerator = n
 			ground.add_item(x, spawn_origin, cur_throw * Vector2.RIGHT)
 			cur_throw = rotate_by * cur_throw
 			if delay_between_items > 0.0:
-				yield(get_tree().create_timer(delay_between_items), "timeout")
+				yield(tree.create_timer(delay_between_items), "timeout")
 
 	return generated_items
 

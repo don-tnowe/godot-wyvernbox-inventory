@@ -1,7 +1,7 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/wyvernbox_prefabs/item_instantiator.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=2]
 [ext_resource path="res://example/src/world/char.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
 [ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=5]
@@ -12,6 +12,7 @@
 [ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=10]
 [ext_resource path="res://example/src/world/inworld_container.tscn" type="PackedScene" id=11]
 [ext_resource path="res://example/src/world/touch_dropper.tscn" type="PackedScene" id=12]
+[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=13]
 [ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=17]
 [ext_resource path="res://addons/wyvernbox/ground/ground_items_manager.gd" type="Script" id=18]
 [ext_resource path="res://addons/wyvernbox_prefabs/tooltip.tscn" type="PackedScene" id=19]
@@ -24,12 +25,51 @@ colors = PoolColorArray( 0.09375, 0.0308418, 0.00622559, 1, 0.738281, 0.64915, 0
 gradient = SubResource( 2 )
 fill_from = Vector2( 1, 1 )
 
+[sub_resource type="Resource" id=22]
+resource_name = "Drop Chaotically"
+script = ExtResource( 2 )
+items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
+item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+item_chances = [ 100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0 ]
+repeat_post_chance = true
+randomize_locations = true
+delay_between_items = 0.1
+spread_distance = 32.0
+spread_cone_degrees = 360.0
+spread_angle_degrees = 0.0
+
+[sub_resource type="Resource" id=21]
+resource_name = "Drop In Circle"
+script = ExtResource( 2 )
+items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
+item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+item_chances = [ 100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0 ]
+repeat_post_chance = true
+randomize_locations = false
+delay_between_items = 0.1
+spread_distance = 32.0
+spread_cone_degrees = 360.0
+spread_angle_degrees = 0.0
+
 [sub_resource type="Resource" id=9]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 10 )
 width = 12
 height = 8
+
+[sub_resource type="Resource" id=10]
+resource_name = "Random Equips"
+script = ExtResource( 13 )
+items_to_add = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
+item_repeat_ranges = [ Vector2( 8, 8 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ) ]
+item_chances = [ 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0 ]
+repeat_post_chance = true
+randomize_locations = true
+delay_between_items = 0.0
+spread_distance = 32.0
+spread_cone_degrees = 360.0
+spread_angle_degrees = 0.0
 
 [sub_resource type="Resource" id=8]
 resource_local_to_scene = true
@@ -99,109 +139,63 @@ item_scene = ExtResource( 4 )
 
 [node name="Loot" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 222, 124 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 22 )
 
 [node name="Loot2" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 151, 50 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot2" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 22 )
 
 [node name="Loot3" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 69, 116 )
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 22 )
 
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot3" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-spread_distance = 64.0
+[node name="Loot11" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
+position = Vector2( 71, 189 )
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 22 )
+
+[node name="Loot12" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
+position = Vector2( 230, 174 )
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 22 )
 
 [node name="Loot4" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 161, 204 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot4" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-spread_distance = 64.0
+position = Vector2( 157, 227 )
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 22 )
 
 [node name="Loot5" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 501, 74 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot5" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-randomize_locations = false
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 21 )
 
 [node name="Loot6" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 428, 121 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot6" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-randomize_locations = false
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 21 )
 
 [node name="Loot7" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 420, 191 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot7" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-randomize_locations = false
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 21 )
 
 [node name="Loot8" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 501, 233 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot8" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-randomize_locations = false
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 21 )
 
 [node name="Loot9" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 578, 191 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot9" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-randomize_locations = false
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 21 )
 
 [node name="Loot10" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
 position = Vector2( 570, 124 )
-
-[node name="ItemInit" parent="Gameplay/Node2D/Loot/Loot10" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../../../Items")
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 20.0, 20.0, 20.0, 100.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 ]
-randomize_locations = false
-spread_distance = 64.0
+ground_item_manager = NodePath("../../Items")
+loot_table = SubResource( 21 )
 
 [node name="Openable" type="Node2D" parent="Gameplay/Node2D"]
 
@@ -215,6 +209,7 @@ margin_top = 71.0
 margin_right = 156.0
 margin_bottom = 183.0
 inventory = SubResource( 9 )
+contents = SubResource( 10 )
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
 
@@ -234,15 +229,6 @@ size_flags_horizontal = 10
 size_flags_vertical = 10
 text = "?"
 
-[node name="InvInit" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../Inventory")
-items_to_add = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
-item_repeat_ranges = [ Vector2( 8, 8 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ) ]
-item_chances = [ 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0 ]
-populate_when_ready = true
-delay_between_items = 0.0
-spread_distance = 64.0
-
 [node name="Another Chest" parent="Gameplay/Node2D/Openable" instance=ExtResource( 11 )]
 position = Vector2( 352, 75 )
 
@@ -254,6 +240,7 @@ margin_right = 167.0
 margin_bottom = 246.0
 rect_min_size = Vector2( 112, 168 )
 inventory = SubResource( 8 )
+contents = SubResource( 10 )
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
 
@@ -272,15 +259,6 @@ margin_right = 21.0
 size_flags_horizontal = 10
 size_flags_vertical = 10
 text = "?"
-
-[node name="InvInit" parent="Gameplay/Node2D/Openable/Another Chest" instance=ExtResource( 2 )]
-inventory_or_ground = NodePath("../Inventory")
-items_to_add = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
-item_repeat_ranges = [ Vector2( 8, 8 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ) ]
-item_chances = [ 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0 ]
-populate_when_ready = true
-delay_between_items = 0.0
-spread_distance = 64.0
 
 [node name="Inventory" type="CanvasLayer" parent="."]
 

@@ -17,6 +17,12 @@ signal grab_attempted(item_stack, success)
 # The [Inventory] this node displays.
 export var inventory : Resource setget _set_inventory
 
+# The [ItemInstantiator] that populates this inventory when first opened.
+export var contents : Resource
+
+# If [code]true[/code], opening the inventory will initialize [member contents] and set this to [code]false[/code].
+export var init_contents := true
+
 # A slot's size, in pixels.
 export var cell_size := Vector2(14, 14) setget _set_cell_size
 
@@ -71,11 +77,11 @@ func _ready():
 		_regenerate_view()
 		return
 
-	call_deferred("add_to_group", "inventory_view")
-	call_deferred("add_to_group", "view_filterable")
 	connect("visibility_changed", self, "_on_visibility_changed")
 	yield(get_tree(), "idle_frame")
 	load_state()
+	add_to_group("inventory_view")
+	add_to_group("view_filterable")
 
 
 func _exit_tree():
@@ -476,6 +482,7 @@ func save_state(filepath = ""):
 
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 	inventory.save_state(autosave_file_path if filepath == "" else filepath)
+	init_contents = false
 
 # Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
 func load_state(filepath = ""):
@@ -488,5 +495,9 @@ func _compare_inventory_priority(a, b):
 
 
 func _on_visibility_changed():
+	if is_visible_in_tree() && init_contents && contents != null:
+		init_contents = false
+		contents.populate_inventory(self)
+
 	if autosave_intensity >= 2:
 		save_state()

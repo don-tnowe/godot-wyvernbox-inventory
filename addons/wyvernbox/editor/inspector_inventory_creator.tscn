@@ -8,20 +8,13 @@ margin_bottom = 128.0
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 335.0
-margin_bottom = 121.0
+margin_bottom = 128.0
 
 [node name="Label" type="Label" parent="Box"]
 margin_right = 328.0
 margin_bottom = 31.0
 text = "Choose an inventory to use. Hover over buttons to read more."
 autowrap = true
-
-[node name="AddInit" type="CheckBox" parent="Box"]
-visible = false
-margin_top = 86.0
-margin_right = 175.0
-margin_bottom = 110.0
-text = "With contents"
 
 [node name="Box" type="HBoxContainer" parent="Box"]
 margin_top = 35.0
@@ -102,9 +95,34 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Label2" type="Label" parent="Box"]
+[node name="Box2" type="HBoxContainer" parent="Box"]
+margin_left = 20.0
 margin_top = 83.0
+margin_right = 307.0
+margin_bottom = 103.0
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Box/Box2"]
+margin_top = 3.0
+margin_right = 133.0
+margin_bottom = 17.0
+text = "Will initialize empty."
+
+[node name="Button" type="Button" parent="Box/Box2"]
+margin_left = 137.0
+margin_right = 287.0
+margin_bottom = 20.0
+hint_tooltip = "A simple inventory where each item takes up one slot.
+
+You can arrange cells in order with a Container,
+or in a custom layout without one."
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Add Item Instantiator"
+
+[node name="Label2" type="Label" parent="Box"]
+margin_top = 107.0
 margin_right = 328.0
-margin_bottom = 97.0
+margin_bottom = 121.0
 text = "Or copy an Inventory resource into the field below:"
 autowrap = true
