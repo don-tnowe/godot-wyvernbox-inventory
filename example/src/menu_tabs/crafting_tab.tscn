@@ -1,7 +1,7 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://example/src/menu_tabs/crafting_tab.gd" type="Script" id=1]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" type="PackedScene" id=2]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/craft_arrows.tres" type="Resource" id=3]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/exchange_into_gold.tres" type="Resource" id=4]
 [ext_resource path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" type="PackedScene" id=5]
@@ -13,6 +13,7 @@
 [ext_resource path="res://example/wyvernbox/crafting_recipes/forge_wand.tres" type="Resource" id=11]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/brew_purple_potion.tres" type="Resource" id=12]
 [ext_resource path="res://example/wyvernbox/crafting_recipes/brew_red_potion.tres" type="Resource" id=13]
+[ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=14]
 
 [sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.66 )
@@ -23,6 +24,13 @@ gradient = SubResource( 4 )
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
 fill_to = Vector2( 0.5, 2 )
+
+[sub_resource type="Resource" id=6]
+resource_local_to_scene = true
+resource_name = "GridInventory"
+script = ExtResource( 14 )
+_width = 12
+_height = 6
 
 [node name="Crafting" type="MarginContainer"]
 margin_right = 640.0
@@ -73,19 +81,19 @@ text = "menu_craft"
 align = 1
 
 [node name="Output" parent="VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 235.0
+margin_left = 236.0
 margin_top = 32.0
-margin_right = 405.0
-margin_bottom = 118.0
-rect_min_size = Vector2( 170, 86 )
+margin_right = 404.0
+margin_bottom = 116.0
+rect_min_size = Vector2( 168, 84 )
 size_flags_horizontal = 4
-interaction_mode = 13
-height = 6
+size_flags_vertical = 0
+inventory = SubResource( 6 )
 
 [node name="Control" type="Control" parent="VBoxContainer"]
-margin_top = 122.0
+margin_top = 120.0
 margin_right = 640.0
-margin_bottom = 122.0
+margin_bottom = 120.0
 
 [node name="Button" type="Button" parent="VBoxContainer/Control"]
 anchor_left = 0.5
@@ -129,7 +137,7 @@ Unlike Vendors, Conversions apply Generators
 a Vendor."
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-margin_top = 126.0
+margin_top = 124.0
 margin_right = 640.0
 margin_bottom = 240.0
 size_flags_vertical = 3

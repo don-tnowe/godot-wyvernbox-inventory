@@ -1,18 +1,25 @@
+tool
 class_name GridInventory
 extends Inventory
 
-
-func _init(width, height).(width, height):
-	_init2(width, height)
+export var _height := 1 setget _set_height
 
 
-func _init2(width, height):
-	_width = width
-	_height = height
-	_cells.resize(width)
-	for i in width:
+func _set_height(v):
+	if v < 1: v = 1
+	_height = v
+	_update_size()
+	emit_changed()
+
+
+func _update_size():
+	_cells.resize(_width)
+	for i in _width:
 		_cells[i] = []
-		_cells[i].resize(height)
+		_cells[i].resize(_height)
+
+	for x in items:
+		_fill_stack_cells(x)
 
 # Returns the top-left of the first position the [code]item_stack[/code] can fit into.
 func get_free_position(item_stack : ItemStack) -> Vector2:
@@ -31,12 +38,16 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 	return Vector2(-1, -1)
 
+# Returns [code]false[/code] if cell out of bounds.
+func has_cell(x : int, y : int) -> bool:
+	return .has_cell(x, y) && y <= _height
 
-func _is_rect_free(x : int, y : int, width : int, height : int) -> bool:
-	if !has_cell(x, y) || !has_cell(x + width, y + height): return false
 
-	for i in width:
-		for j in height:
+func _is_rect_free(x : int, y : int, r_width : int, r_height : int) -> bool:
+	if !has_cell(x, y) || !has_cell(x + r_width, y + r_height): return false
+
+	for i in r_width:
+		for j in r_height:
 			if _cells[x + i][y + j] != null:
 				return false
 

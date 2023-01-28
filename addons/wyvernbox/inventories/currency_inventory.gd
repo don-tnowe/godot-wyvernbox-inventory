@@ -1,16 +1,13 @@
+tool
 class_name CurrencyInventory
 extends Inventory
 
 # Each cell's [ItemType] or [ItemPattern]. Items that don't match won't fit in.
-var restricted_to_types := []
+export(Array, Resource) var restricted_to_types := []
 
 # The custom capacity of all stacks in this inventory.
-var max_stack := 99999999
+export var max_stack := 99999999
 
-
-func _init(restriction_array, max_stack_count = 99999999).(restriction_array.size(), 1):
-	restricted_to_types = restriction_array
-	max_stack = max_stack_count
 
 # Returns the configured [member max_stack].
 func get_max_count(item_type):

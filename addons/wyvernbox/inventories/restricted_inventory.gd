@@ -1,15 +1,13 @@
+tool
 class_name RestrictedInventory
 extends Inventory
 
 # If set and inventory full, quick-transferring into here will shift all items by one cell.
-var allow_rotation := true
+export var allow_rotation := true
 
 # Each cell's [member ItemType.slot_flags]. Items that don't match won't fit in.
-var restricted_to_types := []
+export(Array, ItemType.SlotFlags) var restricted_to_types := []
 
-
-func _init(restriction_array).(restriction_array.size(), 1):
-	restricted_to_types = restriction_array
 
 # Returns the first cell the [code]item_stack[/code] can be placed without stacking.
 # Returns [code](-1, -1)[/code] if no empty cells in inventory, or the item type doesn't fit due to flags.

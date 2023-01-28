@@ -2,7 +2,7 @@
 
 [ext_resource path="res://example/wyvernbox/item_generators/enchant_item.tres" type="Resource" id=1]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" type="Resource" id=2]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=19]
+[ext_resource path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" type="PackedScene" id=19]
 [ext_resource path="res://example/theme/font/font_title.tres" type="DynamicFont" id=20]
 [ext_resource path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" type="Resource" id=22]
 [ext_resource path="res://example/src/menu_tabs/vendor_response.gd" type="Script" id=32]

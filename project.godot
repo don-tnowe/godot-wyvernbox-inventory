@@ -39,11 +39,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/inventories/currency_inventory.gd"
 }, {
-"base": "InventoryView",
-"class": "CurrencyInventoryView",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventory_views/currency_inventory_view.gd"
-}, {
 "base": "EditorResourcePicker",
 "class": "CustomResourcePicker",
 "language": "GDScript",
@@ -84,11 +79,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/inventories/grid_inventory.gd"
 }, {
-"base": "InventoryView",
-"class": "GridInventoryView",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventory_views/grid_inventory_view.gd"
-}, {
 "base": "Node",
 "class": "GroundItemManager",
 "language": "GDScript",
@@ -99,7 +89,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd"
 }, {
-"base": "Reference",
+"base": "Resource",
 "class": "Inventory",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/inventories/inventory.gd"
@@ -122,7 +112,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "InventoryView",
 "language": "GDScript",
-"path": "res://addons/wyvernbox/inventory_views/inventory_view.gd"
+"path": "res://addons/wyvernbox/inventory_view.gd"
 }, {
 "base": "Resource",
 "class": "ItemConversion",
@@ -193,11 +183,6 @@ _global_script_classes=[ {
 "class": "RestrictedInventory",
 "language": "GDScript",
 "path": "res://addons/wyvernbox/inventories/restricted_inventory.gd"
-}, {
-"base": "InventoryView",
-"class": "RestrictedInventoryView",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventory_views/restricted_inventory_view.gd"
 }, {
 "base": "GridContainer",
 "class": "SettingsGrid",
@@ -271,7 +256,6 @@ _global_script_class_icons={
 "CellEditorArray": "",
 "CollectionHeaderButton": "",
 "CurrencyInventory": "",
-"CurrencyInventoryView": "res://addons/wyvernbox/icons/currency_inventory.png",
 "CustomResourcePicker": "",
 "DictPropertyEditor": "",
 "DictionaryInspectorPlugin": "",
@@ -280,7 +264,6 @@ _global_script_class_icons={
 "EquipBonus": "",
 "GrabbedItemStackView": "res://addons/wyvernbox/icons/grabbed_item_stack.png",
 "GridInventory": "",
-"GridInventoryView": "res://addons/wyvernbox/icons/grid_inventory.png",
 "GroundItemManager": "res://addons/wyvernbox/icons/ground_item_manager.png",
 "GroundItemStackView2D": "res://addons/wyvernbox/icons/item_stack_view_2d.png",
 "Inventory": "",
@@ -302,7 +285,6 @@ _global_script_class_icons={
 "ObjectPropertyEditor": "",
 "PackedArrayPropertyEditor": "",
 "RestrictedInventory": "",
-"RestrictedInventoryView": "res://addons/wyvernbox/icons/restricted_inventory.png",
 "SettingsGrid": "",
 "SheetsDockEditor": "",
 "SpreadsheetEditFormat": "",

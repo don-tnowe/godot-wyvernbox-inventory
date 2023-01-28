@@ -14,11 +14,18 @@ signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
 signal grab_attempted(item_stack, success)
 
+# The [Inventory] this node displays.
+export var inventory : Resource setget _set_inventory
+
 # A slot's size, in pixels.
 export var cell_size := Vector2(14, 14) setget _set_cell_size
 
 # A scene with an [ItemStackView] in root, spawned to display items.
 export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
+
+# For [GridInventory], the [Control] to be stretched to the view's size.
+export var grid_background : NodePath
+
 
 # Whether to show item's "back_color" extra property as a background behind it.
 export var show_backgrounds := true
@@ -29,9 +36,6 @@ export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
 # For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
 export var auto_take_priority := 0
 
-
-# If set, displays this [InventoryView]'s inventory instead of its own.
-export var sync_with_inventory := NodePath()
 
 # File path to autosave into.
 # Only supports "user://" paths.
@@ -53,9 +57,6 @@ export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
 export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
 
 
-# The [Inventory] this node displays.
-var inventory : Reference setget _set_inventory
-
 # The latest autosave time, in seconds since startup.
 var last_autosave_sec := -1.0
 
@@ -73,17 +74,8 @@ func _ready():
 	call_deferred("add_to_group", "inventory_view")
 	call_deferred("add_to_group", "view_filterable")
 	connect("visibility_changed", self, "_on_visibility_changed")
-	_ready2()
-	yield(get_tree(), "idle_frame")  # Clone source view might not have initialized
-	if has_node(sync_with_inventory):
-		_set_inventory(get_node(sync_with_inventory).inventory)
-
-	else:
-		load_state()
-
-
-func _ready2():
-	_set_inventory(Inventory.new($"Cells".get_child_count(), 1))
+	yield(get_tree(), "idle_frame")
+	load_state()
 
 
 func _exit_tree():
@@ -102,19 +94,30 @@ func _set_view_filter(v):
 
 
 func _set_inventory(v):
-	if Engine.editor_hint: return
 	if inventory != null:
+		inventory.disconnect("changed", self, "_regenerate_view")
 		inventory.disconnect("item_stack_added", self, "_on_item_stack_added")
 		inventory.disconnect("item_stack_changed", self, "_on_item_stack_changed")
 		inventory.disconnect("item_stack_removed", self, "_on_item_stack_removed")
 
 	inventory = v
+	if v == null: return
+	v.connect("changed", self, "_regenerate_view")
 	v.connect("item_stack_added", self, "_on_item_stack_added")
 	v.connect("item_stack_changed", self, "_on_item_stack_changed")
 	v.connect("item_stack_removed", self, "_on_item_stack_removed")
+
+	if has_node("Cells"):
+		if !v is GridInventory:
+			v._width = get_node("Cells").get_child_count()
+
+	if Engine.editor_hint: return
+
 	if has_node("ItemViews"):
-		for x in get_node("ItemViews").get_children():
+		for x in _view_nodes:
 			x.queue_free()
+
+		_view_nodes.clear()
 	
 	for x in inventory.items:
 		_on_item_stack_added(x)
@@ -123,20 +126,66 @@ func _set_inventory(v):
 
 
 func _regenerate_view():
-	if !is_inside_tree() || Engine.editor_hint:
-		return
+	if !is_inside_tree(): yield(self, "ready")
+	if item_scene == null: return
 
-	assert(has_node("Cells"), "Inventories require a child node named Cell with Control-type children")
+	if inventory is GridInventory:
+		var new_size := cell_size * Vector2(inventory._width, inventory._height)
+		if has_node(grid_background):
+			get_node(grid_background).show()
+			get_node(grid_background).rect_min_size = new_size
 
-# Returns the position of the cell clicked from [code]pos[/code]. Vector's [code]x[/code] equals to cell index, while [code]y[/code] is always 0.
+		rect_min_size = new_size
+		rect_size = new_size
+
+	else:
+		if has_node(grid_background):
+			get_node(grid_background).hide()
+
+		var cells = get_node_or_null("Cells")
+		if cells == null:
+			cells = GridContainer.new()
+			cells.columns = 8
+			cells.name = "Cells"
+			add_child(cells)
+			cells.owner = owner if owner != null else self
+
+		if cells.get_child_count() == 0:
+			var cell = load("res://addons/wyvernbox_prefabs/inventory_cell.tscn")
+			cell = TextureRect.new() if cell == null else cell.instance()
+			cell.rect_min_size = cell_size
+			cells.add_child(cell)
+			cell.owner = owner if owner != null else self
+
+		var diff = cells.get_child_count() - inventory._width
+		while diff > 0:
+			diff -= 1
+			cells.get_child(cells.get_child_count() - 1).free()
+
+		while diff < 0:
+			var cell = cells.get_child(0).duplicate()
+			diff += 1
+			cells.add_child(cell)
+			cell.owner = owner if owner != null else self
+
+
+# Returns the in-inventory position of the cell clicked from global [code]pos[/code].
 # Returns [code](-1, -1)[/code] if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
-	var cells = $"Cells".get_children()
-	for i in cells.size():
-		if cells[i].get_global_rect().has_point(pos):
-			return Vector2(i, 0)
+	if inventory is GridInventory:
+		var topleft = get_node(grid_background).rect_global_position
+		return (Vector2(
+			(pos.x - topleft.x) / cell_size.x,
+			(pos.y - topleft.y) / cell_size.y
+		) - item.item_type.get_size_in_inventory() * 0.5).round()
 
-	return Vector2(-1, -1)
+	else:
+		var cells = $"Cells".get_children()
+		for i in cells.size():
+			if cells[i].get_global_rect().has_point(pos):
+				return Vector2(i, 0)
+
+		return Vector2(-1, -1)
 
 
 func _redraw_item(node : Control, item_stack : ItemStack):
@@ -145,6 +194,10 @@ func _redraw_item(node : Control, item_stack : ItemStack):
 
 
 func _position_item(node : Control, item_stack : ItemStack):
+	if inventory is GridInventory:
+		node.rect_global_position = rect_global_position + cell_size * item_stack.position_in_inventory
+		return
+
 	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
 	node.rect_position = cell.rect_position
 	node.rect_size = cell.rect_size

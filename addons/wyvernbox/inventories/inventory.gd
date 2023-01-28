@@ -1,12 +1,12 @@
+tool
 class_name Inventory
-extends Reference
+extends Resource
 
 signal item_stack_added(item_stack)
 signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
 
-var _width := 8
-var _height := 1
+export var _width := 8 setget _set_width
 
 # The list of items in this inventory.
 # Setting and editing may lead to unpredictable behaviour.
@@ -15,22 +15,18 @@ var items := []
 var _cells := []
 
 
-func _init(width, height):
-	_init2(width, height)
+func _set_width(v, emit = true):
+	if v < 1: v = 1
+	_width = v
+	_update_size()
+	if emit: emit_changed()
+	if "restricted_to_types" in self:
+		self.restricted_to_types.resize(v)
 
 
-func _init2(width, height):
-	_width = width
-	_height = height
-	_cells.resize(width * height)
+func _update_size():
+	_cells.resize(_width)
 
-# Returns the inventory's width.
-func get_width() -> int:
-	return _width
-
-# Returns the inventory's height.
-func get_height() -> int:
-	return _height
 
 # Tries to place [code]stack[/code] into first possible stacks or cells.
 # Returns the number of items deposited, which equates to stack's [member ItemStack.count] on success and [code]0[/code] if inventory was full.
@@ -220,7 +216,7 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 # Returns [code]false[/code] if cell out of bounds.
 func has_cell(x : int, y : int) -> bool:
 	if x < 0 || y < 0: return false
-	if x > _width || y > _height: return false
+	if x > _width: return false
 	return true
 
 # Counts all items, incrementing entries in [code]into_dict[/code].
@@ -307,8 +303,9 @@ func get_items_ordered():
 # Returns position vectors of all free cells in the inventory.
 func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
 	var free_cells := []
+	var height = self._height if "_height" in self else 1
 	for i in _width:
-		for j in _height:
+		for j in height:
 			if get_item_at_position(i, j) == null:
 				free_cells.append(Vector2(i, j))
 	

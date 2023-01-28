@@ -1,14 +1,15 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/wyvernbox_prefabs/item_instantiator.tscn" type="PackedScene" id=2]
 [ext_resource path="res://example/src/test_2d_char.gd" type="Script" id=3]
 [ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
 [ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=5]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventory_views/grid_inventory_view.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" type="PackedScene" id=6]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=7]
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=8]
 [ext_resource path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" type="Resource" id=9]
+[ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=10]
 [ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=17]
 [ext_resource path="res://addons/wyvernbox/ground/ground_items_manager.gd" type="Script" id=18]
 [ext_resource path="res://addons/wyvernbox_prefabs/tooltip.tscn" type="PackedScene" id=19]
@@ -25,6 +26,20 @@ fill_from = Vector2( 1, 1 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 13.5, 10 )
+
+[sub_resource type="Resource" id=7]
+resource_local_to_scene = true
+resource_name = "GridInventory"
+script = ExtResource( 10 )
+_width = 12
+_height = 8
+
+[sub_resource type="Resource" id=8]
+resource_local_to_scene = true
+resource_name = "GridInventory"
+script = ExtResource( 10 )
+_width = 8
+_height = 12
 
 [node name="Node" type="Node"]
 
@@ -278,15 +293,17 @@ position = Vector2( 307, 73 )
 visible = false
 margin_left = -12.0
 margin_top = 71.0
-margin_right = 158.0
-margin_bottom = 185.0
+margin_right = 156.0
+margin_bottom = 183.0
+inventory = SubResource( 7 )
+interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
 
 [node name="Control" type="Control" parent="Gameplay/Node2D/Openable/Chest/Inventory"]
-margin_left = 170.0
-margin_top = 114.0
-margin_right = 170.0
-margin_bottom = 114.0
+margin_left = 168.0
+margin_top = 112.0
+margin_right = 168.0
+margin_bottom = 112.0
 size_flags_horizontal = 10
 size_flags_vertical = 10
 
@@ -341,18 +358,18 @@ position = Vector2( 374, 80 )
 visible = false
 margin_left = -12.0
 margin_top = 71.0
-margin_right = 102.0
-margin_bottom = 241.0
-rect_min_size = Vector2( 114, 170 )
+margin_right = 100.0
+margin_bottom = 239.0
+rect_min_size = Vector2( 112, 168 )
+inventory = SubResource( 8 )
+interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
-width = 8
-height = 12
 
 [node name="Control2" type="Control" parent="Gameplay/Node2D/Openable/Another Chest/Inventory"]
-margin_left = 114.0
-margin_top = 170.0
-margin_right = 114.0
-margin_bottom = 170.0
+margin_left = 112.0
+margin_top = 168.0
+margin_right = 112.0
+margin_bottom = 168.0
 size_flags_horizontal = 10
 size_flags_vertical = 10
 
