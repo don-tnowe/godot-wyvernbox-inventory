@@ -109,7 +109,7 @@ func _set_inventory(v):
 
 	if has_node("Cells"):
 		if !v is GridInventory:
-			v._width = get_node("Cells").get_child_count()
+			v.width = get_node("Cells").get_child_count()
 
 	if Engine.editor_hint: return
 
@@ -130,7 +130,7 @@ func _regenerate_view():
 	if item_scene == null: return
 
 	if inventory is GridInventory:
-		var new_size := cell_size * Vector2(inventory._width, inventory._height)
+		var new_size := cell_size * Vector2(inventory.width, inventory.height)
 		if has_node(grid_background):
 			get_node(grid_background).show()
 			get_node(grid_background).rect_min_size = new_size
@@ -157,7 +157,7 @@ func _regenerate_view():
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
 
-		var diff = cells.get_child_count() - inventory._width
+		var diff = cells.get_child_count() - inventory.width
 		while diff > 0:
 			diff -= 1
 			cells.get_child(cells.get_child_count() - 1).free()

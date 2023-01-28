@@ -35,15 +35,15 @@ region = Rect2( 36, 36, 12, 12 )
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 18
-_height = 18
+width = 18
+height = 18
 
 [sub_resource type="Resource" id=10]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 12
-_height = 8
+width = 12
+height = 8
 
 [sub_resource type="Gradient" id=11]
 offsets = PoolRealArray( 0, 0.66 )
@@ -59,29 +59,29 @@ fill_to = Vector2( 0.5, 2 )
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 12
-_height = 8
+width = 12
+height = 8
 
 [sub_resource type="Resource" id=7]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 12
-_height = 8
+width = 12
+height = 8
 
 [sub_resource type="Resource" id=8]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 16
-_height = 12
+width = 16
+height = 12
 
 [sub_resource type="Resource" id=9]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 16
-_height = 4
+width = 16
+height = 4
 
 [node name="InventoryMenu" type="Control"]
 anchor_right = 1.0

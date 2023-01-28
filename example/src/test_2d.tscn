@@ -31,15 +31,15 @@ extents = Vector2( 13.5, 10 )
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 10 )
-_width = 12
-_height = 8
+width = 12
+height = 8
 
 [sub_resource type="Resource" id=8]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 10 )
-_width = 8
-_height = 12
+width = 8
+height = 12
 
 [node name="Node" type="Node"]
 

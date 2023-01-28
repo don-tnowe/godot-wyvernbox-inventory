@@ -15,7 +15,7 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 	var flags = item_stack.item_type.slot_flags
 	for i in _cells.size():
 		if _cells[i] == null && flags & restricted_to_types[i] != 0:
-			return Vector2(i % _width, i / _width)
+			return Vector2(i % width, i / width)
 
 	return Vector2(-1, -1)
 

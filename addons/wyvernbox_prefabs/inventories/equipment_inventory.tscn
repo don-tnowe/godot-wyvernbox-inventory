@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id=3]
 resource_name = "RestrictedInventory"
 script = ExtResource( 4 )
-_width = 10
+width = 10
 allow_rotation = true
 restricted_to_types = [ 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 4194304, 8388608 ]
 

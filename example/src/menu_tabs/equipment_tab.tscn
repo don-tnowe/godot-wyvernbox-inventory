@@ -24,7 +24,7 @@ fill_to = Vector2( 0.5, 2 )
 [sub_resource type="Resource" id=5]
 resource_name = "CurrencyInventory"
 script = ExtResource( 10 )
-_width = 5
+width = 5
 restricted_to_types = [ ExtResource( 4 ), null, null, ExtResource( 6 ), ExtResource( 7 ) ]
 max_stack = 5000
 
@@ -39,7 +39,7 @@ fill_to = Vector2( 4.85, 0.5 )
 [sub_resource type="Resource" id=6]
 resource_name = "RestrictedInventory"
 script = ExtResource( 8 )
-_width = 6
+width = 6
 allow_rotation = true
 restricted_to_types = [ 16, 16, 16, 16, 16, 16 ]
 

@@ -2,21 +2,21 @@ tool
 class_name GridInventory
 extends Inventory
 
-export var _height := 1 setget _set_height
+export var height := 1 setget _set_height
 
 
 func _set_height(v):
 	if v < 1: v = 1
-	_height = v
+	height = v
 	_update_size()
 	emit_changed()
 
 
 func _update_size():
-	_cells.resize(_width)
-	for i in _width:
+	_cells.resize(width)
+	for i in width:
 		_cells[i] = []
-		_cells[i].resize(_height)
+		_cells[i].resize(height)
 
 	for x in items:
 		_fill_stack_cells(x)
@@ -25,14 +25,14 @@ func _update_size():
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	var item_type = item_stack.item_type
 	if item_type.in_inventory_height >= item_type.in_inventory_width:
-		for j in _height - item_type.in_inventory_height + 1:
-			for i in _width - item_type.in_inventory_width + 1:
+		for j in height - item_type.in_inventory_height + 1:
+			for i in width - item_type.in_inventory_width + 1:
 				if _is_rect_free(i, j, item_type.in_inventory_width, item_type.in_inventory_height):
 					return Vector2(i, j)
 
 	else:
-		for i in _width - item_type.in_inventory_width + 1:
-			for j in _height - item_type.in_inventory_height + 1:
+		for i in width - item_type.in_inventory_width + 1:
+			for j in height - item_type.in_inventory_height + 1:
 				if _is_rect_free(i, j, item_type.in_inventory_width, item_type.in_inventory_height):
 					return Vector2(i, j)
 
@@ -40,7 +40,7 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 # Returns [code]false[/code] if cell out of bounds.
 func has_cell(x : int, y : int) -> bool:
-	return .has_cell(x, y) && y <= _height
+	return .has_cell(x, y) && y <= height
 
 
 func _is_rect_free(x : int, y : int, r_width : int, r_height : int) -> bool:
@@ -111,12 +111,12 @@ func get_item_at_position(x : int, y : int) -> ItemStack:
 # Returns position vectors of all free cells in the inventory.
 func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
 	var free_cells := {}
-	for i in _width - for_size_x + 1:
-		for j in _height - for_size_y + 1:
+	for i in width - for_size_x + 1:
+		for j in height - for_size_y + 1:
 			free_cells[Vector2(i, j)] = true
 
-	for i in _width:
-		for j in _height:
+	for i in width:
+		for j in height:
 			if get_item_at_position(i, j) != null:
 				for item_i in for_size_x:
 					for item_j in for_size_y:

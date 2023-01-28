@@ -9,8 +9,8 @@
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 4 )
-_width = 12
-_height = 8
+width = 12
+height = 8
 
 [sub_resource type="Gradient" id=11]
 offsets = PoolRealArray( 0, 0.66 )

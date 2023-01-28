@@ -6,7 +6,7 @@ signal item_stack_added(item_stack)
 signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
 
-export var _width := 8 setget _set_width
+export var width := 8 setget _set_width
 
 # The list of items in this inventory.
 # Setting and editing may lead to unpredictable behaviour.
@@ -17,7 +17,7 @@ var _cells := []
 
 func _set_width(v, emit = true):
 	if v < 1: v = 1
-	_width = v
+	width = v
 	_update_size()
 	if emit: emit_changed()
 	if "restricted_to_types" in self:
@@ -25,7 +25,7 @@ func _set_width(v, emit = true):
 
 
 func _update_size():
-	_cells.resize(_width)
+	_cells.resize(width)
 
 
 # Tries to place [code]stack[/code] into first possible stacks or cells.
@@ -77,7 +77,7 @@ func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 
 # Returns [code]true[/code] if cell at [code]position[/code] is free.
 func can_place_item(item : ItemStack, position : Vector2) -> bool:
-	return _cells[position.x + position.y * _width] == null
+	return _cells[position.x + position.y * width] == null
 
 # Adds [code]delta[/code] or removes [code]-delta[/code] items to [code]item_stack[/code], removing the stack if it becomes empty and emitting [signal item_stack_changed] otherwise.
 func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
@@ -132,14 +132,14 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
 		if _cells[i] == null:
-			return Vector2(i % _width, i / _width)
+			return Vector2(i % width, i / width)
 
 	return Vector2(-1, -1)
 
 # Returns the [ItemStack] in cell [code](x, y)[/code]; [code]null[/code] if cell empty or out of bounds.
 func get_item_at_position(x : int, y : int) -> ItemStack:
 	if !has_cell(x, y): return null
-	return _cells[y * _width + x]
+	return _cells[y * width + x]
 
 # Returns the item's max stack count.
 # Override to create inventory types with a custom stack limit.
@@ -171,12 +171,12 @@ func _try_stack_item(item_stack : ItemStack, count_delta : int = 1) -> int:
 
 
 func _clear_stack_cells(item_stack : ItemStack):
-	_cells[item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * _width] = null
+	_cells[item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * width] = null
 	item_stack.inventory = null
 
 
 func _fill_stack_cells(item_stack : ItemStack):
-	_cells[item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * _width] = item_stack
+	_cells[item_stack.position_in_inventory.x + item_stack.position_in_inventory.y * width] = item_stack
 	item_stack.inventory = self
 
 
@@ -216,7 +216,7 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 # Returns [code]false[/code] if cell out of bounds.
 func has_cell(x : int, y : int) -> bool:
 	if x < 0 || y < 0: return false
-	if x > _width: return false
+	if x > width: return false
 	return true
 
 # Counts all items, incrementing entries in [code]into_dict[/code].
@@ -303,8 +303,8 @@ func get_items_ordered():
 # Returns position vectors of all free cells in the inventory.
 func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
 	var free_cells := []
-	var height = self._height if "_height" in self else 1
-	for i in _width:
+	var height = self.height if "height" in self else 1
+	for i in width:
 		for j in height:
 			if get_item_at_position(i, j) == null:
 				free_cells.append(Vector2(i, j))
@@ -351,7 +351,7 @@ func _compare_size_sort(a : Vector2, b : Vector2):
 
 
 func _compare_pos_sort(a : ItemStack, b : ItemStack):
-	return a.position_in_inventory.x + a.position_in_inventory.y * _width < b.position_in_inventory.x + b.position_in_inventory.y * _width
+	return a.position_in_inventory.x + a.position_in_inventory.y * width < b.position_in_inventory.x + b.position_in_inventory.y * width
 
 # Loads contents from an array created via [code]to_array[/code].
 func load_from_array(array : Array):

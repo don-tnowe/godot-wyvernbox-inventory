@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id=1]
 resource_name = "Inventory"
 script = ExtResource( 4 )
-_width = 32
+width = 32
 
 [node name="Inventory" type="MarginContainer"]
 margin_right = 140.0

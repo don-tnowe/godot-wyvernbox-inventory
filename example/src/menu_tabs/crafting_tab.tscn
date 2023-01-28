@@ -29,8 +29,8 @@ fill_to = Vector2( 0.5, 2 )
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource( 14 )
-_width = 12
-_height = 6
+width = 12
+height = 6
 
 [node name="Crafting" type="MarginContainer"]
 margin_right = 640.0

@@ -8,29 +8,40 @@ signal item_cant_afford(item_stack)
 
 # The [InventoryView] I can place my stock into!
 export var vendor_inventory := NodePath()
+
 # The [InventoryView] where I can place the price of items I receive!
 export var sell_reward_into_inventory := NodePath()
+
 # How expensive and prestige my wares are!
 # Price will be from the item's "price" extra property multiplied by this.
 export var price_markup := 2.0
+
 # Apply this [ItemGenerator] to all of my stock!
 export var apply_to_all_stock : Resource
+
 # My precious wares that your player can buy!
 export(Array, Resource) var stock setget _set_stock
+
 # The amount of each item I sell at once.
 export(Array, int) var stock_counts setget _set_stock_counts
+
 # The number of times your Player can buy each of my items! (1 for single-time purchase)
 export(Array, int) var stock_restocks setget _set_stock_restocks
 
+
 # If set, I can bring unlimited supplies of my wares! (if one has enough coin to buy them, thet is!)
 export var infinite_restocks := true
+
 # If set, I will remove the price tag off my items, so they can not be re-sold anywhere!
 export var remove_price_on_buy := false
+
 # If set, items the Player sells me will be gone forever once they look away! (or my parent node becomes invisible)
 # [method clear_sold_items] can be called manually to clear on demand.
 export var clear_sold_items_when_hidden := true
+
 # If set, my [member price_markup] will not get applied to items the Player sells to me!
 export var free_buyback := true
+
 
 # The [RandomNumberGenerator] used by my intricate [ItemGenerator]s!
 var rng = RandomNumberGenerator.new()

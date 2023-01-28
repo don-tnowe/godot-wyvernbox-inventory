@@ -9,7 +9,7 @@
 resource_local_to_scene = true
 resource_name = "CurrencyInventory"
 script = ExtResource( 3 )
-_width = 5
+width = 5
 restricted_to_types = [ null, null, null, null, null ]
 max_stack = 99999999
 
