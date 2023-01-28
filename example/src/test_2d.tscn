@@ -1,7 +1,6 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=2]
 [ext_resource path="res://example/src/world/char.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
 [ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=5]
@@ -27,7 +26,7 @@ fill_from = Vector2( 1, 1 )
 
 [sub_resource type="Resource" id=22]
 resource_name = "Drop Chaotically"
-script = ExtResource( 2 )
+script = ExtResource( 13 )
 items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
 item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
 item_chances = [ 100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0 ]
@@ -40,7 +39,7 @@ spread_angle_degrees = 0.0
 
 [sub_resource type="Resource" id=21]
 resource_name = "Drop In Circle"
-script = ExtResource( 2 )
+script = ExtResource( 13 )
 items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
 item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
 item_chances = [ 100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0 ]
