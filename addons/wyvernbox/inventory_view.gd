@@ -55,6 +55,10 @@ export(int,
 	"Paranoic // On any item added/removed"
 ) var autosave_intensity := 2
 
+# Change to save more data when [method save_state] is called.
+# Gets changed on autoload, or call to [method load_state].
+export var save_extra_data : Dictionary
+
 
 # The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
 export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
@@ -105,6 +109,7 @@ func _set_inventory(v):
 		inventory.disconnect("item_stack_added", self, "_on_item_stack_added")
 		inventory.disconnect("item_stack_changed", self, "_on_item_stack_changed")
 		inventory.disconnect("item_stack_removed", self, "_on_item_stack_removed")
+		inventory.disconnect("loaded_from_dict", self, "_on_loaded_from_dict")
 
 	inventory = v
 	if v == null: return
@@ -112,6 +117,7 @@ func _set_inventory(v):
 	v.connect("item_stack_added", self, "_on_item_stack_added")
 	v.connect("item_stack_changed", self, "_on_item_stack_changed")
 	v.connect("item_stack_removed", self, "_on_item_stack_removed")
+	v.connect("loaded_from_dict", self, "_on_loaded_from_dict")
 
 	if !is_inside_tree(): yield(self, "ready")
 	if has_node("Cells"):
@@ -480,14 +486,33 @@ func save_state(filepath = ""):
 	if Engine.editor_hint: return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
 
+	var extras = _get_saved_properties()
+	if save_extra_data != null:
+		extras.merge(save_extra_data, true)
+
+	inventory.save_state(autosave_file_path if filepath == "" else filepath, extras)
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
-	inventory.save_state(autosave_file_path if filepath == "" else filepath)
-	init_contents = false
+
 
 # Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
 func load_state(filepath = ""):
-	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)
+	last_autosave_sec = Time.get_ticks_usec() * 0.000001
+
+
+func _get_saved_properties():
+	return {
+		"$_init_contents" : init_contents,
+	}
+
+
+func _on_loaded_from_dict(dict : Dictionary):
+	init_contents = dict.get("$_init_contents", false)
+	# Save the rest into extra data dict.
+	save_extra_data = {}
+	for k in dict:
+		if k != "contents" && !k.begins_with("$_"):
+			save_extra_data[k] = dict[k]
 
 
 func _compare_inventory_priority(a, b):

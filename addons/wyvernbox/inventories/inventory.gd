@@ -5,6 +5,7 @@ extends Resource
 signal item_stack_added(item_stack)
 signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
+signal loaded_from_dict(dict)
 
 export var width := 8 setget _set_width
 
@@ -367,6 +368,12 @@ func load_from_array(array : Array):
 		else:
 			try_place_stackv(new_item, new_item.position_in_inventory)
 
+# Loads contents from a dictionary. its [code]"contents"[/code] key must be an array created via [code]to_array[/code].
+# [signal loaded_from_dict] is emitted to process other values in the dictionary.
+func load_from_dict(dict : Dictionary):
+	load_from_array(dict["contents"])
+	emit_signal("loaded_from_dict", dict)
+
 # Returns the contents of this inventory as an array of dictionaries. Useful for serialization.
 func to_array() -> Array:
 	var array = []
@@ -377,8 +384,9 @@ func to_array() -> Array:
 	return array
 
 # Writes inventory contents to file [code]filename[/code].
+# Supply [code]extra_data[/code] to store more data - retrieve it by listening to [signal loaded_from_dictionary].
 # Only [code]user://[/code] paths are supported.
-func save_state(filename):
+func save_state(filename : String, extra_data : Dictionary = {}):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 
@@ -387,8 +395,10 @@ func save_state(filename):
 	if !dir.dir_exists(filename.get_base_dir()):
 		dir.make_dir_recursive(filename.get_base_dir())
 
+	var data = {"contents" : to_array()}
+	data.merge(extra_data)
 	file.open(filename, File.WRITE)
-	file.store_var(to_array())
+	file.store_var(data)
 
 # Loads inventory contents from file [code]filename[/code].
 # Only [code]user://[/code] paths are supported.
@@ -402,4 +412,10 @@ func load_state(filename):
 		return
 
 	file.open(filename, File.READ)
-	load_from_array(file.get_var())
+
+	var data = file.get_var()
+	if data is Array:
+		load_from_array(data)
+
+	if data is Dictionary:
+		load_from_dict(data)
