@@ -1,0 +1,123 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=1]
+[ext_resource path="res://addons/wyvernbox/ground/ground_item_stack_view_3d.gd" type="Script" id=2]
+[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=3]
+[ext_resource path="res://addons/wyvernbox/ground/ground_item_label.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Gradient" id=1]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.457143, 0.608163, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0.609023, 0.443137, 0.443137, 0.513726, 0 )
+
+[sub_resource type="GradientTexture2D" id=6]
+gradient = SubResource( 1 )
+fill = 1
+fill_from = Vector2( 0.5, 0.5 )
+fill_to = Vector2( 0.5, 1 )
+
+[sub_resource type="GradientTexture2D" id=7]
+gradient = SubResource( 1 )
+fill_from = Vector2( 0, 1 )
+fill_to = Vector2( 0, 0 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 12, 12 )
+
+[sub_resource type="BoxShape" id=10]
+extents = Vector3( 0.3, 0.3, 0.3 )
+
+[sub_resource type="ViewportTexture" id=14]
+viewport_path = NodePath("LabelVP")
+
+[sub_resource type="Animation" id=16]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shape:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "init"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shape:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[node name="Item" type="KinematicBody" groups=["ground_item"]]
+script = ExtResource( 2 )
+item_type = ExtResource( 3 )
+display_icon = NodePath("VisItem/Icon")
+display_mesh = NodePath("VisItem/Mesh")
+filter_hidden_color = Color( 0.501961, 0.501961, 0.501961, 0.501961 )
+
+[node name="VisItem" type="Spatial" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.641326, 0 )
+
+[node name="Glow" type="Sprite3D" parent="VisItem"]
+modulate = Color( 0.745098, 0.745098, 0.745098, 1 )
+billboard = 1
+double_sided = false
+texture = SubResource( 6 )
+
+[node name="Glow2" type="Sprite3D" parent="VisItem/Glow"]
+transform = Transform( 0.292051, 0, 0, 0, 1.75966, 0, 0, 0, 1, 0, 0, 0 )
+offset = Vector2( 0, 32 )
+billboard = 2
+double_sided = false
+texture = SubResource( 7 )
+
+[node name="Icon" type="Sprite3D" parent="VisItem"]
+pixel_size = 0.02
+billboard = 1
+double_sided = false
+render_priority = 1
+texture = SubResource( 15 )
+
+[node name="Mesh" type="MeshInstance" parent="VisItem"]
+
+[node name="Shape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.349212, 0 )
+shape = SubResource( 10 )
+
+[node name="LabelVP" type="Viewport" parent="."]
+size = Vector2( 2, 2 )
+transparent_bg = true
+render_target_v_flip = true
+
+[node name="Label" parent="LabelVP" instance=ExtResource( 4 )]
+text = ""
+
+[node name="LabelView" type="Sprite3D" parent="."]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 1.23295, 0 )
+visible = false
+billboard = 1
+fixed_size = true
+render_priority = 20
+texture = SubResource( 14 )
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+autoplay = "init"
+anims/RESET = SubResource( 16 )
+anims/init = SubResource( 11 )
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="gui_input" from="LabelVP/Label" to="." method="_on_name_gui_input"]

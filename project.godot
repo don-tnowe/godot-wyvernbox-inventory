@@ -89,6 +89,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd"
 }, {
+"base": "CollisionObject",
+"class": "GroundItemStackView3D",
+"language": "GDScript",
+"path": "res://addons/wyvernbox/ground/ground_item_stack_view_3d.gd"
+}, {
 "base": "Resource",
 "class": "Inventory",
 "language": "GDScript",
@@ -266,6 +271,7 @@ _global_script_class_icons={
 "GridInventory": "res://addons/wyvernbox/icons/grid_inventory.png",
 "GroundItemManager": "res://addons/wyvernbox/icons/ground_item_manager.png",
 "GroundItemStackView2D": "res://addons/wyvernbox/icons/item_stack_view_2d.png",
+"GroundItemStackView3D": "res://addons/wyvernbox/icons/item_stack_view_3d.png",
 "Inventory": "res://addons/wyvernbox/icons/inventory.png",
 "InventoryTooltip": "res://addons/wyvernbox/icons/tooltip.png",
 "InventoryTooltipProperty": "",
@@ -313,7 +319,7 @@ docs_checklist/base_dir="res://addons/wyvernbox/"
 [application]
 
 config/name="Addon: Inventory"
-run/main_scene="res://example/src/test_2d.tscn"
+run/main_scene="res://example/src/test_3d.tscn"
 config/icon="res://icon.png"
 
 [display]

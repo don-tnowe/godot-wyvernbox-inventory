@@ -1,5 +1,5 @@
 tool
-extends Area2D
+extends Node
 
 export var ground_item_manager : NodePath
 export var collide_with_group := ""

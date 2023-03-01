@@ -9,7 +9,7 @@
 [ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=8]
 [ext_resource path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" type="Resource" id=9]
 [ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=10]
-[ext_resource path="res://example/src/world/inworld_container.tscn" type="PackedScene" id=11]
+[ext_resource path="res://example/src/world/inworld_container2d.tscn" type="PackedScene" id=11]
 [ext_resource path="res://example/src/world/touch_dropper.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=13]
 [ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=17]
@@ -276,6 +276,7 @@ script = ExtResource( 20 )
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0
+drop_camera_3d = NodePath("")
 unit_size = Vector2( 14, 14 )
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]

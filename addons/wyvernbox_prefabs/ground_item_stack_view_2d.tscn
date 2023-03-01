@@ -1,32 +1,32 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd" type="Script" id=1]
-[ext_resource path="res://example/theme/font/font_numbers.tres" type="DynamicFont" id=2]
 [ext_resource path="res://example/graphics/item_icons/items.png" type="Texture" id=3]
+[ext_resource path="res://addons/wyvernbox/ground/ground_item_label.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Gradient" id=1]
+[sub_resource type="Gradient" id=12]
 interpolation_mode = 2
 offsets = PoolRealArray( 0.457143, 0.608163, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0.609023, 0.443137, 0.443137, 0.513726, 0 )
 
 [sub_resource type="GradientTexture2D" id=2]
-gradient = SubResource( 1 )
+gradient = SubResource( 12 )
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
 fill_to = Vector2( 0.5, 1 )
 
 [sub_resource type="GradientTexture2D" id=8]
-gradient = SubResource( 1 )
+gradient = SubResource( 12 )
 fill_from = Vector2( 0, 1 )
 fill_to = Vector2( 0, 0 )
 
-[sub_resource type="Gradient" id=5]
+[sub_resource type="Gradient" id=13]
 interpolation_mode = 2
 offsets = PoolRealArray( 0.861224, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
 [sub_resource type="GradientTexture2D" id=6]
-gradient = SubResource( 5 )
+gradient = SubResource( 13 )
 width = 16
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
@@ -114,7 +114,7 @@ tracks/5/keys = {
 "values": [ 0.0 ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("Label/Label:visible")
+tracks/6/path = NodePath("VisItem/Glow:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -123,10 +123,10 @@ tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ false ]
+"values": [ Vector2( 0.3, 0.3 ) ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("VisItem/Glow:scale")
+tracks/7/path = NodePath("Shape:disabled")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -134,11 +134,11 @@ tracks/7/enabled = true
 tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0.3, 0.3 ) ]
+"update": 1,
+"values": [ true ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("Shape:disabled")
+tracks/8/path = NodePath("VisItem/Glow:modulate")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -146,28 +146,16 @@ tracks/8/enabled = true
 tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"update": 0,
+"values": [ Color( 0.745098, 0.745098, 0.745098, 1 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("VisItem/Glow:modulate")
+tracks/9/path = NodePath("VisItem/Icon:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 0.745098, 0.745098, 0.745098, 1 ) ]
-}
-tracks/10/type = "value"
-tracks/10/path = NodePath("VisItem/Icon:visible")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -287,14 +275,6 @@ tracks/8/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Gradient" id=9]
-offsets = PoolRealArray( 1 )
-colors = PoolColorArray( 1, 1, 1, 1 )
-
-[sub_resource type="GradientTexture" id=10]
-gradient = SubResource( 9 )
-width = 1
-
 [node name="Item" type="Area2D" groups=["ground_item"]]
 script = ExtResource( 1 )
 
@@ -349,47 +329,13 @@ mouse_default_cursor_shape = 2
 [node name="Label" type="Node2D" parent="."]
 show_behind_parent = true
 
-[node name="Label" type="Label" parent="Label"]
+[node name="Label" parent="Label" instance=ExtResource( 4 )]
 visible = false
-self_modulate = Color( 0.745098, 0.745098, 0.745098, 1 )
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -3.5
 margin_top = -21.0
-margin_right = 3.5
-margin_bottom = -4.0
-grow_horizontal = 2
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 0 )
-custom_fonts/font = ExtResource( 2 )
-text = "Text (5) (10) (14) (16) (17) (21) (24) (25) (24) (22) (18) (15) (14) (13) (11) (10) (9) (5) (0) (-1)"
-align = 1
-
-[node name="Rect" type="ColorRect" parent="Label/Label" groups=["ground_item_label_rect"]]
-self_modulate = Color( 0, 0, 0, 0.670588 )
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -4.0
-margin_top = -2.0
-margin_right = 4.0
-margin_bottom = -4.0
-mouse_default_cursor_shape = 2
-
-[node name="Border" type="NinePatchRect" parent="Label/Label/Rect"]
-visible = false
-self_modulate = Color( 0.745098, 0.745098, 0.745098, 0.5 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = SubResource( 10 )
-draw_center = false
-patch_margin_left = 1
-patch_margin_top = 1
-patch_margin_right = 1
-patch_margin_bottom = 1
+margin_bottom = -7.0
+text = ""
 
 [connection signal="gui_input" from="HoverRect" to="." method="_on_name_gui_input"]
 [connection signal="mouse_entered" from="HoverRect" to="." method="_on_HoverRect_mouse_entered"]
 [connection signal="mouse_exited" from="HoverRect" to="." method="_on_HoverRect_mouse_exited"]
-[connection signal="gui_input" from="Label/Label/Rect" to="." method="_on_name_gui_input"]
+[connection signal="gui_input" from="Label/Label" to="." method="_on_name_gui_input"]

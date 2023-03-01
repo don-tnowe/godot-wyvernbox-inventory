@@ -58,6 +58,13 @@ export var in_inventory_height := 1
 # The item's texture.
 export var texture : Texture
 
+# The [Mesh] to spawn when it gets created on the ground. If not set, shows [member Texture].
+export var mesh : Mesh
+
+# Optionally, the [PackedScene] to spawn when it gets created on the ground.
+# If not set, uses scene set in [GroundItemManager] with [member mesh] or [member texture].
+export var custom_ground_prefab : PackedScene
+
 # The scale of the item's texture.
 export var texture_scale := 1.0
 

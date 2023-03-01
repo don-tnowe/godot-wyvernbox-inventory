@@ -124,22 +124,37 @@ func populate_ground(origin : Node, ground : GroundItemManager, rng : RandomNumb
 	var spread_rad := deg2rad(spread_cone_degrees) * 0.5
 	var dir_rad := deg2rad(spread_angle_degrees)
 	var dist_range := ground.spawn_jump_length_range / ground.spawn_jump_length_range.y * spread_distance
-	var cur_throw := Transform2D()
+	var cur_throw
+	var is_3d := !origin is Node2D
 
 	if randomize_locations:
 		for x in generated_items:
-			cur_throw = Transform2D(rand_range(dir_rad - spread_rad, dir_rad + spread_rad), Vector2.ZERO)
-			cur_throw = cur_throw.scaled(Vector2.ONE * rand_range(dist_range.x, dist_range.y))
-			ground.add_item(x, spawn_origin, cur_throw * Vector2.RIGHT)
+			if is_3d:
+				cur_throw = Basis(Vector3.UP, rand_range(dir_rad - spread_rad, dir_rad + spread_rad))
+				cur_throw = cur_throw.scaled(Vector3.ONE * rand_range(dist_range.x, dist_range.y))
+
+			else:
+				cur_throw = Transform2D(rand_range(dir_rad - spread_rad, dir_rad + spread_rad), Vector2.ZERO)
+				cur_throw = cur_throw.scaled(Vector2.ONE * rand_range(dist_range.x, dist_range.y))
+
+			ground.add_item(x, spawn_origin, cur_throw * (Vector3.RIGHT if is_3d else Vector2.RIGHT))
 			if delay_between_items > 0.0:
 				yield(tree.create_timer(delay_between_items), "timeout")
 
 	else:
-		cur_throw = Transform2D(dir_rad - spread_rad, Vector2.ZERO)
-		cur_throw = cur_throw.scaled(Vector2(spread_distance, spread_distance))
-		var rotate_by = Transform2D(spread_rad * 2.0 / generated_items.size(), Vector2.ZERO)
+		var rotate_by
+		if is_3d:
+			rotate_by = Basis(Vector3.UP, spread_rad * 2.0 / generated_items.size())
+			cur_throw = Basis(Vector3.UP, dir_rad - spread_rad)
+			cur_throw = cur_throw.scaled(Vector3(spread_distance, spread_distance, spread_distance))
+
+		else:
+			rotate_by = Transform2D(spread_rad * 2.0 / generated_items.size(), Vector2.ZERO)
+			cur_throw = Transform2D(dir_rad - spread_rad, Vector2.ZERO)
+			cur_throw = cur_throw.scaled(Vector2(spread_distance, spread_distance))
+
 		for x in generated_items:
-			ground.add_item(x, spawn_origin, cur_throw * Vector2.RIGHT)
+			ground.add_item(x, spawn_origin, cur_throw * (Vector3.RIGHT if is_3d else Vector2.RIGHT))
 			cur_throw = rotate_by * cur_throw
 			if delay_between_items > 0.0:
 				yield(tree.create_timer(delay_between_items), "timeout")

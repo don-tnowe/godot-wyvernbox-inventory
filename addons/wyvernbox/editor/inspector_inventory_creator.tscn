@@ -112,10 +112,9 @@ text = "Will initialize empty."
 margin_left = 137.0
 margin_right = 287.0
 margin_bottom = 20.0
-hint_tooltip = "A simple inventory where each item takes up one slot.
+hint_tooltip = "Put an empty ItemInstantiator into the Contents field.
 
-You can arrange cells in order with a Container,
-or in a custom layout without one."
+Use it to create some items on game start, randomly or not."
 size_flags_horizontal = 0
 size_flags_vertical = 3
 text = "Add Item Instantiator"

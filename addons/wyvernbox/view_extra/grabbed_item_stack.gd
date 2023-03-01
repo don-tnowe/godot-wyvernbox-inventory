@@ -10,6 +10,9 @@ export var drop_ground_item_manager := NodePath("")
 # The max distance an item dropped by [method drop_on_ground] can fly.
 export var drop_max_distance := 256.0
 
+# The [Camera] used for dropping the item into a 3D scene. In 2D, unused.
+export var drop_camera_3d := NodePath("")
+
 # The size of the item's texture, if its in-inventory size was [code](1, 1)[/code].
 export var unit_size := Vector2(18, 18)
 
@@ -137,9 +140,21 @@ func _any_inventory_try_drop_stack(stack):
 			return
 
 # Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
-func drop_on_ground(stack, global_pos):
-	var spawn_at_pos = get_node(drop_at_node).global_position
-	var throw_vec = (global_pos - spawn_at_pos).limit_length(drop_max_distance)
+func drop_on_ground(stack, global_pos = null):
+	var node = get_node(drop_at_node)
+	var spawn_at_pos = node.global_position if node is Node2D else node.global_translation
+	var throw_vec
+	if global_pos == null:
+		throw_vec = null
+
+	elif node is Node2D:
+		throw_vec = (global_pos - spawn_at_pos).limit_length(drop_max_distance)
+
+	else:
+		var cam : Camera = get_node(drop_camera_3d)
+		var hit = node.get_world().direct_space_state.intersect_ray(cam.global_translation, cam.project_local_ray_normal(global_pos))
+		throw_vec = (node.global_translation - hit["position"]).limit_length(drop_max_distance)
+
 	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 

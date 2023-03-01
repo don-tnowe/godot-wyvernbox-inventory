@@ -17,6 +17,9 @@ export(Array, Resource) var view_filter_patterns setget _set_view_filters
 # Defines min and max distance items jump with unset [code]throw_vector[/code].
 export var spawn_jump_length_range := Vector2(48.0, 96.0)
 
+# Defines upwards velocity for 3D physics items, or arc height for non-physics items. Unused in 2D.
+export var spawn_jump_upwards := 1.0
+
 
 func _set_view_filters(v):
 	view_filter_patterns = v
@@ -42,15 +45,15 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 	add_child(item_node)
 
 	if item_node is Node2D:
-		item_node.position = global_pos
+		item_node.global_position = global_pos
 
 	else:
-		item_node.translation = global_pos
+		item_node.global_translation = global_pos
 
 	if throw_vector == null:
 		throw_vector = item_node.get_random_jump_vector(spawn_jump_length_range.x, spawn_jump_length_range.y)
 
-	item_node.jump_to_pos(global_pos + throw_vector)
+	item_node.jump_to_pos(global_pos + throw_vector, spawn_jump_upwards)
 
 # Loads ground items from [code]array[/code] created via [method to_array].
 func load_from_array(array : Array):
@@ -91,8 +94,14 @@ func _align_labels():
 	var nodes = get_children()
 	if !Input.is_action_pressed("inventory_less"):
 		for x in nodes:
-			x.get_node("Label/Label").hide()
+			x.set_label_visible(false)
 
+		return
+
+	# TODO: 3D needs special care: camera moves all the time so overlap detection must be optimized
+	# (also 3D labels look abhorrent, must separate them all on a shared UI layer so they can be moved in screen space)
+	if nodes[0] is Spatial:
+		for x in nodes: x.set_label_visible(true)
 		return
 
 	var rects = []
@@ -101,20 +110,21 @@ func _align_labels():
 
 	for i in nodes.size():
 		if nodes[i].filter_hidden: continue
-		var cur_label_rect = nodes[i].get_node("Label/Label/Rect")
-		cur_label_rect.get_parent().hide()
-		
+		var cur_label_rect = nodes[i].get_label_rect()
+		nodes[i].set_label_visible(false)
+
 		var rect = Rect2(
 			nodes[i].global_position.snapped(Vector2(1, cur_label_rect.rect_size.y)),
 			cur_label_rect.rect_size
 		)
 		rect.size.y -= 1
 		rect.position -= cur_label_rect.rect_size * Vector2(0.5, 1.5)
+
 		if screen_rect.intersects(rect):
 			rect = _move_to_free_space(rect, rects, cur_label_rect.rect_size.y)
 
 		rects[i] = rect
-		cur_label_rect.get_parent().show()
+		nodes[i].set_label_visible(true)
 		nodes[i].get_node("Label").global_position = (
 			rect.position
 			+ rect.size * 0.5
@@ -191,7 +201,7 @@ func _unhandled_input(event):
 
 
 func _on_child_entered_tree(child):
-	child.connect("name_clicked", self, "_on_item_clicked", [child])
+	child.connect("clicked", self, "_on_item_clicked", [child])
 	call_deferred("_apply_view_filters", child.get_position_in_parent())
 
 

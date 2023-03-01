@@ -1,33 +1,56 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://example/src/world/inworld_container.gd" type="Script" id=3]
 
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 13.5, 10 )
+[sub_resource type="CubeMesh" id=7]
 
-[node name="Chest" type="Area2D" groups=["inworld_openable"]]
+[sub_resource type="CylinderMesh" id=8]
+
+[sub_resource type="CubeMesh" id=9]
+
+[sub_resource type="BoxShape" id=10]
+extents = Vector3( 1.04365, 1.24762, 1.06176 )
+
+[sub_resource type="GDScript" id=11]
+script/source = "extends Label3D
+
+signal pressed()
+
+
+func _on_Chest_input_event(camera, event, position, normal, shape_idx):
+	if event is InputEventMouseButton:
+		if event.pressed && event.button_index == BUTTON_LEFT:
+			emit_signal(\"pressed\")
+"
+
+[node name="Chest" type="Area" groups=["inworld_openable"]]
 script = ExtResource( 3 )
 
-[node name="Visuals" type="Node2D" parent="."]
+[node name="Visuals" type="Spatial" parent="."]
 
-[node name="Polygon2D" type="Polygon2D" parent="Visuals"]
-position = Vector2( 0, -3 )
-polygon = PoolVector2Array( -10, -8, -14, 1, 15, 1, 10, -8 )
+[node name="MeshInstance" type="MeshInstance" parent="Visuals"]
+transform = Transform( 0.57532, 0, 0, 0, 0.340773, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 7 )
 
-[node name="Polygon2D2" type="Polygon2D" parent="Visuals"]
-position = Vector2( 0, -3 )
-polygon = PoolVector2Array( -14, 3, -13, 13, 14, 13, 15, 3, 3, 3, 3, 6, -2, 6, -2, 3 )
+[node name="MeshInstance2" type="MeshInstance" parent="Visuals"]
+transform = Transform( 0.552923, 1.94077e-09, -0.130291, 0.158966, -6.75047e-09, 0.453183, 0, -1.00286, -1.28638e-07, -0.0928169, 0.529776, 0 )
+mesh = SubResource( 8 )
 
-[node name="Shape" type="CollisionShape2D" parent="."]
-position = Vector2( 0.5, 0 )
-shape = SubResource( 6 )
+[node name="MeshInstance3" type="MeshInstance" parent="Visuals"]
+transform = Transform( 0.240267, 8.87972e-10, -0.0442093, 0.0690771, -6.30229e-09, 0.153771, -1.58566e-09, -0.14, -7.20261e-09, 0.373893, 0.608567, -2.38419e-07 )
+mesh = SubResource( 9 )
 
-[node name="Button" type="Button" parent="."]
+[node name="Shape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.820498, 0 )
+shape = SubResource( 10 )
+
+[node name="Button" type="Label3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.19541, 0 )
 visible = false
-margin_left = -23.0
-margin_top = -43.0
-margin_right = 24.0
-margin_bottom = -23.0
-focus_mode = 0
-enabled_focus_mode = 0
-text = "Open"
+pixel_size = 0.005
+billboard = 1
+fixed_size = true
+text = "Click here to Open"
+script = SubResource( 11 )
+
+[connection signal="input_event" from="." to="Button" method="_on_Chest_input_event"]

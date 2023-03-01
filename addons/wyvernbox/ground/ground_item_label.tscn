@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://example/theme/font/font_numbers.tres" type="DynamicFont" id=1]
+[ext_resource path="res://addons/wyvernbox/ground/ground_item_label.gd" type="Script" id=2]
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 1 )
+colors = PoolColorArray( 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=13]
+gradient = SubResource( 9 )
+width = 1
+
+[node name="Label" type="Label"]
+self_modulate = Color( 0.745098, 0.745098, 0.745098, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0 )
+custom_fonts/font = ExtResource( 1 )
+text = "Text (5) (10) (14) (16) (17) (21) (24) (25) (24) (22) (18) (15) (14) (13) (11) (10) (9) (5) (0) (-1)"
+align = 1
+script = ExtResource( 2 )
+
+[node name="Rect" type="ColorRect" parent="." groups=["ground_item_label_rect"]]
+self_modulate = Color( 0, 0, 0, 0.670588 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -4.0
+margin_top = -1.0
+margin_right = 4.0
+margin_bottom = -2.0
+mouse_default_cursor_shape = 2
+
+[node name="Border" type="NinePatchRect" parent="Rect"]
+visible = false
+self_modulate = Color( 0.745098, 0.745098, 0.745098, 0.5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 13 )
+draw_center = false
+patch_margin_left = 1
+patch_margin_top = 1
+patch_margin_right = 1
+patch_margin_bottom = 1
