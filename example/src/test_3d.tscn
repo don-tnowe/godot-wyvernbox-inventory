@@ -166,11 +166,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area2" type="Area" parent="Spatial/Loot"]
@@ -181,11 +179,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area3" type="Area" parent="Spatial/Loot"]
@@ -196,11 +192,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area4" type="Area" parent="Spatial/Loot"]
@@ -211,11 +205,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area5" type="Area" parent="Spatial/Loot"]
@@ -226,11 +218,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area6" type="Area" parent="Spatial/Loot"]
@@ -241,11 +231,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area6"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area6"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area7" type="Area" parent="Spatial/Loot"]
@@ -256,11 +244,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area8" type="Area" parent="Spatial/Loot"]
@@ -271,11 +257,9 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Openable" type="Spatial" parent="Spatial"]
