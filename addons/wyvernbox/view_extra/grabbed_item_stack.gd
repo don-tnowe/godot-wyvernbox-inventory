@@ -140,20 +140,21 @@ func _any_inventory_try_drop_stack(stack):
 			return
 
 # Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
-func drop_on_ground(stack, global_pos = null):
+func drop_on_ground(stack, click_pos = null):
 	var node = get_node(drop_at_node)
 	var spawn_at_pos = node.global_position if node is Node2D else node.global_translation
 	var throw_vec
-	if global_pos == null:
+	if click_pos == null:
 		throw_vec = null
 
 	elif node is Node2D:
-		throw_vec = (global_pos - spawn_at_pos).limit_length(drop_max_distance)
+		throw_vec = (node.get_viewport().canvas_transform.affine_inverse() * click_pos - spawn_at_pos).limit_length(drop_max_distance)
 
 	else:
 		var cam : Camera = get_node(drop_camera_3d)
-		var hit = node.get_world().direct_space_state.intersect_ray(cam.global_translation, cam.project_local_ray_normal(global_pos))
-		throw_vec = (node.global_translation - hit["position"]).limit_length(drop_max_distance)
+		var origin := cam.project_ray_origin(click_pos)
+		var hit = node.get_world().direct_space_state.intersect_ray(origin, origin + cam.project_ray_normal(click_pos) * 9999)
+		throw_vec = (hit["position"] - spawn_at_pos).limit_length(drop_max_distance)
 
 	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

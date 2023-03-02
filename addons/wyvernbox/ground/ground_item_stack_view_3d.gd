@@ -124,14 +124,14 @@ func jump_to_pos(pos, upwards = 9.8):
 		self.linear_velocity = pos - global_translation + Vector3(0, upwards, 0)
 
 	else:
-		pos = get_world().direct_space_state.intersect_ray(pos, Vector3.DOWN)["position"]
+		pos = get_world().direct_space_state.intersect_ray(pos, Vector3.DOWN * 999).get("position", pos)
+		pos -= get_parent().global_translation
 
 		_jump_tween = create_tween()
 		_jump_tween.set_trans(Tween.TRANS_LINEAR).tween_property(
 			self, "translation",
 			lerp(translation, pos, 0.5), 0.25
 		)
-		var vis_item = $"VisItem"
 		_jump_tween.parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT).tween_property(
 			self, "translation:y",
 			max(translation.y, pos.y) + upwards, 0.25

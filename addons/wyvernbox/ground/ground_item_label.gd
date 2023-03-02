@@ -17,8 +17,9 @@ func _set_item_stack(v : ItemStack):
 	if v.count != 1:
 		text += " (" + str(v.count) + ")"
 
-	hide()
-	show()
+	if visible:
+		hide()
+		show()
 
 
 func get_bounding_rect():

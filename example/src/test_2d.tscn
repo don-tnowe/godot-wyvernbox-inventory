@@ -79,7 +79,10 @@ height = 12
 
 [node name="Node" type="Node"]
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="BG" type="CanvasLayer" parent="."]
+layer = -5
+
+[node name="TextureRect" type="TextureRect" parent="BG"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -89,37 +92,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Gameplay" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="Generator" type="Button" parent="Gameplay"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -60.0
-margin_top = -84.0
-margin_right = 58.0
-margin_bottom = -64.0
-focus_mode = 1
-enabled_focus_mode = 1
-text = "Loot"
-
-[node name="Label" type="Label" parent="Gameplay/Generator"]
-margin_left = -39.0
-margin_top = 22.0
-margin_right = 173.0
-margin_bottom = 36.0
-text = "(Press Tab or I to open inventory)"
-align = 1
-
-[node name="Label2" type="Label" parent="Gameplay/Generator"]
-margin_left = -39.0
-margin_top = 37.0
-margin_right = 175.0
-margin_bottom = 51.0
-text = "(Hold Alt to highlight items)"
-align = 1
+[node name="Gameplay" type="Node2D" parent="."]
 
 [node name="Node2D" type="Node2D" parent="Gameplay"]
 __meta__ = {
@@ -260,6 +233,35 @@ size_flags_vertical = 10
 text = "?"
 
 [node name="Inventory" type="CanvasLayer" parent="."]
+
+[node name="Generator" type="Button" parent="Inventory"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -60.0
+margin_top = -70.0
+margin_right = 58.0
+margin_bottom = -50.0
+focus_mode = 1
+enabled_focus_mode = 1
+text = "Loot"
+
+[node name="Label" type="Label" parent="Inventory/Generator"]
+margin_left = -39.0
+margin_top = 22.0
+margin_right = 173.0
+margin_bottom = 36.0
+text = "(Press Tab or I to open inventory)"
+align = 1
+
+[node name="Label2" type="Label" parent="Inventory/Generator"]
+margin_left = -39.0
+margin_top = 37.0
+margin_right = 175.0
+margin_bottom = 51.0
+text = "(Hold Alt to highlight items)"
+align = 1
 
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource( 1 )]
 visible = false

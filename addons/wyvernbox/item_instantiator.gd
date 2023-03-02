@@ -118,14 +118,15 @@ func populate_ground(origin : Node, ground : GroundItemManager, rng : RandomNumb
 	rng = get_rng(rng)
 	var tree = ground.get_tree()
 	var generated_items := get_items(rng)
-	var spawn_origin = origin.global_position if origin is Node2D else origin.global_translation
+	var is_3d := !origin is Node2D
+	var spawn_origin = origin.global_translation if is_3d else origin.global_position
+
 	yield(tree, "idle_frame")  # Ground items tend to have phys objects and be created when something's destroyed
 
 	var spread_rad := deg2rad(spread_cone_degrees) * 0.5
 	var dir_rad := deg2rad(spread_angle_degrees)
 	var dist_range := ground.spawn_jump_length_range / ground.spawn_jump_length_range.y * spread_distance
 	var cur_throw
-	var is_3d := !origin is Node2D
 
 	if randomize_locations:
 		for x in generated_items:

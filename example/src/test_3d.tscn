@@ -111,6 +111,7 @@ ambient_light_sky_contribution = 0.0
 [node name="Node" type="Node"]
 
 [node name="Spatial" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 147.626, 0, 0 )
 
 [node name="Hero" type="KinematicBody" parent="Spatial" groups=["hero"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.02218, 0 )
@@ -137,8 +138,7 @@ input_ray_pickable = false
 shape = SubResource( 8 )
 
 [node name="StaticBody" type="StaticBody" parent="Spatial"]
-transform = Transform( 47.7182, 0, 0, 0, 1, 0, 0, 0, 51.3477, 0, 0, 0 )
-input_ray_pickable = false
+transform = Transform( 88.5146, 0, 0, 0, 1, 0, 0, 0, 88.5146, 0, 0, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -166,9 +166,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area2" type="Area" parent="Spatial/Loot"]
@@ -179,9 +181,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area3" type="Area" parent="Spatial/Loot"]
@@ -192,9 +196,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area4" type="Area" parent="Spatial/Loot"]
@@ -205,9 +211,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 22 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area5" type="Area" parent="Spatial/Loot"]
@@ -218,9 +226,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area6" type="Area" parent="Spatial/Loot"]
@@ -231,9 +241,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area7" type="Area" parent="Spatial/Loot"]
@@ -244,9 +256,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Area8" type="Area" parent="Spatial/Loot"]
@@ -257,9 +271,11 @@ collide_with_group = "hero"
 loot_table = SubResource( 21 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial/Loot/Area8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial/Loot/Area8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 15 )
 
 [node name="Openable" type="Spatial" parent="Spatial"]
@@ -333,7 +349,7 @@ transform = Transform( 1.91069e-15, -1, -4.37114e-08, -0.522647, -3.72661e-08, 0
 directional_shadow_mode = 0
 
 [node name="Camera" type="Camera" parent="Spatial"]
-transform = Transform( 1, 0, 0, 0, 0.568562, 0.822641, 0, -0.822641, 0.568562, 0, 13.9171, 10.947 )
+transform = Transform( 1, 0, 0, 0, 0.584391, 0.811472, 0, -0.811472, 0.584391, -0.0395966, 14.83, 12.56 )
 
 [node name="Inventory" type="CanvasLayer" parent="."]
 
@@ -344,6 +360,22 @@ margin_right = 342.0
 margin_bottom = 310.0
 focus_mode = 0
 enabled_focus_mode = 0
+
+[node name="Label" type="Label" parent="Inventory/Generator"]
+margin_left = -78.0
+margin_top = 25.0
+margin_right = 134.0
+margin_bottom = 39.0
+text = "(Press Tab or I to open inventory)"
+align = 1
+
+[node name="Label2" type="Label" parent="Inventory/Generator"]
+margin_left = -78.0
+margin_top = 40.0
+margin_right = 136.0
+margin_bottom = 54.0
+text = "(Hold Alt to highlight items)"
+align = 1
 
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource( 1 )]
 
@@ -358,7 +390,7 @@ mouse_filter = 2
 script = ExtResource( 2 )
 drop_at_node = NodePath("../../../Spatial/Hero")
 drop_ground_item_manager = NodePath("../../../Spatial/Items")
-drop_max_distance = 256.0
+drop_max_distance = 8.0
 drop_camera_3d = NodePath("../../../Spatial/Camera")
 unit_size = Vector2( 14, 14 )
 
