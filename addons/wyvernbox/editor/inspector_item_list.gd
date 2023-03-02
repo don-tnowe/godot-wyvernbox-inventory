@@ -26,6 +26,7 @@ var grid_r := GridContainer.new()
 var columns_are_int := []
 var allowed_types := []
 var columns = {}
+var column_defaults = []
 
 
 func _init(
@@ -41,6 +42,7 @@ func _init(
 	self.plugin = plugin
 	self.edited_object = edited_object
 	self.allowed_types = allowed_types
+	self.column_defaults = column_defaults
 
 	var property_buttons = HBoxContainer.new()
 	browse_button.text = "Browse Items..."
@@ -69,7 +71,7 @@ func _init(
 
 	_ensure_no_empty(column_defaults)
 	_init_headers(column_labels)
-	_init_items(columns_int, column_defaults)
+	_init_items(columns_int)
 
 	yield(self, "ready")
 
@@ -167,7 +169,7 @@ func move_item(from_index, to_index):
 		x.insert(to_index, x.pop_at(from_index))
 
 	_clear_items()
-	_init_items(columns_are_int, [])
+	_init_items(columns_are_int)
 	for k in columns:
 		emit_changed(k, columns[k], "", true)
 
@@ -335,7 +337,7 @@ func _init_headers(column_labels):
 	grid_r.add_child(Control.new())
 
 
-func _init_items(columns_int, column_defaults):
+func _init_items(columns_int):
 	if columns_int.size() < columns.size() - 1:
 		columns_int.resize(columns.size())
 		columns_int.fill(false)
@@ -352,7 +354,7 @@ func _init_items(columns_int, column_defaults):
 		while column_arrays[i].size() < column_arrays[0].size():
 			column_arrays[i].append(column_defaults[i - 1])
 
-	_init_column_count(columns, column_defaults)
+	_init_column_count(columns)
 	for i in column_arrays[0].size():
 		for j in columns.size():
 			if j == 0:
@@ -368,7 +370,7 @@ func _init_items(columns_int, column_defaults):
 		_add_delete_button()
 
 
-func _init_column_count(columns, column_defaults):
+func _init_column_count(columns):
 	var column_count = 1
 	var value
 	var arrays = columns.values()
