@@ -127,14 +127,15 @@ func _set_inventory(v):
 	if Engine.editor_hint: return
 
 	if has_node("ItemViews"):
-		for x in _view_nodes:
-			x.queue_free()
+		for x in get_node("ItemViews").get_children():
+			x.free()
 
 		_view_nodes.clear()
 	
 	for x in inventory.items:
 		_on_item_stack_added(x)
 
+	last_autosave_sec = OS.get_ticks_msec() * 0.001
 	_regenerate_view()
 
 
