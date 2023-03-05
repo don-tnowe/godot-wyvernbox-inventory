@@ -103,8 +103,8 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	
 	return _place_stackv(item_stack, found_stack, pos)
 
-# Returns the [ItemStack] in cell [code](x, y)[/code]; [code]null[/code] if cell empty or out of bounds.
-func get_item_at_position(x : int, y : int) -> ItemStack:
+# Returns the [ItemStack] in cell [code](x, y)[/code]; returns [code]null[/code] if cell empty or out of bounds.
+func get_item_at_position(x : int, y : int = 0) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[x][y]
 

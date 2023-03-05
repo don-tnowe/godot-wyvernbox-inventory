@@ -106,18 +106,15 @@ func move_item_to_pos(item_stack : ItemStack, pos : Vector2):
 	if item_stack.inventory == self:
 		_clear_stack_cells(item_stack)
 		remove_item(item_stack)
-		item_stack.position_in_inventory = pos
-		_add_to_items_array(item_stack)
 
 	else:
 		# If from another inv, remove it from there and add to here
 		if item_stack.inventory != null:
 			item_stack.inventory.remove_item(item_stack)
 
-		item_stack.position_in_inventory = pos
-		_add_to_items_array(item_stack)
-	
+	item_stack.position_in_inventory = pos
 	_fill_stack_cells(item_stack)
+	_add_to_items_array(item_stack)
 	emit_signal("item_stack_changed", item_stack, 0)
 
 # Tries to place [code]item_stack[/code] into a cell with position [code]pos[/code].
@@ -137,8 +134,8 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 	return Vector2(-1, -1)
 
-# Returns the [ItemStack] in cell [code](x, y)[/code]; [code]null[/code] if cell empty or out of bounds.
-func get_item_at_position(x : int, y : int) -> ItemStack:
+# Returns the [ItemStack] in cell [code]x[/code]; returns [code]null[/code] if cell empty or out of bounds.
+func get_item_at_position(x : int, y : int = 0) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[y * width + x]
 

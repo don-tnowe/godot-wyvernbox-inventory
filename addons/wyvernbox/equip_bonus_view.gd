@@ -10,7 +10,7 @@ func show_bonus(bonus_res : Resource, label : String, label_color : Color = Colo
   shown_res = bonus_res
   show()
   $"Back".texture = bonus_res.texture_back if background == null else background
-  $"Icon".texture = bonus_res.icon
+  $"Icon".texture = bonus_res.texture
   $"Value".text = label
   $"Value".self_modulate = label_color
 

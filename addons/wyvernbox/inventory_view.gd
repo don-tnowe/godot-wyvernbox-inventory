@@ -135,7 +135,6 @@ func _set_inventory(v):
 	for x in inventory.items:
 		_on_item_stack_added(x)
 
-	last_autosave_sec = OS.get_ticks_msec() * 0.001
 	_regenerate_view()
 
 

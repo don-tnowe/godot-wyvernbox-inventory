@@ -51,7 +51,6 @@ func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], in
 
 	if results[0] == null:
 		assert(input_stacks.size() > 0, "Generator with blank Result received no Inputs!\n\nPerhaps you called consume_inputs() without passing its return value to get_items()?")
-		assert(input_types.size() > 0, "Generator with blank Result received no Input Types!\n\nSome Generators need a list of input types to get the First to modify it.")
 
 	var item_index = weighted_random(weights, rng) if results.size() > 0 else 0
 	var item = results[item_index]

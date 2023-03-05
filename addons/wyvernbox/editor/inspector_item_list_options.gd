@@ -42,7 +42,7 @@ func _on_id_selected(id : int):
 
 			list_node.columns = columns
 			list_node._clear_items()
-			list_node._init_items(list_node.columns_are_int, [])
+			list_node._init_items(list_node.columns_are_int)
 			for k in list_node.columns:
 				list_node.emit_changed(k, list_node.columns[k], "", true)
 
