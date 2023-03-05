@@ -15,10 +15,22 @@ func _ready():
 func update_stack(item_stack, unit_size, show_background = true):
 	stack = item_stack
 	if item_stack == null: return
+
 	$"Crop/Texture".texture = item_stack.item_type.texture
+	var custom_tex = item_stack.extra_properties.get("custom_texture", null)
+	if custom_tex is Dictionary:
+		var img = Image.new()
+		img.data = custom_tex
+		var tex = ImageTexture.new()
+		tex.create_from_image(img, 0)
+		$"Crop/Texture".texture = tex
+
+	elif custom_tex is String:
+		$"Crop/Texture".texture = ResourceLoader.load(custom_tex)
+
 	$"Crop/Texture".rect_scale = Vector2.ONE * item_stack.item_type.texture_scale
 	rect_size = unit_size * item_stack.item_type.get_size_in_inventory()
-	
+
 	$"Count".text = str(item_stack.count)
 	$"Count".visible = item_stack.count != 1
 	$"Rarity".visible = show_background

@@ -118,6 +118,23 @@ func display_custom(mouseover_node : Control, title : String, bbcode_description
 	last_func_args = [mouseover_node, title, bbcode_description]
 	call_deferred("_update_rect", mouseover_node)
 
+# Custom display of any data.
+# [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
+# [code]tooltip_property[/code] is an [InventoryTooltipProperty] that will display the custom data.
+# [code]data[/code] will be passed in [code]tooltip_property[/code]'s [method InventoryTooltipProperty._display] method.
+func display_custom_data(mouseover_node : Control, title : String, tooltip_property : Reference, data = null):
+	display_empty()
+	$"%Title".text = title
+	tooltip_property.tooltip = self
+	tooltip_property._tooltip_last_label = $"%Desc"
+	tooltip_property._display(data)
+
+	_update_rect(mouseover_node)
+	last_func = funcref(self, "display_custom_data")
+	last_func_args = [mouseover_node, title, tooltip_property, data]
+	call_deferred("_update_rect", mouseover_node)
+
+
 # Shows the tooltip again after hidden, with the same contents.
 func display_last():
 	if last_func != null:

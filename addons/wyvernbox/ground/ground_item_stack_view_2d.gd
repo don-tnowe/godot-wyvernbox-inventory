@@ -106,6 +106,17 @@ func _update_stack():
 	$"Label/Label".item_stack = item_stack
 	$"VisItem/Glow".modulate = item_extra.get("back_color", Color.gray)
 	$"VisItem/Icon".texture = item_type.texture
+	var custom_tex = item_stack.extra_properties.get("custom_texture", null)
+	if custom_tex is Dictionary:
+		var img = Image.new()
+		img.data = custom_tex
+		var tex = ImageTexture.new()
+		tex.create_from_image(img, 0)
+		$"VisItem/Icon".texture = tex
+
+	elif custom_tex is String:
+		$"VisItem/Icon".texture = ResourceLoader.load(custom_tex)
+
 
 # Tries to add item into [code]into_inventory[/code], freeing this node on full success.
 func try_pickup(into_inventory):
