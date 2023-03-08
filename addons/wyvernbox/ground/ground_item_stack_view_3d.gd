@@ -88,7 +88,7 @@ func _update_stack():
 
 	if !is_inside_tree(): yield(self, "ready")
 	get_node(display_mesh).mesh = item_type.mesh
-	get_node(display_icon).texture = item_type.texture if item_type.mesh == null else null
+	item_stack.display_texture(get_node(display_icon))
 
 	for x in display_colorable:
 		get_node(x).modulate = item_extra.get("back_color", Color.gray)

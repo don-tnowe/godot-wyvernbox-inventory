@@ -100,6 +100,65 @@ static func get_stack_overflow_if_added(count, added, maxcount) -> int:
 static func get_stack_delta_if_added(count, added, maxcount) -> int:
 	return int(min(maxcount - count, added))
 
+# Display texture on `node`, or its siblings if item has multiple layers. Nodes are created if needed.
+# Texture is shown based on [member item_type], but before that, [member extra_properties] is checked.
+# If [code]"custom_texture"[/code] is a [String] or [Texture], loads it.
+# If [code]"custom_texture"[/code] is a [Dictionary], tries to load it as an image. See [member Image.data].
+# If [code]"custom_texture"[/code] is an [Array], loads each item in a separate node. Nodes are created as needed.
+# [code]"custom_colors"[/code] is an array defining color of each layer.
+func display_texture(node : Node):
+	for x in node.get_parent().get_children():
+		x.texture = null
+		x.modulate = Color.white
+
+	node.texture = item_type.texture
+	_display_texture_internal(
+		node,
+		extra_properties.get("custom_texture", null),
+		extra_properties.get("texture_colors", []),
+		(Vector3.ONE if node is Spatial else Vector2.ONE) * item_type.texture_scale
+	)
+
+
+func _display_texture_internal(node : Node, data_or_paths, colors : Array = [], scale = Vector2.ONE, index : int = 0):
+	if colors.size() > index:
+		node.self_modulate = colors[index]
+
+	if node is Control: node.rect_scale = scale
+	else: node.scale = scale
+
+	if data_or_paths is Array:
+		var count = data_or_paths.size() if data_or_paths is Array else 1
+		var icon_parent = node.get_parent()
+		var original = node
+		for i in data_or_paths.size():
+			if icon_parent.get_child_count() > i:
+				node = original.duplicate()
+				icon_parent.add_child(node)
+
+			else:
+				node = icon_parent.get_child(i)
+
+			_display_texture_internal(node, data_or_paths[i], colors, scale, i)
+
+		return
+
+	if data_or_paths is Dictionary:
+		var img = Image.new()
+		img.data = data_or_paths
+		var tex = ImageTexture.new()
+		tex.create_from_image(img, 0)
+		node.texture = tex
+		return
+
+	if data_or_paths is String:
+		node.texture = load(data_or_paths)
+		return
+
+	if data_or_paths is Texture:
+		node.texture = data_or_paths
+		return
+
 # Returns [code]true[/code] if dictionaries are equal.
 static func extras_equal(a : Dictionary, b : Dictionary) -> bool:
 	if a.size() != b.size(): return false

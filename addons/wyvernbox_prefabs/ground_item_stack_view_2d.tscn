@@ -150,7 +150,7 @@ tracks/8/keys = {
 "values": [ Color( 0.745098, 0.745098, 0.745098, 1 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("VisItem/Icon:visible")
+tracks/9/path = NodePath("VisItem/Icons/Icon:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -263,7 +263,7 @@ tracks/7/keys = {
 "values": [ 1.0, 0.3, 0.6, 0.0, 0.0, 1.0 ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("VisItem/Icon:visible")
+tracks/8/path = NodePath("VisItem/Icons/Icon:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -304,7 +304,9 @@ rotation = 1.57079
 scale = Vector2( 0.25, 0.25 )
 texture = SubResource( 6 )
 
-[node name="Icon" type="Sprite" parent="VisItem"]
+[node name="Icons" type="Node2D" parent="VisItem"]
+
+[node name="Icon" type="Sprite" parent="VisItem/Icons"]
 self_modulate = Color( 1, 1, 1, 0.752941 )
 scale = Vector2( 0.75, 0.75 )
 texture = SubResource( 11 )
