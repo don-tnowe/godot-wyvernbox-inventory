@@ -5,8 +5,9 @@ extends Control
 enum InteractionFlags {
 	CAN_TAKE = 1 << 0,  # Player can take items from here.
 	VENDOR = 1 << 1,  # The player can only take items if CAN_TAKE_AUTO inventories contain items from the item's price extra property. When taken, items will be consumed.
-	CAN_PLACE = 1 << 2, # Player can place items here.
-	CAN_TAKE_AUTO = 1 << 3, # VENDOR inventories can take from this inventory, and ItemConversion.get_takeable_inventories filters out inventories wihout this flag.
+	CAN_PLACE = 1 << 2,  # Player can place items here.
+	CAN_TAKE_AUTO = 1 << 3,  # VENDOR inventories can take from this inventory, and ItemConversion.get_takeable_inventories filters out inventories wihout this flag.
+	CAN_QUICK_TRANSFER_HERE = 1 << 4,  # If CAN_PLACE, can be quick-transferred into via Shift-click.
 }
 
 signal item_stack_added(item_stack)
@@ -37,7 +38,7 @@ export var grid_background : NodePath
 export var show_backgrounds := true
 
 # The [code]InteractionFlags[/code] of this inventory.
-export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 8
+export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 16
 
 # For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
 export var auto_take_priority := 0
@@ -186,7 +187,10 @@ func _regenerate_view():
 # Returns [code](-1, -1)[/code] if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	if inventory is GridInventory:
-		var topleft = get_node(grid_background).rect_global_position
+		var topleft = rect_global_position
+		if has_node(grid_background):
+			topleft = get_node(grid_background).rect_global_position
+
 		return (Vector2(
 			(pos.x - topleft.x) / cell_size.x,
 			(pos.y - topleft.y) / cell_size.y
@@ -332,7 +336,7 @@ func _try_buy(stack : ItemStack):
 	for k in price.keys():
 		# Stored inside items as paths. When deducting, must use objects
 		k_loaded = load(k)
-		price[k_loaded] = price[k]
+		price[k_loaded] = price[k] * stack.count
 		price.erase(k)
 
 	for x in inventories:
@@ -352,6 +356,7 @@ func _try_buy(stack : ItemStack):
 
 	for x in inventories:
 		if price.size() == 0: break
+		if x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO == 0: continue
 		x.inventory.consume_items(price, false, items_to_check)
 
 	return true
@@ -372,67 +377,62 @@ func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	return inventory.try_place_stackv(stack, pos)
 
 
-func _quick_transfer_anywhere(stack : ItemStack, skip_inventories : int = 0):
+func _quick_transfer_anywhere(stack : ItemStack):
 	if (interaction_mode & InteractionFlags.CAN_TAKE) == 0 || !_try_buy(stack):
 		emit_signal("grab_attempted", stack, false)
 		return
 
 	var original_pos = stack.position_in_inventory
-	var target = _find_quick_transfer_target(stack, skip_inventories)
-	if target == null: return
-	
+	var targets = _get_quick_transfer_targets(stack.extra_properties.has("price"))
+	if targets.size() == 0: return
+
 	if stack.count > stack.item_type.max_stack_count:
 		inventory.add_items_to_stack(stack, -stack.item_type.max_stack_count)
 		stack = stack.duplicate_with_count(stack.item_type.max_stack_count)
-	
+
 	else:
 		emit_signal("grab_attempted", stack, true)
 		inventory.remove_item(stack)
 
-	var grabbed_stack = target.inventory.try_quick_transfer(stack)
-	if grabbed_stack == null:
+	var returned_stack
+	for x in targets:
+		returned_stack = x.inventory.try_quick_transfer(stack)
 		# No item returned - slot empty.
-		return
-		
-	if inventory.can_place_item(grabbed_stack, original_pos):
-		# If the item was returned, seek another place.
-		if grabbed_stack == stack:
-			# DON'T FORGET: item was removed, so put it back. (remember the "work" in "workaround")
-			inventory.try_place_stackv(stack, original_pos)
-			_quick_transfer_anywhere(stack, skip_inventories + 1)
-			return
-		
-		# If a different item returned, replace original.
-		inventory.try_place_stackv(grabbed_stack, original_pos)
+		if returned_stack == null: break
+		# Same stack returned, not all items delivered.
+		if returned_stack == stack: continue
+		# Returned something different: put it at the transfered item's place.
+		if returned_stack != null: break
 
-	else:
-		# Just put anywhere, if can...
-		if inventory.try_add_item(grabbed_stack) != 0:
+	if returned_stack != null:
+		# Went through all destinations, still item in hand. Place it under cursor first.
+		returned_stack = inventory.try_place_stackv(returned_stack, original_pos)
+		# No? Just put anywhere, if can...
+		if returned_stack != null && inventory.try_add_item(returned_stack) != 0:
 			return
-		# If can't, put it back!
-		if inventory.try_add_item(grabbed_stack) != 0:
-			return
-		# If can't put back, just drop it.
-		get_tree().call_group("grabbed_item", "drop_on_ground", grabbed_stack)
+
+		# If can't, just drop it.
+		else:
+			get_tree().call_group("grabbed_item", "drop_on_ground", returned_stack)
+
+		emit_signal("grab_attempted", stack, true)
 
 
-func _find_quick_transfer_target(stack, skip_inventories_left) -> InventoryView:
+func _get_quick_transfer_targets(has_price) -> Array:
+	var result := []
 	for x in get_tree().get_nodes_in_group("inventory_view"):
 		if (
 			x == self
 			|| !x.is_visible_in_tree()
-			|| (x.interaction_mode & InteractionFlags.CAN_PLACE == 0)
-			|| (x.interaction_mode & InteractionFlags.VENDOR != 0 && !stack.extra_properties.has("price"))  # Stop using merchants as storage!!!
+			|| (x.interaction_mode & InteractionFlags.CAN_PLACE) == 0
+			|| (x.interaction_mode & InteractionFlags.CAN_QUICK_TRANSFER_HERE) == 0
+			|| (x.interaction_mode & InteractionFlags.VENDOR != 0 && !has_price)  # Stop using merchants as storage!!!
 		):
 			continue
-			
-		if skip_inventories_left > 0:
-			skip_inventories_left -= 1
-			continue
 
-		return x
+		result.append(x)
 
-	return null
+	return result
 	
 
 func _on_item_stack_mouse_entered(stack_index : int):
