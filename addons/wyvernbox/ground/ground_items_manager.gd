@@ -93,7 +93,6 @@ func to_array():
 func _align_labels():
 	var nodes = get_children()
 	if nodes.size() == 0: return
-
 	if !Input.is_action_pressed("inventory_less"):
 		for x in nodes:
 			x.set_label_visible(false)

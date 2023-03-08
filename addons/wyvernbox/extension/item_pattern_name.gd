@@ -12,6 +12,7 @@ func _init(name_to_search, items := [], efficiency := []).(items, efficiency):
 # Returns [code]true[/code] if [code]item_stack[/code]s full name contains [code]name_to_search[/code], case insensitive.
 # Note: This pattern does NOT tokenize strings (that is, a "Wyvernite Shard" item will not be matched by query of "Wy Shar")
 func matches(item_stack : ItemStack) -> bool:
+	if name_to_search == "": return true
 	if !.matches(item_stack):
 		return false
 

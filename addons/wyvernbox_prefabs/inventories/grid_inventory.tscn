@@ -32,9 +32,6 @@ rect_min_size = Vector2( 168, 112 )
 size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
 inventory = SubResource( 7 )
 item_scene = ExtResource( 3 )
 grid_background = NodePath("BG")

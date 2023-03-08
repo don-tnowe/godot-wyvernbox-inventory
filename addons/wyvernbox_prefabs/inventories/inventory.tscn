@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/wyvernbox/inventories/inventory.gd" type="Script" id=4]
 
 [sub_resource type="Resource" id=1]
+resource_local_to_scene = true
 resource_name = "Inventory"
 script = ExtResource( 4 )
 width = 32
