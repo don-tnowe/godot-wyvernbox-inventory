@@ -1,16 +1,17 @@
 [gd_scene load_steps=8 format=3 uid="uid://cwwnfgekeptfo"]
 
-[ext_resource type="PackedScene" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="3"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/restricted_inventory.gd" id="4"]
 
 [sub_resource type="Resource" id="3"]
+resource_local_to_scene = true
 resource_name = "RestrictedInventory"
 script = ExtResource("4")
 allow_rotation = true
-restricted_to_types = [32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304]
-width = 8
+restricted_to_types = Array[int]([32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 4194304, 8388608])
+width = 10
 
 [sub_resource type="Gradient" id="2"]
 
@@ -27,6 +28,7 @@ anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -320.0
 offset_right = -320.0
+grow_horizontal = 2
 script = ExtResource("3")
 inventory = SubResource("3")
 item_scene = ExtResource("2")
@@ -37,80 +39,120 @@ mouse_filter = 2
 
 [node name="Hand1" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -45.0
 offset_top = 16.0
 offset_right = -19.0
 offset_bottom = 66.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Hand2" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 19.0
 offset_top = 16.0
 offset_right = 45.0
 offset_bottom = 66.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Helm" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -13.0
 offset_top = 13.0
 offset_right = 13.0
 offset_bottom = 39.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Chest" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -13.0
 offset_top = 61.0
 offset_right = 13.0
 offset_bottom = 99.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Belt" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -13.0
 offset_top = 105.0
 offset_right = 13.0
 offset_bottom = 119.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Hands" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -45.0
 offset_top = 90.0
 offset_right = -19.0
 offset_bottom = 116.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Feet" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 19.0
 offset_top = 90.0
 offset_right = 45.0
 offset_bottom = 116.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Ring1" parent="Cells" instance=ExtResource("1")]
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -39.0
 offset_top = 71.0
 offset_right = -25.0
 offset_bottom = 85.0
 size_flags_horizontal = 3
 texture = SubResource("1")
-expand_mode = 1
+
+[node name="Ring2" parent="Cells" instance=ExtResource("1")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 25.0
+offset_top = 71.0
+offset_right = 39.0
+offset_bottom = 85.0
+size_flags_horizontal = 3
+texture = SubResource("1")
+
+[node name="Neck" parent="Cells" instance=ExtResource("1")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -7.0
+offset_top = 43.0
+offset_right = 7.0
+offset_bottom = 57.0
+size_flags_horizontal = 3
+texture = SubResource("1")

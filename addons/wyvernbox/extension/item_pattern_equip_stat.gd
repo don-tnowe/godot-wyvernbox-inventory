@@ -11,10 +11,12 @@ extends ItemPattern
 @export var ignore_min_requirement := true
 
 
-func _init(items := [], efficiency := [], bonuses_required = [], bonuses_min = []):
+func _init(items := [], efficiency := [], required = [], minimum = []):
 	super(items, efficiency)
-	self.bonuses_required = bonuses_required
-	self.bonuses_min = bonuses_min
+	bonuses_required = []
+	for x in required: bonuses_required.append(x)
+	bonuses_min = []
+	for x in minimum: bonuses_min.append(x)
 	ignore_min_requirement = bonuses_min.size() == 0
 
 

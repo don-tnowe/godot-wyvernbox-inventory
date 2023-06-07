@@ -142,7 +142,7 @@ func _put_up_for_sale(stack : ItemStack, inventory : Inventory, stash_index : in
 
 
 func _apply_price_markup(stack : ItemStack):
-	if !stack.extra_properties.has("price"):
+	if !stack.extra_properties.has(&"price"):
 		return
 	
 	var price_dict = stack.extra_properties["price"]
@@ -163,18 +163,18 @@ func _multiply_price_by_count(stack : ItemStack, reverse : bool = false):
 
 func _remove_from_sale(stack : ItemStack):
 	var props = stack.extra_properties
-	if props.has("price"):
+	if props.has(&"price"):
 		props["price"] = props.get(
 			"real_price", props["price"]
 		)
-		props.erase("real_price")
+		props.erase(&"real_price")
 
 	if props["seller_stash_index"] == -1:
 		_multiply_price_by_count(stack, true)
 
-	props.erase("for_sale")
-	props.erase("seller_stash_index")
-	props.erase("left_in_stock")
+	props.erase(&"for_sale")
+	props.erase(&"seller_stash_index")
+	props.erase(&"left_in_stock")
 
 
 func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
@@ -183,7 +183,7 @@ func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
 		_restock_item(item_stack, inventory)
 		_remove_from_sale(item_stack)
 		if remove_price_on_buy:
-			item_stack.extra_properties.erase("price")
+			item_stack.extra_properties.erase(&"price")
 		
 		item_given.emit(item_stack)
 
@@ -218,12 +218,12 @@ func _restock_item(item_stack : ItemStack, inventory : Inventory):
 
 
 func _on_Inventory_item_stack_added(item_stack : ItemStack):
-	if item_stack.extra_properties.has("for_sale"):
+	if item_stack.extra_properties.has(&"for_sale"):
 		# Those are mine! Why would I give you money for MY items?!?!
 		return
 	
 	item_received.emit(item_stack)
-	if item_stack.extra_properties.has("price") && has_node(sell_reward_into_inventory):
+	if item_stack.extra_properties.has(&"price") && has_node(sell_reward_into_inventory):
 		var inventory = get_node(sell_reward_into_inventory).inventory
 		var reward = item_stack.extra_properties["price"]
 		for k in reward:

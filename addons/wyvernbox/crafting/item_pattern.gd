@@ -9,10 +9,11 @@ extends ItemLike
 @export var texture : Texture2D
 
 ## The ItemTypes or ItemPatterns this pattern matches.
-@export var items = []: set = _set_items
+@export var items : Array[ItemLike] = []: set = _set_items
+
 ## How many items in an ItemConversion each item or pattern contributes.
 ## Higher values means you would need less of an item.
-@export var efficiency = []: set = _set_efficiency
+@export var efficiency : Array[float] = []: set = _set_efficiency
 
 
 func _set_items(v):
@@ -30,9 +31,11 @@ func _update_sizes(new_size):
 	items.resize(max(new_size, 1))
 
 
-func _init(items := [], efficiency := []):
-	self.efficiency = efficiency
-	self.items = items
+func _init(items_ := [], efficiency_ := []):
+	efficiency = []
+	for x in efficiency_: efficiency.append(x)
+	items = []
+	for x in items_: items.append(x)
 	if efficiency.size() == 0:
 		efficiency.resize(items.size())
 		efficiency.fill(1.0)

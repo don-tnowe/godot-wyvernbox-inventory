@@ -17,5 +17,5 @@ region = Rect2(36, 36, 12, 12)
 script = ExtResource("1")
 name = ""
 texture = SubResource("1")
-items = [ExtResource("4"), ExtResource("6"), ExtResource("5"), ExtResource("9"), ExtResource("7"), ExtResource("8")]
-efficiency = [0.1, 0.05, 0.1, 0.2, 0.02, 0.05]
+items = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("4"), ExtResource("6"), ExtResource("5"), ExtResource("9"), ExtResource("7"), ExtResource("8")])
+efficiency = Array[float]([0.1, 0.05, 0.1, 0.2, 0.02, 0.05])

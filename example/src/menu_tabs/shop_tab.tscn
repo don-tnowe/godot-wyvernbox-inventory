@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cadiwvwbmiq33"]
+[gd_scene load_steps=21 format=3 uid="uid://t1f7781n680v"]
 
 [ext_resource type="Resource" uid="uid://ddeg8trd3hwno" path="res://example/wyvernbox/item_generators/enchant_item.tres" id="1"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_kfwxf"]
@@ -89,17 +89,17 @@ mouse_filter = 2
 
 [node name="Label" type="Label" parent="Control"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -238.0
-offset_top = 70.0
-offset_right = 240.0
-offset_bottom = 87.0
+anchor_bottom = 0.5
+offset_left = -239.0
+offset_top = 66.0
+offset_right = 239.0
+offset_bottom = 83.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("20")
 text = "shopkeeper_hello"
 horizontal_alignment = 1
@@ -107,11 +107,18 @@ vertical_alignment = 1
 script = ExtResource("32")
 
 [node name="Button" type="Button" parent="Control"]
-layout_mode = 0
-offset_left = 88.0
-offset_top = 43.0
-offset_right = 106.0
-offset_bottom = 65.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 87.0
+offset_top = 42.0
+offset_right = 105.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "?"
 
 [node name="Popup" type="AcceptDialog" parent="Control"]

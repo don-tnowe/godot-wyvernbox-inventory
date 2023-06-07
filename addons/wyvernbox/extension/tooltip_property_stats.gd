@@ -3,13 +3,13 @@ extends InventoryTooltipProperty
 
 
 func _display(item_stack):
-	if item_stack.extra_properties.has("stats"):
+	if item_stack.extra_properties.has(&"stats"):
 		add_bbcode("\n")
 		_show_equip_stats(item_stack)
 
 
 func _show_equip_stats(item_stack : ItemStack):
-	var stats = item_stack.extra_properties["stats"]
+	var stats = item_stack.extra_properties[&"stats"]
 	var hex_bonus = tooltip.color_bonus.to_html(false)
 	var hex_malus = tooltip.color_malus.to_html(false)
 	var hex_neutral = tooltip.color_neutral.to_html(false)

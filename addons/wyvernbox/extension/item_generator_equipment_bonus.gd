@@ -52,19 +52,19 @@ func add_affix(item, rng : RandomNumberGenerator):
 	var random_affix = possible_affixes[weighted_random(affix_weights, rng)]
 	var random_level = int(rng.randf_range(affix_level_range.x, affix_level_range.y))
 
-	if !extras.has(&"stat_affixes"):
-		extras[&"stat_affixes"] = {}
+	if !extras.has("stat_affixes"):
+		extras["stat_affixes"] = {}
 
 	if !extras.has(&"stats"):
-		extras[&"stats"] = {}
+		extras["stats"] = {}
 
 	if !extras.has(&"price"):
-		extras[&"price"] = {}
+		extras["price"] = {}
 
 	# Remember: don't store objects in item properties. Will be easier to serialize.
-	extras[&"stat_affixes"][random_affix.resource_path] = random_level
-	extras[&"price"][price_increase_item.resource_path] = (
-		extras[&"price"].get(price_increase_item.resource_path, 0)
+	extras["stat_affixes"][random_affix.resource_path] = random_level
+	extras["price"][price_increase_item.resource_path] = (
+		extras["price"].get(price_increase_item.resource_path, 0)
 		+ random_level * price_increase_per_level
 	)
 	random_affix.apply_to(extras[&"stats"], random_level, 1.0)

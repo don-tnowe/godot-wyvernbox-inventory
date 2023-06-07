@@ -25,7 +25,7 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 ## Tries to place [code]item_stack[/code] into cell [code]pos[/code].
 ## Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]item_stack[/code] if it could not be placed.
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
-	if !restricted_to_types[pos.x].matches(item_stack):
+	if restricted_to_types[pos.x] == null || !restricted_to_types[pos.x].matches(item_stack):
 		return item_stack
 
 	return super.try_place_stackv(item_stack, pos)

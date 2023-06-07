@@ -87,7 +87,7 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 
 ## Displays the name and description of an [EquipBonus].
 ## [code]node[/code] is the [Control] this tooltip must be placed next to.
-func display_bonus(node : Control, bonus_res : Resource):
+func display_bonus(node : Control, bonus_res : EquipBonus):
 	var desc = tr(bonus_res.description)
 	if desc == bonus_res.description:
 		desc = ""
@@ -131,8 +131,13 @@ func display_custom_data(mouseover_node : Control, title : String, tooltip_prope
 ## Shows the tooltip again after hidden, with the same contents.
 func display_last():
 	if last_func != null:
-		# Normal call breaks if a parameter is null.
-		# Object.callv() breaks because tries to convert Object to Object (???)
+		# Breaks if a parameter is null.
+    # last_func.call()
+
+		# Breaks because tries to convert Object to Object (???)
+    # callv(last_func.get_method, last_func.get_bound_arguments())
+
+    # I couldn't reproduce it in a new project, so I can't report it and this has to stay.
 		Callable(self, last_func.get_method()).callv(last_func.get_bound_arguments())
 
 ## Returns the visual representation of an [InputEvent] of the specified [code]action[/code].

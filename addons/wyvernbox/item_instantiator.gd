@@ -3,7 +3,7 @@ class_name ItemInstantiator
 extends Resource
 
 ## The [ItemTypes] or [ItemGenerators] to instantiate.
-@export var items_to_add : Array[Resource]
+@export var items_to_add : Array[ItemLike]
 
 ## The minimum and maximum repeat counts of each item instantiated.
 @export var item_repeat_ranges : Array[Vector2]

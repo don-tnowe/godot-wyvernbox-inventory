@@ -13,7 +13,7 @@ signal item_clicked(item_node)
 @export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
 
 ## Items that don't match these ItemPatterns or ItemTypes will be dimmed out.
-@export var view_filter_patterns : Array[ItemLike]:
+@export var view_filter_patterns : Array:
 	set = _set_view_filters
 
 ## Defines min and max distance items jump with unset [code]throw_vector[/code].

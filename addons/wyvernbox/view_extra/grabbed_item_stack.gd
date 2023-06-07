@@ -28,14 +28,12 @@ var drop_surface_node : Control
 func _ready():
 	var new_node = Control.new()
 	new_node.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-	new_node.connect("gui_input", Callable(self, "_drop_surface_input"))
+	new_node.gui_input.connect(_drop_surface_input)
 	new_node.name = "DropSurface"
 	new_node.hide()
 	await get_tree().process_frame
 	get_parent().add_child(new_node)
-	for x in get_parent().get_children():
-		if x != new_node:
-			x.get_parent().move_child(x, 0)
+	get_parent().move_child(new_node, 0)
 
 	drop_surface_node = new_node
 	connect("visibility_changed", Callable(self, "_on_visibility_changed"))
@@ -119,8 +117,8 @@ func _any_inventory_try_drop_stack(stack):
 	var found_stack : ItemStack
 	var invs = get_tree().get_nodes_in_group(&"inventory_view")
 	var invs_reversed = []
-	## Nodes initialized later are placed above (well, if nothing gets created after the initial scene load)
-	## So reversing the array has a higher chance of a correct order
+	# Nodes initialized later are placed above (well, if nothing gets created after the initial scene load)
+	# So reversing the array has a higher chance of a correct order
 	invs_reversed.resize(invs.size())
 	for i in invs.size():
 		invs_reversed[i] = invs[invs.size() - 1 - i]

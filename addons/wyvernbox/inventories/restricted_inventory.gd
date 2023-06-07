@@ -7,7 +7,7 @@ extends Inventory
 @export var allow_rotation := true
 
 ## Each cell's [member ItemType.slot_flags]. Items that don't match won't fit in.
-@export var restricted_to_types := [] ## (Array, ItemType.SlotFlags)
+@export var restricted_to_types : Array[ItemType.SlotFlags] = []
 
 
 ## Returns the first cell the [code]item_stack[/code] can be placed without stacking.

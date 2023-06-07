@@ -21,9 +21,9 @@ func _ready():
 		new_btn.text = item_conversions[i].name
 		new_btn.icon = item_conversions[i].output_types[0].texture
 		new_btn.expand_icon = true
-		new_btn.connect("mouse_entered", Callable(self, "_on_button_mouse_entered").bind(i))
-		new_btn.connect("mouse_exited", Callable(self, "_on_button_mouse_exited"))
-		new_btn.connect("pressed", Callable(self, "_on_button_pressed").bind(i))
+		new_btn.mouse_entered.connect(_on_button_mouse_entered.bind(i))
+		new_btn.mouse_exited.connect(_on_button_mouse_exited)
+		new_btn.pressed.connect(_on_button_pressed.bind(i))
 		recipe_list_node.add_child(new_btn)
 
 

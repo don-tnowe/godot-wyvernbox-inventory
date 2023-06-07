@@ -59,7 +59,7 @@ func _update_stat_view():
 		if k in already_shown_stats:
 			continue
 		
-		other_list.append_bbcode(
+		other_list.append_text(
 			"[color=#858ffd]"
 			+ ("%.1f" % (stats.get(k, 0.0)))
 			+ "[/color] "

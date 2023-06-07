@@ -27,7 +27,7 @@ fill_from = Vector2(1, 1)
 [sub_resource type="Resource" id="22"]
 resource_name = "Drop Chaotically"
 script = ExtResource("13")
-items_to_add = Array[Resource]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
@@ -40,7 +40,7 @@ spread_angle_degrees = 0.0
 [sub_resource type="Resource" id="21"]
 resource_name = "Drop In Circle"
 script = ExtResource("13")
-items_to_add = Array[Resource]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
@@ -50,7 +50,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_qlic0"]
+[sub_resource type="Resource" id="Resource_2sg06"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("10")
@@ -60,7 +60,7 @@ width = 8
 [sub_resource type="Resource" id="10"]
 resource_name = "Random Equips"
 script = ExtResource("13")
-items_to_add = Array[Resource]([ExtResource("9"), ExtResource("8"), ExtResource("8"), ExtResource("7"), ExtResource("7"), ExtResource("7"), ExtResource("7")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("9"), ExtResource("8"), ExtResource("8"), ExtResource("7"), ExtResource("7"), ExtResource("7"), ExtResource("7")])
 item_repeat_ranges = Array[Vector2]([Vector2(8, 8), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100)])
 item_chances = Array[float]([100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0])
 repeat_post_chance = true
@@ -70,7 +70,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_moytt"]
+[sub_resource type="Resource" id="Resource_aonmk"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("10")
@@ -187,7 +187,7 @@ offset_left = -12.0
 offset_top = 71.0
 offset_right = 100.0
 offset_bottom = 183.0
-inventory = SubResource("Resource_qlic0")
+inventory = SubResource("Resource_2sg06")
 contents = SubResource("10")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
@@ -216,7 +216,7 @@ offset_left = 55.0
 offset_top = 78.0
 offset_right = 167.0
 offset_bottom = 246.0
-inventory = SubResource("Resource_moytt")
+inventory = SubResource("Resource_aonmk")
 contents = SubResource("10")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"

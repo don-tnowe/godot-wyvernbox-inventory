@@ -16,41 +16,47 @@ signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
 signal grab_attempted(item_stack, success)
 
-# The [Inventory] this node displays.
+## The [Inventory] this node displays.
 @export var inventory : Inventory:
 	set = _set_inventory
 
-# The [ItemInstantiator] that populates this inventory when first opened.
+## The [ItemInstantiator] that populates this inventory when first opened.
 @export var contents : ItemInstantiator
 
-# If [code]true[/code], opening the inventory will initialize [member contents] and set this to [code]false[/code].
+## If [code]true[/code], opening the inventory will initialize [member contents] and set this to [code]false[/code].
 @export var init_contents := true
 
-# A slot's size, in pixels.
+## A slot's size, in pixels.
 @export var cell_size := Vector2(14, 14): set = _set_cell_size
 
-# A scene with an [ItemStackView] in root, spawned to display items.
+## A scene with an [ItemStackView] in root, spawned to display items.
 @export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
 
-# For [GridInventory], the [Control] to be stretched to the view's size.
+## For [GridInventory], the [Control] to be stretched to the view's size.
 @export var grid_background : NodePath
 
 
-# Whether to show item's "back_color" extra property as a background behind it.
+## Whether to show item's "back_color" extra property as a background behind it.
 @export var show_backgrounds := true
 
-# The [code]InteractionFlags[/code] of this inventory.
-@export var interaction_mode := 1 | 4 | 16 # (InteractionFlags, FLAGS)
+## The [code]InteractionFlags[/code] of this inventory.
+@export_flags(
+"Can Take",
+"Vendor",
+"Can Place",
+"Can Take Auto",
+"Can Quick Transfer Here"
+	) var interaction_mode : = 1 | 4 | 16
 
-# For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
+## For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
 @export var auto_take_priority := 0
 
 
-# File path to autosave into.
-# Only supports "user://" paths.
+## File path to autosave into.
+## Only supports "user://" paths.
 @export var autosave_file_path := ""
 
-# Defines which events trigger autosave, if [member autosave_file_path] set.
+## Defines which events trigger autosave, if [member autosave_file_path] set.
 @export_enum(
 "LO // Manually through save_state() calls",
 "MID // On quit/scene change",
@@ -58,19 +64,19 @@ signal grab_attempted(item_stack, success)
 "Paranoic // On any item added/removed"
 	) var autosave_intensity := 2
 
-# Change to save more data when [method save_state] is called.
-# Gets changed on autoload, or call to [method load_state].
+## Change to save more data when [method save_state] is called.
+## Gets changed on autoload, or call to [method load_state].
 @export var save_extra_data : Dictionary
 
 
-# The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
+## The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
 @export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
 
-# Items that don't match these [ItemPattern]s or [ItemType]s will be dimmed out.
+## Items that don't match these [ItemPattern]s or [ItemType]s will be dimmed out.
 @export var view_filter_patterns : Array: set = _set_view_filter
 
 
-# The latest autosave time, in seconds since startup.
+## The latest autosave time, in seconds since startup.
 var last_autosave_sec := -1.0
 
 
@@ -84,11 +90,11 @@ func _ready():
 		_regenerate_view()
 		return
 
-	connect("visibility_changed", Callable(self, "_on_visibility_changed"))
+	visibility_changed.connect(_on_visibility_changed)
 	await get_tree().process_frame
 	load_state()
-	add_to_group("inventory_view")
-	add_to_group("view_filterable")
+	add_to_group(&"inventory_view")
+	add_to_group(&"view_filterable")
 
 
 func _exit_tree():
@@ -185,8 +191,8 @@ func _regenerate_view():
 			cell.owner = owner if owner != null else self
 
 
-# Returns the in-inventory position of the cell clicked from global [code]pos[/code].
-# Returns [code](-1, -1)[/code] if no cell found.
+## Returns the in-inventory position of the cell clicked from global [code]pos[/code].
+## Returns [code](-1, -1)[/code] if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	if inventory is GridInventory:
 		var topleft = global_position
@@ -326,13 +332,13 @@ func _grab_stack(stack_index : int):
 
 
 func _try_buy(stack : ItemStack):
-	if (interaction_mode & InteractionFlags.VENDOR) == 0 || !stack.extra_properties.has("price"):
+	if (interaction_mode & InteractionFlags.VENDOR) == 0 || !stack.extra_properties.has(&"price"):
 		return true
 	
-	var price = stack.extra_properties["price"].duplicate()
+	var price = stack.extra_properties[&"price"].duplicate()
 	var counts = {}
 	var inventories = get_tree().get_nodes_in_group(&"inventory_view")
-	inventories.sort_custom(Callable(self, &"_sort_inventories_priority"))
+	inventories.sort_custom(_compare_inventory_priority)
 
 	var k_loaded
 	for k in price.keys():
@@ -363,9 +369,9 @@ func _try_buy(stack : ItemStack):
 
 	return true
 
-# Tries to place [code]stack[/code] into a cell with position [code]pos[/code].
-# Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]stack[/code] if it could not be placed.
-# Note: to convert from global coords into cell position, use [method global_position_to_cell].
+## Tries to place [code]stack[/code] into a cell with position [code]pos[/code].
+## Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]stack[/code] if it could not be placed.
+## Note: to convert from global coords into cell position, use [method global_position_to_cell].
 func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 		return stack
@@ -459,7 +465,7 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 func _can_drop_data(position, data):
 	return true
 
-# Updates item visibility based on [member view_filter_patterns].
+## Updates item visibility based on [member view_filter_patterns].
 func apply_view_filters(stack_index : int = -1):
 	if stack_index == -1:
 		if view_filter_color == Color(1, 1, 1, 1):
@@ -479,11 +485,11 @@ func apply_view_filters(stack_index : int = -1):
 
 	_view_nodes[stack_index].modulate = Color(1, 1, 1, 1) if all_match else view_filter_color
 
-# Calls the [method Inventory.sort] method on the inventory.
+## Calls the [method Inventory.sort] method on the inventory.
 func sort_inventory():
 	inventory.sort()
 
-# Saves the inventory to disk into the specified file, or the one set in [member autosave_file_path].
+## Saves the inventory to disk into the specified file, or the one set in [member autosave_file_path].
 func save_state(filepath = ""):
 	if Engine.is_editor_hint(): return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
@@ -496,7 +502,7 @@ func save_state(filepath = ""):
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 
 
-# Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
+## Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
 func load_state(filepath = ""):
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001

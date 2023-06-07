@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=26 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="4"]
 [ext_resource type="Script" path="res://example/src/clear_all_inv_view_filters_button.gd" id="5"]
 [ext_resource type="PackedScene" uid="uid://dr5hmv204a1sj" path="res://example/src/menu_tabs/crafting_tab.tscn" id="6"]
-[ext_resource type="PackedScene" uid="uid://cadiwvwbmiq33" path="res://example/src/menu_tabs/shop_tab.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://t1f7781n680v" path="res://example/src/menu_tabs/shop_tab.tscn" id="7"]
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="8"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="9"]
 [ext_resource type="Script" path="res://example/src/inventory_menu.gd" id="11"]
@@ -31,7 +31,7 @@ region = Rect2(0, 12, 12, 12)
 atlas = ExtResource("13")
 region = Rect2(36, 36, 12, 12)
 
-[sub_resource type="Resource" id="Resource_hxlip"]
+[sub_resource type="Resource" id="Resource_lnyj8"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("14")
@@ -48,37 +48,28 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
 
-[sub_resource type="Resource" id="6"]
-resource_local_to_scene = true
-resource_name = "GridInventory"
+[sub_resource type="Resource" id="Resource_0k4mm"]
 script = ExtResource("14")
 height = 8
-width = 8
+width = 12
 
-[sub_resource type="Resource" id="7"]
-resource_local_to_scene = true
-resource_name = "GridInventory"
-script = ExtResource("14")
-height = 8
-width = 8
-
-[sub_resource type="Resource" id="Resource_3jp6n"]
+[sub_resource type="Resource" id="Resource_swq8u"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("14")
 height = 12
-width = 8
+width = 12
 
-[sub_resource type="Resource" id="Resource_tebfd"]
+[sub_resource type="Resource" id="Resource_g1bth"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("14")
 height = 4
-width = 8
+width = 12
 
 [sub_resource type="Resource" id="13"]
 script = ExtResource("16")
-items_to_add = Array[Resource]([ExtResource("8"), ExtResource("9"), ExtResource("12")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("8"), ExtResource("9"), ExtResource("12")])
 item_repeat_ranges = Array[Vector2]([Vector2(5, 100), Vector2(5, 100), Vector2(16, 16)])
 item_chances = Array[float]([100.0, 100.0, 100.0])
 repeat_post_chance = true
@@ -116,7 +107,8 @@ alignment = 1
 custom_minimum_size = Vector2(252, 252)
 layout_mode = 2
 size_flags_vertical = 1
-inventory = SubResource("Resource_hxlip")
+inventory = SubResource("Resource_lnyj8")
+interaction_mode = 29
 auto_take_priority = -32
 autosave_file_path = "items/hero/main.dat"
 
@@ -167,37 +159,9 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
-[node name="Inventory" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_equipment" index="0"]
-custom_minimum_size = Vector2(112, 112)
-inventory = SubResource("6")
-
-[node name="ShopManager" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_equipment" index="1"]
-sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
-
 [node name="Inventory" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_consumables" index="0"]
-inventory = SubResource("7")
-
-[node name="ShopManager" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_consumables" index="1"]
-sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
-
-[node name="Label" parent="CenterContainer/TabContainer/menu_shop/Control" index="0"]
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 114.0
-offset_bottom = 23.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="Button" parent="CenterContainer/TabContainer/menu_shop/Control" index="1"]
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 18.0
-offset_bottom = 20.0
+custom_minimum_size = Vector2(168, 112)
+inventory = SubResource("Resource_0k4mm")
 
 [node name="menu_stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
@@ -206,22 +170,23 @@ size_flags_horizontal = 6
 alignment = 1
 
 [node name="Inventory" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource("3")]
-custom_minimum_size = Vector2(112, 168)
+custom_minimum_size = Vector2(168, 168)
 layout_mode = 2
 size_flags_horizontal = 4
-inventory = SubResource("Resource_3jp6n")
+inventory = SubResource("Resource_swq8u")
 interaction_mode = 5
 autosave_file_path = "items/hero/stash1.dat"
 
 [node name="Label" type="Label" parent="CenterContainer/TabContainer/menu_stash"]
 layout_mode = 2
 text = "Random goodies:"
+horizontal_alignment = 1
 
 [node name="Income" parent="CenterContainer/TabContainer/menu_stash" instance=ExtResource("3")]
-custom_minimum_size = Vector2(112, 56)
+custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
 size_flags_horizontal = 4
-inventory = SubResource("Resource_tebfd")
+inventory = SubResource("Resource_g1bth")
 contents = SubResource("13")
 interaction_mode = 5
 autosave_intensity = 0

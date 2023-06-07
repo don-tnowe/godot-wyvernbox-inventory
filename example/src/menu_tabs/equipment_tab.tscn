@@ -1,12 +1,12 @@
-[gd_scene load_steps=19 format=3 uid="uid://0r7o3wklblhy"]
+[gd_scene load_steps=18 format=3 uid="uid://0r7o3wklblhy"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://example/src/menu_tabs/equip_bonus_list.tscn" id="3"]
-[ext_resource type="Resource" uid="uid://duga6dcb1u8qe" path="res://example/wyvernbox/item_types/consumable/arrows.tres" id="4"]
+[ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="4_hpc6g"]
+[ext_resource type="Resource" uid="uid://duga6dcb1u8qe" path="res://example/wyvernbox/item_types/consumable/arrows.tres" id="4_yln8c"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="5"]
-[ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="6"]
-[ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="7"]
+[ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="5_8nmbe"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/restricted_inventory.gd" id="8"]
 [ext_resource type="PackedScene" uid="uid://cwwnfgekeptfo" path="res://addons/wyvernbox_prefabs/inventories/equipment_inventory.tscn" id="9"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="10"]
@@ -21,12 +21,20 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
 
+[sub_resource type="Resource" id="Resource_tgigy"]
+resource_local_to_scene = true
+resource_name = "RestrictedInventory"
+script = ExtResource("8")
+allow_rotation = true
+restricted_to_types = Array[int]([32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 4194304, 8388608])
+width = 10
+
 [sub_resource type="Resource" id="5"]
 resource_name = "CurrencyInventory"
 script = ExtResource("10")
-restricted_to_types = [ExtResource("4"), null, null, ExtResource("6"), ExtResource("7"), null, null, null]
-max_stack = 5000
-width = 8
+restricted_to_types = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("4_yln8c"), null, null, ExtResource("4_hpc6g"), ExtResource("5_8nmbe")])
+max_stack = 99999999
+width = 5
 
 [sub_resource type="Gradient" id="2"]
 
@@ -40,16 +48,8 @@ fill_to = Vector2(4.85, 0.5)
 resource_name = "RestrictedInventory"
 script = ExtResource("8")
 allow_rotation = true
-restricted_to_types = [16, 16, 16, 16, 16, 16, null, null]
-width = 8
-
-[sub_resource type="Gradient" id="Gradient_yhhkh"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_mgh6e"]
-gradient = SubResource("Gradient_yhhkh")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(4.85, 0.5)
+restricted_to_types = Array[int]([16, 16, 16, 16, 16, 16])
+width = 6
 
 [node name="Equip" type="VBoxContainer"]
 custom_minimum_size = Vector2(146, 260)
@@ -82,7 +82,7 @@ offset_left = 0.0
 offset_top = 6.0
 offset_right = 0.0
 offset_bottom = 6.0
-grow_horizontal = 2
+inventory = SubResource("Resource_tgigy")
 autosave_file_path = "items/hero/equip.dat"
 
 [node name="Money" type="Control" parent="Control"]
@@ -107,6 +107,8 @@ mouse_filter = 2
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_right = 26.0
 offset_bottom = 14.0
 size_flags_horizontal = 0
@@ -117,6 +119,8 @@ visible = false
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_top = 18.0
 offset_right = 14.0
 offset_bottom = 32.0
@@ -128,6 +132,8 @@ visible = false
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_top = 36.0
 offset_right = 14.0
 offset_bottom = 50.0
@@ -138,6 +144,8 @@ texture = SubResource("1")
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_top = 54.0
 offset_right = 30.0
 offset_bottom = 68.0
@@ -148,47 +156,13 @@ texture = SubResource("1")
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_top = 72.0
 offset_right = 30.0
 offset_bottom = 86.0
 size_flags_horizontal = 0
 texture = SubResource("1")
-
-[node name="@1@114307" type="TextureRect" parent="Control/Money/Cells" instance=ExtResource("2")]
-custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 26.0
-offset_bottom = 14.0
-size_flags_horizontal = 0
-mouse_filter = 2
-texture = SubResource("1")
-expand_mode = 1
-
-[node name="@1@114308" type="TextureRect" parent="Control/Money/Cells" instance=ExtResource("2")]
-custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 26.0
-offset_bottom = 14.0
-size_flags_horizontal = 0
-mouse_filter = 2
-texture = SubResource("1")
-expand_mode = 1
-
-[node name="@1@114309" type="TextureRect" parent="Control/Money/Cells" instance=ExtResource("2")]
-custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 26.0
-offset_bottom = 14.0
-size_flags_horizontal = 0
-mouse_filter = 2
-texture = SubResource("1")
-expand_mode = 1
 
 [node name="Potions" type="Control" parent="Control"]
 anchors_preset = 0
@@ -235,20 +209,6 @@ layout_mode = 2
 [node name="Cell6" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
-
-[node name="@Cell@114310" type="TextureRect" parent="Control/Potions/Cells" instance=ExtResource("2")]
-custom_minimum_size = Vector2(14, 26)
-layout_mode = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_mgh6e")
-expand_mode = 1
-
-[node name="@Cell@114311" type="TextureRect" parent="Control/Potions/Cells" instance=ExtResource("2")]
-custom_minimum_size = Vector2(14, 26)
-layout_mode = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_mgh6e")
-expand_mode = 1
 
 [node name="Labels" type="Control" parent="Control"]
 anchors_preset = 0

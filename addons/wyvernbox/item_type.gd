@@ -100,16 +100,27 @@ const EQUIPMENT_FLAGS := (
 ## The string representation of the type's [member default_properties].
 @export_multiline var default_properties_string : String:
 	set(v):
+		default_properties_string = v
+		if default_properties_converting: return
+		default_properties_converting = true
 		var converted = str_to_var(v)
 		if converted is Dictionary: default_properties = converted
-	get: return var_to_str(default_properties)
+		default_properties_converting = false
 
 ## The type's default property dictionary.
 ## For editing, [default_properties_string] or the Dictionary Inspector addon are recommended.
 ## Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses.
 ## [code]price[/code] is used for vendor prices, selling and buying.
 ## [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground.
-@export var default_properties : Dictionary
+@export var default_properties : Dictionary:
+	set(v):
+		default_properties = v
+		if default_properties_converting: return
+		default_properties_converting = true
+		default_properties_string = var_to_str(default_properties)
+		default_properties_converting = false
+
+var default_properties_converting := false
 
 
 ## Returns [member in_inventory_width] and [member in_inventory_height] as a [code]Vector2[/code].

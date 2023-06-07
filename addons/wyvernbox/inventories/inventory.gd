@@ -8,15 +8,17 @@ signal item_stack_changed(item_stack, count_delta)
 signal item_stack_removed(item_stack)
 signal loaded_from_dict(dict)
 
-## Inventory's horizontal cell count.
-## WARNING: setter does not work in subclasses - drag inventory back into slot to update. Under investigation.
+## Inventory's cell count. For grids, by horizontal axis.
 @export var width := 8:
 	set(v):
 		if v < 1: v = 1
 		width = v
 		_update_size()
+		emit_changed()
 		if &"restricted_to_types" in self:
-			self.restricted_to_types.resize(v)
+			var old_restricted = self.restricted_to_types.duplicate()
+			old_restricted.resize(v)
+			self.restricted_to_types = old_restricted
 
 ## The list of items in this inventory.
 ## Setting and editing may lead to unpredictable behaviour.

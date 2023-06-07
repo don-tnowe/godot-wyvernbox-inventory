@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dr5hmv204a1sj"]
+[gd_scene load_steps=21 format=3 uid="uid://dr5hmv204a1sj"]
 
 [ext_resource type="Script" path="res://example/src/menu_tabs/crafting_tab.gd" id="1"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_gtsdm"]
@@ -14,7 +14,7 @@
 [ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/forge_wand.tres" id="11"]
 [ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/brew_purple_potion.tres" id="12"]
 [ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/brew_red_potion.tres" id="13"]
-[ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="14"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="15_rhpox"]
 
 [sub_resource type="Gradient" id="4"]
 offsets = PackedFloat32Array(0, 0.66)
@@ -26,12 +26,20 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
 
-[sub_resource type="Resource" id="Resource_61i6t"]
+[sub_resource type="Resource" id="Resource_akw0o"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
-script = ExtResource("14")
+script = ExtResource("15_rhpox")
 height = 6
 width = 16
+
+[sub_resource type="Gradient" id="2"]
+
+[sub_resource type="GradientTexture2D" id="1"]
+gradient = SubResource("2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(4.85, 0.5)
 
 [node name="Crafting" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 240)
@@ -73,7 +81,16 @@ custom_minimum_size = Vector2(224, 84)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-inventory = SubResource("Resource_61i6t")
+inventory = SubResource("Resource_akw0o")
+interaction_mode = 29
+
+[node name="Cells" type="GridContainer" parent="VBoxContainer/Output"]
+layout_mode = 2
+columns = 8
+
+[node name="Cell" parent="VBoxContainer/Output/Cells" instance=ExtResource("5")]
+layout_mode = 2
+texture = SubResource("1")
 
 [node name="Control" type="Control" parent="VBoxContainer"]
 layout_mode = 2

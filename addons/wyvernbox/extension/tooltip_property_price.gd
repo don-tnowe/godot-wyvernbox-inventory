@@ -2,13 +2,13 @@ extends InventoryTooltipProperty
 
 
 func _display(item_stack):
-	if item_stack.extra_properties.has("price"):
+	if item_stack.extra_properties.has(&"price"):
 		_show_price(item_stack)
 
 
 func _show_price(item_stack):
-	var price = item_stack.extra_properties["price"]
-	var item_for_sale = item_stack.extra_properties.has("for_sale")
+	var price = item_stack.extra_properties[&"price"]
+	var item_for_sale = item_stack.extra_properties.has(&"for_sale")
 
 	var hex_malus = tooltip.color_malus.to_html(false)
 	var hex_neutral = tooltip.color_neutral.to_html(false)
@@ -21,8 +21,8 @@ func _show_price(item_stack):
 			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
 				x.inventory.count_all_items(owned_item_counts)
 
-		if item_stack.extra_properties.has("left_in_stock"):
-			add_bbcode(tr("item_tt_left_in_stock") % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties["left_in_stock"]]) + "\n\n")
+		if item_stack.extra_properties.has(&"left_in_stock"):
+			add_bbcode(tr("item_tt_left_in_stock") % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties[&"left_in_stock"]]) + "\n\n")
 
 	add_bbcode(tr("item_tt_price"))
 	var k_loaded  # Because for easier serialization, items are stored as paths
@@ -31,7 +31,7 @@ func _show_price(item_stack):
 		k_loaded = load(k)
 		add_bbcode(
 			"\n[color=#"
-			+ k_loaded.default_properties.get("back_color", Color.WHITE).to_html()
+			+ k_loaded.default_properties.get(&"back_color", Color.WHITE).to_html()
 			+ "]"
 			+ tr(k_loaded.name) + "[/color] x"
 			+ str(price[k] * multiplier)
