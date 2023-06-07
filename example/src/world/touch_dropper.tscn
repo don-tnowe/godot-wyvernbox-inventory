@@ -17,7 +17,7 @@ spread_cone_degrees = null
 spread_angle_degrees = null
 
 [sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 13.5, 10 )
+size = Vector2( 13.5, 10 )
 
 [node name="Loot" type="Area2D" groups=["touch_loot"]]
 script = ExtResource( 1 )
@@ -25,10 +25,10 @@ collide_with_group = "hero"
 loot_table = SubResource( 7 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
 
-[node name="Shape" type="CollisionShape2D" parent="."]
+[node name="Shape3D" type="CollisionShape2D" parent="."]
 shape = SubResource( 6 )

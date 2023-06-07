@@ -1,15 +1,15 @@
-tool
-class_name GridInventory, "res://addons/wyvernbox/icons/grid_inventory.png"
+@tool
+@icon("res://addons/wyvernbox/icons/grid_inventory.png")
+class_name GridInventory
 extends Inventory
 
-export var height := 1 setget _set_height
-
-
-func _set_height(v):
-	if v < 1: v = 1
-	height = v
-	_update_size()
-	emit_changed()
+## Inventory's vertical cell count.
+@export var height := 1:
+	set(v):
+		if v < 1: v = 1
+		height = v
+		_update_size()
+		emit_changed()
 
 
 func _update_size():
@@ -21,7 +21,7 @@ func _update_size():
 	for x in items:
 		_fill_stack_cells(x)
 
-# Returns the top-left of the first position the [code]item_stack[/code] can fit into.
+## Returns the top-left of the first position the [code]item_stack[/code] can fit into.
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	var item_type = item_stack.item_type
 	if item_type.in_inventory_height >= item_type.in_inventory_width:
@@ -38,9 +38,9 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 	return Vector2(-1, -1)
 
-# Returns [code]false[/code] if cell out of bounds.
+## Returns [code]false[/code] if cell out of bounds.
 func has_cell(x : int, y : int) -> bool:
-	return .has_cell(x, y) && y <= height
+	return super.has_cell(x, y) && y <= height
 
 
 func _is_rect_free(x : int, y : int, r_width : int, r_height : int) -> bool:
@@ -69,7 +69,7 @@ func _clear_stack_cells(item_stack : ItemStack):
 
 	item_stack.inventory = null
 
-# Returns [code]true[/code] if cells under the [code]item[/code] are free.
+## Returns [code]true[/code] if cells under the [code]item[/code] are free.
 func can_place_item(item : ItemStack, position : Vector2) -> bool:
 	return _is_rect_free(
 		position.x,
@@ -78,8 +78,8 @@ func can_place_item(item : ItemStack, position : Vector2) -> bool:
 		item.item_type.in_inventory_height
 	)
 
-# Tries to place [code]item_stack[/code] into cell [code]pos[/code].
-# Returns the stack that appeared in hand after, which is [code]null[/code] if rect was empty or the [code]item_stack[/code] if it could not be placed.
+## Tries to place [code]item_stack[/code] into cell [code]pos[/code].
+## Returns the stack that appeared in hand after, which is [code]null[/code] if rect was empty or the [code]item_stack[/code] if it could not be placed.
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if !has_cell(pos.x, pos.y): return item_stack
 	if !has_cell(
@@ -97,18 +97,18 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 				if found_stack == null:
 					found_stack = found_now
 				
-				# Found two or more stacks, but can only grab one! Return the attempted-to-place stack.
+				## Found two or more stacks, but can only grab one! Return the attempted-to-place stack.
 				elif found_now != null:
 					return item_stack
 	
 	return _place_stackv(item_stack, found_stack, pos)
 
-# Returns the [ItemStack] in cell [code](x, y)[/code]; returns [code]null[/code] if cell empty or out of bounds.
+## Returns the [ItemStack] in cell [code](x, y)[/code]; returns [code]null[/code] if cell empty or out of bounds.
 func get_item_at_position(x : int, y : int = 0) -> ItemStack:
 	if !has_cell(x, y): return null
 	return _cells[x][y]
 
-# Returns position vectors of all free cells in the inventory.
+## Returns position vectors of all free cells in the inventory.
 func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
 	var free_cells := {}
 	for i in width - for_size_x + 1:

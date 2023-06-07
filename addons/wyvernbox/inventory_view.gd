@@ -1,5 +1,6 @@
-tool
-class_name InventoryView, "res://addons/wyvernbox/icons/inventory_view.png"
+@tool
+@icon("res://addons/wyvernbox/icons/inventory_view.png")
+class_name InventoryView
 extends Control
 
 enum InteractionFlags {
@@ -16,56 +17,57 @@ signal item_stack_removed(item_stack)
 signal grab_attempted(item_stack, success)
 
 # The [Inventory] this node displays.
-export var inventory : Resource setget _set_inventory
+@export var inventory : Inventory:
+	set = _set_inventory
 
 # The [ItemInstantiator] that populates this inventory when first opened.
-export var contents : Resource
+@export var contents : ItemInstantiator
 
 # If [code]true[/code], opening the inventory will initialize [member contents] and set this to [code]false[/code].
-export var init_contents := true
+@export var init_contents := true
 
 # A slot's size, in pixels.
-export var cell_size := Vector2(14, 14) setget _set_cell_size
+@export var cell_size := Vector2(14, 14): set = _set_cell_size
 
 # A scene with an [ItemStackView] in root, spawned to display items.
-export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
+@export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
 
 # For [GridInventory], the [Control] to be stretched to the view's size.
-export var grid_background : NodePath
+@export var grid_background : NodePath
 
 
 # Whether to show item's "back_color" extra property as a background behind it.
-export var show_backgrounds := true
+@export var show_backgrounds := true
 
 # The [code]InteractionFlags[/code] of this inventory.
-export(InteractionFlags, FLAGS) var interaction_mode := 1 | 4 | 16
+@export var interaction_mode := 1 | 4 | 16 # (InteractionFlags, FLAGS)
 
 # For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
-export var auto_take_priority := 0
+@export var auto_take_priority := 0
 
 
 # File path to autosave into.
 # Only supports "user://" paths.
-export var autosave_file_path := ""
+@export var autosave_file_path := ""
 
 # Defines which events trigger autosave, if [member autosave_file_path] set.
-export(int,
-	"LO // Manually through save_state() calls",
-	"MID // On quit/scene change",
-	"HI // On open/close",
-	"Paranoic // On any item added/removed"
-) var autosave_intensity := 2
+@export_enum(
+"LO // Manually through save_state() calls",
+"MID // On quit/scene change",
+"HI // On open/close",
+"Paranoic // On any item added/removed"
+	) var autosave_intensity := 2
 
 # Change to save more data when [method save_state] is called.
 # Gets changed on autoload, or call to [method load_state].
-export var save_extra_data : Dictionary
+@export var save_extra_data : Dictionary
 
 
 # The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
-export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
+@export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
 
 # Items that don't match these [ItemPattern]s or [ItemType]s will be dimmed out.
-export(Array, Resource) var view_filter_patterns : Array setget _set_view_filter
+@export var view_filter_patterns : Array: set = _set_view_filter
 
 
 # The latest autosave time, in seconds since startup.
@@ -78,12 +80,12 @@ var _view_nodes := []
 
 
 func _ready():
-	if Engine.editor_hint:
+	if Engine.is_editor_hint():
 		_regenerate_view()
 		return
 
-	connect("visibility_changed", self, "_on_visibility_changed")
-	yield(get_tree(), "idle_frame")
+	connect("visibility_changed", Callable(self, "_on_visibility_changed"))
+	await get_tree().process_frame
 	load_state()
 	add_to_group("inventory_view")
 	add_to_group("view_filterable")
@@ -106,26 +108,26 @@ func _set_view_filter(v):
 
 func _set_inventory(v):
 	if inventory != null:
-		inventory.disconnect("changed", self, "_regenerate_view")
-		inventory.disconnect("item_stack_added", self, "_on_item_stack_added")
-		inventory.disconnect("item_stack_changed", self, "_on_item_stack_changed")
-		inventory.disconnect("item_stack_removed", self, "_on_item_stack_removed")
-		inventory.disconnect("loaded_from_dict", self, "_on_loaded_from_dict")
+		inventory.changed.disconnect(_regenerate_view)
+		inventory.item_stack_added.disconnect(_on_item_stack_added)
+		inventory.item_stack_changed.disconnect(_on_item_stack_changed)
+		inventory.item_stack_removed.disconnect(_on_item_stack_removed)
+		inventory.loaded_from_dict.disconnect(_on_loaded_from_dict)
 
 	inventory = v
 	if v == null: return
-	v.connect("changed", self, "_regenerate_view")
-	v.connect("item_stack_added", self, "_on_item_stack_added")
-	v.connect("item_stack_changed", self, "_on_item_stack_changed")
-	v.connect("item_stack_removed", self, "_on_item_stack_removed")
-	v.connect("loaded_from_dict", self, "_on_loaded_from_dict")
+	v.changed.connect(_regenerate_view)
+	v.item_stack_added.connect(_on_item_stack_added)
+	v.item_stack_changed.connect(_on_item_stack_changed)
+	v.item_stack_removed.connect(_on_item_stack_removed)
+	v.loaded_from_dict.connect(_on_loaded_from_dict)
 
-	if !is_inside_tree(): yield(self, "ready")
+	if !is_inside_tree(): await self.ready
 	if has_node("Cells"):
 		if !v is GridInventory:
 			v.width = get_node("Cells").get_child_count()
 
-	if Engine.editor_hint: return
+	if Engine.is_editor_hint(): return
 
 	if has_node("ItemViews"):
 		for x in get_node("ItemViews").get_children():
@@ -140,17 +142,17 @@ func _set_inventory(v):
 
 
 func _regenerate_view():
-	if !is_inside_tree(): yield(self, "ready")
+	if !is_inside_tree(): await self.ready
 	if item_scene == null: return
 
 	if inventory is GridInventory:
 		var new_size := cell_size * Vector2(inventory.width, inventory.height)
 		if has_node(grid_background):
 			get_node(grid_background).show()
-			get_node(grid_background).rect_min_size = new_size
+			get_node(grid_background).custom_minimum_size = new_size
 
-		rect_min_size = new_size
-		rect_size = new_size
+		custom_minimum_size = new_size
+		size = new_size
 
 	else:
 		if has_node(grid_background):
@@ -166,12 +168,12 @@ func _regenerate_view():
 
 		if cells.get_child_count() == 0:
 			var cell = load("res://addons/wyvernbox_prefabs/inventory_cell.tscn")
-			cell = TextureRect.new() if cell == null else cell.instance()
-			cell.rect_min_size = cell_size
+			cell = TextureRect.new() if cell == null else cell.instantiate()
+			cell.custom_minimum_size = cell_size
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
 
-		var diff = cells.get_child_count() - inventory.width
+		var diff = cells.get_child_count() - (inventory.width if inventory != null else 1)
 		while diff > 0:
 			diff -= 1
 			cells.get_child(cells.get_child_count() - 1).free()
@@ -187,9 +189,9 @@ func _regenerate_view():
 # Returns [code](-1, -1)[/code] if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 	if inventory is GridInventory:
-		var topleft = rect_global_position
+		var topleft = global_position
 		if has_node(grid_background):
-			topleft = get_node(grid_background).rect_global_position
+			topleft = get_node(grid_background).global_position
 
 		return (Vector2(
 			(pos.x - topleft.x) / cell_size.x,
@@ -212,31 +214,31 @@ func _redraw_item(node : Control, item_stack : ItemStack):
 
 func _position_item(node : Control, item_stack : ItemStack):
 	if inventory is GridInventory:
-		node.rect_global_position = rect_global_position + cell_size * item_stack.position_in_inventory
+		node.global_position = global_position + cell_size * item_stack.position_in_inventory
 		return
 
 	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
-	node.rect_position = cell.rect_position
-	node.rect_size = cell.rect_size
+	node.position = cell.position
+	node.size = cell.size
 
 
 func _on_item_stack_added(item_stack : ItemStack):
-	var new_node := item_scene.instance()
+	var new_node := item_scene.instantiate()
 	if !has_node("ItemViews"):
 		var item_views = Control.new()
 		item_views.name = "ItemViews"
 		add_child(item_views)
-		item_views.set_anchors_and_margins_preset(PRESET_WIDE)
+		item_views.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 
 	get_node("ItemViews").add_child(new_node)
 	
 	_view_nodes.append(new_node)
 	_redraw_item(new_node, item_stack)
-	new_node.connect("gui_input", self, "_on_item_stack_gui_input", [item_stack.index_in_inventory])
-	new_node.connect("mouse_entered", self, "_on_item_stack_mouse_entered", [item_stack.index_in_inventory])
+	new_node.connect("gui_input", Callable(self, "_on_item_stack_gui_input").bind(item_stack.index_in_inventory))
+	new_node.connect("mouse_entered", Callable(self, "_on_item_stack_mouse_entered").bind(item_stack.index_in_inventory))
 
 	apply_view_filters()
-	emit_signal("item_stack_added", item_stack)
+	item_stack_added.emit(item_stack)
 
 	if autosave_intensity >= 3:
 		save_state()
@@ -252,14 +254,14 @@ func _on_item_stack_removed(item_stack : ItemStack):
 
 		node_idx += 1
 		_view_nodes[node_idx] = nodes[node_idx]
-		nodes[node_idx].disconnect("gui_input", self, "_on_item_stack_gui_input")
-		nodes[node_idx].disconnect("mouse_entered", self, "_on_item_stack_mouse_entered")
-		nodes[node_idx].connect("gui_input", self, "_on_item_stack_gui_input", [inv_idx])
-		nodes[node_idx].connect("mouse_entered", self, "_on_item_stack_mouse_entered", [inv_idx])
+		nodes[node_idx].disconnect("gui_input", Callable(self, "_on_item_stack_gui_input"))
+		nodes[node_idx].disconnect("mouse_entered", Callable(self, "_on_item_stack_mouse_entered"))
+		nodes[node_idx].connect("gui_input", Callable(self, "_on_item_stack_gui_input").bind(inv_idx))
+		nodes[node_idx].connect("mouse_entered", Callable(self, "_on_item_stack_mouse_entered").bind(inv_idx))
 		_redraw_item(nodes[node_idx], inventory.items[inv_idx])
 
 	apply_view_filters()
-	emit_signal("item_stack_removed", item_stack)
+	item_stack_removed.emit(item_stack)
 
 	if autosave_intensity >= 3:
 		save_state()
@@ -268,7 +270,7 @@ func _on_item_stack_removed(item_stack : ItemStack):
 func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 	var node = _view_nodes[item_stack.index_in_inventory]
 	_redraw_item(node, item_stack)
-	emit_signal("item_stack_changed", item_stack, count_delta)
+	item_stack_changed.emit(item_stack, count_delta)
 
 	if autosave_intensity >= 3:
 		save_state()
@@ -278,11 +280,11 @@ func _grab_stack(stack_index : int):
 	var stack = inventory.items[stack_index]
 	if interaction_mode & InteractionFlags.CAN_TAKE == 0:
 		# If configured as not takeable, emit the fail signal. (can register clicks on items)
-		emit_signal("grab_attempted", stack, false)
+		grab_attempted.emit(stack, false)
 		return
 
 	# First, handle stacking and swapping
-	var grabbed = get_tree().get_nodes_in_group("grabbed_item")[0]
+	var grabbed = get_tree().get_nodes_in_group(&"grabbed_item")[0]
 	if grabbed.grabbed_stack != null:
 		# With non-placeable invs, stack with the Grabbed stack instead of one in the inv.
 		var grabbed_stack = grabbed.grabbed_stack
@@ -291,7 +293,7 @@ func _grab_stack(stack_index : int):
 				var transferred = grabbed_stack.get_delta_if_added(stack.count)
 				grabbed.add_items_to_stack(transferred)
 				inventory.add_items_to_stack(stack, -transferred)
-				emit_signal("grab_attempted", stack, true)
+				grab_attempted.emit(stack, true)
 
 			return
 
@@ -305,7 +307,7 @@ func _grab_stack(stack_index : int):
 				&& grabbed_stack.get_overflow_if_added(stack.count) <= 0
 			):
 				var purchase_successful = _try_buy(stack)
-				emit_signal("grab_attempted", stack, purchase_successful)
+				grab_attempted.emit(stack, purchase_successful)
 				if purchase_successful:
 					inventory.remove_item(stack)
 					grabbed.add_items_to_stack(stack.count)
@@ -315,10 +317,10 @@ func _grab_stack(stack_index : int):
 	# If nothing grabbed, just take the item (or not if can't afford)
 	else:
 		if !_try_buy(stack):
-			emit_signal("grab_attempted", stack, false)
+			grab_attempted.emit(stack, false)
 			return
 
-		emit_signal("grab_attempted", stack, true)
+		grab_attempted.emit(stack, true)
 		if !grabbed.visible:
 			grabbed.grab(stack)
 
@@ -329,8 +331,8 @@ func _try_buy(stack : ItemStack):
 	
 	var price = stack.extra_properties["price"].duplicate()
 	var counts = {}
-	var inventories = get_tree().get_nodes_in_group("inventory_view")
-	inventories.sort_custom(self, "_sort_inventories_priority")
+	var inventories = get_tree().get_nodes_in_group(&"inventory_view")
+	inventories.sort_custom(Callable(self, &"_sort_inventories_priority"))
 
 	var k_loaded
 	for k in price.keys():
@@ -379,7 +381,7 @@ func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 
 func _quick_transfer_anywhere(stack : ItemStack):
 	if (interaction_mode & InteractionFlags.CAN_TAKE) == 0 || !_try_buy(stack):
-		emit_signal("grab_attempted", stack, false)
+		grab_attempted.emit(stack, false)
 		return
 
 	var original_pos = stack.position_in_inventory
@@ -391,7 +393,7 @@ func _quick_transfer_anywhere(stack : ItemStack):
 		stack = stack.duplicate_with_count(stack.item_type.max_stack_count)
 
 	else:
-		emit_signal("grab_attempted", stack, true)
+		grab_attempted.emit(stack, true)
 		inventory.remove_item(stack)
 
 	var returned_stack
@@ -412,15 +414,15 @@ func _quick_transfer_anywhere(stack : ItemStack):
 			return
 
 		# If can't, just drop it.
-		else:
-			get_tree().call_group("grabbed_item", "drop_on_ground", returned_stack)
+#		else:
+#			get_tree().call_group(&"grabbed_item", &"drop_on_ground", returned_stack)
 
-		emit_signal("grab_attempted", stack, true)
+		grab_attempted.emit(stack, true)
 
 
 func _get_quick_transfer_targets(has_price) -> Array:
 	var result := []
-	for x in get_tree().get_nodes_in_group("inventory_view"):
+	for x in get_tree().get_nodes_in_group(&"inventory_view"):
 		if (
 			x == self
 			|| !x.is_visible_in_tree()
@@ -436,7 +438,7 @@ func _get_quick_transfer_targets(has_price) -> Array:
 	
 
 func _on_item_stack_mouse_entered(stack_index : int):
-	if Input.is_mouse_button_pressed(BUTTON_LEFT) && Input.is_action_pressed("inventory_more"):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && Input.is_action_pressed(&"inventory_more"):
 		if inventory.items.size() > stack_index:
 			_quick_transfer_anywhere(inventory.items[stack_index])
 			
@@ -445,8 +447,8 @@ func _on_item_stack_mouse_entered(stack_index : int):
 
 func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT && event.pressed:
-			if !Input.is_action_pressed("inventory_more"):
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
+			if !Input.is_action_pressed(&"inventory_more"):
 				_grab_stack(stack_index)
 
 			else:
@@ -454,7 +456,7 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 				force_drag(0, null)
 
 
-func can_drop_data(position, data):
+func _can_drop_data(position, data):
 	return true
 
 # Updates item visibility based on [member view_filter_patterns].
@@ -483,7 +485,7 @@ func sort_inventory():
 
 # Saves the inventory to disk into the specified file, or the one set in [member autosave_file_path].
 func save_state(filepath = ""):
-	if Engine.editor_hint: return  # Called in editor by connected signals
+	if Engine.is_editor_hint(): return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
 
 	var extras = _get_saved_properties()
@@ -502,7 +504,7 @@ func load_state(filepath = ""):
 
 func _get_saved_properties():
 	return {
-		"$_init_contents" : init_contents,
+		&"$_init_contents" : init_contents,
 	}
 
 

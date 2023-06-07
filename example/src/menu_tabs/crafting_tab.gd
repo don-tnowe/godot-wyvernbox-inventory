@@ -1,29 +1,29 @@
 extends MarginContainer
 
-export var cell_scene : PackedScene
-export(Array, Resource) var item_conversions
-export var target_inventory := NodePath("")
-export var source_inventory := NodePath("")
-export var input_from_all_takeable := true
-export var just_put_it_into_my_hand := true
+@export var cell_scene : PackedScene
+@export var item_conversions : Array[Resource]
+@export var target_inventory := NodePath("")
+@export var source_inventory := NodePath("")
+@export var input_from_all_takeable := true
+@export var just_put_it_into_my_hand := true
 
-onready var recipe_list_node = $"VBoxContainer/ScrollContainer/VBoxContainer"
+@onready var recipe_list_node = $"VBoxContainer/ScrollContainer/VBoxContainer"
 
 var rng = RandomNumberGenerator.new()
 
 
 func _ready():
 	rng.randomize()
-	var _1 = connect("visibility_changed", self, "update_availability")
+	var _1 = connect("visibility_changed", Callable(self, "update_availability"))
 	var new_btn
 	for i in item_conversions.size():
 		new_btn = Button.new()
 		new_btn.text = item_conversions[i].name
 		new_btn.icon = item_conversions[i].output_types[0].texture
 		new_btn.expand_icon = true
-		new_btn.connect("mouse_entered", self, "_on_button_mouse_entered", [i])
-		new_btn.connect("mouse_exited", self, "_on_button_mouse_exited")
-		new_btn.connect("pressed", self, "_on_button_pressed", [i])
+		new_btn.connect("mouse_entered", Callable(self, "_on_button_mouse_entered").bind(i))
+		new_btn.connect("mouse_exited", Callable(self, "_on_button_mouse_exited"))
+		new_btn.connect("pressed", Callable(self, "_on_button_pressed").bind(i))
 		recipe_list_node.add_child(new_btn)
 
 
@@ -46,7 +46,7 @@ func update_availability(_arg0 = null, _arg1 = null, _arg2 = null):
 func _on_button_pressed(index):
 	var output_stacks
 	if input_from_all_takeable:
-		var all_invs = get_tree().get_nodes_in_group("inventory_view")
+		var all_invs = get_tree().get_nodes_in_group(&"inventory_view")
 		var drawable_invs = item_conversions[index].get_takeable_inventories_sorted(all_invs)
 		output_stacks = item_conversions[index].apply(
 			drawable_invs, rng,
@@ -64,7 +64,7 @@ func _on_button_pressed(index):
 		return
 
 	var inv = get_node(target_inventory).inventory
-	var grabbed = get_tree().get_nodes_in_group("grabbed_item")[0]
+	var grabbed = get_tree().get_nodes_in_group(&"grabbed_item")[0]
 
 	if just_put_it_into_my_hand:
 		if grabbed.grabbed_stack == null:
@@ -89,7 +89,7 @@ func _on_button_pressed(index):
 
 
 func _on_button_mouse_entered(index):
-	get_tree().call_group("tooltip", "display_custom",
+	get_tree().call_group(&"tooltip", &"display_custom",
 		recipe_list_node.get_child(index),
 		tr(item_conversions[index].name),
 		item_conversions[index].get_bbcode(count_all_inventories(item_conversions[index].input_types))
@@ -100,10 +100,10 @@ func count_all_inventories(items_patterns) -> Dictionary:
 	if !input_from_all_takeable:
 		return ItemConversion.count_all_inventories([get_node(source_inventory)], items_patterns)
 
-	var all = get_tree().get_nodes_in_group("inventory_view")
+	var all = get_tree().get_nodes_in_group(&"inventory_view")
 	var drawable = ItemConversion.get_takeable_inventories(all)
 	return ItemConversion.count_all_inventories(drawable, items_patterns)
 
 
 func _on_button_mouse_exited():
-	get_tree().call_group("tooltip", "hide")
+	get_tree().call_group(&"tooltip", &"hide")

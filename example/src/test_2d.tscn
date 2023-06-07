@@ -1,35 +1,35 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=24 format=3 uid="uid://dfwlhkhfag51y"]
 
-[ext_resource path="res://example/src/inventory_menu.tscn" type="PackedScene" id=1]
-[ext_resource path="res://example/src/world/char.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=4]
-[ext_resource path="res://example/wyvernbox/item_generators/basic_loot.tres" type="Resource" id=5]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" type="PackedScene" id=6]
-[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" type="Resource" id=7]
-[ext_resource path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" type="Resource" id=8]
-[ext_resource path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" type="Resource" id=9]
-[ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=10]
-[ext_resource path="res://example/src/world/inworld_container2d.tscn" type="PackedScene" id=11]
-[ext_resource path="res://example/src/world/touch_dropper.tscn" type="PackedScene" id=12]
-[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=13]
-[ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=17]
-[ext_resource path="res://addons/wyvernbox/ground/ground_items_manager.gd" type="Script" id=18]
-[ext_resource path="res://addons/wyvernbox_prefabs/tooltip.tscn" type="PackedScene" id=19]
-[ext_resource path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" type="Script" id=20]
+[ext_resource type="PackedScene" uid="uid://dsoiq0u4jfsqb" path="res://example/src/inventory_menu.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://example/src/world/char.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cjdtl6ek4qp7d" path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" id="4"]
+[ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="5"]
+[ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="6"]
+[ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="7"]
+[ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="8"]
+[ext_resource type="Resource" uid="uid://bc5mn5etsfr76" path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" id="9"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="10"]
+[ext_resource type="PackedScene" path="res://example/src/world/inworld_container2d.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://example/src/world/touch_dropper.tscn" id="12"]
+[ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="13"]
+[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="17"]
+[ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_items_manager.gd" id="18"]
+[ext_resource type="PackedScene" uid="uid://cqa45c6lfsffv" path="res://addons/wyvernbox_prefabs/tooltip.tscn" id="19"]
+[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="20"]
 
-[sub_resource type="Gradient" id=2]
-colors = PoolColorArray( 0.09375, 0.0308418, 0.00622559, 1, 0.738281, 0.64915, 0.242249, 1 )
+[sub_resource type="Gradient" id="2"]
+colors = PackedColorArray(0.09375, 0.0308418, 0.00622559, 1, 0.738281, 0.64915, 0.242249, 1)
 
-[sub_resource type="GradientTexture2D" id=3]
-gradient = SubResource( 2 )
-fill_from = Vector2( 1, 1 )
+[sub_resource type="GradientTexture2D" id="3"]
+gradient = SubResource("2")
+fill_from = Vector2(1, 1)
 
-[sub_resource type="Resource" id=22]
+[sub_resource type="Resource" id="22"]
 resource_name = "Drop Chaotically"
-script = ExtResource( 13 )
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0 ]
+script = ExtResource("13")
+items_to_add = Array[Resource]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
+item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
+item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
 randomize_locations = true
 delay_between_items = 0.1
@@ -37,12 +37,12 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id=21]
+[sub_resource type="Resource" id="21"]
 resource_name = "Drop In Circle"
-script = ExtResource( 13 )
-items_to_add = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
-item_repeat_ranges = [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-item_chances = [ 100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0 ]
+script = ExtResource("13")
+items_to_add = Array[Resource]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
+item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
+item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
 randomize_locations = false
 delay_between_items = 0.1
@@ -50,19 +50,19 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id=9]
+[sub_resource type="Resource" id="Resource_qlic0"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
-script = ExtResource( 10 )
-width = 12
+script = ExtResource("10")
 height = 8
+width = 8
 
-[sub_resource type="Resource" id=10]
+[sub_resource type="Resource" id="10"]
 resource_name = "Random Equips"
-script = ExtResource( 13 )
-items_to_add = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
-item_repeat_ranges = [ Vector2( 8, 8 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ), Vector2( 5, 100 ) ]
-item_chances = [ 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0 ]
+script = ExtResource("13")
+items_to_add = Array[Resource]([ExtResource("9"), ExtResource("8"), ExtResource("8"), ExtResource("7"), ExtResource("7"), ExtResource("7"), ExtResource("7")])
+item_repeat_ranges = Array[Vector2]([Vector2(8, 8), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100)])
+item_chances = Array[float]([100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0])
 repeat_post_chance = true
 randomize_locations = true
 delay_between_items = 0.0
@@ -70,12 +70,12 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id=8]
+[sub_resource type="Resource" id="Resource_moytt"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
-script = ExtResource( 10 )
-width = 8
+script = ExtResource("10")
 height = 12
+width = 8
 
 [node name="Node" type="Node"]
 
@@ -83,151 +83,154 @@ height = 12
 layer = -5
 
 [node name="TextureRect" type="TextureRect" parent="BG"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = SubResource( 3 )
-expand = true
-__meta__ = {
-"_edit_lock_": true
-}
+texture = SubResource("3")
+expand_mode = 1
 
 [node name="Gameplay" type="Node2D" parent="."]
 
 [node name="Node2D" type="Node2D" parent="Gameplay"]
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Char" parent="Gameplay/Node2D" instance=ExtResource( 3 )]
-position = Vector2( 311, 159 )
+[node name="Char" parent="Gameplay/Node2D" instance=ExtResource("3")]
+position = Vector2(311, 159)
 
 [node name="Items" type="Node2D" parent="Gameplay/Node2D"]
-script = ExtResource( 18 )
+script = ExtResource("18")
 autosave_file_path = "items/ground/area1.dat"
-item_scene = ExtResource( 4 )
+item_scene = ExtResource("4")
 
 [node name="Loot" type="Node2D" parent="Gameplay/Node2D"]
 
-[node name="Loot" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 222, 124 )
+[node name="Loot" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(222, 124)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 22 )
+collide_with_group = &"hero"
+loot_table = SubResource("22")
 
-[node name="Loot2" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 151, 50 )
+[node name="Loot2" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(151, 50)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 22 )
+collide_with_group = &"hero"
+loot_table = SubResource("22")
 
-[node name="Loot3" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 69, 116 )
+[node name="Loot3" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(69, 116)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 22 )
+collide_with_group = &"hero"
+loot_table = SubResource("22")
 
-[node name="Loot11" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 71, 189 )
+[node name="Loot11" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(71, 189)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 22 )
+collide_with_group = &"hero"
+loot_table = SubResource("22")
 
-[node name="Loot12" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 230, 174 )
+[node name="Loot12" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(230, 174)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 22 )
+collide_with_group = &"hero"
+loot_table = SubResource("22")
 
-[node name="Loot4" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 157, 227 )
+[node name="Loot4" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(157, 227)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 22 )
+collide_with_group = &"hero"
+loot_table = SubResource("22")
 
-[node name="Loot5" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 501, 74 )
+[node name="Loot5" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(501, 74)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 21 )
+collide_with_group = &"hero"
+loot_table = SubResource("21")
 
-[node name="Loot6" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 428, 121 )
+[node name="Loot6" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(428, 121)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 21 )
+collide_with_group = &"hero"
+loot_table = SubResource("21")
 
-[node name="Loot7" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 420, 191 )
+[node name="Loot7" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(420, 191)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 21 )
+collide_with_group = &"hero"
+loot_table = SubResource("21")
 
-[node name="Loot8" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 501, 233 )
+[node name="Loot8" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(501, 233)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 21 )
+collide_with_group = &"hero"
+loot_table = SubResource("21")
 
-[node name="Loot9" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 578, 191 )
+[node name="Loot9" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(578, 191)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 21 )
+collide_with_group = &"hero"
+loot_table = SubResource("21")
 
-[node name="Loot10" parent="Gameplay/Node2D/Loot" instance=ExtResource( 12 )]
-position = Vector2( 570, 124 )
+[node name="Loot10" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
+position = Vector2(570, 124)
 ground_item_manager = NodePath("../../Items")
-loot_table = SubResource( 21 )
+collide_with_group = &"hero"
+loot_table = SubResource("21")
 
 [node name="Openable" type="Node2D" parent="Gameplay/Node2D"]
 
-[node name="Chest" parent="Gameplay/Node2D/Openable" instance=ExtResource( 11 )]
-position = Vector2( 274, 70 )
+[node name="Chest" parent="Gameplay/Node2D/Openable" instance=ExtResource("11")]
+position = Vector2(274, 70)
 
-[node name="Inventory" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource( 6 )]
+[node name="Inventory" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource("6")]
 visible = false
-margin_left = -12.0
-margin_top = 71.0
-margin_right = 156.0
-margin_bottom = 183.0
-inventory = SubResource( 9 )
-contents = SubResource( 10 )
+offset_left = -12.0
+offset_top = 71.0
+offset_right = 100.0
+offset_bottom = 183.0
+inventory = SubResource("Resource_qlic0")
+contents = SubResource("10")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
 
 [node name="Control2" type="Control" parent="Gameplay/Node2D/Openable/Chest/Inventory"]
-margin_left = 168.0
-margin_top = 112.0
-margin_right = 168.0
-margin_bottom = 112.0
+layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 10
 
 [node name="Button" type="Button" parent="Gameplay/Node2D/Openable/Chest/Inventory/Control2"]
-margin_left = 3.0
-margin_top = -20.0
-margin_right = 21.0
+layout_mode = 0
+offset_left = 3.0
+offset_top = -20.0
+offset_right = 21.0
 size_flags_horizontal = 10
 size_flags_vertical = 10
 text = "?"
 
-[node name="Another Chest" parent="Gameplay/Node2D/Openable" instance=ExtResource( 11 )]
-position = Vector2( 352, 75 )
+[node name="Another Chest" parent="Gameplay/Node2D/Openable" instance=ExtResource("11")]
+position = Vector2(352, 75)
 
-[node name="Inventory" parent="Gameplay/Node2D/Openable/Another Chest" instance=ExtResource( 6 )]
+[node name="Inventory" parent="Gameplay/Node2D/Openable/Another Chest" instance=ExtResource("6")]
 visible = false
-margin_left = 55.0
-margin_top = 78.0
-margin_right = 167.0
-margin_bottom = 246.0
-rect_min_size = Vector2( 112, 168 )
-inventory = SubResource( 8 )
-contents = SubResource( 10 )
+custom_minimum_size = Vector2(112, 168)
+offset_left = 55.0
+offset_top = 78.0
+offset_right = 167.0
+offset_bottom = 246.0
+inventory = SubResource("Resource_moytt")
+contents = SubResource("10")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
 
 [node name="Control" type="Control" parent="Gameplay/Node2D/Openable/Another Chest/Inventory"]
-margin_left = 112.0
-margin_top = 168.0
-margin_right = 112.0
-margin_bottom = 168.0
+layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 10
 
 [node name="Button" type="Button" parent="Gameplay/Node2D/Openable/Another Chest/Inventory/Control"]
-margin_left = 3.0
-margin_top = -20.0
-margin_right = 21.0
+layout_mode = 0
+offset_left = 3.0
+offset_top = -20.0
+offset_right = 21.0
 size_flags_horizontal = 10
 size_flags_vertical = 10
 text = "?"
@@ -235,62 +238,54 @@ text = "?"
 [node name="Inventory" type="CanvasLayer" parent="."]
 
 [node name="Generator" type="Button" parent="Inventory"]
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -60.0
-margin_top = -70.0
-margin_right = 58.0
-margin_bottom = -50.0
+offset_left = -60.0
+offset_top = -70.0
+offset_right = 58.0
+offset_bottom = -50.0
 focus_mode = 1
-enabled_focus_mode = 1
 text = "Loot"
 
 [node name="Label" type="Label" parent="Inventory/Generator"]
-margin_left = -39.0
-margin_top = 22.0
-margin_right = 173.0
-margin_bottom = 36.0
+layout_mode = 0
+offset_left = -39.0
+offset_top = 22.0
+offset_right = 173.0
+offset_bottom = 36.0
 text = "(Press Tab or I to open inventory)"
-align = 1
 
 [node name="Label2" type="Label" parent="Inventory/Generator"]
-margin_left = -39.0
-margin_top = 37.0
-margin_right = 175.0
-margin_bottom = 51.0
+layout_mode = 0
+offset_left = -39.0
+offset_top = 37.0
+offset_right = 175.0
+offset_bottom = 51.0
 text = "(Hold Alt to highlight items)"
-align = 1
 
-[node name="InventoryMenu" parent="Inventory" instance=ExtResource( 1 )]
+[node name="InventoryMenu" parent="Inventory" instance=ExtResource("1")]
 visible = false
 
-[node name="GrabbedItem" parent="Inventory/InventoryMenu" groups=["grabbed_item"] instance=ExtResource( 17 )]
+[node name="GrabbedItem" parent="Inventory/InventoryMenu" groups=["grabbed_item"] instance=ExtResource("17")]
 visible = false
-margin_left = 220.787
-margin_top = 69.0519
-margin_right = 220.787
-margin_bottom = 69.0519
-rect_scale = Vector2( 1.5, 1.5 )
+z_index = 1
+offset_left = 220.787
+offset_top = 69.0519
+offset_right = 220.787
+offset_bottom = 69.0519
+scale = Vector2(1.5, 1.5)
 mouse_filter = 2
-script = ExtResource( 20 )
+script = ExtResource("20")
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0
 drop_camera_3d = NodePath("")
-unit_size = Vector2( 14, 14 )
+unit_size = Vector2(14, 14)
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -225.5
-margin_top = -71.5
-margin_right = 225.5
-margin_bottom = 71.5
-window_title = "Hint"
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.
 These can also drop items to the ground.
 
@@ -298,16 +293,16 @@ The chest's contents are displayed here by just duplicating the chest's
 InventoryView. Not just the Inventory resource - that way custom
 inventory layouts and extra nodes (like this ? button) can be used!"
 
-[node name="Tooltip" parent="Inventory" instance=ExtResource( 19 )]
+[node name="Tooltip" parent="Inventory" instance=ExtResource("19")]
 visible = false
-margin_left = 198.0
-margin_top = -23.0
-margin_right = 358.0
-margin_bottom = 52.0
-color_neutral = Color( 0.376471, 0.376471, 0.376471, 1 )
+offset_left = 198.0
+offset_top = -23.0
+offset_right = 358.0
+offset_bottom = 52.0
+color_neutral = Color(0.376471, 0.376471, 0.376471, 1)
 compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/menu_equip/Control/Equip")
 
-[connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_ItemPickup_area_entered"]
+[connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_items_item_clicked"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Chest/Inventory/Control2/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Another Chest/Inventory/Control/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
 [connection signal="pressed" from="Inventory/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]

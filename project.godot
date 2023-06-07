@@ -6,305 +6,7 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "PackedArrayPropertyEditor",
-"class": "ArrayPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/array_property_editor.gd"
-}, {
-"base": "VBoxContainer",
-"class": "BaseCollectionPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/base_property_editor.gd"
-}, {
-"base": "Reference",
-"class": "CellEditor",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/typed_cells/cell_editor.gd"
-}, {
-"base": "CellEditor",
-"class": "CellEditorArray",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/typed_cells/cell_editor_array.gd"
-}, {
-"base": "Button",
-"class": "CollectionHeaderButton",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/collection_header_button.gd"
-}, {
-"base": "Inventory",
-"class": "CurrencyInventory",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventories/currency_inventory.gd"
-}, {
-"base": "EditorResourcePicker",
-"class": "CustomResourcePicker",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/custom_resource_picker.gd"
-}, {
-"base": "PackedArrayPropertyEditor",
-"class": "DictPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/dict_property_editor.gd"
-}, {
-"base": "EditorInspectorPlugin",
-"class": "DictionaryInspectorPlugin",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/inspector_plugin.gd"
-}, {
-"base": "EditorProperty",
-"class": "DictionaryInspectorProperty",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/inspector_property.gd"
-}, {
-"base": "Button",
-"class": "EditorArrayIndex",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/array_index.gd"
-}, {
-"base": "Resource",
-"class": "EquipBonus",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/equip_bonus.gd"
-}, {
-"base": "ItemStackView",
-"class": "GrabbedItemStackView",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/view_extra/grabbed_item_stack.gd"
-}, {
-"base": "Inventory",
-"class": "GridInventory",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventories/grid_inventory.gd"
-}, {
-"base": "Node",
-"class": "GroundItemManager",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/ground/ground_items_manager.gd"
-}, {
-"base": "Area2D",
-"class": "GroundItemStackView2D",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd"
-}, {
-"base": "CollisionObject",
-"class": "GroundItemStackView3D",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/ground/ground_item_stack_view_3d.gd"
-}, {
-"base": "Resource",
-"class": "Inventory",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventories/inventory.gd"
-}, {
-"base": "Container",
-"class": "InventoryTooltip",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/view_extra/tooltip.gd"
-}, {
-"base": "Reference",
-"class": "InventoryTooltipProperty",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/view_extra/tooltip_property.gd"
-}, {
-"base": "Node",
-"class": "InventoryVendor",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/crafting/vendor.gd"
-}, {
-"base": "Control",
-"class": "InventoryView",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventory_view.gd"
-}, {
-"base": "Resource",
-"class": "ItemConversion",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/crafting/item_conversion.gd"
-}, {
-"base": "Resource",
-"class": "ItemGenerator",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/crafting/item_generator.gd"
-}, {
-"base": "ItemGenerator",
-"class": "ItemGeneratorEquipmentBonus",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/extension/item_generator_equipment_bonus.gd"
-}, {
-"base": "Resource",
-"class": "ItemInstantiator",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/item_instantiator.gd"
-}, {
-"base": "Resource",
-"class": "ItemPattern",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/crafting/item_pattern.gd"
-}, {
-"base": "ItemPattern",
-"class": "ItemPatternEquipStat",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/extension/item_pattern_equip_stat.gd"
-}, {
-"base": "ItemPattern",
-"class": "ItemPatternHighlightStack",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/extension/item_pattern_highlight_stack.gd"
-}, {
-"base": "ItemPattern",
-"class": "ItemPatternName",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/extension/item_pattern_name.gd"
-}, {
-"base": "Reference",
-"class": "ItemStack",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/item_stack.gd"
-}, {
-"base": "Control",
-"class": "ItemStackView",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/view_extra/item_stack_view.gd"
-}, {
-"base": "Resource",
-"class": "ItemType",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/item_type.gd"
-}, {
-"base": "BaseCollectionPropertyEditor",
-"class": "ObjectPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/object_property_editor.gd"
-}, {
-"base": "BaseCollectionPropertyEditor",
-"class": "PackedArrayPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/packed_array_property_editor.gd"
-}, {
-"base": "Inventory",
-"class": "RestrictedInventory",
-"language": "GDScript",
-"path": "res://addons/wyvernbox/inventories/restricted_inventory.gd"
-}, {
-"base": "GridContainer",
-"class": "SettingsGrid",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/settings_grid.gd"
-}, {
-"base": "Control",
-"class": "SheetsDockEditor",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/typed_editors/dock_base.gd"
-}, {
-"base": "Reference",
-"class": "SpreadsheetEditFormat",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/import_export/formats_edit/edit_base.gd"
-}, {
-"base": "SpreadsheetEditFormatTres",
-"class": "SpreadsheetEditFormatCsv",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/import_export/formats_edit/edit_csv.gd"
-}, {
-"base": "SpreadsheetEditFormat",
-"class": "SpreadsheetEditFormatTres",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/import_export/formats_edit/edit_tres.gd"
-}, {
-"base": "Reference",
-"class": "SpreadsheetExportFormatCsv",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/import_export/formats_export/export_csv.gd"
-}, {
-"base": "Resource",
-"class": "SpreadsheetImport",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/import_export/spreadsheet_import.gd"
-}, {
-"base": "Reference",
-"class": "SpreadsheetImportFormatCsv",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/import_export/formats_import/import_csv.gd"
-}, {
-"base": "GridContainer",
-"class": "TensorPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/tensor_property_editor.gd"
-}, {
-"base": "Reference",
-"class": "TextEditingUtils",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/text_editing_utils.gd"
-}, {
-"base": "Button",
-"class": "ThemeIconButton",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/editor_icon_button.gd"
-}, {
-"base": "Control",
-"class": "ThemeStylebox",
-"language": "GDScript",
-"path": "res://addons/resources_speadsheet_view/editor_stylebox_overrider.gd"
-}, {
-"base": "OptionButton",
-"class": "TypeOptionButton",
-"language": "GDScript",
-"path": "res://addons/dictionary_inspector/elements/type_option_button.gd"
-} ]
-_global_script_class_icons={
-"ArrayPropertyEditor": "",
-"BaseCollectionPropertyEditor": "",
-"CellEditor": "",
-"CellEditorArray": "",
-"CollectionHeaderButton": "",
-"CurrencyInventory": "res://addons/wyvernbox/icons/currency_inventory.png",
-"CustomResourcePicker": "",
-"DictPropertyEditor": "",
-"DictionaryInspectorPlugin": "",
-"DictionaryInspectorProperty": "",
-"EditorArrayIndex": "",
-"EquipBonus": "",
-"GrabbedItemStackView": "res://addons/wyvernbox/icons/grabbed_item_stack.png",
-"GridInventory": "res://addons/wyvernbox/icons/grid_inventory.png",
-"GroundItemManager": "res://addons/wyvernbox/icons/ground_item_manager.png",
-"GroundItemStackView2D": "res://addons/wyvernbox/icons/item_stack_view_2d.png",
-"GroundItemStackView3D": "res://addons/wyvernbox/icons/item_stack_view_3d.png",
-"Inventory": "res://addons/wyvernbox/icons/inventory.png",
-"InventoryTooltip": "res://addons/wyvernbox/icons/tooltip.png",
-"InventoryTooltipProperty": "",
-"InventoryVendor": "res://addons/wyvernbox/icons/vendor.png",
-"InventoryView": "res://addons/wyvernbox/icons/inventory_view.png",
-"ItemConversion": "res://addons/wyvernbox/icons/item_conversion.png",
-"ItemGenerator": "res://addons/wyvernbox/icons/item_generator.png",
-"ItemGeneratorEquipmentBonus": "",
-"ItemInstantiator": "res://addons/wyvernbox/icons/item_instantiator.png",
-"ItemPattern": "res://addons/wyvernbox/icons/item_pattern.png",
-"ItemPatternEquipStat": "",
-"ItemPatternHighlightStack": "",
-"ItemPatternName": "",
-"ItemStack": "",
-"ItemStackView": "res://addons/wyvernbox/icons/grabbed_item_stack.png",
-"ItemType": "res://addons/wyvernbox/icons/item_type.png",
-"ObjectPropertyEditor": "",
-"PackedArrayPropertyEditor": "",
-"RestrictedInventory": "res://addons/wyvernbox/icons/restricted_inventory.png",
-"SettingsGrid": "",
-"SheetsDockEditor": "",
-"SpreadsheetEditFormat": "",
-"SpreadsheetEditFormatCsv": "",
-"SpreadsheetEditFormatTres": "",
-"SpreadsheetExportFormatCsv": "",
-"SpreadsheetImport": "",
-"SpreadsheetImportFormatCsv": "",
-"TensorPropertyEditor": "",
-"TextEditingUtils": "",
-"ThemeIconButton": "",
-"ThemeStylebox": "",
-"TypeOptionButton": ""
-}
+config_version=5
 
 [addons]
 
@@ -315,23 +17,25 @@ resources_spreadsheet_view/clip_headers=false
 resources_spreadsheet_view/dupe_arrays=true
 resources_spreadsheet_view/context_menu_on_leftclick=false
 docs_checklist/base_dir="res://addons/wyvernbox/"
+resources_spreadsheet_view/resource_preview_size=32.0
 
 [application]
 
 config/name="Addon: Inventory"
-run/main_scene="res://example/src/test_3d.tscn"
+run/main_scene="res://example/src/test_2d.tscn"
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=640
-window/size/height=360
-window/stretch/mode="2d"
+window/size/viewport_width=720
+window/size/viewport_height=360
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/wyvernbox/editor/plugin.cfg" )
+enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg", "res://addons/wyvernbox/editor/plugin.cfg")
 
 [gui]
 
@@ -341,77 +45,81 @@ common/drop_mouse_on_gui_input_disabled=true
 
 ui_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777231,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":14,"pressure":0.0,"pressed":false,"script":null)
- ]
+]
 }
 ui_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777233,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":15,"pressure":0.0,"pressed":false,"script":null)
- ]
+]
 }
 ui_up={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":12,"pressure":0.0,"pressed":false,"script":null)
- ]
+]
 }
 ui_down={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":13,"pressure":0.0,"pressed":false,"script":null)
- ]
+]
 }
 move_up={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":87,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":119,"echo":false,"script":null)
+]
 }
 move_down={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":115,"echo":false,"script":null)
+]
 }
 move_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":65,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":97,"echo":false,"script":null)
+]
 }
 move_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":68,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"key_label":0,"unicode":100,"echo":false,"script":null)
+]
 }
 menu_inventory={
 "deadzone": 0.2,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777218,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":73,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":10,"pressure":0.0,"pressed":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194306,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":73,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":4,"pressure":0.0,"pressed":false,"script":null)
+]
 }
 inventory_less={
 "deadzone": 0.01,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777240,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":6,"pressure":0.0,"pressed":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194328,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":9,"pressure":0.0,"pressed":false,"script":null)
+]
 }
 inventory_more={
 "deadzone": 0.01,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":7,"pressure":0.0,"pressed":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194325,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":10,"pressure":0.0,"pressed":false,"script":null)
+]
 }
 inventory_filter={
 "deadzone": 0.01,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":70,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":3,"pressure":0.0,"pressed":false,"script":null)
- ]
+]
 }
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://example/translation/items.en.translation", "res://example/translation/items.uk.translation", "res://example/translation/ui.en.translation", "res://example/translation/ui.uk.translation")
 
 [locale]
 
-translations=PoolStringArray( "res://example/translation/items.en.translation", "res://example/translation/items.uk.translation", "res://example/translation/ui.en.translation", "res://example/translation/ui.uk.translation" )
+translations=PackedStringArray("res://example/translation/items.en.translation", "res://example/translation/items.uk.translation", "res://example/translation/ui.en.translation", "res://example/translation/ui.uk.translation")
 
 [physics]
 
@@ -419,7 +127,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_environment="res://default_env.tres"
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_environment="res://default_env.tres"

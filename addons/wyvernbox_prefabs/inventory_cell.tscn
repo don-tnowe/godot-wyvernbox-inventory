@@ -1,37 +1,39 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://b7jlucsddt6dg"]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id="2"]
 
-[sub_resource type="GradientTexture2D" id=1]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture2D" id="1"]
+gradient = SubResource("2")
 fill = 1
-fill_from = Vector2( 0.5, 0.5 )
-fill_to = Vector2( 4.85, 0.5 )
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(4.85, 0.5)
 
-[sub_resource type="Gradient" id=4]
-colors = PoolColorArray( 0.582031, 0.582031, 0.582031, 1, 0.339844, 0.339844, 0.339844, 1 )
+[sub_resource type="Gradient" id="4"]
+colors = PackedColorArray(0.582031, 0.582031, 0.582031, 1, 0.339844, 0.339844, 0.339844, 1)
 
-[sub_resource type="GradientTexture2D" id=3]
-gradient = SubResource( 4 )
+[sub_resource type="GradientTexture2D" id="3"]
+gradient = SubResource("4")
 fill = 1
-fill_from = Vector2( 0.4875, 0 )
-fill_to = Vector2( 0.504167, 1 )
+fill_from = Vector2(0.4875, 0)
+fill_to = Vector2(0.504167, 1)
 
 [node name="Cell" type="TextureRect"]
+custom_minimum_size = Vector2(14, 14)
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 14, 14 )
 mouse_filter = 2
-texture = SubResource( 1 )
-expand = true
+texture = SubResource("1")
+expand_mode = 1
 
 [node name="Inner" type="TextureRect" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = -1.0
-margin_bottom = -1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
 mouse_filter = 2
-texture = SubResource( 3 )
-expand = true
+texture = SubResource("3")
+expand_mode = 1

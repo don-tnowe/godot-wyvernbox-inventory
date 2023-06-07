@@ -1,76 +1,61 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://dgxmix0ikbfc2"]
 
-[ext_resource path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/wyvernbox/inventory_view.gd" type="Script" id=2]
-[ext_resource path="res://addons/wyvernbox/inventories/currency_inventory.gd" type="Script" id=3]
-[ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=6]
+[ext_resource type="PackedScene" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="3"]
+[ext_resource type="PackedScene" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="6"]
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id="3"]
 resource_local_to_scene = true
 resource_name = "CurrencyInventory"
-script = ExtResource( 3 )
-width = 5
-restricted_to_types = [ null, null, null, null, null ]
+script = ExtResource("3")
+restricted_to_types = [null, null, null, null, null]
 max_stack = 99999999
+width = 5
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id="2"]
 
-[sub_resource type="GradientTexture2D" id=1]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture2D" id="1"]
+gradient = SubResource("2")
 fill = 1
-fill_from = Vector2( 0.5, 0.5 )
-fill_to = Vector2( 4.85, 0.5 )
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(4.85, 0.5)
 
 [node name="Money" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 mouse_filter = 2
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
-inventory = SubResource( 3 )
-item_scene = ExtResource( 6 )
+script = ExtResource("2")
+inventory = SubResource("3")
+item_scene = ExtResource("6")
 show_backgrounds = false
 
 [node name="Cells" type="VBoxContainer" parent="."]
-margin_right = 28.0
-margin_bottom = 86.0
+layout_mode = 0
+offset_right = 28.0
+offset_bottom = 86.0
 
-[node name="Cell" parent="Cells" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 28.0
-margin_bottom = 14.0
-texture = SubResource( 1 )
+[node name="Cell" parent="Cells" instance=ExtResource("1")]
+layout_mode = 2
+texture = SubResource("1")
+expand_mode = 1
 
-[node name="Cell2" parent="Cells" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 28.0
-margin_bottom = 32.0
-texture = SubResource( 1 )
+[node name="Cell2" parent="Cells" instance=ExtResource("1")]
+layout_mode = 2
+texture = SubResource("1")
+expand_mode = 1
 
-[node name="Cell3" parent="Cells" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 36.0
-margin_right = 28.0
-margin_bottom = 50.0
-texture = SubResource( 1 )
+[node name="Cell3" parent="Cells" instance=ExtResource("1")]
+layout_mode = 2
+texture = SubResource("1")
+expand_mode = 1
 
-[node name="Cell4" parent="Cells" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 54.0
-margin_right = 28.0
-margin_bottom = 68.0
-texture = SubResource( 1 )
+[node name="Cell4" parent="Cells" instance=ExtResource("1")]
+layout_mode = 2
+texture = SubResource("1")
+expand_mode = 1
 
-[node name="Cell5" parent="Cells" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 72.0
-margin_right = 28.0
-margin_bottom = 86.0
-texture = SubResource( 1 )
+[node name="Cell5" parent="Cells" instance=ExtResource("1")]
+layout_mode = 2
+texture = SubResource("1")
+expand_mode = 1

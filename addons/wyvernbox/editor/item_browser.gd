@@ -1,16 +1,16 @@
-tool
+@tool
 extends PopupPanel
 
-export var type_colors := {
-	ItemType : Color.white,
-	ItemGenerator : Color.gold,
-	ItemPattern : Color.darkturquoise,
+@export var type_colors := {
+	ItemType : Color.WHITE,
+	ItemGenerator : Color.GOLD,
+	ItemPattern : Color.DARK_TURQUOISE,
 }
-export var item_list_column_width := 48.0
+@export var item_list_column_width := 48.0
 
-onready var folder_list : Tree = $"Box/Box/FolderList"
-onready var item_list : ItemList = $"Box/Panel/Box/Margins/ItemList"
-onready var path_text : Label = $"Box/Panel/Box/ItemPath"
+@onready var folder_list : Tree = $"Box/Box/FolderList"
+@onready var item_list : ItemList = $"Box/Panel/Box/Margins/ItemList"
+@onready var path_text : Label = $"Box/Panel/Box/ItemPath"
 
 var plugin : EditorPlugin
 
@@ -42,11 +42,11 @@ func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGe
 		ItemPattern in types_allowed,
 	]
 	for i in checkboxes.size():
-		checkboxes[i].pressed = allowed_types[i]
-		checkboxes[i].connect("toggled", self, "_on_type_filter_toggled", [i])
+		checkboxes[i].button_pressed = allowed_types[i]
+		checkboxes[i].connect("toggled", Callable(self, "_on_type_filter_toggled").bind(i))
 
 	var settings = plugin.get_editor_interface().get_editor_settings()
-	rect_size *= plugin.get_editor_interface().get_editor_scale()
+	size *= plugin.get_editor_interface().get_editor_scale()
 
 	_scan_item_folders()
 	_fill_item_list()
@@ -59,12 +59,11 @@ func _scan_item_folders():
 		if node == null: break
 		node.free()
 
-	var dir = Directory.new()
-	var folder_queue = []
-	var cur_folder = "res://"
+	var folder_queue := []
+	var cur_folder := "res://"
+	var dir := DirAccess.open(cur_folder)
 	while true:
-		dir.open(cur_folder)
-		dir.list_dir_begin(true, true)
+		dir.list_dir_begin()
 		while true:
 			var cur_item = dir.get_next()
 			if cur_item == "":
@@ -111,7 +110,7 @@ func _fill_item_list():
 		for x in items_by_dir[k]:
 			type_allowed = true
 			for i in type_colors_keys.size():
-				if x is type_colors_keys[i]:
+				if type_colors_keys[i].instance_has(x):
 					label_color = type_colors[type_colors_keys[i]]
 					if !allowed_types[i]:
 						type_allowed = false
@@ -132,7 +131,7 @@ func _fill_item_list():
 
 	item_list.hide()
 	item_list.show()
-	item_list.fixed_column_width = item_list.rect_size.x / ceil(item_list.rect_size.x / item_list_column_width)
+	item_list.fixed_column_width = item_list.size.x / ceil(item_list.size.x / item_list_column_width)
 
 
 func _on_visibility_changed():
@@ -150,10 +149,10 @@ func _on_item_list_gui_input(event : InputEvent):
 		var item = load(paths_in_list[index])
 		path_text.text = item.resource_path
 		for k in type_colors:
-			if item is k:
+			if k.instance_has(item):
 				path_text.self_modulate = type_colors[k]
 
-	elif event is InputEventMouseButton && event.pressed && event.button_index == BUTTON_LEFT:
+	elif event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
 		var drag_preview = Label.new()
 		drag_preview.text = paths_in_list[index]
 		call_deferred("force_drag", {"files" : [paths_in_list[index]], "type" : "files"}, drag_preview)

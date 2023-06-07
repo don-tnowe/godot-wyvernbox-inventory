@@ -1,24 +1,26 @@
-class_name GroundItemManager, "res://addons/wyvernbox/icons/ground_item_manager.png"
+@icon("res://addons/wyvernbox/icons/ground_item_manager.png")
+class_name GroundItemManager
 extends Node
 
 signal item_clicked(item_node)
 
-# File path to autosave into when the scene changes or game is closed.
-# Save can also be triggered manually via [method save_state].
-# Only supports "user://" paths.
-export var autosave_file_path := ""
+## File path to autosave into when the scene changes or game is closed.
+## Save can also be triggered manually via [method save_state].
+## Only supports "user://" paths.
+@export var autosave_file_path := ""
 
-# Scene with a [GroundItemStackView2D] or [GroundItemStackView3D] root to instantiate when [method add_item] gets called.
-export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
+## Scene with a [GroundItemStackView2D] or [GroundItemStackView3D] root to instantiate when [method add_item] gets called.
+@export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn")
 
-# Items that don't match these ItemPatterns or ItemTypes will be dimmed out.
-export(Array, Resource) var view_filter_patterns setget _set_view_filters
+## Items that don't match these ItemPatterns or ItemTypes will be dimmed out.
+@export var view_filter_patterns : Array[ItemLike]:
+	set = _set_view_filters
 
-# Defines min and max distance items jump with unset [code]throw_vector[/code].
-export var spawn_jump_length_range := Vector2(48.0, 96.0)
+## Defines min and max distance items jump with unset [code]throw_vector[/code].
+@export var spawn_jump_length_range := Vector2(48.0, 96.0)
 
-# Defines upwards velocity for 3D physics items, or arc height for non-physics items. Unused in 2D.
-export var spawn_jump_upwards := 1.0
+## Defines upwards velocity for 3D physics items, or arc height for non-physics items. Unused in 2D.
+@export var spawn_jump_upwards := 1.0
 
 
 func _set_view_filters(v):
@@ -29,18 +31,18 @@ func _set_view_filters(v):
 func _ready():
 	add_to_group("ground_item_manager")
 	add_to_group("view_filterable")
-	connect("child_entered_tree", self, "_on_child_entered_tree")
+	child_entered_tree.connect(_on_child_entered_tree)
 	load_state(autosave_file_path)
 
 
 func _exit_tree():
 	save_state(autosave_file_path)
 
-# Creates an in-world representation of stack [code]stack[/code] at global position [code]global_pos[/code].
-# If [code]throw_vector[/code] set, the item will also jump landing at position [code]global_pos + throw_vector[/code].
-# If [code]throw_vector[/code] not set, item will land a random short distance nearby.
+## Creates an in-world representation of stack [code]stack[/code] at global position [code]global_pos[/code].
+## If [code]throw_vector[/code] set, the item will also jump landing at position [code]global_pos + throw_vector[/code].
+## If [code]throw_vector[/code] not set, item will land a random short distance nearby.
 func add_item(stack : ItemStack, global_pos, throw_vector = null):
-	var item_node = item_scene.instance()
+	var item_node = item_scene.instantiate()
 	item_node.set_stack(stack)
 	add_child(item_node)
 
@@ -48,18 +50,18 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 		item_node.global_position = global_pos
 
 	else:
-		item_node.global_translation = global_pos
+		item_node.global_position = global_pos
 
 	if throw_vector == null:
 		throw_vector = item_node.get_random_jump_vector(spawn_jump_length_range.x, spawn_jump_length_range.y)
 
 	item_node.jump_to_pos(global_pos + throw_vector, spawn_jump_upwards)
 
-# Loads ground items from [code]array[/code] created via [method to_array].
+## Loads ground items from [code]array[/code] created via [method to_array].
 func load_from_array(array : Array):
 	var new_node : Node
 	for x in array:
-		new_node = item_scene.instance()
+		new_node = item_scene.instantiate()
 		add_child(new_node)
 		new_node.skip_spawn_animation()
 
@@ -71,9 +73,9 @@ func load_from_array(array : Array):
 			new_node.position = x["position"]
 
 		else:
-			new_node.translation = x["position"]
+			new_node.position = x["position"]
 
-# Returns all ground items as an array of dictionaries. Useful for serialization.
+## Returns all ground items as an array of dictionaries. Useful for serialization.
 func to_array():
 	var children = get_children()
 	var array = []
@@ -84,7 +86,7 @@ func to_array():
 			"count" : children[i].item_count,
 			"extra" : children[i].item_extra,
 			"name" : children[i].item_affixes,
-			"position" : (children[i].position if (children[i] is Node2D) else children[i].translation)
+			"position" : (children[i].position if (children[i] is Node2D) else children[i].position)
 		}
 	
 	return array
@@ -93,15 +95,15 @@ func to_array():
 func _align_labels():
 	var nodes = get_children()
 	if nodes.size() == 0: return
-	if !Input.is_action_pressed("inventory_less"):
+	if !Input.is_action_pressed(&"inventory_less"):
 		for x in nodes:
 			x.set_label_visible(false)
 
 		return
 
-	# TODO: 3D needs special care: camera moves all the time so overlap detection must be optimized
-	# (also 3D labels look abhorrent, must separate them all on a shared UI layer so they can be moved in screen space)
-	if nodes[0] is Spatial:
+	## TODO: 3D needs special care: camera moves all the time so overlap detection must be optimized
+	## (also 3D labels look abhorrent, must separate them all on a shared UI layer so they can be moved in screen space)
+	if nodes[0] is Node3D:
 		for x in nodes: x.set_label_visible(true)
 		return
 
@@ -115,21 +117,21 @@ func _align_labels():
 		nodes[i].set_label_visible(false)
 
 		var rect = Rect2(
-			nodes[i].global_position.snapped(Vector2(1, cur_label_rect.rect_size.y)),
-			cur_label_rect.rect_size
+			nodes[i].global_position.snapped(Vector2(1, cur_label_rect.size.y)),
+			cur_label_rect.size
 		)
 		rect.size.y -= 1
-		rect.position -= cur_label_rect.rect_size * Vector2(0.5, 1.5)
+		rect.position -= cur_label_rect.size * Vector2(0.5, 1.5)
 
 		if screen_rect.intersects(rect):
-			rect = _move_to_free_space(rect, rects, cur_label_rect.rect_size.y)
+			rect = _move_to_free_space(rect, rects, cur_label_rect.size.y)
 
 		rects[i] = rect
 		nodes[i].set_label_visible(true)
 		nodes[i].get_node("Label").global_position = (
 			rect.position
 			+ rect.size * 0.5
-			+ Vector2(0, cur_label_rect.rect_size.y)
+			+ Vector2(0, cur_label_rect.size.y)
 		)
 
 
@@ -148,32 +150,31 @@ func _apply_view_filters(stack_index : int = -1):
 
 	get_child(stack_index).filter_hidden = !all_match
 
-# Writes ground items to file [code]filename[/code].
-# Only [code]user://[/code] paths are supported.
+## Writes ground items to file [code]filename[/code].
+## Only [code]user://[/code] paths are supported.
 func save_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 
-	var file = File.new()
-	var dir = Directory.new()
-	if !dir.dir_exists(filename.get_base_dir()):
-		dir.make_dir_recursive(filename.get_base_dir())
+	var filename_dir = filename.get_base_dir()
+	var dir = DirAccess.open(filename_dir)
+	if !dir == null:
+		DirAccess.open("res://").make_dir_recursive(filename.get_base_dir())
 
-	file.open(filename, File.WRITE)
+	var file = FileAccess.open(filename, FileAccess.WRITE)
 	file.store_var(to_array())
 
-# Loads ground items from file [code]filename[/code].
-# Only [code]user://[/code] paths are supported.
+## Loads ground items from file [code]filename[/code].
+## Only [code]user://[/code] paths are supported.
 func load_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 
-	var file = File.new()
-	var dir = Directory.new()
+	var file = FileAccess.open(filename, FileAccess.READ)
 	if !file.file_exists(filename):
 		return
 
-	file.open(filename, File.READ)
+	file.open(filename, FileAccess.READ)
 	load_from_array(file.get_var())
 
 
@@ -196,15 +197,15 @@ func _move_to_free_space(rect : Rect2, label_rects : Array, upwards_step : float
 
 func _unhandled_input(event):
 	if event.is_echo(): return
-	if event.is_action("inventory_less"):
+	if event.is_action(&"inventory_less"):
 		_align_labels()
-		_align_labels()  # Can't figure why it doesn't work the first time
+		_align_labels()  ## Can't figure why it doesn't work the first time
 
 
 func _on_child_entered_tree(child):
-	child.connect("clicked", self, "_on_item_clicked", [child])
-	call_deferred("_apply_view_filters", child.get_position_in_parent())
+	child.clicked.connect(_on_item_clicked.bind(child))
+	_apply_view_filters.call_deferred(child.get_index())
 
 
 func _on_item_clicked(item):
-	emit_signal("item_clicked", item)
+	item_clicked.emit(item)

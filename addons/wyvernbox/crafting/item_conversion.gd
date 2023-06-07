@@ -1,17 +1,22 @@
-tool
-class_name ItemConversion, "res://addons/wyvernbox/icons/item_conversion.png"
+@tool
+@icon("res://addons/wyvernbox/icons/item_conversion.png")
+class_name ItemConversion
 extends Resource
 
-# Name of the conversion displayed in tooltips. Can be a locale string.
-export var name := "Insert name or full locale string"
-# The input [ItemType]s or [ItemPattern]s.
-export(Array, Resource) var input_types setget _set_input_types
-# The required count of input [ItemType]s or [ItemPattern]s.
-export(Array, int) var input_counts setget _set_input_counts
-# The output [ItemType]s or [ItemGenerator]s.
-export(Array, Resource) var output_types setget _set_output_types
-# The minimum and maximum counts of output [ItemType]s or [ItemGenerator]s.
-export(Array, Vector2) var output_ranges setget _set_output_ranges
+## Name of the conversion displayed in tooltips. Can be a locale string.
+@export var name := "Insert name or full locale string"
+## The input [ItemType]s or [ItemPattern]s.
+@export var input_types : Array[Resource]:
+	set = _set_input_types
+## The required count of input [ItemType]s or [ItemPattern]s.
+@export var input_counts : Array[int]:
+	set = _set_input_counts
+## The output [ItemType]s or [ItemGenerator]s.
+@export var output_types : Array[Resource]:
+	set = _set_output_types
+## The minimum and maximum counts of output [ItemType]s or [ItemGenerator]s.
+@export var output_ranges : Array[Vector2]:
+	set = _set_output_ranges
 
 
 func _set_input_types(v):
@@ -33,9 +38,9 @@ func _set_output_ranges(v):
 	output_ranges = v
 	output_types.resize(v.size())
 
-# Applies conversion, consuming items from [code]draw_from_inventories[/code].
-# Set [code]rng[/code] to define a generator to determine [ItemGenerator] outcomes; if not set, uses global RNG.
-# Set [code]unsafe[/code] to avoid checking if all required items are present.
+## Applies conversion, consuming items from [code]draw_from_inventories[/code].
+## Set [code]rng[/code] to define a generator to determine [ItemGenerator] outcomes; if not set, uses global RNG.
+## Set [code]unsafe[/code] to avoid checking if all required items are present.
 func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, unsafe : bool = false) -> Array:
 	if !unsafe && !can_apply(draw_from_inventories):
 		return []
@@ -67,37 +72,37 @@ func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, un
 
 	return results
 
-# Returns [code]true[/code] if all requirements are contained inside [code]draw_from_inventories[/code].
+## Returns [code]true[/code] if all requirements are contained inside [code]draw_from_inventories[/code].
 func can_apply(draw_from_inventories : Array) -> bool:
 	return dict_has_enough(
 		count_all_inventories(draw_from_inventories, input_types),
 		keys_values_to_dict(input_types, input_counts)
 	)
 
-# Returns [code]true[/code] if all item counts inside [code]item_counts[/code] are sufficient.
+## Returns [code]true[/code] if all item counts inside [code]item_counts[/code] are sufficient.
 func can_apply_with_items(item_counts : Dictionary) -> bool:
 	return dict_has_enough(
 		item_counts,
 		keys_values_to_dict(input_types, input_counts)
 	)
 
-# Sorts [code]all_inventory_views[/code] by their [member InventoryView.auto_take_priority].
+## Sorts [code]all_inventory_views[/code] by their [member InventoryView.auto_take_priority].
 func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
 	all_inventory_views = get_takeable_inventories(all_inventory_views)
-	all_inventory_views.sort_custom(self, "_compare_priorities")
+	all_inventory_views.sort_custom(Callable(self, "_compare_priorities"))
 	return all_inventory_views
 
-# Returns the Rich Text representation of this conversion's inputs and outputs.
+## Returns the Rich Text representation of this conversion's inputs and outputs.
 func get_bbcode(owned_item_counts = {}) -> String:
 	var result = "\n[center]" + tr("item_tt_crafting_in")
 	var x
 	var item_text
 	for i in input_types.size():
 		x = input_types[i]
-		# 4[icon] Red Potion
+		## 4[icon] Red Potion
 		item_text = ""
 		if x is ItemPattern && x.name == "":
-			# 4[icon] Red Potion OR 4[blue potion] OR 4[purple potion] (have 2)
+			## 4[icon] Red Potion OR 4[blue potion] OR 4[purple potion] (have 2)
 			for pattern_i in x.items.size():
 				if item_text != "": item_text += tr("item_tt_items_or")
 				item_text += "%s%s %s" % [
@@ -113,7 +118,7 @@ func get_bbcode(owned_item_counts = {}) -> String:
 				tr(x.name),
 			]
 
-		# 4[icon] Red Potion (have 2)
+		## 4[icon] Red Potion (have 2)
 		result += "\n%s [color=#%s]%s[/color]" % [
 			item_text,
 			("ff7f7f" if owned_item_counts.get(x, 0) < input_counts[i] else "ffffff"),
@@ -124,7 +129,7 @@ func get_bbcode(owned_item_counts = {}) -> String:
 	for i in output_types.size():
 		x = output_types[i]
 		var out_range = output_ranges[i]
-		# 4-6[icon] Red Potion
+		## 4-6[icon] Red Potion
 		result += "\n%s%s%s %s" % [
 			out_range.x,
 			"-" + str(out_range.y) if out_range.x != out_range.y else "",
@@ -134,14 +139,14 @@ func get_bbcode(owned_item_counts = {}) -> String:
 	
 	return result
 
-# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
-# The returned arrays must contain:
-# - Property editor label : String
-# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
-# - Column labels : Array[String] (each vector array must have two/three)
-# - Columns are integer? : bool (each vector array maps to one)
-# - Column default values : Variant
-# - Allowed resource types : Array[Script or Classname]
+## Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+## The returned arrays must contain:
+## - Property editor label : String
+## - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+## - Column labels : Array[String] (each vector array must have two/three)
+## - Columns are integer? : bool (each vector array maps to one)
+## - Column default values : Variant
+## - Allowed resource types : Array[Script or Classname]
 func _get_wyvernbox_item_lists() -> Array:
 	return [
 		[
@@ -156,7 +161,7 @@ func _get_wyvernbox_item_lists() -> Array:
 		],
 	]
 
-# Counts types and patterns from [code]items_patterns[/code] inside [code]inventories[/code].
+## Counts types and patterns from [code]items_patterns[/code] inside [code]inventories[/code].
 static func count_all_inventories(inventories : Array, items_patterns) -> Dictionary:
 	var have_total = {}
 	var items_to_check = get_items_to_check(items_patterns)
@@ -168,7 +173,7 @@ static func count_all_inventories(inventories : Array, items_patterns) -> Dictio
 
 	return have_total
 
-# Returns [code]true[/code] if values inside [code]dict[/code] are no less than values with matching keys in [code]requirements[/code].
+## Returns [code]true[/code] if values inside [code]dict[/code] are no less than values with matching keys in [code]requirements[/code].
 static func dict_has_enough(dict : Dictionary, requirements : Dictionary) -> bool:
 	for k in requirements:
 		if !dict.has(k) || dict[k] < requirements[k]:
@@ -176,7 +181,7 @@ static func dict_has_enough(dict : Dictionary, requirements : Dictionary) -> boo
 
 	return true
 
-# Returns a copy of [code]all_inventory_views[/code] without inventories where [code]InventoryView.InteractionFlags.CAN_TAKE_AUTO[/code] is not set.
+## Returns a copy of [code]all_inventory_views[/code] without inventories where [code]InventoryView.InteractionFlags.CAN_TAKE_AUTO[/code] is not set.
 static func get_takeable_inventories(all_inventory_views : Array) -> Array:
 	var result = []
 	for x in all_inventory_views:
@@ -185,7 +190,7 @@ static func get_takeable_inventories(all_inventory_views : Array) -> Array:
 
 	return result
 
-# Constructs a dictionary where keys match [code]keys[/code] and values match corresponding elements of [code]values[/code].
+## Constructs a dictionary where keys match [code]keys[/code] and values match corresponding elements of [code]values[/code].
 static func keys_values_to_dict(keys : Array, values : Array) -> Dictionary:
 	var result = {}
 	for i in keys.size():
@@ -193,7 +198,7 @@ static func keys_values_to_dict(keys : Array, values : Array) -> Dictionary:
 
 	return result
 
-# Collects all required items for [method Inventory.consume_items].
+## Collects all required items for [method Inventory.consume_items].
 static func get_items_to_check(items_patterns) -> Dictionary:
 	var dict := {}
 	for x in items_patterns:

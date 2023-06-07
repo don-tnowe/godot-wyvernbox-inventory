@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://example/graphics/gradients/green1.tres" type="Texture" id=1]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_5.tres" type="Texture" id=2]
+[ext_resource path="res://example/graphics/gradients/green1.tres" type="Texture2D" id=1]
+[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_5.tres" type="Texture2D" id=2]
 [ext_resource path="res://addons/wyvernbox/equip_bonus.gd" type="Script" id=3]
 
 [resource]

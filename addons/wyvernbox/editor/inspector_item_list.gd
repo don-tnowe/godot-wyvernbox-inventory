@@ -47,12 +47,12 @@ func _init(
 	var property_buttons = HBoxContainer.new()
 	browse_button.text = "Browse Items..."
 	browse_button.flat = true
-	browse_button.connect("pressed", self, "_on_browse_pressed")
+	browse_button.connect("pressed", Callable(self, "_on_browse_pressed"))
 	browse_button.size_flags_horizontal = SIZE_EXPAND_FILL
 
 	var vis_button = Button.new()
 	vis_button.flat = true
-	vis_button.connect("pressed", self, "_on_vis_pressed")
+	vis_button.connect("pressed", Callable(self, "_on_vis_pressed"))
 
 	add_child(property_buttons)
 	property_buttons.add_child(browse_button)
@@ -73,9 +73,9 @@ func _init(
 	_init_headers(column_labels)
 	_init_items(columns_int)
 
-	yield(self, "ready")
+	await self.ready
 
-	vis_button.icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+	vis_button.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 
 
 func _ensure_no_empty(column_defaults):
@@ -92,7 +92,7 @@ func _ensure_no_empty(column_defaults):
 		emit_changed(column_properties[i], column_arrays[i], "", true)
 
 
-func can_drop_data(position, data):
+func _can_drop_data(position, data):
 	if data.has("inspector_item_list_drag_from"):
 		return true
 
@@ -105,7 +105,7 @@ func can_drop_data(position, data):
 	return true
 
 
-func drop_data(position, data):
+func _drop_data(position, data):
 	if data.has("inspector_item_list_drag_from") && data["inside_list"] == self:
 		move_item(data["inspector_item_list_drag_from"], _get_mouseover_item(get_global_mouse_position()))
 		return
@@ -113,19 +113,19 @@ func drop_data(position, data):
 	for x in data.get("files", []):
 		var loaded = load(x)
 		for y in allowed_types:
-			if loaded is y:
+			if y. loaded:
 				add_item(loaded)
 				break
 
 	for x in data.get("resources", []):
 		for y in allowed_types:
-			if x is y:
+			if y. x:
 				add_item(x)
 				break
 
 
 func _gui_input(event):
-	if event is InputEventMouseButton && event.pressed && event.button_index == BUTTON_LEFT:
+	if event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
 		var index_grabbed = _get_mouseover_item(event.global_position)
 		if index_grabbed < 0: return
 		# get_drag_data does not work :/
@@ -137,7 +137,7 @@ func _gui_input(event):
 
 func _get_mouseover_item(global_pos):
 	var icon = grid_l.get_child(grid_l.columns)
-	return floor((global_pos.y - icon.rect_global_position.y) / (icon.rect_size.y + grid_l.get_constant("vseparation")))
+	return floor((global_pos.y - icon.global_position.y) / (icon.size.y + grid_l.get_constant("v_separation")))
 
 
 func add_item(item):
@@ -217,20 +217,20 @@ func _add_item_control(item):
 	label.clip_text = true
 	grid_l.add_child(label)
 
-	icon.rect_min_size.x = label.get_minimum_size().y
+	icon.custom_minimum_size.x = label.get_minimum_size().y
 
 	var edit_button = Button.new()
 	grid_l.add_child(edit_button)
-	edit_button.connect("pressed", self, "_on_edit_button_pressed", [edit_button])
+	edit_button.connect("pressed", Callable(self, "_on_edit_button_pressed").bind(edit_button))
 
 	grid_l.columns = 3
 	_update_item_in_control(grid_l.get_child_count() / grid_l.columns - 2, item)
 
 	if !is_inside_tree():
 		# Only inherits theme if has a parent <= is in tree
-		yield(self, "ready")
+		await self.ready
 
-	edit_button.icon = get_icon("Edit", "EditorIcons")
+	edit_button.icon = get_theme_icon("Edit", "EditorIcons")
 
 
 func _update_item_in_control(row_index, item):
@@ -253,12 +253,12 @@ func _update_item_in_control(row_index, item):
 	else:
 		label.text = item.resource_name
 
-	label.hint_tooltip = item.resource_path
+	label.tooltip_text = item.resource_path
 	if item is ItemGenerator:
-		label.modulate = Color.gold
+		label.modulate = Color.GOLD
 
 	if item is ItemPattern:
-		label.modulate = Color.darkturquoise
+		label.modulate = Color.DARK_TURQUOISE
 
 
 func _resource_is_local(path):
@@ -293,36 +293,36 @@ func _add_cell_control(value, property_name, is_int = false, vec_component = -1)
 	slider.allow_greater = true
 	slider.hide_slider = true
 	slider.max_value = 999999999.9
-	slider.rect_min_size.x = 48.0
+	slider.custom_minimum_size.x = 48.0
 	slider.size_flags_horizontal = SIZE_EXPAND_FILL
 
 	slider.value = value
 	grid_r.add_child(slider)
 	add_focusable(slider)
 
-	slider.connect("value_changed", self, "_on_cell_value_edited", [
+	slider.value_changed.connect("_on_cell_value_edited").bind(
 		slider,
 		property_name,
 		vec_component,
-	])
+	)
 
 
 func _add_delete_button():
 	var button = Button.new()
 	grid_r.add_child(button)
-	button.connect("pressed", self, "_on_delete_button_pressed", [button])
+	button.connect("pressed", Callable(self, "_on_delete_button_pressed").bind(button))
 	if !is_inside_tree():
-		yield(self, "ready")
+		await self.ready
 
-	button.icon = get_icon("Remove", "EditorIcons")
+	button.icon = get_theme_icon("Remove", "EditorIcons")
 
 
 func _init_headers(column_labels):
-	var label = Button.new()
+	var label := Button.new()
 	label.text = "Item"
 	label.disabled = true
 	label.mouse_filter = MOUSE_FILTER_IGNORE
-	label.align = Button.ALIGN_LEFT
+	label.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	grid_l.add_child(Control.new())
 	grid_l.add_child(label)
 	grid_l.add_child(Control.new())
@@ -331,7 +331,7 @@ func _init_headers(column_labels):
 		label.text = x
 		label.disabled = true
 		label.mouse_filter = MOUSE_FILTER_IGNORE
-		label.align = Button.ALIGN_LEFT
+		label.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		grid_r.add_child(label)
 
 	grid_r.add_child(Control.new())
@@ -430,19 +430,19 @@ func _on_edit_button_pressed(button):
 
 func _on_browse_pressed():
 	if browse_window == null:
-		browse_window = load("res://addons/wyvernbox/editor/item_browser.tscn").instance()
+		browse_window = load("res://addons/wyvernbox/editor/item_browser.tscn").instantiate()
 		browse_button.add_child(browse_window)
 		browse_window.initialize(plugin, allowed_types)
 		browse_window.popup()
 		browse_window.hide()
 
 	browse_window.visible = !browse_window.visible
-	browse_window.rect_position = Vector2(
-		get_node("../../../..").rect_global_position.x - browse_window.rect_size.x - 8.0,
-		rect_global_position.y
+	browse_window.position = Vector2(
+		get_node("../../../..").global_position.x - browse_window.size.x - 8.0,
+		global_position.y
 	)
 
 
 func _on_vis_pressed():
 	bottom.visible = !bottom.visible
-	get_child(0).get_child(1).icon = get_icon("GuiVisibilityVisible" if bottom.visible else "GuiVisibilityHidden", "EditorIcons")
+	get_child(0).get_child(1).icon = get_theme_icon("GuiVisibilityVisible" if bottom.visible else "GuiVisibilityHidden", "EditorIcons")

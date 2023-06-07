@@ -1,49 +1,53 @@
-tool
-class_name InventoryVendor, "res://addons/wyvernbox/icons/vendor.png"
+@tool
+@icon("res://addons/wyvernbox/icons/vendor.png")
+class_name InventoryVendor
 extends Node
 
 signal item_received(item_stack)
 signal item_given(item_stack)
 signal item_cant_afford(item_stack)
 
-# The [InventoryView] I can place my stock into!
-export var vendor_inventory := NodePath()
+## The [InventoryView] I can place my stock into!
+@export var vendor_inventory := NodePath()
 
-# The [InventoryView] where I can place the price of items I receive!
-export var sell_reward_into_inventory := NodePath()
+## The [InventoryView] where I can place the price of items I receive!
+@export var sell_reward_into_inventory := NodePath()
 
-# How expensive and prestige my wares are!
-# Price will be from the item's "price" extra property multiplied by this.
-export var price_markup := 2.0
+## How expensive and prestige my wares are!
+## Price will be from the item's "price" extra property multiplied by this.
+@export var price_markup := 2.0
 
-# Apply this [ItemGenerator] to all of my stock!
-export var apply_to_all_stock : Resource
+## Apply this [ItemGenerator] to all of my stock!
+@export var apply_to_all_stock : ItemGenerator
 
-# My precious wares that your player can buy!
-export(Array, Resource) var stock setget _set_stock
+## My precious wares that your player can buy!
+@export var stock : Array[ItemLike]:
+	set = _set_stock
 
-# The amount of each item I sell at once.
-export(Array, int) var stock_counts setget _set_stock_counts
+## The amount of each item I sell at once.
+@export var stock_counts : Array[int]:
+	set = _set_stock_counts
 
-# The number of times your Player can buy each of my items! (1 for single-time purchase)
-export(Array, int) var stock_restocks setget _set_stock_restocks
-
-
-# If set, I can bring unlimited supplies of my wares! (if one has enough coin to buy them, thet is!)
-export var infinite_restocks := true
-
-# If set, I will remove the price tag off my items, so they can not be re-sold anywhere!
-export var remove_price_on_buy := false
-
-# If set, items the Player sells me will be gone forever once they look away! (or my parent node becomes invisible)
-# [method clear_sold_items] can be called manually to clear on demand.
-export var clear_sold_items_when_hidden := true
-
-# If set, my [member price_markup] will not get applied to items the Player sells to me!
-export var free_buyback := true
+## The number of times your Player can buy each of my items! (1 for single-time purchase)
+@export var stock_restocks : Array[int]:
+	set = _set_stock_restocks
 
 
-# The [RandomNumberGenerator] used by my intricate [ItemGenerator]s!
+## If set, I can bring unlimited supplies of my wares! (if one has enough coin to buy them, thet is!)
+@export var infinite_restocks := true
+
+## If set, I will remove the price tag off my items, so they can not be re-sold anywhere!
+@export var remove_price_on_buy := false
+
+## If set, items the Player sells me will be gone forever once they look away! (or my parent node becomes invisible)
+## [method clear_sold_items] can be called manually to clear on demand.
+@export var clear_sold_items_when_hidden := true
+
+## If set, my [member price_markup] will not get applied to items the Player sells to me!
+@export var free_buyback := true
+
+
+## The [RandomNumberGenerator] used by my intricate [ItemGenerator]s!
 var rng = RandomNumberGenerator.new()
 
 
@@ -69,13 +73,13 @@ func _resize_arrays(size):
 
 
 func _ready():
-	if Engine.editor_hint: return
+	if Engine.is_editor_hint(): return
 
 	rng.randomize()
 	refill_stock()
-	get_parent().connect("visibility_changed", self, "_on_visibility_changed")
+	get_parent().connect("visibility_changed", Callable(self, "_on_visibility_changed"))
 
-# Replenishes the inventory's contents with fresh stock from get_stock.
+## Replenishes the inventory's contents with fresh stock from get_stock.
 func refill_stock():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items:
@@ -86,9 +90,9 @@ func refill_stock():
 		_put_up_for_sale(stack, inventory, i)
 		inventory.try_add_item(stack)
 
-# Returns stack with type from [member stock] with count [member stock_counts] purchasable [member stock_restocks] + 1 times.
-# If it's an [ItemGenerator], adds first output stack of that.
-# If [member apply_to_all_stock] set, always applies that.
+## Returns stack with type from [member stock] with count [member stock_counts] purchasable [member stock_restocks] + 1 times.
+## If it's an [ItemGenerator], adds first output stack of that.
+## If [member apply_to_all_stock] set, always applies that.
 func get_stock(index : int) -> ItemStack:
 	var stack
 	if stock[index] is ItemGenerator:
@@ -103,22 +107,22 @@ func get_stock(index : int) -> ItemStack:
 
 	return stack
 
-# Clears all items placed here by the player.
-# If [member clear_sold_items_when_hidden], gets called automatically when the parent [CanvasItem] gets hidden.
+## Clears all items placed here by the player.
+## If [member clear_sold_items_when_hidden], gets called automatically when the parent [CanvasItem] gets hidden.
 func clear_sold_items():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items.duplicate():
 		if x.extra_properties["seller_stash_index"] == -1:
 			inventory.remove_item(x)
 
-# Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
-# The returned arrays must contain:
-# - Property editor label : String
-# - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
-# - Column labels : Array[String] (each vector array must have two/three)
-# - Columns are integer? : bool (each vector array map to one)
-# - Column default values : Variant
-# - Allowed resource types : Array[Script or Classname]
+## Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
+## The returned arrays must contain:
+## - Property editor label : String
+## - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
+## - Column labels : Array[String] (each vector array must have two/three)
+## - Columns are integer? : bool (each vector array map to one)
+## - Column default values : Variant
+## - Allowed resource types : Array[Script or Classname]
 func _get_wyvernbox_item_lists() -> Array:
 	return [[
 		"Stock", ["stock", "stock_counts", "stock_restocks"],
@@ -181,10 +185,10 @@ func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
 		if remove_price_on_buy:
 			item_stack.extra_properties.erase("price")
 		
-		emit_signal("item_given", item_stack)
+		item_given.emit(item_stack)
 
 	else:
-		emit_signal("item_cant_afford", item_stack)
+		item_cant_afford.emit(item_stack)
 
 
 func _restock_item(item_stack : ItemStack, inventory : Inventory):
@@ -198,7 +202,7 @@ func _restock_item(item_stack : ItemStack, inventory : Inventory):
 
 	# The item is not yet removed, only attempted to remove.
 	# Wait until the restock can be placed 
-	yield(get_tree(), "idle_frame")
+	await get_tree().process_frame
 
 	if !inventory.can_place_item(restock_item, restock_pos):
 		restock_pos = inventory.get_free_position(restock_item)
@@ -218,7 +222,7 @@ func _on_Inventory_item_stack_added(item_stack : ItemStack):
 		# Those are mine! Why would I give you money for MY items?!?!
 		return
 	
-	emit_signal("item_received", item_stack)
+	item_received.emit(item_stack)
 	if item_stack.extra_properties.has("price") && has_node(sell_reward_into_inventory):
 		var inventory = get_node(sell_reward_into_inventory).inventory
 		var reward = item_stack.extra_properties["price"]

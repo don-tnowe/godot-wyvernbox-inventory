@@ -1,6 +1,49 @@
-[gd_resource type="Theme" load_steps=2 format=2]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://75b71yv7xu1e"]
 
-[ext_resource path="res://example/theme/font/font_body.tres" type="DynamicFont" id=1]
+[ext_resource type="FontFile" path="res://example/theme/font/font_body.tres" id="1"]
 
 [resource]
-default_font = ExtResource( 1 )
+default_font = ExtResource("1")
+Button/font_sizes/font_size = 12
+CheckBox/font_sizes/font_size = 16
+CheckButton/font_sizes/font_size = 16
+CodeEdit/font_sizes/font_size = 16
+ColorPickerButton/font_sizes/font_size = 16
+EditorFonts/font_sizes/bold_size = 10
+EditorFonts/font_sizes/doc_keyboard_size = 10
+EditorFonts/font_sizes/doc_size = 12
+EditorFonts/font_sizes/doc_source_size = 11
+EditorFonts/font_sizes/doc_title_size = 17
+EditorFonts/font_sizes/expression_size = 8
+EditorFonts/font_sizes/main_button_font_size = 10
+EditorFonts/font_sizes/main_size = 10
+EditorFonts/font_sizes/output_source_size = 9
+EditorFonts/font_sizes/rotation_control_size = 10
+EditorFonts/font_sizes/rulers_size = 6
+EditorFonts/font_sizes/source_size = 9
+EditorFonts/font_sizes/status_source_size = 10
+EditorFonts/font_sizes/title_size = 10
+HeaderLarge/font_sizes/font_size = 28
+HeaderMedium/font_sizes/font_size = 24
+HeaderSmall/font_sizes/font_size = 20
+ItemList/font_sizes/font_size = 16
+Label/font_sizes/font_size = 12
+LineEdit/font_sizes/font_size = 12
+LinkButton/font_sizes/font_size = 16
+MenuBar/font_sizes/font_size = 16
+MenuButton/font_sizes/font_size = 16
+OptionButton/font_sizes/font_size = 16
+PopupMenu/font_sizes/font_separator_size = 16
+PopupMenu/font_sizes/font_size = 16
+ProgressBar/font_sizes/font_size = 16
+RichTextLabel/font_sizes/bold_font_size = 12
+RichTextLabel/font_sizes/bold_italics_font_size = 12
+RichTextLabel/font_sizes/italics_font_size = 12
+RichTextLabel/font_sizes/mono_font_size = 12
+RichTextLabel/font_sizes/normal_font_size = 12
+TabBar/font_sizes/font_size = 8
+TabContainer/font_sizes/font_size = 8
+TextEdit/font_sizes/font_size = 12
+TooltipLabel/font_sizes/font_size = 16
+Tree/font_sizes/font_size = 16
+Window/font_sizes/title_font_size = 16

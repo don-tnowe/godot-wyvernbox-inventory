@@ -1,6 +1,7 @@
-tool
-class_name ItemType, "res://addons/wyvernbox/icons/item_type.png"
-extends Resource
+@tool
+@icon("res://addons/wyvernbox/icons/item_type.png")
+class_name ItemType
+extends ItemLike
 
 enum SlotFlags {
 	SMALL = 1 << 0,
@@ -11,8 +12,8 @@ enum SlotFlags {
 	AMMO = 1 << 5,
 	CURRENCY = 1 << 6,
 	FUEL = 1 << 7,
-	QUEST = 1 << 8,
-	CRAFTING = 1 << 9
+	KEY = 1 << 8,
+	CRAFTING = 1 << 9,
 	#
 	#
 	#
@@ -28,7 +29,7 @@ enum SlotFlags {
 	E_RING = 1 << 22,
 	E_NECK = 1 << 23,
 }
-# Matches flags of all equipment slots (hands, helmet, chest, belt, handwear, footwear, ring and neck)
+## Matches flags of all equipment slots (hands, helmet, chest, belt, handwear, footwear, ring and neck)
 const EQUIPMENT_FLAGS := (
 	SlotFlags.E_MAINHAND
 	| SlotFlags.E_OFFHAND
@@ -40,93 +41,87 @@ const EQUIPMENT_FLAGS := (
 	| SlotFlags.E_RING
 	| SlotFlags.E_NECK
 )
-# The item's name. Can be a locale string.
-export var name := ""
+## The item's name. Can be a locale string.
+@export var name := ""
 
-# The item's description. Can be empty or a locale string.
-export(String, MULTILINE) var description := ""
+## The item's description. Can be empty or a locale string.
+@export var description := "" # (String, MULTILINE)
 
-# How many items can fit into a single stack.
-export var max_stack_count := 1
+## How many items can fit into a single stack.
+@export var max_stack_count := 1
 
-# How many cells, horizontally, this item occupies in a [GridInventory].
-export var in_inventory_width := 1
+## How many cells, horizontally, this item occupies in a [GridInventory].
+@export var in_inventory_width := 1
 
-# How many cells, vertically, this item occupies in a [GridInventory].
-export var in_inventory_height := 1
+## How many cells, vertically, this item occupies in a [GridInventory].
+@export var in_inventory_height := 1
 
-# The item's texture.
-export var texture : Texture
+## The item's texture.
+@export var texture : Texture2D
 
-# The [Mesh] to spawn when it gets created on the ground. If not set, shows [member Texture].
-export var mesh : Mesh
+## The [Mesh] to spawn when it gets created on the ground. If not set, shows [member Texture].
+@export var mesh : Mesh
 
-# Optionally, the [PackedScene] to spawn when it gets created on the ground.
-# If not set, uses scene set in [GroundItemManager] with [member mesh] or [member texture].
-export var custom_ground_prefab : PackedScene
+## Optionally, the [PackedScene] to spawn when it gets created on the ground.
+## If not set, uses scene set in [GroundItemManager] with [member mesh] or [member texture].
+@export var custom_ground_prefab : PackedScene
 
-# The scale of the item's texture.
-export var texture_scale := 1.0
+## The scale of the item's texture.
+@export var texture_scale := 1.0
 
-# The [code]SlotFlags[/code] of this item. Used in [RestrictedInventory].
-export(int, FLAGS,
-		"SMALL",
-		"LARGE",
-		"EQUIPMENT",
-		"QUEST",
-		"POTION",
-		"AMMO",
-		"CURRENCY",
-		"FUEL",
-		"QUEST",
-		"CRAFTING",
-		"#",
-		"#",
-		"#",
-		"#",
-		"#",
-		"E_MAINHAND",
-		"E_OFFHAND",
-		"E_HELM",
-		"E_CHEST",
-		"E_BELT",
-		"E_HANDS",
-		"E_FEET",
-		"E_RING",
-		"E_NECK"
+## The [code]SlotFlags[/code] of this item. Used in [RestrictedInventory].
+@export_flags(
+"SMALL",
+"LARGE",
+"EQUIPMENT",
+"QUEST",
+"POTION",
+"AMMO",
+"CURRENCY",
+"FUEL",
+"KEY",
+"CRAFTING",
+"#",
+"#",
+"#",
+"#",
+"#",
+"E_MAINHAND",
+"E_OFFHAND",
+"E_HELM",
+"E_CHEST",
+"E_BELT",
+"E_HANDS",
+"E_FEET",
+"E_RING",
+"E_NECK"
 	) var slot_flags := 1
-# The string representation of the type's [member default_properties].
-export(String, MULTILINE) var default_properties_string setget _set_default_properties_string
 
-# The type's default property dictionary.
-# For editing, [default_properties_string] or the Dictionary Inspector addon are recommended.
-# Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses.
-# [code]price[/code] is used for vendor prices, selling and buying.
-# [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground.
-export var default_properties : Dictionary setget _set_default_properties_dict
+## The string representation of the type's [member default_properties].
+@export_multiline var default_properties_string : String:
+	set(v):
+		var converted = str_to_var(v)
+		if converted is Dictionary: default_properties = converted
+	get: return var_to_str(default_properties)
 
-
-func _set_default_properties_string(v):
-	var converted = str2var(v)
-	default_properties_string = v
-	if !converted is Dictionary: return
-	default_properties = converted
+## The type's default property dictionary.
+## For editing, [default_properties_string] or the Dictionary Inspector addon are recommended.
+## Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses.
+## [code]price[/code] is used for vendor prices, selling and buying.
+## [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground.
+@export var default_properties : Dictionary
 
 
-func _set_default_properties_dict(v):
-	default_properties = v
-	default_properties_string = var2str(v)
-
-# Returns [member in_inventory_width] and [member in_inventory_height] as a [code]Vector2[/code].
+## Returns [member in_inventory_width] and [member in_inventory_height] as a [code]Vector2[/code].
 func get_size_in_inventory() -> Vector2:
 	return Vector2(in_inventory_width, in_inventory_height)
 
-# Returns [code]true[/code] if stack has the same type.
-# For compatibility with [method ItemPattern.matches].
+## Returns [code]true[/code] if stack has the same type.
+## For compatibility with [method ItemPattern.matches].
 func matches(stack) -> bool:
 	return stack.item_type == self
 
-# Returns the value it contributes to an [ItemConversion]. Equals to the stack's [member ItemStack.count].
-# For compatibility with [method ItemPattern.get_value].
+## Returns the value it contributes to an [ItemConversion]. Equals to the stack's [member ItemStack.count].
+## For compatibility with [method ItemPattern.get_value].
 func get_value(stack) -> int:
 	return stack.count

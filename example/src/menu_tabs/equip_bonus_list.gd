@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-export var equip_inventory_view := NodePath("../Equip")
+@export var equip_inventory_view := NodePath("../Equip")
 
 var stats := {}
 var stats_per_item := {}
@@ -52,7 +52,7 @@ func _update_stat_view():
 		"crit_power" : true,
 	}
 	var other_list = $"OtherStats"
-	other_list.bbcode_text = ""
+	other_list.text = ""
 	var stats_sorted = stats.keys()
 	stats_sorted.sort()
 	for k in stats_sorted:
@@ -105,24 +105,24 @@ func _update_nullable(node, stat, prefix : String = "", add_to_value : float = 0
 	
 	node.show()
 	_update_icon(node, str(value + add_to_value) + prefix, (
-			Color.white
+			Color.WHITE
 			if value > 0.01 else
 			Color(0.25, 0.25, 0.25)
 			if value <= 0.01 else
 			Color(1, 0.25, 0.25)
 		), (
-			Color.white
+			Color.WHITE
 			if value != 0 else
 			Color(0.0, 0.0, 0.0, 0.5)
 		), (
-			Color.white
+			Color.WHITE
 			if value != 0 else
-			Color.transparent
+			Color.TRANSPARENT
 		)
 	)
 
 
-func _update_icon(node, label, label_color = Color.white, icon_color = Color.white, back_color = Color.white):
+func _update_icon(node, label, label_color = Color.WHITE, icon_color = Color.WHITE, back_color = Color.WHITE):
 	node.get_node("Value").text = label
 	node.get_node("Value").self_modulate = label_color
 	node.get_node("Icon").self_modulate = icon_color

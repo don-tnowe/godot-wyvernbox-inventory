@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorPlugin
 
 
@@ -17,28 +17,28 @@ func _enter_tree():
 		"events" : [
 			create_input_event(InputEventKey, KEY_TAB),
 			create_input_event(InputEventKey, KEY_I),
-			create_input_event(InputEventJoypadButton, JOY_SELECT),
+			create_input_event(InputEventJoypadButton, JOY_BUTTON_BACK),
 		]
 	})
 	initialize_setting("input/inventory_less", {
 		"deadzone" : 0.01,
 		"events" : [
 			create_input_event(InputEventKey, KEY_ALT),
-			create_input_event(InputEventJoypadButton, JOY_L2),
+			create_input_event(InputEventJoypadButton, JOY_BUTTON_LEFT_SHOULDER),
 		]
 	})
 	initialize_setting("input/inventory_more", {
 		"deadzone" : 0.01,
 		"events" : [
 			create_input_event(InputEventKey, KEY_SHIFT),
-			create_input_event(InputEventJoypadButton, JOY_R2),
+			create_input_event(InputEventJoypadButton, JOY_BUTTON_RIGHT_SHOULDER),
 		]
 	})
 	initialize_setting("input/inventory_filter", {
 		"deadzone" : 0.01,
 		"events" : [
 			create_input_event(InputEventKey, KEY_F),
-			create_input_event(InputEventJoypadButton, JOY_XBOX_Y),
+			create_input_event(InputEventJoypadButton, JOY_BUTTON_Y),
 		]
 	})
 
@@ -55,7 +55,7 @@ func initialize_setting(key, value):
 
 func create_input_event(event_type, input_index):
 	var event = event_type.new()
-	if event_type == InputEventKey: event.scancode = input_index
+	if event_type == InputEventKey: event.keycode = input_index
 	if event_type == InputEventMouse: event.button_index = input_index
 	if event_type == InputEventJoypadButton: event.button_index = input_index
 	if event_type == InputEventJoypadMotion: event.axis = input_index

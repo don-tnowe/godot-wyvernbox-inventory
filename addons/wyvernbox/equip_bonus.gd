@@ -2,44 +2,44 @@ class_name EquipBonus
 extends Resource
 
 # The bonus's ID, stored in item's [member ItemStack.extra_properties] at "stats".
-export var id := "health"
+@export var id := "health"
 
 # The bonus's name. Can be a locale string.
-export var name := "health"
+@export var name := "health"
 
 # The bonus's description. Can be a locale string, or empty.
-export(String, MULTILINE) var description := "health"
+@export var description := "health" # (String, MULTILINE)
 
 # The affix appended or prepended to the name. Can be a locale string.
-export var affix := ""
+@export var affix := ""
 
 # The position of the affix: [code]-1[/code] if placed before name, [code]1[/code] if after.
-export var affix_position := -1
+@export var affix_position := -1
 
 # The icon of this bonus.
-export var texture : Texture
+@export var texture : Texture2D
 
 # The background texture of the icon.
-export var texture_back : Texture
+@export var texture_back : Texture2D
 
 # The maximum level of the bonus.
-export var max_level := 10
+@export var max_level := 10
 
 
 # The value of the bonus at level 0. See [method get_value].
-export var bonus_init := 10.0
+@export var bonus_init := 10.0
 
 # The linear growth of the value per level. See [method get_value].
-export var bonus_linear := 5.0
+@export var bonus_linear := 5.0
 
 # The quadratic growth of the value per level. See [method get_value].
-export var bonus_quad := 0.2
+@export var bonus_quad := 0.2
 
 # Must be [code]true[/code] if a percentage sign must be appended in stat lists.
-export var is_percentage := false
+@export var is_percentage := false
 
 # Must be [code]true[/code] if the result of [method get_value] must be integer.
-export var integer_only := true
+@export var integer_only := true
 
 
 # Returns the stat bonus at the specified affix level.

@@ -1,13 +1,13 @@
-tool
+@tool
 extends Node
 
-export var ground_item_manager : NodePath
-export var collide_with_group := ""
-export var loot_table : Resource
+@export var ground_item_manager : NodePath
+@export var collide_with_group := &""
+@export var loot_table : Resource
 
 
 func _ready():
-	var _1 = connect("body_entered", self, "_on_body_entered")
+	var _1 = connect("body_entered", Callable(self, "_on_body_entered"))
 	if loot_table == null:
 		loot_table = ItemInstantiator.new()
 

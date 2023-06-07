@@ -16,7 +16,7 @@ func _show_price(item_stack):
 
 	add_bbcode("[color=#fff]")
 	if item_for_sale:
-		var inventories = tooltip.get_tree().get_nodes_in_group("inventory_view")
+		var inventories = tooltip.get_tree().get_nodes_in_group(&"inventory_view")
 		for x in inventories:
 			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
 				x.inventory.count_all_items(owned_item_counts)
@@ -31,7 +31,7 @@ func _show_price(item_stack):
 		k_loaded = load(k)
 		add_bbcode(
 			"\n[color=#"
-			+ k_loaded.default_properties.get("back_color", Color.white).to_html()
+			+ k_loaded.default_properties.get("back_color", Color.WHITE).to_html()
 			+ "]"
 			+ tr(k_loaded.name) + "[/color] x"
 			+ str(price[k] * multiplier)

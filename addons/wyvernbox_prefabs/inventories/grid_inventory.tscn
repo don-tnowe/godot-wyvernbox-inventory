@@ -1,70 +1,65 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=9 format=3 uid="uid://dk2b3ordhblc2"]
 
-[ext_resource path="res://addons/wyvernbox/inventory_view.gd" type="Script" id=1]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=4]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="3"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="4"]
 
-[sub_resource type="Resource" id=7]
+[sub_resource type="Resource" id="7"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
-script = ExtResource( 4 )
-width = 12
+script = ExtResource("4")
 height = 8
+width = 8
 
-[sub_resource type="Gradient" id=11]
-offsets = PoolRealArray( 0, 0.66 )
-colors = PoolColorArray( 0.464844, 0.464844, 0.464844, 1, 0, 0, 0, 1 )
+[sub_resource type="Gradient" id="11"]
+offsets = PackedFloat32Array(0, 0.66)
+colors = PackedColorArray(0.464844, 0.464844, 0.464844, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture2D" id=12]
-gradient = SubResource( 11 )
+[sub_resource type="GradientTexture2D" id="12"]
+gradient = SubResource("11")
 fill = 1
-fill_from = Vector2( 0.5, 0.5 )
-fill_to = Vector2( 0.5, 2 )
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 2)
 
-[sub_resource type="ViewportTexture" id=5]
-viewport_path = NodePath("Viewport")
+[sub_resource type="ViewportTexture" id="5"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Inventory" type="MarginContainer"]
-margin_right = 168.0
-margin_bottom = 112.0
-rect_min_size = Vector2( 168, 112 )
+custom_minimum_size = Vector2(112, 112)
+offset_right = 112.0
+offset_bottom = 112.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-script = ExtResource( 1 )
-inventory = SubResource( 7 )
-item_scene = ExtResource( 3 )
+script = ExtResource("1")
+inventory = SubResource("7")
+item_scene = ExtResource("3")
 grid_background = NodePath("BG")
 
 [node name="Border" type="NinePatchRect" parent="."]
-margin_right = 168.0
-margin_bottom = 112.0
-texture = SubResource( 12 )
+layout_mode = 2
+texture = SubResource("12")
 patch_margin_left = 2
 patch_margin_top = 2
 patch_margin_right = 2
 patch_margin_bottom = 2
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 14, 14 )
-usage = 0
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(14, 14)
 
-[node name="Cell" parent="Viewport" instance=ExtResource( 2 )]
+[node name="Cell" parent="SubViewport" instance=ExtResource("2")]
+custom_minimum_size = Vector2(0, 0)
+anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 14.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 0, 0 )
+offset_right = 14.0
+offset_bottom = 14.0
 
 [node name="BG" type="TextureRect" parent="."]
-margin_right = 168.0
-margin_bottom = 112.0
-rect_min_size = Vector2( 168, 112 )
-mouse_filter = 2
+custom_minimum_size = Vector2(112, 112)
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-texture = SubResource( 5 )
-stretch_mode = 2
+mouse_filter = 2
+texture = SubResource("5")
+stretch_mode = 1

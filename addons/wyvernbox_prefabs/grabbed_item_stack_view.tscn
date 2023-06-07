@@ -1,14 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://boij7wcxmvnq7"]
 
-[ext_resource path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" type="Script" id=2]
-[ext_resource path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" type="PackedScene" id=3]
+[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="2"]
 
-[node name="Item" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
-default_inventory = NodePath("")
+[node name="Item" instance=ExtResource("1")]
+script = ExtResource("2")
 drop_at_node = NodePath("")
-drop_parent = NodePath("")
-drop_scene = ExtResource( 3 )
+drop_ground_item_manager = NodePath("")
 drop_max_distance = 256.0
-unit_size = Vector2( 18, 18 )
+drop_camera_3d = NodePath("")
+unit_size = Vector2(18, 18)

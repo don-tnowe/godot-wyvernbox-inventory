@@ -1,45 +1,45 @@
 [gd_scene format=2]
 
 [node name="Panel" type="PanelContainer"]
-margin_right = 342.0
-margin_bottom = 128.0
+offset_right = 342.0
+offset_bottom = 128.0
 
 [node name="Box" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 335.0
-margin_bottom = 128.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 335.0
+offset_bottom = 128.0
 
 [node name="Label" type="Label" parent="Box"]
-margin_right = 328.0
-margin_bottom = 31.0
+offset_right = 328.0
+offset_bottom = 31.0
 text = "Choose an inventory to use. Hover over buttons to read more."
 autowrap = true
 
 [node name="Box" type="HBoxContainer" parent="Box"]
-margin_top = 35.0
-margin_right = 328.0
-margin_bottom = 79.0
+offset_top = 35.0
+offset_right = 328.0
+offset_bottom = 79.0
 
 [node name="Control" type="Control" parent="Box/Box"]
-margin_right = 53.0
-margin_bottom = 44.0
+offset_right = 53.0
+offset_bottom = 44.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
 [node name="Box" type="GridContainer" parent="Box/Box"]
-margin_left = 57.0
-margin_right = 270.0
-margin_bottom = 44.0
+offset_left = 57.0
+offset_right = 270.0
+offset_bottom = 44.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 columns = 2
 
 [node name="Button" type="Button" parent="Box/Box/Box"]
-margin_right = 105.0
-margin_bottom = 20.0
-hint_tooltip = "A simple inventory where each item takes up one slot.
+offset_right = 105.0
+offset_bottom = 20.0
+tooltip_text = "A simple inventory where each item takes up one slot.
 
 You can arrange cells in order with a Container,
 or in a custom layout without one."
@@ -48,10 +48,10 @@ size_flags_vertical = 3
 text = "Freeform"
 
 [node name="Button2" type="Button" parent="Box/Box/Box"]
-margin_left = 109.0
-margin_right = 213.0
-margin_bottom = 20.0
-hint_tooltip = "An inventory where items each take up
+offset_left = 109.0
+offset_right = 213.0
+offset_bottom = 20.0
+tooltip_text = "An inventory where items each take up
 a rectangular grid of cells.
 
 Their types' in_inventory_width
@@ -62,10 +62,10 @@ size_flags_vertical = 3
 text = "Grid"
 
 [node name="Button3" type="Button" parent="Box/Box/Box"]
-margin_top = 24.0
-margin_right = 105.0
-margin_bottom = 44.0
-hint_tooltip = "An inventory where each slot can only store items
+offset_top = 24.0
+offset_right = 105.0
+offset_bottom = 44.0
+tooltip_text = "An inventory where each slot can only store items
 that match its type's slot flags.
 
 Useful for equipment screens and type-locked containers."
@@ -74,11 +74,11 @@ size_flags_vertical = 3
 text = "Restricted"
 
 [node name="Button4" type="Button" parent="Box/Box/Box"]
-margin_left = 109.0
-margin_top = 24.0
-margin_right = 213.0
-margin_bottom = 44.0
-hint_tooltip = "An inventory where each slot can only store
+offset_left = 109.0
+offset_top = 24.0
+offset_right = 213.0
+offset_bottom = 44.0
+tooltip_text = "An inventory where each slot can only store
 a specific item type - or one of several,
 if an ItemPattern is specified.
 
@@ -88,31 +88,31 @@ size_flags_vertical = 3
 text = "Currency"
 
 [node name="Control2" type="Control" parent="Box/Box"]
-margin_left = 274.0
-margin_right = 328.0
-margin_bottom = 44.0
+offset_left = 274.0
+offset_right = 328.0
+offset_bottom = 44.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
 [node name="Box2" type="HBoxContainer" parent="Box"]
-margin_left = 20.0
-margin_top = 83.0
-margin_right = 307.0
-margin_bottom = 103.0
+offset_left = 20.0
+offset_top = 83.0
+offset_right = 307.0
+offset_bottom = 103.0
 size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="Box/Box2"]
-margin_top = 3.0
-margin_right = 133.0
-margin_bottom = 17.0
+offset_top = 3.0
+offset_right = 133.0
+offset_bottom = 17.0
 text = "Will initialize empty."
 
 [node name="Button" type="Button" parent="Box/Box2"]
-margin_left = 137.0
-margin_right = 287.0
-margin_bottom = 20.0
-hint_tooltip = "Put an empty ItemInstantiator into the Contents field.
+offset_left = 137.0
+offset_right = 287.0
+offset_bottom = 20.0
+tooltip_text = "Put an empty ItemInstantiator into the Contents field.
 
 Use it to create some items on game start, randomly or not."
 size_flags_horizontal = 0
@@ -120,8 +120,8 @@ size_flags_vertical = 3
 text = "Add Item Instantiator"
 
 [node name="Label2" type="Label" parent="Box"]
-margin_top = 107.0
-margin_right = 328.0
-margin_bottom = 121.0
+offset_top = 107.0
+offset_right = 328.0
+offset_bottom = 121.0
 text = "Or copy an Inventory resource into the field below:"
 autowrap = true

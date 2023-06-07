@@ -1,74 +1,77 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://co5ok1mm2s7vu"]
 
-[ext_resource path="res://example/theme/font/font_numbers.tres" type="DynamicFont" id=2]
-[ext_resource path="res://addons/wyvernbox/view_extra/item_stack_view.gd" type="Script" id=3]
+[ext_resource type="FontFile" path="res://example/theme/font/font_numbers.tres" id="2"]
+[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/item_stack_view.gd" id="3"]
 
-[sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0.38983, 1 )
-colors = PoolColorArray( 0.395988, 0.410969, 0.570313, 0, 1, 1, 1, 1 )
+[sub_resource type="Gradient" id="1"]
+offsets = PackedFloat32Array(0.38983, 1)
+colors = PackedColorArray(0.395988, 0.410969, 0.570313, 0, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture2D" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="GradientTexture2D" id="2"]
+gradient = SubResource("1")
 fill = 1
-fill_from = Vector2( 0.5, 0.5 )
-fill_to = Vector2( 0.5, 1.1 )
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1.1)
 
-[sub_resource type="AtlasTexture" id=3]
-region = Rect2( 0, 24, 12, 24 )
+[sub_resource type="LabelSettings" id="LabelSettings_vq3ob"]
+font_size = 12
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.752941)
 
 [node name="Item" type="Control"]
-margin_right = 44.0
-margin_bottom = 42.0
+layout_mode = 3
+anchors_preset = 0
+offset_right = 72.0
+offset_bottom = 107.0
 focus_mode = 1
 mouse_default_cursor_shape = 2
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
+script = ExtResource("3")
 
 [node name="Rarity" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = -1.0
-margin_bottom = -1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
 mouse_filter = 2
-texture = SubResource( 2 )
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_lock_": true
-}
+texture = SubResource("2")
+expand_mode = 1
 
 [node name="Crop" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_clip_content = true
 mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
 
-[node name="Texture" type="TextureRect" parent="Crop"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="Texture2D" type="TextureRect" parent="Crop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-texture = SubResource( 3 )
-expand = true
 stretch_mode = 4
 
 [node name="Count" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.0
-margin_top = -11.0
-margin_right = -1.0
-margin_bottom = 7.0
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.498039 )
-custom_fonts/font = ExtResource( 2 )
-align = 2
+offset_left = 1.0
+offset_top = -13.0
+offset_right = -1.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.498039)
+theme_override_fonts/font = ExtResource("2")
+label_settings = SubResource("LabelSettings_vq3ob")
+horizontal_alignment = 2
+vertical_alignment = 2

@@ -1,32 +1,32 @@
-tool
+@tool
 extends EditorProperty
 
 var hint_node : Control
 
 
 func _ready():
-	hint_node = load("res://addons/wyvernbox/editor/inspector_inventory_creator.tscn").instance()
+	hint_node = load("res://addons/wyvernbox/editor/inspector_inventory_creator.tscn").instantiate()
 
 	var style = StyleBoxFlat.new()
-	style.bg_color = get_color("accent_color", "Editor")
+	style.bg_color = get_theme_color("accent_color", "Editor")
 	style.bg_color.a = 0.25
-	hint_node.add_stylebox_override("panel", style)
+	hint_node.add_theme_stylebox_override("panel", style)
 
 	if get_parent() == null: return
 	get_parent().add_child(hint_node)
-	get_parent().move_child(hint_node, get_position_in_parent())
+	get_parent().move_child(hint_node, get_index())
 
-	hint_node.get_node("Box/Box/Box/Button").icon = get_icon("Add", "EditorIcons")
-	hint_node.get_node("Box/Box/Box/Button2").icon = get_icon("Add", "EditorIcons")
-	hint_node.get_node("Box/Box/Box/Button3").icon = get_icon("Add", "EditorIcons")
-	hint_node.get_node("Box/Box/Box/Button4").icon = get_icon("Add", "EditorIcons")
-	hint_node.get_node("Box/Box2/Button").icon = get_icon("Add", "EditorIcons")
+	hint_node.get_node("Box/Box/Box/Button").icon = get_theme_icon("Add", "EditorIcons")
+	hint_node.get_node("Box/Box/Box/Button2").icon = get_theme_icon("Add", "EditorIcons")
+	hint_node.get_node("Box/Box/Box/Button3").icon = get_theme_icon("Add", "EditorIcons")
+	hint_node.get_node("Box/Box/Box/Button4").icon = get_theme_icon("Add", "EditorIcons")
+	hint_node.get_node("Box/Box2/Button").icon = get_theme_icon("Add", "EditorIcons")
 
-	hint_node.get_node("Box/Box/Box/Button").connect("pressed", self, "_on_create_pressed", [Inventory, "Inventory"])
-	hint_node.get_node("Box/Box/Box/Button2").connect("pressed", self, "_on_create_pressed", [GridInventory, "GridInventory"])
-	hint_node.get_node("Box/Box/Box/Button3").connect("pressed", self, "_on_create_pressed", [RestrictedInventory, "RestrictedInventory"])
-	hint_node.get_node("Box/Box/Box/Button4").connect("pressed", self, "_on_create_pressed", [CurrencyInventory, "CurrencyInventory"])
-	hint_node.get_node("Box/Box2/Button").connect("pressed", self, "_on_add_contents_pressed")
+	hint_node.get_node("Box/Box/Box/Button").connect("pressed", Callable(self, "_on_create_pressed").bind(Inventory, "Inventory"))
+	hint_node.get_node("Box/Box/Box/Button2").connect("pressed", Callable(self, "_on_create_pressed").bind(GridInventory, "GridInventory"))
+	hint_node.get_node("Box/Box/Box/Button3").connect("pressed", Callable(self, "_on_create_pressed").bind(RestrictedInventory, "RestrictedInventory"))
+	hint_node.get_node("Box/Box/Box/Button4").connect("pressed", Callable(self, "_on_create_pressed").bind(CurrencyInventory, "CurrencyInventory"))
+	hint_node.get_node("Box/Box2/Button").connect("pressed", Callable(self, "_on_add_contents_pressed"))
 
 	hide()
 	_update_property()

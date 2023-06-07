@@ -1,121 +1,99 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=3 uid="uid://dr5hmv204a1sj"]
 
-[ext_resource path="res://example/src/menu_tabs/crafting_tab.gd" type="Script" id=1]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" type="PackedScene" id=2]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/craft_arrows.tres" type="Resource" id=3]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/exchange_into_gold.tres" type="Resource" id=4]
-[ext_resource path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" type="PackedScene" id=5]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/enchant_wand_purple.tres" type="Resource" id=6]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/enchant_melee_battleaxe.tres" type="Resource" id=7]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/enchant_melee_sword.tres" type="Resource" id=8]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/enchant_wand_red.tres" type="Resource" id=9]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/forge_sword.tres" type="Resource" id=10]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/forge_wand.tres" type="Resource" id=11]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/brew_purple_potion.tres" type="Resource" id=12]
-[ext_resource path="res://example/wyvernbox/crafting_recipes/brew_red_potion.tres" type="Resource" id=13]
-[ext_resource path="res://addons/wyvernbox/inventories/grid_inventory.gd" type="Script" id=14]
+[ext_resource type="Script" path="res://example/src/menu_tabs/crafting_tab.gd" id="1"]
+[ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_gtsdm"]
+[ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="2"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/craft_arrows.tres" id="3"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/exchange_into_gold.tres" id="4"]
+[ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="5"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/enchant_wand_purple.tres" id="6"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/enchant_melee_battleaxe.tres" id="7"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/enchant_melee_sword.tres" id="8"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/enchant_wand_red.tres" id="9"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/forge_sword.tres" id="10"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/forge_wand.tres" id="11"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/brew_purple_potion.tres" id="12"]
+[ext_resource type="Resource" path="res://example/wyvernbox/crafting_recipes/brew_red_potion.tres" id="13"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="14"]
 
-[sub_resource type="Gradient" id=4]
-offsets = PoolRealArray( 0, 0.66 )
-colors = PoolColorArray( 0.464844, 0.464844, 0.464844, 1, 0, 0, 0, 1 )
+[sub_resource type="Gradient" id="4"]
+offsets = PackedFloat32Array(0, 0.66)
+colors = PackedColorArray(0.464844, 0.464844, 0.464844, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture2D" id=5]
-gradient = SubResource( 4 )
+[sub_resource type="GradientTexture2D" id="5"]
+gradient = SubResource("4")
 fill = 1
-fill_from = Vector2( 0.5, 0.5 )
-fill_to = Vector2( 0.5, 2 )
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 2)
 
-[sub_resource type="Resource" id=6]
+[sub_resource type="Resource" id="Resource_61i6t"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
-script = ExtResource( 14 )
-width = 12
+script = ExtResource("14")
 height = 6
+width = 16
 
 [node name="Crafting" type="MarginContainer"]
-margin_right = 640.0
-margin_bottom = 240.0
-rect_min_size = Vector2( 0, 240 )
+custom_minimum_size = Vector2(0, 240)
+offset_right = 640.0
+offset_bottom = 240.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
-cell_scene = ExtResource( 5 )
-item_conversions = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 4 ) ]
+theme = ExtResource("1_gtsdm")
+script = ExtResource("1")
+cell_scene = ExtResource("5")
+item_conversions = Array[Resource]([ExtResource("13"), ExtResource("12"), ExtResource("3"), ExtResource("10"), ExtResource("11"), ExtResource("7"), ExtResource("8"), ExtResource("6"), ExtResource("9"), ExtResource("4")])
 target_inventory = NodePath("VBoxContainer/Output")
 source_inventory = NodePath("VBoxContainer/Output")
 
 [node name="Border" type="NinePatchRect" parent="."]
 show_behind_parent = true
-margin_right = 640.0
-margin_bottom = 240.0
-texture = SubResource( 5 )
+layout_mode = 2
+texture = SubResource("5")
 patch_margin_left = 2
 patch_margin_top = 2
 patch_margin_right = 2
 patch_margin_bottom = 2
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 640.0
-margin_bottom = 240.0
-__meta__ = {
-"_edit_lock_": true
-}
+layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="VBoxContainer"]
 show_behind_parent = true
-margin_right = 640.0
-margin_bottom = 28.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/Panel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 633.0
-margin_bottom = 21.0
+layout_mode = 2
 text = "menu_craft"
-align = 1
+horizontal_alignment = 1
+vertical_alignment = 2
 
-[node name="Output" parent="VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 236.0
-margin_top = 32.0
-margin_right = 404.0
-margin_bottom = 116.0
-rect_min_size = Vector2( 168, 84 )
+[node name="Output" parent="VBoxContainer" instance=ExtResource("2")]
+custom_minimum_size = Vector2(224, 84)
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-inventory = SubResource( 6 )
+inventory = SubResource("Resource_61i6t")
 
 [node name="Control" type="Control" parent="VBoxContainer"]
-margin_top = 120.0
-margin_right = 640.0
-margin_bottom = 120.0
+layout_mode = 2
 
 [node name="Button" type="Button" parent="VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 90.0
-margin_top = -25.0
-margin_right = 108.0
-margin_bottom = -5.0
+offset_left = 114.0
+offset_top = -25.0
+offset_right = 132.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "?"
 
 [node name="Popup" type="AcceptDialog" parent="VBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 61.0
-margin_top = -78.0
-margin_right = 510.0
-margin_bottom = 201.0
-window_title = "Hint"
 dialog_text = "Crafting can be done via ItemConversions.
 
 Most recipes here are defined purely through ItemTypes,
@@ -137,15 +115,12 @@ Unlike Vendors, Conversions apply Generators
 a Vendor."
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-margin_top = 124.0
-margin_right = 640.0
-margin_bottom = 240.0
+layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
-scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
-margin_right = 640.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="item_stack_added" from="VBoxContainer/Output" to="." method="update_availability"]
