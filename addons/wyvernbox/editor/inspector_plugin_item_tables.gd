@@ -11,21 +11,21 @@ func _init(plugin):
 	self.plugin = plugin
 
 
-func can_handle(object):
-	return object.has_method("_get_wyvernbox_item_lists")
+func _can_handle(object):
+	return object.has_method(&"_get_wyvernbox_item_lists")
 
 
-func parse_begin(object):
+func _parse_begin(object):
 	# Non-tool scripts can't run in editor... unless instantiated in the editor.
-	cur_object_settings = []
-	if !object.get_script().is_tool():
-		object = object.get_script().new()
-		object.call_deferred("free")
+	# cur_object_settings = []
+	# if !object.get_script().is_tool():
+	# 	object = object.get_script().new()
+	# 	object.call_deferred("free")
 
 	cur_object_settings = object._get_wyvernbox_item_lists()
 
 
-func parse_property(object, type, path, hint, hint_text, usage):
+func _parse_property(object, type, path, hint, hint_text, usage, wide):
 	for x in cur_object_settings:
 		var path_found_at = x[1].find(path)
 		if path_found_at == -1:

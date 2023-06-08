@@ -26,6 +26,10 @@ run/main_scene="res://example/src/test_2d.tscn"
 config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
+[audio]
+
+buses/default_bus_layout=""
+
 [display]
 
 window/size/viewport_width=720
@@ -35,7 +39,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg")
+enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg", "res://addons/wyvernbox/editor/plugin.cfg")
 
 [gui]
 

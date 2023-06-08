@@ -31,7 +31,7 @@ region = Rect2(0, 12, 12, 12)
 atlas = ExtResource("13")
 region = Rect2(36, 36, 12, 12)
 
-[sub_resource type="Resource" id="Resource_lnyj8"]
+[sub_resource type="Resource" id="Resource_7yeur"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("14")
@@ -53,14 +53,14 @@ script = ExtResource("14")
 height = 8
 width = 12
 
-[sub_resource type="Resource" id="Resource_swq8u"]
+[sub_resource type="Resource" id="Resource_kut7a"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("14")
 height = 12
 width = 12
 
-[sub_resource type="Resource" id="Resource_g1bth"]
+[sub_resource type="Resource" id="Resource_w87o7"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("14")
@@ -107,7 +107,7 @@ alignment = 1
 custom_minimum_size = Vector2(252, 252)
 layout_mode = 2
 size_flags_vertical = 1
-inventory = SubResource("Resource_lnyj8")
+inventory = SubResource("Resource_7yeur")
 interaction_mode = 29
 auto_take_priority = -32
 autosave_file_path = "items/hero/main.dat"
@@ -160,7 +160,6 @@ visible = false
 layout_mode = 2
 
 [node name="Inventory" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_consumables" index="0"]
-custom_minimum_size = Vector2(168, 112)
 inventory = SubResource("Resource_0k4mm")
 
 [node name="menu_stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
@@ -173,7 +172,7 @@ alignment = 1
 custom_minimum_size = Vector2(168, 168)
 layout_mode = 2
 size_flags_horizontal = 4
-inventory = SubResource("Resource_swq8u")
+inventory = SubResource("Resource_kut7a")
 interaction_mode = 5
 autosave_file_path = "items/hero/stash1.dat"
 
@@ -186,7 +185,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
 size_flags_horizontal = 4
-inventory = SubResource("Resource_g1bth")
+inventory = SubResource("Resource_w87o7")
 contents = SubResource("13")
 interaction_mode = 5
 autosave_intensity = 0

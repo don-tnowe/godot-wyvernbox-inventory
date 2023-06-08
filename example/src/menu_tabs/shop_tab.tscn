@@ -4,7 +4,6 @@
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_kfwxf"]
 [ext_resource type="Resource" uid="uid://bd1ddeel6achx" path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="2_aqjqv"]
-[ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="3_37cb7"]
 [ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="19"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="20"]
 [ext_resource type="Resource" uid="uid://cdmceeucy4oik" path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" id="22"]
@@ -21,6 +20,13 @@
 [ext_resource type="Resource" uid="uid://dicob0lf8eun4" path="res://example/wyvernbox/item_types/equipment/chestplate_1.tres" id="44"]
 
 [sub_resource type="Resource" id="Resource_fuurl"]
+script = ExtResource("2_aqjqv")
+height = 8
+width = 12
+
+[sub_resource type="Resource" id="Resource_ad8lm"]
+resource_local_to_scene = true
+resource_name = "GridInventory"
 script = ExtResource("2_aqjqv")
 height = 8
 width = 12
@@ -42,13 +48,6 @@ layout_mode = 2
 inventory = SubResource("Resource_fuurl")
 interaction_mode = 7
 
-[node name="Cells" type="GridContainer" parent="TabContainer/menu_shop_equipment/Inventory"]
-layout_mode = 2
-columns = 8
-
-[node name="Cell" parent="TabContainer/menu_shop_equipment/Inventory/Cells" instance=ExtResource("3_37cb7")]
-layout_mode = 2
-
 [node name="ShopManager" type="Node" parent="TabContainer/menu_shop_equipment"]
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
@@ -64,16 +63,10 @@ visible = false
 layout_mode = 2
 
 [node name="Inventory" parent="TabContainer/menu_shop_consumables" instance=ExtResource("19")]
+custom_minimum_size = Vector2(168, 112)
 layout_mode = 2
-inventory = null
+inventory = SubResource("Resource_ad8lm")
 interaction_mode = 7
-
-[node name="Cells" type="GridContainer" parent="TabContainer/menu_shop_consumables/Inventory"]
-layout_mode = 2
-columns = 8
-
-[node name="Cell" parent="TabContainer/menu_shop_consumables/Inventory/Cells" instance=ExtResource("3_37cb7")]
-layout_mode = 2
 
 [node name="ShopManager" type="Node" parent="TabContainer/menu_shop_consumables"]
 script = ExtResource("33")

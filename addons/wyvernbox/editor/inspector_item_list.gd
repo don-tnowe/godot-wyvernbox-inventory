@@ -16,7 +16,7 @@ var plugin : EditorPlugin
 var edited_object : Object
 
 var browse_button := Button.new()
-var browse_window : Popup
+var browse_window : Control
 var options_button := Button.new()
 
 var bottom := HBoxContainer.new()
@@ -45,14 +45,14 @@ func _init(
 	self.column_defaults = column_defaults
 
 	var property_buttons = HBoxContainer.new()
-	browse_button.text = "Browse Items..."
+	# browse_button.text = "Browse Items..."
 	browse_button.flat = true
-	browse_button.connect("pressed", Callable(self, "_on_browse_pressed"))
+	# browse_button.pressed.connect(_on_browse_pressed)
 	browse_button.size_flags_horizontal = SIZE_EXPAND_FILL
 
 	var vis_button = Button.new()
 	vis_button.flat = true
-	vis_button.connect("pressed", Callable(self, "_on_vis_pressed"))
+	vis_button.pressed.connect(_on_vis_pressed)
 
 	add_child(property_buttons)
 	property_buttons.add_child(browse_button)
@@ -137,7 +137,7 @@ func _gui_input(event):
 
 func _get_mouseover_item(global_pos):
 	var icon = grid_l.get_child(grid_l.columns)
-	return floor((global_pos.y - icon.global_position.y) / (icon.size.y + grid_l.get_constant("v_separation")))
+	return floor((global_pos.y - icon.global_position.y) / (icon.size.y + grid_l.get_theme_constant("v_separation")))
 
 
 func add_item(item):
@@ -190,7 +190,7 @@ func remove_item(row_index):
 		grid_r.get_child((row_index) * grid_r.columns + i).queue_free()
 
 	for i in columns.size():
-		column_arrays[i].remove(row_index - 1)
+		column_arrays[i].remove_at(row_index - 1)
 	
 	for i in columns.size():
 		emit_changed(column_properties[i], column_arrays[i], "", true)
@@ -198,11 +198,11 @@ func remove_item(row_index):
 
 func _clear_items():
 	for x in grid_l.get_children():
-		if x.get_position_in_parent() >= grid_l.columns:
+		if x.get_index() >= grid_l.columns:
 			x.free()
 
 	for x in grid_r.get_children():
-		if x.get_position_in_parent() >= grid_r.columns:
+		if x.get_index() >= grid_r.columns:
 			x.free()
 
 
@@ -221,7 +221,7 @@ func _add_item_control(item):
 
 	var edit_button = Button.new()
 	grid_l.add_child(edit_button)
-	edit_button.connect("pressed", Callable(self, "_on_edit_button_pressed").bind(edit_button))
+	edit_button.pressed.connect(_on_edit_button_pressed.bind(edit_button))
 
 	grid_l.columns = 3
 	_update_item_in_control(grid_l.get_child_count() / grid_l.columns - 2, item)
@@ -265,7 +265,7 @@ func _resource_is_local(path):
 	return (
 		path == ""
 		|| (edited_object is Resource && path.left(path.rfind("::")) == edited_object.resource_path)
-		|| (edited_object is Node && edited_object.owner != null && path.left(path.rfind("::")) == edited_object.owner.filename)
+		|| (edited_object is Node && edited_object.owner != null && path.left(path.rfind("::")) == edited_object.owner.scene_file_path)
 	)
 
 
@@ -300,17 +300,17 @@ func _add_cell_control(value, property_name, is_int = false, vec_component = -1)
 	grid_r.add_child(slider)
 	add_focusable(slider)
 
-	slider.value_changed.connect("_on_cell_value_edited").bind(
+	slider.value_changed.connect(_on_cell_value_edited.bind(
 		slider,
 		property_name,
 		vec_component,
-	)
+	))
 
 
 func _add_delete_button():
 	var button = Button.new()
 	grid_r.add_child(button)
-	button.connect("pressed", Callable(self, "_on_delete_button_pressed").bind(button))
+	button.pressed.connect(_on_delete_button_pressed.bind(button))
 	if !is_inside_tree():
 		await self.ready
 
@@ -401,11 +401,11 @@ func _init_column_count(columns):
 
 
 func _on_delete_button_pressed(button):
-	remove_item(button.get_position_in_parent() / grid_r.columns)
+	remove_item(button.get_index() / grid_r.columns)
 
 
-func _on_cell_value_edited(new_value, cell, property_name, vec_component = -1):
-	var row_index = cell.get_position_in_parent() / grid_r.columns - 1
+func _on_cell_value_edited(new_value : int, cell, property_name, vec_component = -1):
+	var row_index = cell.get_index() / grid_r.columns - 1
 	var column_array = columns[property_name]
 	match vec_component:
 		-1:
@@ -424,7 +424,7 @@ func _on_cell_value_edited(new_value, cell, property_name, vec_component = -1):
 
 
 func _on_edit_button_pressed(button):
-	var edit_resource = button.get_position_in_parent() / grid_l.columns - 1
+	var edit_resource = button.get_index() / grid_l.columns - 1
 	plugin.get_editor_interface().call_deferred("edit_resource", columns.values()[0][edit_resource])
 
 
@@ -433,7 +433,6 @@ func _on_browse_pressed():
 		browse_window = load("res://addons/wyvernbox/editor/item_browser.tscn").instantiate()
 		browse_button.add_child(browse_window)
 		browse_window.initialize(plugin, allowed_types)
-		browse_window.popup()
 		browse_window.hide()
 
 	browse_window.visible = !browse_window.visible

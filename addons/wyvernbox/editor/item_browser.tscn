@@ -1,32 +1,41 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://boowgq71db85j"]
 
-[ext_resource path="res://addons/wyvernbox/editor/item_browser.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://addons/wyvernbox/editor/item_browser.gd" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/item_type.gd" id="2_fmwve"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_generator.gd" id="3_7rvej"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_pattern.gd" id="4_7dj7b"]
 
-[node name="Browse" type="PopupPanel"]
-visible = true
-offset_left = -600.0
-offset_top = 8.0
-offset_right = -9.0
-offset_bottom = 352.0
-script = ExtResource( 1 )
+[node name="Browse" type="Panel"]
+offset_right = 719.0
+offset_bottom = 358.0
+script = ExtResource("1")
+type_colors = {
+ExtResource("2_fmwve"): Color(1, 1, 1, 1),
+ExtResource("3_7rvej"): Color(1, 0.843137, 0, 1),
+ExtResource("4_7dj7b"): Color(0, 0.807843, 0.819608, 1)
+}
 
 [node name="Box" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 587.0
-offset_bottom = 340.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Box" type="VBoxContainer" parent="Box"]
-offset_right = 188.0
-offset_bottom = 336.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
 [node name="FolderList" type="Tree" parent="Box/Box"]
-offset_right = 188.0
-offset_bottom = 312.0
-custom_minimum_size = Vector2( 32, 0 )
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
@@ -36,87 +45,65 @@ hide_folding = true
 select_mode = 1
 
 [node name="Rescan" type="Button" parent="Box/Box"]
-offset_top = 316.0
-offset_right = 188.0
-offset_bottom = 336.0
+layout_mode = 2
 text = "Rescan"
 
 [node name="Panel" type="MarginContainer" parent="Box"]
-offset_left = 200.0
-offset_right = 583.0
-offset_bottom = 336.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Box" type="VBoxContainer" parent="Box/Panel"]
-offset_right = 383.0
-offset_bottom = 336.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="Box/Panel/Box"]
-offset_right = 383.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "Drag items into lists to add them"
 
 [node name="Filter" type="LineEdit" parent="Box/Panel/Box"]
-offset_top = 18.0
-offset_right = 383.0
-offset_bottom = 42.0
+layout_mode = 2
 placeholder_text = "Filter items..."
 caret_blink = true
 caret_blink_interval = 0.5
 
 [node name="TypeFilter" type="HBoxContainer" parent="Box/Panel/Box"]
-offset_top = 46.0
-offset_right = 383.0
-offset_bottom = 70.0
+layout_mode = 2
 
 [node name="I" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
-offset_right = 125.0
-offset_bottom = 24.0
-tooltip_text = "Show resources that define an item's properties"
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_focus_color = Color( 1, 1, 1, 1 )
-theme_override_colors/font_color = Color( 1, 1, 1, 1 )
-theme_override_colors/font_pressed_color = Color( 1, 1, 1, 1 )
-pressed = true
+tooltip_text = "Show resources that define an item's properties"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 text = "Items"
 
 [node name="G" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
-offset_left = 129.0
-offset_right = 254.0
-offset_bottom = 24.0
-tooltip_text = "Show resources that return items from their get_items() method"
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_focus_color = Color( 1, 0.839216, 0, 1 )
-theme_override_colors/font_color = Color( 1, 0.839216, 0, 1 )
-theme_override_colors/font_pressed_color = Color( 1, 0.839216, 0, 1 )
-pressed = true
+tooltip_text = "Show resources that return items from their get_items() method"
+theme_override_colors/font_color = Color(1, 0.839216, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.839216, 0, 1)
+theme_override_colors/font_focus_color = Color(1, 0.839216, 0, 1)
 text = "Generators"
 
 [node name="P" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
-offset_left = 258.0
-offset_right = 383.0
-offset_bottom = 24.0
-tooltip_text = "Show resources that define the matches() and get_value() methods for defining flexible ItemConversion inputs."
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_focus_color = Color( 0, 0.811765, 0.819608, 1 )
-theme_override_colors/font_color = Color( 0, 0.811765, 0.819608, 1 )
-theme_override_colors/font_pressed_color = Color( 0, 0.811765, 0.819608, 1 )
-pressed = true
+tooltip_text = "Show resources that define the matches() and get_value() methods for defining flexible ItemConversion inputs."
+theme_override_colors/font_color = Color(0, 0.811765, 0.819608, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.811765, 0.819608, 1)
+theme_override_colors/font_focus_color = Color(0, 0.811765, 0.819608, 1)
 text = "Patterns"
 
 [node name="Margins" type="MarginContainer" parent="Box/Panel/Box"]
-offset_top = 74.0
-offset_right = 383.0
-offset_bottom = 318.0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Panel" type="Panel" parent="Box/Panel/Box/Margins"]
-offset_right = 383.0
-offset_bottom = 244.0
+layout_mode = 2
 
 [node name="ItemList" type="ItemList" parent="Box/Panel/Box/Margins"]
-offset_right = 383.0
-offset_bottom = 244.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 allow_reselect = true
@@ -126,21 +113,14 @@ fixed_column_width = 48
 icon_mode = 0
 
 [node name="ItemPath" type="Label" parent="Box/Panel/Box"]
-offset_top = 322.0
-offset_right = 383.0
-offset_bottom = 336.0
-align = 1
-autowrap = true
+layout_mode = 2
 
 [node name="Buttons" type="HBoxContainer" parent="Box/Panel/Box"]
 visible = false
-offset_top = 316.0
-offset_right = 383.0
-offset_bottom = 336.0
+layout_mode = 2
 
 [node name="Idk" type="Button" parent="Box/Panel/Box/Buttons"]
-offset_right = 383.0
-offset_bottom = 20.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

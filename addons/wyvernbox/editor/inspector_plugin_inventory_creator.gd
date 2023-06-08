@@ -10,11 +10,11 @@ func _init(plugin):
 	self.plugin = plugin
 
 
-func can_handle(object):
+func _can_handle(object):
 	return "inventory" in object
 
 
-func parse_property(object, type, path, hint, hint_text, usage):
+func _parse_property(object, type, path, hint, hint_text, usage, wide):
 	if path != "inventory": return false
 	var new_editor = property_script.new()
 	add_property_editor("inventory", new_editor)

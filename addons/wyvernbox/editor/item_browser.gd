@@ -1,5 +1,5 @@
 @tool
-extends PopupPanel
+extends Panel
 
 @export var type_colors := {
 	ItemType : Color.WHITE,
@@ -22,18 +22,12 @@ var tree_root : TreeItem
 var allowed_types := []
 
 
-func _ready():
-	if get_viewport().get_parent() != null:
-		return
-
+func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGenerator, null]):
+	self.plugin = plugin
 	tree_root = folder_list.create_item()
 	tree_root.set_cell_mode(0, TreeItem.CELL_MODE_CHECK)
 	tree_root.set_text(0, "All Folders")
 	tree_root.set_checked(0, true)
-
-
-func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGenerator, null]):
-	self.plugin = plugin
 
 	var checkboxes = $"Box/Panel/Box/TypeFilter".get_children()
 	allowed_types = [
@@ -54,27 +48,21 @@ func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGe
 
 func _scan_item_folders():
 	items_by_dir.clear()
-	while true:
-		var node = tree_root.get_children()
-		if node == null: break
-		node.free()
+	for x in tree_root.get_children():
+		x.free()
 
 	var folder_queue := []
 	var cur_folder := "res://"
-	var dir := DirAccess.open(cur_folder)
+	var dir : DirAccess
 	while true:
-		dir.list_dir_begin()
-		while true:
-			var cur_item = dir.get_next()
-			if cur_item == "":
-				break
+		dir = DirAccess.open(cur_folder)
+		for cur_item in dir.get_directories():
+			folder_queue.append(cur_folder.path_join(cur_item).path_join(""))
 
-			if dir.dir_exists(cur_folder + cur_item):
-				folder_queue.append(cur_folder + cur_item + "/")
-			
-			elif cur_item.ends_with(".tres"):
-				var loaded = load(cur_folder + cur_item)
-				if loaded is ItemType || loaded is ItemGenerator || loaded is ItemPattern:
+		for cur_item in dir.get_files():
+			if cur_item.ends_with(".tres"):
+				var loaded = load(cur_folder.path_join(cur_item))
+				if loaded is ItemLike:
 					if !items_by_dir.has(cur_folder):
 						_add_item_folder(cur_folder)
 
@@ -155,7 +143,8 @@ func _on_item_list_gui_input(event : InputEvent):
 	elif event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
 		var drag_preview = Label.new()
 		drag_preview.text = paths_in_list[index]
-		call_deferred("force_drag", {"files" : [paths_in_list[index]], "type" : "files"}, drag_preview)
+		drag_preview.size.x = 9999.0
+		item_list.force_drag.call_deferred({"files" : [paths_in_list[index]], "type" : "files"}, drag_preview)
 
 
 func _on_filter_text_changed(new_text : String):
@@ -172,7 +161,7 @@ func _on_folder_list_item_selected():
 	var now_checked = !clicked_item.is_checked(0)
 
 	if clicked_item == tree_root:
-		var cur_child = clicked_item.get_children()
+		var cur_child = clicked_item.get_first_child()
 		while true:
 			_set_folder_hidden(cur_child, now_checked)
 			cur_child = cur_child.get_next()
@@ -191,7 +180,7 @@ func _set_folder_hidden(tree_item, hidden):
 
 	if hidden:
 		folders_hidden.erase(path)
-		var cur_child = tree_root.get_children()
+		var cur_child = tree_root.get_first_child()
 		while true:
 			if !cur_child.is_checked(0):
 				tree_root.set_checked(0, false)
