@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://co5ok1mm2s7vu"]
+[gd_scene load_steps=5 format=3 uid="uid://co5ok1mm2s7vu"]
 
-[ext_resource type="FontFile" path="res://example/theme/font/font_numbers.tres" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/view_extra/item_stack_view.gd" id="3"]
 
 [sub_resource type="Gradient" id="1"]
@@ -36,6 +35,8 @@ offset_left = 1.0
 offset_top = 1.0
 offset_right = -1.0
 offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("2")
 expand_mode = 1
@@ -46,6 +47,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="Texture2D" type="TextureRect" parent="Crop"]
@@ -71,7 +74,6 @@ offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.498039)
-theme_override_fonts/font = ExtResource("2")
 label_settings = SubResource("LabelSettings_vq3ob")
 horizontal_alignment = 2
 vertical_alignment = 2

@@ -1,9 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cqa45c6lfsffv"]
+[gd_scene load_steps=7 format=3 uid="uid://cqa45c6lfsffv"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/view_extra/tooltip.gd" id="1"]
-[ext_resource type="Theme" path="res://example/theme/default.tres" id="2"]
-[ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="3"]
-[ext_resource type="FontFile" path="res://example/theme/font/font_body.tres" id="4"]
+[ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_stats.gd" id="5"]
 [ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_price.gd" id="6"]
 [ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_key_hints.gd" id="7"]
@@ -41,7 +39,6 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("3")
 text = "Cool Item"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -52,8 +49,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("4")
-theme_override_fonts/bold_font = ExtResource("3")
 bbcode_enabled = true
 text = "
 +5 a

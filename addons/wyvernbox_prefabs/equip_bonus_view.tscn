@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://buk5dqg0uoud3"]
+[gd_scene load_steps=5 format=3 uid="uid://buk5dqg0uoud3"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus_view.gd" id="1"]
 [ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_9.tres" id="2"]
-[ext_resource type="FontFile" path="res://example/theme/font/font_numbers.tres" id="3"]
 [ext_resource type="Texture2D" uid="uid://dujvynl7q4g3e" path="res://example/graphics/gradients/gray.tres" id="4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tnbgi"]
@@ -59,7 +58,6 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.498039)
-theme_override_fonts/font = ExtResource("3")
 text = "+18"
 label_settings = SubResource("LabelSettings_tnbgi")
 horizontal_alignment = 1

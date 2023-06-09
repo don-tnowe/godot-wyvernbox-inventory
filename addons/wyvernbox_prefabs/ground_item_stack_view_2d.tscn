@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://cjdtl6ek4qp7d"]
+[gd_scene load_steps=12 format=3 uid="uid://cjdtl6ek4qp7d"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="3"]
 [ext_resource type="PackedScene" path="res://addons/wyvernbox/ground/ground_item_label.tscn" id="4"]
 
 [sub_resource type="Gradient" id="12"]
@@ -31,10 +30,6 @@ width = 16
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 1)
-
-[sub_resource type="AtlasTexture" id="11"]
-atlas = ExtResource("3")
-region = Rect2(0, 12, 12, 12)
 
 [sub_resource type="CircleShape2D" id="3"]
 radius = 5.0
@@ -315,7 +310,6 @@ texture = SubResource("6")
 [node name="Icon" type="Sprite2D" parent="VisItem/Icons"]
 self_modulate = Color(1, 1, 1, 0.752941)
 scale = Vector2(0.75, 0.75)
-texture = SubResource("11")
 
 [node name="Shape3D" type="CollisionShape2D" parent="."]
 visible = false

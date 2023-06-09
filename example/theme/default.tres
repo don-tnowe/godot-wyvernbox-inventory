@@ -1,9 +1,9 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://75b71yv7xu1e"]
 
-[ext_resource type="FontFile" path="res://example/theme/font/font_body.tres" id="1"]
+[ext_resource type="FontFile" uid="uid://bqh6sqblfqaoo" path="res://example/theme/font/ttf/Abaddon Bold.ttf" id="1_k4mv6"]
 
 [resource]
-default_font = ExtResource("1")
+default_font = ExtResource("1_k4mv6")
 Button/font_sizes/font_size = 12
 CheckBox/font_sizes/font_size = 16
 CheckButton/font_sizes/font_size = 16
@@ -36,7 +36,7 @@ OptionButton/font_sizes/font_size = 16
 PopupMenu/font_sizes/font_separator_size = 16
 PopupMenu/font_sizes/font_size = 16
 ProgressBar/font_sizes/font_size = 16
-RichTextLabel/font_sizes/bold_font_size = 12
+RichTextLabel/font_sizes/bold_font_size = 18
 RichTextLabel/font_sizes/bold_italics_font_size = 12
 RichTextLabel/font_sizes/italics_font_size = 12
 RichTextLabel/font_sizes/mono_font_size = 12

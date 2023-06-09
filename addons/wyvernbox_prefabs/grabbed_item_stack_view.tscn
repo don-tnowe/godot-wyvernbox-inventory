@@ -10,3 +10,11 @@ drop_ground_item_manager = NodePath("")
 drop_max_distance = 256.0
 drop_camera_3d = NodePath("")
 unit_size = Vector2(18, 18)
+
+[node name="Rarity" parent="." index="0"]
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crop" parent="." index="1"]
+grow_horizontal = 2
+grow_vertical = 2
