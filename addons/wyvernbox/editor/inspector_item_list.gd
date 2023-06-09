@@ -46,6 +46,8 @@ func _init(
 
 	var property_buttons = HBoxContainer.new()
 	# browse_button.text = "Browse Items..."
+	browse_button.text = "Drop here from FileSystem!"
+	browse_button.tooltip_text = "Drag and Drop here from FileSystem!\nItem Browser coming back soon."
 	browse_button.flat = true
 	# browse_button.pressed.connect(_on_browse_pressed)
 	browse_button.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -113,15 +115,28 @@ func _drop_data(position, data):
 	for x in data.get("files", []):
 		var loaded = load(x)
 		for y in allowed_types:
-			if y. loaded:
+			if instance_has_recursive(loaded, y):
 				add_item(loaded)
 				break
 
 	for x in data.get("resources", []):
 		for y in allowed_types:
-			if y. x:
+			if instance_has_recursive(x, y):
 				add_item(x)
 				break
+
+
+static func instance_has_recursive(inst : Object, script : Script) -> bool:
+	var cur := inst.get_script()
+	while true:
+		if cur == script:
+			return true
+
+		cur = cur.get_base_script()
+		if cur == null:
+			return false
+
+	return false
 
 
 func _gui_input(event):
