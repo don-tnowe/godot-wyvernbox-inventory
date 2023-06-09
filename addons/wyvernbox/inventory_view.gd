@@ -3,6 +3,8 @@
 class_name InventoryView
 extends Control
 
+## A view into an [Inventory]. Allows to edit and save the inventory's contents.
+
 enum InteractionFlags {
 	CAN_TAKE = 1 << 0,  # Player can take items from here.
 	VENDOR = 1 << 1,  # The player can only take items if CAN_TAKE_AUTO inventories contain items from the item's price extra property. When taken, items will be consumed.
@@ -26,18 +28,10 @@ signal grab_attempted(item_stack, success)
 ## If [code]true[/code], opening the inventory will initialize [member contents] and set this to [code]false[/code].
 @export var init_contents := true
 
-## A slot's size, in pixels.
-@export var cell_size := Vector2(14, 14): set = _set_cell_size
-
 ## A scene with an [ItemStackView] in root, spawned to display items.
 @export var item_scene : PackedScene = load("res://addons/wyvernbox_prefabs/item_stack_view.tscn")
 
-## For [GridInventory], the [Control] to be stretched to the view's size.
-@export var grid_background : NodePath
-
-
-## Whether to show item's "back_color" extra property as a background behind it.
-@export var show_backgrounds := true
+@export_group("IO")
 
 ## The [code]InteractionFlags[/code] of this inventory.
 @export_flags(
@@ -50,6 +44,26 @@ signal grab_attempted(item_stack, success)
 
 ## For inventories with the [code]InteractionFlags.CAN_TAKE_AUTO[/code] flag. Vendors and conversions consume from higher priorities first.
 @export var auto_take_priority := 0
+
+@export_group("Visual")
+
+## A slot's size, in pixels. Affects item icon scale, and for [GridInventory], the grid size.
+@export var cell_size := Vector2(14, 14): set = _set_cell_size
+
+## For [GridInventory], the [Control] to be stretched to the view's size.
+@export var grid_background : NodePath
+
+
+## Whether to show item's "back_color" extra property as a background behind it.
+@export var show_backgrounds := true
+
+## The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
+@export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
+
+## Items that don't match these [ItemPattern]s or [ItemType]s will be dimmed out.
+@export var view_filter_patterns : Array: set = _set_view_filter
+
+@export_group("Autosave")
 
 
 ## File path to autosave into.
@@ -67,13 +81,6 @@ signal grab_attempted(item_stack, success)
 ## Change to save more data when [method save_state] is called.
 ## Gets changed on autoload, or call to [method load_state].
 @export var save_extra_data : Dictionary
-
-
-## The modulation to apply to items filtered out by [method view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
-@export var view_filter_color := Color(0.1, 0.15, 0.3, 0.75)
-
-## Items that don't match these [ItemPattern]s or [ItemType]s will be dimmed out.
-@export var view_filter_patterns : Array: set = _set_view_filter
 
 
 ## The latest autosave time, in seconds since startup.
