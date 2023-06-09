@@ -1,7 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cqa45c6lfsffv"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/view_extra/tooltip.gd" id="1"]
-[ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_stats.gd" id="5"]
 [ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_price.gd" id="6"]
 [ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_key_hints.gd" id="7"]
@@ -14,7 +13,6 @@ offset_bottom = 56.0
 size_flags_horizontal = 5
 size_flags_vertical = 9
 mouse_filter = 2
-theme = ExtResource("2")
 script = ExtResource("1")
 color_bonus = Color(0.521569, 0.560784, 0.992157, 1)
 color_malus = Color(1, 0.376471, 0.376471, 1)

@@ -1,7 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://buk5dqg0uoud3"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus_view.gd" id="1"]
-[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_9.tres" id="2"]
 [ext_resource type="Texture2D" uid="uid://dujvynl7q4g3e" path="res://example/graphics/gradients/gray.tres" id="4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tnbgi"]
@@ -41,7 +40,6 @@ offset_top = -16.0
 offset_right = 12.0
 offset_bottom = 8.0
 mouse_filter = 2
-texture = ExtResource("2")
 expand_mode = 1
 
 [node name="Value" type="Label" parent="."]
