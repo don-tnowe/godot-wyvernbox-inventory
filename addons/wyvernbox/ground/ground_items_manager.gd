@@ -157,9 +157,8 @@ func save_state(filename):
 	filename = "user://" + filename.trim_prefix("user://")
 
 	var filename_dir = filename.get_base_dir()
-	var dir = DirAccess.open(filename_dir)
-	if !dir == null:
-		DirAccess.open("res://").make_dir_recursive(filename.get_base_dir())
+	if DirAccess.open(filename_dir) == null:
+		DirAccess.make_dir_recursive_absolute(filename_dir)
 
 	var file = FileAccess.open(filename, FileAccess.WRITE)
 	file.store_var(to_array())

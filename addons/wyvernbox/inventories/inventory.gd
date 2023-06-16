@@ -390,10 +390,8 @@ func save_state(filename : String, extra_data : Dictionary = {}):
 	filename = "user://" + filename.trim_prefix("user://")
 
 	var filename_dir := filename.get_base_dir()
-	var dir = DirAccess.open(filename_dir)
-	if dir == null:
-		DirAccess.open("res://").make_dir_recursive(filename_dir)
-		dir = DirAccess.open(filename_dir)
+	if DirAccess.open(filename_dir) == null:
+		DirAccess.make_dir_recursive_absolute(filename_dir)
 
 	var file = FileAccess.open(filename, FileAccess.WRITE)
 	var data = {"contents" : to_array()}
