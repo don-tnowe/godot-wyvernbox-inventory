@@ -171,7 +171,7 @@ func load_state(filename):
 	filename = "user://" + filename.trim_prefix("user://")
 
 	var file = FileAccess.open(filename, FileAccess.READ)
-	if !file.file_exists(filename):
+	if file == null:
 		return
 
 	file.open(filename, FileAccess.READ)

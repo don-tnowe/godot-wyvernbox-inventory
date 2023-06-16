@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://75b71yv7xu1e"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://75b71yv7xu1e"]
 
 [ext_resource type="FontFile" uid="uid://bqh6sqblfqaoo" path="res://example/theme/font/ttf/Abaddon Bold.ttf" id="1_k4mv6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ypfh"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.752941)
 
 [resource]
 default_font = ExtResource("1_k4mv6")
@@ -41,6 +44,8 @@ RichTextLabel/font_sizes/bold_italics_font_size = 12
 RichTextLabel/font_sizes/italics_font_size = 12
 RichTextLabel/font_sizes/mono_font_size = 12
 RichTextLabel/font_sizes/normal_font_size = 12
+RichTextLabel/styles/focus = null
+RichTextLabel/styles/normal = SubResource("StyleBoxFlat_5ypfh")
 TabBar/font_sizes/font_size = 8
 TabContainer/font_sizes/font_size = 8
 TextEdit/font_sizes/font_size = 12

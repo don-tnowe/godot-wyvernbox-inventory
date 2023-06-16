@@ -1,15 +1,15 @@
 [gd_scene load_steps=8 format=3 uid="uid://dgxmix0ikbfc2"]
 
-[ext_resource type="PackedScene" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="3"]
-[ext_resource type="PackedScene" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="6"]
 
 [sub_resource type="Resource" id="3"]
 resource_local_to_scene = true
 resource_name = "CurrencyInventory"
 script = ExtResource("3")
-restricted_to_types = [null, null, null, null, null]
+restricted_to_types = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([null, null, null, null, null])
 max_stack = 99999999
 width = 5
 
@@ -38,24 +38,19 @@ offset_bottom = 86.0
 [node name="Cell" parent="Cells" instance=ExtResource("1")]
 layout_mode = 2
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Cell2" parent="Cells" instance=ExtResource("1")]
 layout_mode = 2
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Cell3" parent="Cells" instance=ExtResource("1")]
 layout_mode = 2
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Cell4" parent="Cells" instance=ExtResource("1")]
 layout_mode = 2
 texture = SubResource("1")
-expand_mode = 1
 
 [node name="Cell5" parent="Cells" instance=ExtResource("1")]
 layout_mode = 2
 texture = SubResource("1")
-expand_mode = 1
