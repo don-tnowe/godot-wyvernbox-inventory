@@ -19,13 +19,12 @@
 [ext_resource type="Resource" uid="uid://b554u70ufbdta" path="res://example/wyvernbox/item_types/equipment/chestplate_2.tres" id="43"]
 [ext_resource type="Resource" uid="uid://dicob0lf8eun4" path="res://example/wyvernbox/item_types/equipment/chestplate_1.tres" id="44"]
 
-[sub_resource type="Resource" id="Resource_fuurl"]
+[sub_resource type="Resource" id="Resource_wcc28"]
 script = ExtResource("2_aqjqv")
 height = 8
 width = 12
 
-[sub_resource type="Resource" id="Resource_ad8lm"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_r866f"]
 resource_name = "GridInventory"
 script = ExtResource("2_aqjqv")
 height = 8
@@ -45,7 +44,7 @@ layout_mode = 2
 [node name="Inventory" parent="TabContainer/menu_shop_equipment" instance=ExtResource("19")]
 custom_minimum_size = Vector2(168, 112)
 layout_mode = 2
-inventory = SubResource("Resource_fuurl")
+inventory = SubResource("Resource_wcc28")
 interaction_mode = 7
 
 [node name="ShopManager" type="Node" parent="TabContainer/menu_shop_equipment"]
@@ -65,7 +64,7 @@ layout_mode = 2
 [node name="Inventory" parent="TabContainer/menu_shop_consumables" instance=ExtResource("19")]
 custom_minimum_size = Vector2(168, 112)
 layout_mode = 2
-inventory = SubResource("Resource_ad8lm")
+inventory = SubResource("Resource_r866f")
 interaction_mode = 7
 
 [node name="ShopManager" type="Node" parent="TabContainer/menu_shop_consumables"]

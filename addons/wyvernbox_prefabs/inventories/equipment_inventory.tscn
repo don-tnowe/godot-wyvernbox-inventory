@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/restricted_inventory.gd" id="4"]
 
 [sub_resource type="Resource" id="3"]
-resource_local_to_scene = true
 resource_name = "RestrictedInventory"
 script = ExtResource("4")
 allow_rotation = true

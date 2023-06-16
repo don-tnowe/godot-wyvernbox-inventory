@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="6"]
 
 [sub_resource type="Resource" id="3"]
-resource_local_to_scene = true
 resource_name = "CurrencyInventory"
 script = ExtResource("3")
 restricted_to_types = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([null, null, null, null, null])

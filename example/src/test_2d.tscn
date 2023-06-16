@@ -51,12 +51,11 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_vvubt"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_rekcu"]
 resource_name = "GridInventory"
 script = ExtResource("10")
 height = 8
-width = 8
+width = 12
 
 [sub_resource type="Resource" id="10"]
 resource_name = "Random Equips"
@@ -71,8 +70,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_kpwfd"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_el05m"]
 resource_name = "GridInventory"
 script = ExtResource("10")
 height = 12
@@ -184,11 +182,12 @@ position = Vector2(274, 70)
 
 [node name="Inventory" parent="Gameplay/Node2D/Openable/Chest" instance=ExtResource("6")]
 visible = false
+custom_minimum_size = Vector2(168, 112)
 offset_left = -12.0
 offset_top = 71.0
-offset_right = 100.0
+offset_right = 212.0
 offset_bottom = 183.0
-inventory = SubResource("Resource_vvubt")
+inventory = SubResource("Resource_rekcu")
 contents = SubResource("10")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
@@ -215,9 +214,9 @@ visible = false
 custom_minimum_size = Vector2(112, 168)
 offset_left = 55.0
 offset_top = 78.0
-offset_right = 167.0
+offset_right = 279.0
 offset_bottom = 246.0
-inventory = SubResource("Resource_kpwfd")
+inventory = SubResource("Resource_el05m")
 contents = SubResource("10")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"

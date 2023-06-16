@@ -1,8 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://0r7o3wklblhy"]
+[gd_scene load_steps=17 format=3 uid="uid://0r7o3wklblhy"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://example/src/menu_tabs/equip_bonus_list.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cs30fdktbayf1" path="res://example/src/menu_tabs/equip_bonus_list.tscn" id="3"]
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="4_hpc6g"]
 [ext_resource type="Resource" uid="uid://duga6dcb1u8qe" path="res://example/wyvernbox/item_types/consumable/arrows.tres" id="4_yln8c"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="5"]
@@ -20,14 +20,6 @@ gradient = SubResource("4")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
-
-[sub_resource type="Resource" id="Resource_tgigy"]
-resource_local_to_scene = true
-resource_name = "RestrictedInventory"
-script = ExtResource("8")
-allow_rotation = true
-restricted_to_types = Array[int]([32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 4194304, 8388608])
-width = 10
 
 [sub_resource type="Resource" id="5"]
 resource_name = "CurrencyInventory"
@@ -82,7 +74,6 @@ offset_left = 0.0
 offset_top = 6.0
 offset_right = 0.0
 offset_bottom = 6.0
-inventory = SubResource("Resource_tgigy")
 autosave_file_path = "items/hero/equip.dat"
 
 [node name="Money" type="Control" parent="Control"]
@@ -97,6 +88,7 @@ mouse_filter = 2
 script = ExtResource("5")
 inventory = SubResource("5")
 item_scene = ExtResource("1")
+interaction_mode = 29
 autosave_file_path = "items/hero/currency.dat"
 
 [node name="Cells" type="Control" parent="Control/Money"]

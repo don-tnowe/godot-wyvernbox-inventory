@@ -5,8 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="3"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="4"]
 
-[sub_resource type="Resource" id="7"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_plmu5"]
 resource_name = "GridInventory"
 script = ExtResource("4")
 height = 8
@@ -22,7 +21,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
 
-[sub_resource type="ViewportTexture" id="5"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_hlcn1"]
 viewport_path = NodePath("SubViewport")
 
 [node name="Inventory" type="MarginContainer"]
@@ -32,7 +31,7 @@ offset_bottom = 112.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource("1")
-inventory = SubResource("7")
+inventory = SubResource("Resource_plmu5")
 item_scene = ExtResource("3")
 grid_background = NodePath("BG")
 
@@ -61,5 +60,5 @@ layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 mouse_filter = 2
-texture = SubResource("5")
+texture = SubResource("ViewportTexture_hlcn1")
 stretch_mode = 1

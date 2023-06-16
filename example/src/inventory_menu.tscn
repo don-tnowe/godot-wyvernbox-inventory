@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=25 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -31,8 +31,7 @@ region = Rect2(0, 12, 12, 12)
 atlas = ExtResource("13")
 region = Rect2(36, 36, 12, 12)
 
-[sub_resource type="Resource" id="Resource_7yeur"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_dcpxd"]
 resource_name = "GridInventory"
 script = ExtResource("14")
 height = 18
@@ -48,20 +47,13 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
 
-[sub_resource type="Resource" id="Resource_0k4mm"]
-script = ExtResource("14")
-height = 8
-width = 12
-
-[sub_resource type="Resource" id="Resource_kut7a"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_spve3"]
 resource_name = "GridInventory"
 script = ExtResource("14")
 height = 12
 width = 12
 
-[sub_resource type="Resource" id="Resource_w87o7"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_yg5x8"]
 resource_name = "GridInventory"
 script = ExtResource("14")
 height = 4
@@ -107,7 +99,7 @@ alignment = 1
 custom_minimum_size = Vector2(252, 252)
 layout_mode = 2
 size_flags_vertical = 1
-inventory = SubResource("Resource_7yeur")
+inventory = SubResource("Resource_dcpxd")
 interaction_mode = 29
 auto_take_priority = -32
 autosave_file_path = "items/hero/main.dat"
@@ -159,9 +151,6 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
-[node name="Inventory" parent="CenterContainer/TabContainer/menu_shop/TabContainer/menu_shop_consumables" index="0"]
-inventory = SubResource("Resource_0k4mm")
-
 [node name="menu_stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
 layout_mode = 2
@@ -172,8 +161,7 @@ alignment = 1
 custom_minimum_size = Vector2(168, 168)
 layout_mode = 2
 size_flags_horizontal = 4
-inventory = SubResource("Resource_kut7a")
-interaction_mode = 5
+inventory = SubResource("Resource_spve3")
 autosave_file_path = "items/hero/stash1.dat"
 
 [node name="Label" type="Label" parent="CenterContainer/TabContainer/menu_stash"]
@@ -185,11 +173,11 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
 size_flags_horizontal = 4
-inventory = SubResource("Resource_w87o7")
+inventory = SubResource("Resource_yg5x8")
 contents = SubResource("13")
 interaction_mode = 5
-autosave_intensity = 0
 view_filter_color = Color(0.101961, 0.14902, 0.301961, 0.74902)
+autosave_intensity = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0

@@ -1,349 +1,261 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=24 format=3 uid="uid://cs30fdktbayf1"]
 
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_10.tres" type="Texture2D" id=1]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_21.tres" type="Texture2D" id=2]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_25.tres" type="Texture2D" id=3]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_5.tres" type="Texture2D" id=4]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_24.tres" type="Texture2D" id=5]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_23.tres" type="Texture2D" id=6]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_22.tres" type="Texture2D" id=7]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_26.tres" type="Texture2D" id=8]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_4.tres" type="Texture2D" id=9]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_15.tres" type="Texture2D" id=10]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/defense.tres" type="Resource" id=11]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" type="Resource" id=12]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" type="Resource" id=13]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" type="Resource" id=14]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" type="Resource" id=15]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" type="Resource" id=16]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" type="Resource" id=17]
-[ext_resource path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" type="Resource" id=18]
-[ext_resource path="res://addons/wyvernbox_prefabs/equip_bonus_view.tscn" type="PackedScene" id=19]
-[ext_resource path="res://example/theme/font/font_title.tres" type="FontFile" id=20]
-[ext_resource path="res://example/theme/font/font_body.tres" type="FontFile" id=21]
-[ext_resource path="res://example/theme/font/font_numbers.tres" type="FontFile" id=22]
-[ext_resource path="res://example/src/menu_tabs/equip_bonus_list.gd" type="Script" id=23]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_10.tres" id="1"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_21.tres" id="2"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_25.tres" id="3"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_5.tres" id="4"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_24.tres" id="5"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_23.tres" id="6"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_22.tres" id="7"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_26.tres" id="8"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_4.tres" id="9"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_15.tres" id="10"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/defense.tres" id="11"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" id="12"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" id="13"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" id="14"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" id="15"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" id="16"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" id="17"]
+[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" id="18"]
+[ext_resource type="PackedScene" uid="uid://buk5dqg0uoud3" path="res://addons/wyvernbox_prefabs/equip_bonus_view.tscn" id="19"]
+[ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="20"]
+[ext_resource type="FontFile" path="res://example/theme/font/font_body.tres" id="21"]
+[ext_resource type="FontFile" path="res://example/theme/font/font_numbers.tres" id="22"]
+[ext_resource type="Script" path="res://example/src/menu_tabs/equip_bonus_list.gd" id="23"]
 
 [node name="StatsDisplay" type="VBoxContainer"]
 offset_right = 225.0
 offset_bottom = 119.0
 size_flags_horizontal = 3
-script = ExtResource( 23 )
+script = ExtResource("23")
 equip_inventory_view = NodePath("../..")
 
 [node name="Hpmp" type="VBoxContainer" parent="."]
-offset_right = 225.0
-offset_bottom = 24.0
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="Hp" type="HBoxContainer" parent="Hpmp"]
-offset_right = 225.0
-offset_bottom = 12.0
+layout_mode = 2
 
 [node name="Label2" type="Label" parent="Hpmp/Hp"]
-offset_top = 2.0
-offset_right = 47.0
-offset_bottom = 10.0
-theme_override_fonts/font = ExtResource( 20 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20")
 text = "stats_hp"
-align = 1
 
 [node name="Control" type="Control" parent="Hpmp/Hp"]
-offset_left = 51.0
-offset_right = 154.0
-offset_bottom = 12.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TextureRect" type="TextureRect" parent="Hpmp/Hp"]
-offset_left = 158.0
-offset_right = 170.0
-offset_bottom = 12.0
-custom_minimum_size = Vector2( 12, 12 )
-texture = ExtResource( 1 )
-expand = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+texture = ExtResource("1")
+expand_mode = 1
 
 [node name="Num" type="Label" parent="Hpmp/Hp"]
-offset_left = 174.0
-offset_right = 225.0
-offset_bottom = 12.0
+layout_mode = 2
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( 20 )
+theme_override_fonts/font = ExtResource("20")
 text = "1000/1000"
-align = 1
 
 [node name="ColorRect" type="ColorRect" parent="Hpmp/Hp/Num"]
 show_behind_parent = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 1, 0, 0, 1 )
+color = Color(1, 0, 0, 1)
 
 [node name="Mp" type="HBoxContainer" parent="Hpmp"]
-offset_top = 12.0
-offset_right = 225.0
-offset_bottom = 24.0
+layout_mode = 2
 
 [node name="Label2" type="Label" parent="Hpmp/Mp"]
-offset_top = 2.0
-offset_right = 50.0
-offset_bottom = 10.0
-theme_override_fonts/font = ExtResource( 20 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20")
 text = "stats_mp"
-align = 1
 
 [node name="Control" type="Control" parent="Hpmp/Mp"]
-offset_left = 54.0
-offset_right = 154.0
-offset_bottom = 12.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TextureRect2" type="TextureRect" parent="Hpmp/Mp"]
-offset_left = 158.0
-offset_right = 170.0
-offset_bottom = 12.0
-custom_minimum_size = Vector2( 12, 12 )
-texture = ExtResource( 10 )
-expand = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+texture = ExtResource("10")
+expand_mode = 1
 
 [node name="Num" type="Label" parent="Hpmp/Mp"]
-offset_left = 174.0
-offset_right = 225.0
-offset_bottom = 12.0
+layout_mode = 2
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( 20 )
+theme_override_fonts/font = ExtResource("20")
 text = "1000/1000"
-align = 1
 
 [node name="ColorRect2" type="ColorRect" parent="Hpmp/Mp/Num"]
 show_behind_parent = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.219608, 0.505882, 1, 1 )
+color = Color(0.219608, 0.505882, 1, 1)
 
 [node name="HSeparator" type="HSeparator" parent="."]
-offset_top = 28.0
-offset_right = 225.0
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="WeaponName" type="Label" parent="."]
-offset_top = 36.0
-offset_right = 225.0
-offset_bottom = 44.0
-theme_override_fonts/font = ExtResource( 20 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20")
 text = "Dope Hammer of Asskickering"
-align = 1
-autowrap = true
 
 [node name="Weapon" type="HBoxContainer" parent="."]
-offset_top = 48.0
-offset_right = 225.0
-offset_bottom = 80.0
 clip_contents = true
+layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
 [node name="B" type="VBoxContainer" parent="Weapon"]
-offset_right = 221.0
-offset_bottom = 32.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme_override_constants/separation = 0
 alignment = 1
 
 [node name="Control" type="Control" parent="Weapon/B"]
-offset_right = 221.0
-offset_bottom = 4.0
-custom_minimum_size = Vector2( 0, 4 )
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
 
 [node name="Dmg" type="HBoxContainer" parent="Weapon/B"]
-offset_top = 4.0
-offset_right = 221.0
-offset_bottom = 18.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="Weapon/B/Dmg"]
-offset_top = 2.0
-offset_right = 202.0
-offset_bottom = 11.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource( 21 )
+theme_override_fonts/font = ExtResource("21")
 text = "stats_damage"
 
 [node name="Value" type="Label" parent="Weapon/B/Dmg"]
-offset_left = 206.0
-offset_right = 221.0
-offset_bottom = 14.0
-theme_override_colors/font_outline_color = Color( 0, 0, 0, 1 )
-theme_override_fonts/font = ExtResource( 22 )
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("22")
 text = "4.0"
 
 [node name="Crit" type="HBoxContainer" parent="Weapon/B"]
-offset_top = 18.0
-offset_right = 221.0
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="Weapon/B/Crit"]
-offset_top = 2.0
-offset_right = 192.0
-offset_bottom = 11.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource( 21 )
+theme_override_fonts/font = ExtResource("21")
 text = "Chance for x2 damage:"
 
 [node name="Value" type="Label" parent="Weapon/B/Crit"]
-offset_left = 196.0
-offset_right = 221.0
-offset_bottom = 14.0
-theme_override_colors/font_outline_color = Color( 0, 0, 0, 1 )
-theme_override_fonts/font = ExtResource( 22 )
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("22")
 text = "100%"
 
 [node name="Control2" type="Control" parent="Weapon"]
-offset_left = 221.0
-offset_right = 225.0
-offset_bottom = 32.0
-custom_minimum_size = Vector2( 4, 0 )
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
 
-[node name="F" parent="Weapon" instance=ExtResource( 19 )]
+[node name="F" parent="Weapon" instance=ExtResource("19")]
 visible = false
-offset_left = 193.0
-offset_right = 225.0
-offset_bottom = 38.0
-shown_res = ExtResource( 18 )
+layout_mode = 2
+shown_res = ExtResource("18")
 
 [node name="Icon" parent="Weapon/F" index="1"]
-texture = ExtResource( 5 )
+texture = ExtResource("5")
 
-[node name="L" parent="Weapon" instance=ExtResource( 19 )]
+[node name="L" parent="Weapon" instance=ExtResource("19")]
 visible = false
-offset_left = 78.0
-offset_right = 110.0
-shown_res = ExtResource( 13 )
+layout_mode = 2
+shown_res = ExtResource("13")
 
 [node name="Icon" parent="Weapon/L" index="1"]
-texture = ExtResource( 8 )
+texture = ExtResource("8")
 
-[node name="I" parent="Weapon" instance=ExtResource( 19 )]
+[node name="I" parent="Weapon" instance=ExtResource("19")]
 visible = false
-offset_left = 96.0
-offset_right = 128.0
-shown_res = ExtResource( 16 )
+layout_mode = 2
+shown_res = ExtResource("16")
 
 [node name="Icon" parent="Weapon/I" index="1"]
-texture = ExtResource( 3 )
+texture = ExtResource("3")
 
-[node name="D" parent="Weapon" instance=ExtResource( 19 )]
+[node name="D" parent="Weapon" instance=ExtResource("19")]
 visible = false
-offset_left = 114.0
-offset_right = 146.0
-shown_res = ExtResource( 17 )
+layout_mode = 2
+shown_res = ExtResource("17")
 
 [node name="Icon" parent="Weapon/D" index="1"]
-texture = ExtResource( 6 )
+texture = ExtResource("6")
 
 [node name="OffDef" type="HBoxContainer" parent="."]
-offset_top = 84.0
-offset_right = 225.0
-offset_bottom = 132.0
+layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="Off" type="VBoxContainer" parent="OffDef"]
-offset_left = 22.0
-offset_right = 106.0
-offset_bottom = 48.0
+layout_mode = 2
 
 [node name="Label2" type="Label" parent="OffDef/Off"]
-offset_right = 84.0
-offset_bottom = 8.0
-theme_override_fonts/font = ExtResource( 20 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20")
 text = "stats_offensive"
-align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="OffDef/Off"]
-offset_top = 12.0
-offset_right = 84.0
-offset_bottom = 48.0
+layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="W" parent="OffDef/Off/HBoxContainer" instance=ExtResource( 19 )]
-offset_left = 10.0
-offset_right = 42.0
-__meta__ = {
-"_edit_group_": true
-}
-shown_res = ExtResource( 15 )
+[node name="W" parent="OffDef/Off/HBoxContainer" instance=ExtResource("19")]
+layout_mode = 2
+shown_res = ExtResource("15")
 
 [node name="Icon" parent="OffDef/Off/HBoxContainer/W" index="1"]
-texture = ExtResource( 7 )
+texture = ExtResource("7")
 
-[node name="S" parent="OffDef/Off/HBoxContainer" instance=ExtResource( 19 )]
-offset_left = 42.0
-offset_right = 74.0
-__meta__ = {
-"_edit_group_": true
-}
-shown_res = ExtResource( 14 )
+[node name="S" parent="OffDef/Off/HBoxContainer" instance=ExtResource("19")]
+layout_mode = 2
+shown_res = ExtResource("14")
 
 [node name="Icon" parent="OffDef/Off/HBoxContainer/S" index="1"]
-texture = ExtResource( 2 )
+texture = ExtResource("2")
 
 [node name="VSeparator" type="VSeparator" parent="OffDef"]
-offset_left = 110.0
-offset_right = 114.0
-offset_bottom = 48.0
+layout_mode = 2
 
 [node name="Def" type="VBoxContainer" parent="OffDef"]
-offset_left = 118.0
-offset_right = 203.0
-offset_bottom = 48.0
+layout_mode = 2
 
 [node name="Label2" type="Label" parent="OffDef/Def"]
-offset_right = 85.0
-offset_bottom = 8.0
-theme_override_fonts/font = ExtResource( 20 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20")
 text = "stats_defensive"
-align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="OffDef/Def"]
-offset_top = 12.0
-offset_right = 85.0
-offset_bottom = 48.0
+layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Def" parent="OffDef/Def/HBoxContainer" instance=ExtResource( 19 )]
-offset_left = 10.0
-offset_right = 42.0
-__meta__ = {
-"_edit_group_": true
-}
-shown_res = ExtResource( 11 )
+[node name="Def" parent="OffDef/Def/HBoxContainer" instance=ExtResource("19")]
+layout_mode = 2
+shown_res = ExtResource("11")
 
 [node name="Icon" parent="OffDef/Def/HBoxContainer/Def" index="1"]
-texture = ExtResource( 9 )
+texture = ExtResource("9")
 
-[node name="Dodge" parent="OffDef/Def/HBoxContainer" instance=ExtResource( 19 )]
-offset_left = 42.0
-offset_right = 74.0
-__meta__ = {
-"_edit_group_": true
-}
-shown_res = ExtResource( 12 )
+[node name="Dodge" parent="OffDef/Def/HBoxContainer" instance=ExtResource("19")]
+layout_mode = 2
+shown_res = ExtResource("12")
 
 [node name="Icon" parent="OffDef/Def/HBoxContainer/Dodge" index="1"]
-texture = ExtResource( 4 )
+texture = ExtResource("4")
 
 [node name="HSeparator2" type="HSeparator" parent="."]
-offset_top = 136.0
-offset_right = 225.0
-offset_bottom = 140.0
+layout_mode = 2
 
 [node name="OtherStats" type="RichTextLabel" parent="."]
-offset_top = 144.0
-offset_right = 225.0
-offset_bottom = 159.0
+layout_mode = 2
 bbcode_enabled = true
-fit_content_height = true
 
 [editable path="Weapon/F"]
 [editable path="Weapon/L"]
