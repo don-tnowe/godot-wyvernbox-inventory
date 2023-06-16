@@ -40,6 +40,11 @@ var added_scripts := [
 		preload(scripts_dir + "view_extra/tooltip_property.gd"),
 		icons_dir + "tooltip_property.png",
 	],
+	[
+		"ShopManager",
+		preload(scripts_dir + "crafting/vendor.gd"),
+		icons_dir + "vendor.png",
+	],
 	# ITEMLIKES
 	[
 		"ItemType",
