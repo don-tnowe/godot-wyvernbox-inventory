@@ -17,10 +17,10 @@ func _can_handle(object):
 
 func _parse_begin(object):
 	# Non-tool scripts can't run in editor... unless instantiated in the editor.
-	# cur_object_settings = []
-	# if !object.get_script().is_tool():
-	# 	object = object.get_script().new()
-	# 	object.call_deferred("free")
+	cur_object_settings = []
+	if !object.get_script().is_tool():
+		object = object.get_script().new()
+		object.queue_free()
 
 	cur_object_settings = object._get_wyvernbox_item_lists()
 

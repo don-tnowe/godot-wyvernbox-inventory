@@ -366,7 +366,7 @@ func _init_items(columns_int):
 			columns[column_keys[i]] = column_arrays[i]
 			emit_changed(column_keys[i], column_arrays[i], "", false)
 
-		while column_arrays[i].size() < column_arrays[0].size():
+		for j in column_arrays[0].size() - column_arrays[i].size():
 			column_arrays[i].append(column_defaults[i - 1])
 
 	_init_column_count(columns)
