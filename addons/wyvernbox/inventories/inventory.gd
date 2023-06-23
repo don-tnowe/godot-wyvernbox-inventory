@@ -283,7 +283,9 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 		if item_type_counts[matched_pattern] <= 0:
 			var consumed_from_stack = x.count + ceil(item_type_counts[matched_pattern] / (stack_value / x.count))
 			consumed_stacks.append(x.duplicate_with_count(consumed_from_stack))
-			add_items_to_stack(x, -consumed_from_stack)
+			if !check_only:
+				add_items_to_stack(x, -consumed_from_stack)
+
 			item_type_counts.erase(matched_pattern)
 
 		else:
