@@ -185,7 +185,7 @@ visible = false
 custom_minimum_size = Vector2(168, 112)
 offset_left = -12.0
 offset_top = 71.0
-offset_right = 212.0
+offset_right = 156.0
 offset_bottom = 183.0
 inventory = SubResource("Resource_rekcu")
 contents = SubResource("10")
@@ -214,7 +214,7 @@ visible = false
 custom_minimum_size = Vector2(112, 168)
 offset_left = 55.0
 offset_top = 78.0
-offset_right = 279.0
+offset_right = 167.0
 offset_bottom = 246.0
 inventory = SubResource("Resource_el05m")
 contents = SubResource("10")
@@ -284,6 +284,7 @@ drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0
 drop_camera_3d = NodePath("")
 unit_size = Vector2(14, 14)
+hide_cursor = false
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.

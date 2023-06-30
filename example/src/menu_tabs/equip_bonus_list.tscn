@@ -256,6 +256,7 @@ layout_mode = 2
 [node name="OtherStats" type="RichTextLabel" parent="."]
 layout_mode = 2
 bbcode_enabled = true
+fit_content = true
 
 [editable path="Weapon/F"]
 [editable path="Weapon/L"]

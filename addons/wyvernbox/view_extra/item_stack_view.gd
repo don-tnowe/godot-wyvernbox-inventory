@@ -1,4 +1,4 @@
-@icon("res://addons/wyvernbox/icons/grabbed_item_stack.png")
+@icon("res://addons/wyvernbox/icons/item_stack_view.png")
 class_name ItemStackView
 extends Control
 

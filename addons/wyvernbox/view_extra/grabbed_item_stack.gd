@@ -17,6 +17,10 @@ extends ItemStackView
 ## The size of the item's texture, if its in-inventory size was [code](1, 1)[/code].
 @export var unit_size := Vector2(18, 18)
 
+## Hide the mouse cursor while item is grabbed.
+## If item texture lags 1 frame behind the user's cursor, set this to [code]false[/code] to reduce the "floaty" feel.
+@export var hide_cursor := false
+
 
 ## The stack currently grabbed, to be released on click.
 var grabbed_stack : ItemStack
@@ -53,7 +57,8 @@ func grab(item_stack : ItemStack):
 	get_tree().get_nodes_in_group(&"tooltip")[0].hide()
 	_set_grabbed_stack(item_stack)
 	_move_to_mouse()
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	if hide_cursor:
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 ## Adds items to the grabbed stack, updating its visual representation.
 func add_items_to_stack(delta : int):
@@ -132,7 +137,7 @@ func _any_inventory_try_drop_stack(stack):
 		)
 		if found_stack != stack:
 			get_viewport().set_input_as_handled()
-			if found_stack == null:
+			if found_stack == null && hide_cursor:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			
 			_set_grabbed_stack(found_stack)
@@ -156,7 +161,8 @@ func drop_on_ground(stack, click_pos = null):
 		throw_vec = (hit["position"] - spawn_at_pos).limit_length(drop_max_distance)
 
 	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if hide_cursor:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _input(event):
