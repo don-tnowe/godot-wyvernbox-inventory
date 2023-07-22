@@ -14,6 +14,6 @@ export_presets.cfg
 mono_crash.*.json
 
 # Editor-only plugins
-addons/resources_speadsheet_view/
+addons/resources_spreadsheet_view/
 addons/dictionary_inspector/
 addons/docs_checklist/
