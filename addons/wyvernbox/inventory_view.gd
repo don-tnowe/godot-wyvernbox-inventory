@@ -53,6 +53,10 @@ signal grab_attempted(item_stack, success)
 ## For [GridInventory], the [Control] to be stretched to the view's size.
 @export var grid_background : NodePath
 
+## The node to be stretched to the view's [member cell_size]. [br]
+## If a [ViewportTexture] is used as a tiled background, this should be the rendered [SubViewport].
+@export var grid_resize_cell : NodePath
+
 
 ## Whether to show item's "back_color" extra property as a background behind it.
 @export var show_backgrounds := true
@@ -111,6 +115,9 @@ func _exit_tree():
 
 func _set_cell_size(v):
 	cell_size = v
+	if !grid_resize_cell.is_empty():
+		get_node(grid_resize_cell).size = v
+
 	_regenerate_view()
 
 

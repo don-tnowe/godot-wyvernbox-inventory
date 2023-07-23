@@ -34,6 +34,7 @@ script = ExtResource("1")
 inventory = SubResource("Resource_plmu5")
 item_scene = ExtResource("3")
 grid_background = NodePath("BG")
+grid_resize_cell = NodePath("SubViewport")
 
 [node name="Border" type="NinePatchRect" parent="."]
 layout_mode = 2
@@ -48,11 +49,8 @@ size = Vector2i(14, 14)
 
 [node name="Cell" parent="SubViewport" instance=ExtResource("2")]
 custom_minimum_size = Vector2(0, 0)
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 14.0
-offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="BG" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(112, 112)
