@@ -20,7 +20,8 @@ func _parse_begin(object):
 	cur_object_settings = []
 	if !object.get_script().is_tool():
 		object = object.get_script().new()
-		object.queue_free()
+		if !object is RefCounted:
+			object.queue_free()
 
 	cur_object_settings = object._get_wyvernbox_item_lists()
 
