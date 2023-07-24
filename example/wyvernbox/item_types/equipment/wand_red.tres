@@ -11,12 +11,12 @@ region = Rect2(12, 48, 12, 24)
 script = ExtResource("2")
 name = "item_name_wand_red"
 description = "item_desc_wand_red"
+texture = SubResource("1")
+texture_scale = 1.0
 max_stack_count = 1
 in_inventory_width = 1
 in_inventory_height = 2
-texture = SubResource("1")
-texture_scale = 1.0
-slot_flags = 65542
+slot_flags = 131078
 default_properties_string = "{
 \"back_color\": Color(1, 0.65098, 0, 1),
 \"price\": {

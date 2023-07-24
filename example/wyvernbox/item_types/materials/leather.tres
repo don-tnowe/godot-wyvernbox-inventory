@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="1"]
 [ext_resource type="Script" path="res://addons/wyvernbox/item_type.gd" id="2"]
 
-[sub_resource type="AtlasTexture" id="1"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fidnm"]
 atlas = ExtResource("1")
 region = Rect2(60, 24, 24, 12)
 
@@ -11,11 +11,11 @@ region = Rect2(60, 24, 24, 12)
 script = ExtResource("2")
 name = "item_name_leather"
 description = "item_desc_leather"
+texture = SubResource("AtlasTexture_fidnm")
+texture_scale = 1.0
 max_stack_count = 20
 in_inventory_width = 2
 in_inventory_height = 1
-texture = SubResource("1")
-texture_scale = 1.0
 slot_flags = 513
 default_properties_string = "{}"
 default_properties = {}

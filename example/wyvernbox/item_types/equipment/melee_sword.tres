@@ -11,12 +11,12 @@ region = Rect2(0, 72, 12, 36)
 script = ExtResource("2")
 name = "item_name_melee_sword"
 description = "item_desc_melee_sword"
+texture = SubResource("1")
+texture_scale = 1.0
 max_stack_count = 1
 in_inventory_width = 1
 in_inventory_height = 3
-texture = SubResource("1")
-texture_scale = 1.0
-slot_flags = 32774
+slot_flags = 65542
 default_properties_string = "{
 \"back_color\": Color(1, 0.65098, 0, 1),
 \"price\": {

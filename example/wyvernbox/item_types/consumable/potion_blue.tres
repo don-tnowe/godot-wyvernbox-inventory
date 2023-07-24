@@ -11,11 +11,11 @@ region = Rect2(36, 0, 12, 24)
 script = ExtResource("2")
 name = "item_name_potion_blue"
 description = "item_desc_potion_blue"
+texture = SubResource("1")
+texture_scale = 1.0
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 2
-texture = SubResource("1")
-texture_scale = 1.0
 slot_flags = 17
 default_properties_string = "{
 \"back_color\": Color(0.67451, 0.270588, 0.972549, 1),

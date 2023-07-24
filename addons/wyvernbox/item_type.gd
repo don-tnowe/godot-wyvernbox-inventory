@@ -19,21 +19,22 @@ enum SlotFlags {
 	#
 	#
 	#
-	E_MAINHAND = 1 << 15,
-	E_OFFHAND = 1 << 16,
-	E_HELM = 1 << 17,
-	E_CHEST = 1 << 18,
-	E_BELT = 1 << 19,
-	E_HANDS = 1 << 20,
-	E_FEET = 1 << 21,
-	E_RING = 1 << 22,
-	E_NECK = 1 << 23,
+	#
+	E_MAINHAND = 1 << 16,
+	E_OFFHAND = 1 << 17,
+	E_HEAD = 1 << 18,
+	E_CHEST = 1 << 19,
+	E_BELT = 1 << 20,
+	E_HANDS = 1 << 21,
+	E_FEET = 1 << 22,
+	E_RING = 1 << 23,
+	E_NECK = 1 << 24,
 }
 ## Matches flags of all equipment slots (hands, helmet, chest, belt, handwear, footwear, ring and neck)
 const EQUIPMENT_FLAGS := (
 	SlotFlags.E_MAINHAND
 	| SlotFlags.E_OFFHAND
-	| SlotFlags.E_HELM
+	| SlotFlags.E_HEAD
 	| SlotFlags.E_CHEST
 	| SlotFlags.E_BELT
 	| SlotFlags.E_HANDS
@@ -83,9 +84,10 @@ const EQUIPMENT_FLAGS := (
 "#",
 "#",
 "#",
+"#",
 "E_MAINHAND",
 "E_OFFHAND",
-"E_HELM",
+"E_HEAD",
 "E_CHEST",
 "E_BELT",
 "E_HANDS",

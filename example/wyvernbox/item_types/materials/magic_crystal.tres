@@ -11,15 +11,17 @@ region = Rect2(0, 24, 12, 24)
 script = ExtResource("2")
 name = "item_name_magic_crystal"
 description = "item_desc_magic_crystal"
+texture = SubResource("1")
+texture_scale = 1.0
 max_stack_count = 20
 in_inventory_width = 1
 in_inventory_height = 2
-texture = SubResource("1")
-texture_scale = 1.0
 slot_flags = 513
 default_properties_string = "{
-\"back_color\": Color(0.67451, 0.270588, 0.972549, 1)
+\"back_color\": Color(0.67451, 0.270588, 0.972549, 1),
+\"stats\": {}
 }"
 default_properties = {
-"back_color": Color(0.67451, 0.270588, 0.972549, 1)
+"back_color": Color(0.67451, 0.270588, 0.972549, 1),
+"stats": {}
 }
