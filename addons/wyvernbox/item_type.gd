@@ -45,8 +45,18 @@ const EQUIPMENT_FLAGS := (
 @export var name := ""
 
 ## The item's description. Can be empty or a locale string.
-@export var description := "" # (String, MULTILINE)
+@export_multiline var description := ""
 
+## The item's texture.
+@export var texture : Texture2D:
+	set(v):
+		texture = v
+		notify_property_list_changed()
+
+## The scale of the item's texture.
+@export var texture_scale := 1.0
+
+@export_group("Inventory Space")
 ## How many items can fit into a single stack.
 @export var max_stack_count := 1
 
@@ -55,19 +65,6 @@ const EQUIPMENT_FLAGS := (
 
 ## How many cells, vertically, this item occupies in a [GridInventory].
 @export var in_inventory_height := 1
-
-## The item's texture.
-@export var texture : Texture2D
-
-## The [Mesh] to spawn when it gets created on the ground. If not set, shows [member Texture].
-@export var mesh : Mesh
-
-## Optionally, the [PackedScene] to spawn when it gets created on the ground.
-## If not set, uses scene set in [GroundItemManager] with [member mesh] or [member texture].
-@export var custom_ground_prefab : PackedScene
-
-## The scale of the item's texture.
-@export var texture_scale := 1.0
 
 ## The [code]SlotFlags[/code] of this item. Used in [RestrictedInventory].
 @export_flags(
@@ -94,8 +91,16 @@ const EQUIPMENT_FLAGS := (
 "E_HANDS",
 "E_FEET",
 "E_RING",
-"E_NECK"
+"E_NECK",
 	) var slot_flags := 1
+
+@export_group("Other")
+## The [Mesh] to spawn when it gets created on the ground. If not set, shows [member Texture].
+@export var mesh : Mesh
+
+## Optionally, the [PackedScene] to spawn when it gets created on the ground.
+## If not set, uses scene set in [GroundItemManager] with [member mesh] or [member texture].
+@export var custom_ground_prefab : PackedScene
 
 ## The string representation of the type's [member default_properties].
 @export_multiline var default_properties_string : String:

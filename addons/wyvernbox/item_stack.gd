@@ -146,8 +146,7 @@ func _display_texture_internal(node : Node, data_or_paths, colors : Array = [], 
 	if data_or_paths is Dictionary:
 		var img = Image.new()
 		img.data = data_or_paths
-		var tex = ImageTexture.new()
-		tex.create_from_image(img) #,0
+		var tex = ImageTexture.create_from_image(img)
 		node.texture = tex
 		return
 

@@ -129,6 +129,7 @@ var added_scripts := [
 
 var inspector_plugins = [
 	load("res://addons/wyvernbox/editor/inspector_plugin_item_tables.gd").new(self),
+	load("res://addons/wyvernbox/editor/inspector_plugin_item_type.gd").new(self),
 ]
 
 
