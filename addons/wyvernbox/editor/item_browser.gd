@@ -9,8 +9,9 @@ extends Panel
 @export var item_list_column_width := 48.0
 
 @onready var folder_list : Tree = $"Box/Box/FolderList"
-@onready var item_list : ItemList = $"Box/Panel/Box/Margins/ItemList"
+@onready var item_list : ItemList = $"Box/Panel/Box/ItemList"
 @onready var path_text : Label = $"Box/Panel/Box/ItemPath"
+@onready var filter_text : LineEdit = $"Box/Panel/Box/Filter"
 
 var plugin : EditorPlugin
 
@@ -37,10 +38,15 @@ func initialize(plugin : EditorPlugin, types_allowed : Array = [ItemType, ItemGe
 	]
 	for i in checkboxes.size():
 		checkboxes[i].button_pressed = allowed_types[i]
-		checkboxes[i].connect("toggled", Callable(self, "_on_type_filter_toggled").bind(i))
+		checkboxes[i].toggled.connect(Callable(self, &"_on_type_filter_toggled").bind(i))
 
 	var settings = plugin.get_editor_interface().get_editor_settings()
 	size *= plugin.get_editor_interface().get_editor_scale()
+	visibility_changed.connect(_on_visibility_changed)
+
+	var panel_style := get_theme_stylebox(&"panel", &"Tree")
+	filter_text.add_theme_stylebox_override(&"normal", panel_style)
+	item_list.add_theme_stylebox_override(&"panel", panel_style)
 
 	_scan_item_folders()
 	_fill_item_list()
@@ -88,6 +94,7 @@ func _fill_item_list():
 	item_list.clear()
 	paths_in_list.clear()
 
+	var item_list_class := load("res://addons/wyvernbox/editor/inspector_item_list.gd")
 	var label_color : Color
 	var type_colors_keys := type_colors.keys()
 	var type_allowed : bool
@@ -98,7 +105,7 @@ func _fill_item_list():
 		for x in items_by_dir[k]:
 			type_allowed = true
 			for i in type_colors_keys.size():
-				if type_colors_keys[i].instance_has(x):
+				if item_list_class.instance_has_recursive(x, type_colors_keys[i]):
 					label_color = type_colors[type_colors_keys[i]]
 					if !allowed_types[i]:
 						type_allowed = false
@@ -124,7 +131,8 @@ func _fill_item_list():
 
 func _on_visibility_changed():
 	if visible:
-		$"Box/Panel/Box/Filter".grab_focus()
+		if get_child_count() == 0: await ready
+		filter_text.grab_focus()
 
 
 func _on_item_list_gui_input(event : InputEvent):
@@ -144,7 +152,7 @@ func _on_item_list_gui_input(event : InputEvent):
 		var drag_preview = Label.new()
 		drag_preview.text = paths_in_list[index]
 		drag_preview.size.x = 9999.0
-		item_list.force_drag.call_deferred({"files" : [paths_in_list[index]], "type" : "files"}, drag_preview)
+		item_list.force_drag.call_deferred({&"files" : [paths_in_list[index]], &"type" : "files"}, drag_preview)
 
 
 func _on_filter_text_changed(new_text : String):

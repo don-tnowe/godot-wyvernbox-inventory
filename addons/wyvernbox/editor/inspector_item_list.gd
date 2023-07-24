@@ -45,11 +45,9 @@ func _init(
 	self.column_defaults = column_defaults
 
 	var property_buttons = HBoxContainer.new()
-	# browse_button.text = "Browse Items..."
-	browse_button.text = "Drop here from FileSystem!"
-	browse_button.tooltip_text = "Drag and Drop here from FileSystem!\nItem Browser coming back soon."
+	browse_button.text = "Browse Items..."
 	browse_button.flat = true
-	# browse_button.pressed.connect(_on_browse_pressed)
+	browse_button.pressed.connect(_on_browse_pressed)
 	browse_button.size_flags_horizontal = SIZE_EXPAND_FILL
 
 	var vis_button = Button.new()
@@ -95,21 +93,21 @@ func _ensure_no_empty(column_defaults):
 
 
 func _can_drop_data(position, data):
-	if data.has("inspector_item_list_drag_from"):
+	if data.has(&"inspector_item_list_drag_from"):
 		return true
 
-	if data.get("type", "") != "files":
+	if data.get(&"type", "") != "files":
 		return false
 
-	if data.get("files", []).size() == 0:
+	if data.get(&"files", []).size() == 0:
 		return false
 
 	return true
 
 
 func _drop_data(position, data):
-	if data.has("inspector_item_list_drag_from") && data["inside_list"] == self:
-		move_item(data["inspector_item_list_drag_from"], _get_mouseover_item(get_global_mouse_position()))
+	if data.has(&"inspector_item_list_drag_from") && data[&"inside_list"] == self:
+		move_item(data[&"inspector_item_list_drag_from"], _get_mouseover_item(get_global_mouse_position()))
 		return
 
 	for x in data.get("files", []):
@@ -143,10 +141,11 @@ func _gui_input(event):
 	if event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
 		var index_grabbed = _get_mouseover_item(event.global_position)
 		if index_grabbed < 0: return
-		# get_drag_data does not work :/
-		call_deferred("force_drag",
-			{"inspector_item_list_drag_from" : index_grabbed, "inside_list" : self},
-			grid_l.get_child(grid_l.columns * (index_grabbed + 1) + 1).duplicate()
+		var drag_preview := grid_l.get_child(grid_l.columns * (index_grabbed + 1) + 1).duplicate()
+		drag_preview.clip_text = false
+		call_deferred(&"force_drag",
+			{&"inspector_item_list_drag_from" : index_grabbed, &"inside_list" : self},
+			drag_preview
 		)
 
 
@@ -447,11 +446,14 @@ func _on_browse_pressed():
 	if browse_window == null:
 		browse_window = load("res://addons/wyvernbox/editor/item_browser.tscn").instantiate()
 		browse_button.add_child(browse_window)
+		await get_tree().process_frame
 		browse_window.initialize(plugin, allowed_types)
 		browse_window.hide()
 
+	await get_tree().process_frame
+	browse_window.top_level = true
 	browse_window.visible = !browse_window.visible
-	browse_window.position = Vector2(
+	browse_window.global_position = Vector2(
 		get_node("../../../..").global_position.x - browse_window.size.x - 8.0,
 		global_position.y
 	)
