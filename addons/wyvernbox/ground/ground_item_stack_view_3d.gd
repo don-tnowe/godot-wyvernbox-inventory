@@ -38,6 +38,11 @@ var item_stack : ItemStack
 
 var _jump_tween : Tween
 
+# A unique identifier string used for keeping track of this particular item stack.
+# This is mostly used for keeping item sync 1:1 between GroundItemManagers.
+
+var uuid : String 
+
 
 func _set_item_type(v):
 	item_type = v

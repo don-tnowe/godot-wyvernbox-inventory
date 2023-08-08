@@ -45,6 +45,7 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 	var item_node = item_scene.instantiate()
 	item_node.set_stack(stack)
 	add_child(item_node)
+	item_node.uuid = generate_item_uuid()
 
 	if item_node is Node2D:
 		item_node.global_position = global_pos
@@ -75,6 +76,47 @@ func load_from_array(array : Array):
 
 		else:
 			new_node.position = x["position"]
+		new_node.uuid = x["uuid"]
+		
+## Loads ground items from [code]array[/code] created via [method to_array].
+## This variant of load_from_array only adds new items, or removes ones not 
+## present in the given [code]array[/code].
+func load_from_array_differential(array : Array):
+	var new_node : Node
+	var diff_array : Array = to_array()
+	var new_items_array : Array = []
+	var old_items_array : Array = []
+	
+	for x in diff_array: #compare current contents; old items are not present.
+		if not array.has(x):
+			old_items_array.append(x)
+			
+	for x in array: #compare new array to current contents. new items are added.
+		if diff_array.has(x):
+			continue
+		new_items_array.append(x)
+	
+	for x in get_children(): #loop through old data, find old nodes, free them.
+		var compare_node : Node = x
+		for s in old_items_array:
+			if compare_node.uuid == s["uuid"]:
+				compare_node.free()
+			
+	for x in new_items_array: #loop through new items, create them.
+		new_node = item_scene.instantiate()
+		add_child(new_node)
+		new_node.skip_spawn_animation()
+
+		new_node.item_type = load(x["type"])
+		new_node.item_count = x["count"]
+		new_node.item_extra = x["extra"]
+		new_node.item_affixes = x.get("name", [null])
+		if new_node is Node2D:
+			new_node.position = x["position"]
+
+		else:
+			new_node.position = x["position"]
+		new_node.uuid = x["uuid"]
 
 ## Returns all ground items as an array of dictionaries. Useful for serialization.
 func to_array():
@@ -87,7 +129,8 @@ func to_array():
 			"count" : children[i].item_count,
 			"extra" : children[i].item_extra,
 			"name" : children[i].item_affixes,
-			"position" : (children[i].position if (children[i] is Node2D) else children[i].position)
+			"position" : (children[i].position if (children[i] is Node2D) else children[i].position),
+			"uuid" : children[i].uuid
 		}
 	
 	return array
@@ -176,6 +219,12 @@ func load_state(filename):
 
 	file.open(filename, FileAccess.READ)
 	load_from_array(file.get_var())
+	
+## Generates a unique identifier for a given item scene.
+## Should be (relatively) unique.
+
+func generate_item_uuid():
+	return randi()
 
 
 func _move_to_free_space(rect : Rect2, label_rects : Array, upwards_step : float) -> Rect2:
