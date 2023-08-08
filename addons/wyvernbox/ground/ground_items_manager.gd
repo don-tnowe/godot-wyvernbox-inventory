@@ -60,6 +60,7 @@ func add_item(stack : ItemStack, global_pos, throw_vector = null):
 ## Loads ground items from [code]array[/code] created via [method to_array].
 func load_from_array(array : Array):
 	var new_node : Node
+	for x in get_children(): x.free()
 	for x in array:
 		new_node = item_scene.instantiate()
 		add_child(new_node)
