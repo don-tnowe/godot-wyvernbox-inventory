@@ -41,6 +41,7 @@ func _ready():
 
 	drop_surface_node = new_node
 	connect("visibility_changed", Callable(self, "_on_visibility_changed"))
+	hide()
 	_on_visibility_changed()
 
 ## Grabs a stack, removing it from its inventory.

@@ -29,10 +29,6 @@ func _physics_process(_delta):
 		var _new_velocity = velocity
 
 
-func _ready():
-	get_node(inventory_menu).hide()
-
-
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		_mouse_pressed = event.is_pressed()

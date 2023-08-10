@@ -270,7 +270,6 @@ text = "(Hold Alt to highlight items)"
 visible = false
 
 [node name="GrabbedItem" parent="Inventory/InventoryMenu" groups=["grabbed_item"] instance=ExtResource("17")]
-visible = false
 z_index = 1
 offset_left = 220.787
 offset_top = 69.0519
