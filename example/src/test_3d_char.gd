@@ -48,12 +48,16 @@ func _on_Generator_pressed():
 			item_manager.add_item(x, global_position + Vector3(0, 0.5, 0))
 
 
-func _on_ItemPickup_area_entered(area):
-	if area.is_in_group(&"ground_item") && !area.filter_hidden:
+func _on_ItemPickup_body_entered(body : Node3D):
+	if body.is_in_group(&"ground_item") && !body.filter_hidden:
 		# Inventory? Inventory. Don't hard-code paths, kids.
 #		area.try_pickup($"../../../Inventory/Inventory/Inventory".inventory)
-		area.try_pickup(get_node(inventory_menu).main_inventory)
+		body.try_pickup(get_node(inventory_menu).main_inventory)
 
 
 func _on_inworld_inv_button_pressed(inventory_view, inventory_name):
 		get_node(inventory_menu).open_inworld_inventory(inventory_view, inventory_name)
+
+
+func _on_items_item_clicked(item_node : Node):
+	_on_ItemPickup_body_entered(item_node)

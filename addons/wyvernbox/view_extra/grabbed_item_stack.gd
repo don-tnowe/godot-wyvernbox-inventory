@@ -2,6 +2,8 @@
 class_name GrabbedItemStackView
 extends ItemStackView
 
+@export_group("Drop")
+
 ## The node whose position [method drop_on_ground] uses for spawning a ground item.
 @export var drop_at_node := NodePath("")
 
@@ -11,8 +13,15 @@ extends ItemStackView
 ## The max distance an item dropped by [method drop_on_ground] can fly.
 @export var drop_max_distance := 256.0
 
-## The [Camera] used for dropping the item into a 3D scene. In 2D, unused.
+@export_group("Drop/3D")
+
+## The [Camera3D] used for dropping the item into a 3D scene. In 2D, unused.
 @export var drop_camera_3d := NodePath("")
+
+## For dropping items in 3D, the physics layers to hit when determining destination position.
+@export_flags_3d_physics var drop_ray_mask := 1
+
+@export_group("View")
 
 ## The size of the item's texture, if its in-inventory size was [code](1, 1)[/code].
 @export var unit_size := Vector2(18, 18)
@@ -158,7 +167,8 @@ func drop_on_ground(stack, click_pos = null):
 	else:
 		var cam : Camera3D = get_node(drop_camera_3d)
 		var origin := cam.project_ray_origin(click_pos)
-		var hit = node.get_world_3d().direct_space_state.intersect_ray(origin, origin + cam.project_ray_normal(click_pos) * 9999)
+		var ray := PhysicsRayQueryParameters3D.create(origin, origin + cam.project_ray_normal(click_pos) * 9999, drop_ray_mask)
+		var hit = node.get_world_3d().direct_space_state.intersect_ray(ray)
 		throw_vec = (hit["position"] - spawn_at_pos).limit_length(drop_max_distance)
 
 	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
@@ -166,7 +176,7 @@ func drop_on_ground(stack, click_pos = null):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
-func _input(event):
+func _input(event : InputEvent):
 	if event is InputEventMouseMotion:
 		_move_to_mouse()
 		
@@ -179,7 +189,7 @@ func _input(event):
 			drop_one()
 
 
-func _drop_surface_input(event):
+func _drop_surface_input(event : InputEvent):
 	if event is InputEventMouseButton && grabbed_stack != null && !event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			drop_on_ground(grabbed_stack, event.global_position)

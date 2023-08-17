@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://blxmwn4jq2mot"]
+[gd_scene load_steps=33 format=3 uid="uid://blxmwn4jq2mot"]
 
 [ext_resource type="PackedScene" uid="uid://dsoiq0u4jfsqb" path="res://example/src/inventory_menu.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="2"]
@@ -16,6 +16,7 @@
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="14"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="15"]
 [ext_resource type="Script" path="res://example/src/world/touch_dropper.gd" id="16"]
+[ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="17_ici5q"]
 
 [sub_resource type="CylinderShape3D" id="1"]
 radius = 0.56303
@@ -27,6 +28,7 @@ height = 1.999
 radial_segments = 15
 
 [sub_resource type="CylinderShape3D" id="8"]
+height = 3.02818
 radius = 0.805338
 
 [sub_resource type="BoxShape3D" id="2"]
@@ -40,7 +42,7 @@ material = SubResource("StandardMaterial3D_i1865")
 [sub_resource type="Resource" id="22"]
 resource_name = "Drop Chaotically"
 script = ExtResource("10")
-items_to_add = Array[Resource]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
@@ -57,7 +59,7 @@ spread_angle_degrees = 0.0
 [sub_resource type="Resource" id="21"]
 resource_name = "Drop In Circle"
 script = ExtResource("10")
-items_to_add = Array[Resource]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
@@ -67,17 +69,17 @@ spread_distance = 4.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_ilynj"]
+[sub_resource type="Resource" id="Resource_a1m6n"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
-height = 8
+height = 12
 width = 8
 
 [sub_resource type="Resource" id="12"]
 resource_name = "Random Equips"
 script = ExtResource("10")
-items_to_add = Array[Resource]([ExtResource("13"), ExtResource("15"), ExtResource("15"), ExtResource("14"), ExtResource("14"), ExtResource("14"), ExtResource("14")])
+items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("13"), ExtResource("15"), ExtResource("15"), ExtResource("14"), ExtResource("14"), ExtResource("14"), ExtResource("14")])
 item_repeat_ranges = Array[Vector2]([Vector2(8, 8), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100)])
 item_chances = Array[float]([100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0])
 repeat_post_chance = true
@@ -87,7 +89,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_qcar7"]
+[sub_resource type="Resource" id="Resource_dih6h"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -125,6 +127,7 @@ mesh = SubResource("7")
 input_ray_pickable = false
 
 [node name="Shape3D" type="CollisionShape3D" parent="Node3D/Hero/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.470862, 0)
 shape = SubResource("8")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Node3D"]
@@ -255,11 +258,12 @@ transform = Transform3D(0.413263, 0, -0.910612, 0, 1, 0, 0.910612, 0, 0.413263, 
 
 [node name="Inventory" parent="Node3D/Openable/Chest" instance=ExtResource("12")]
 visible = false
+custom_minimum_size = Vector2(112, 168)
 offset_left = -313.0
 offset_top = -39.0
 offset_right = -201.0
-offset_bottom = 73.0
-inventory = SubResource("Resource_ilynj")
+offset_bottom = 129.0
+inventory = SubResource("Resource_a1m6n")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
@@ -288,7 +292,7 @@ offset_left = -201.0
 offset_top = 20.0
 offset_right = -89.0
 offset_bottom = 188.0
-inventory = SubResource("Resource_qcar7")
+inventory = SubResource("Resource_dih6h")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
@@ -357,7 +361,9 @@ drop_at_node = NodePath("../../../Node3D/Hero")
 drop_ground_item_manager = NodePath("../../../Node3D/Items")
 drop_max_distance = 8.0
 drop_camera_3d = NodePath("../../../Node3D/Camera3D")
+drop_ray_mask = 1
 unit_size = Vector2(14, 14)
+hide_cursor = false
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.
@@ -373,7 +379,9 @@ offset_left = 198.0
 offset_top = -23.0
 offset_right = 358.0
 offset_bottom = 52.0
+theme = ExtResource("17_ici5q")
 color_neutral = Color(0.376471, 0.376471, 0.376471, 1)
 
-[connection signal="body_entered" from="Node3D/Hero/Area3D" to="Node3D/Hero" method="_on_ItemPickup_area_entered"]
+[connection signal="body_entered" from="Node3D/Hero/Area3D" to="Node3D/Hero" method="_on_ItemPickup_body_entered"]
+[connection signal="item_clicked" from="Node3D/Items" to="Node3D/Hero" method="_on_items_item_clicked"]
 [connection signal="pressed" from="Inventory/Generator" to="Node3D/Hero" method="_on_Generator_pressed"]

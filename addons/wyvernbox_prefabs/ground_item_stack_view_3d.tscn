@@ -20,7 +20,7 @@ fill_from = Vector2(0, 1)
 fill_to = Vector2(0, 0)
 
 [sub_resource type="BoxShape3D" id="10"]
-size = Vector3(0.3, 0.3, 0.3)
+size = Vector3(0.3, 0.791451, 0.3)
 
 [sub_resource type="ViewportTexture" id="14"]
 viewport_path = NodePath("LabelVP")
@@ -61,10 +61,11 @@ _data = {
 "init": SubResource("11")
 }
 
-[node name="Item" type="CharacterBody3D" node_paths=PackedStringArray("display_icon", "display_mesh") groups=["ground_item"]]
+[node name="Item" type="CharacterBody3D" node_paths=PackedStringArray("display_icon", "display_mesh", "display_colorable") groups=["ground_item"]]
 script = ExtResource("2")
 display_icon = NodePath("VisItem/Icons/Icon")
 display_mesh = NodePath("VisItem/Mesh")
+display_colorable = [NodePath("VisItem/Glow"), NodePath("VisItem/Glow/Glow2")]
 filter_hidden_color = Color(0.501961, 0.501961, 0.501961, 0.501961)
 
 [node name="VisItem" type="Node3D" parent="."]
@@ -94,7 +95,7 @@ render_priority = 1
 [node name="Mesh" type="MeshInstance3D" parent="VisItem"]
 
 [node name="Shape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.349212, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635806, 0)
 shape = SubResource("10")
 
 [node name="LabelVP" type="SubViewport" parent="."]

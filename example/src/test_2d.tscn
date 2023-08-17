@@ -282,6 +282,7 @@ drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
 drop_max_distance = 256.0
 drop_camera_3d = NodePath("")
+drop_ray_mask = 1
 unit_size = Vector2(14, 14)
 hide_cursor = false
 

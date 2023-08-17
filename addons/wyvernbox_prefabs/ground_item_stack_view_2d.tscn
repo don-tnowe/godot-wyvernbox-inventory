@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://cjdtl6ek4qp7d"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd" id="1"]
-[ext_resource type="PackedScene" path="res://addons/wyvernbox/ground/ground_item_label.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://pueodad43okn" path="res://addons/wyvernbox/ground/ground_item_label.tscn" id="4"]
 
 [sub_resource type="Gradient" id="12"]
 interpolation_mode = 2
@@ -336,7 +336,6 @@ show_behind_parent = true
 
 [node name="Label" parent="Label" instance=ExtResource("4")]
 visible = false
-anchors_preset = 15
 offset_top = -21.0
 offset_bottom = -7.0
 mouse_filter = 1
