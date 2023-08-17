@@ -91,68 +91,39 @@ item_scene = ExtResource("1")
 interaction_mode = 29
 autosave_file_path = "items/hero/currency.dat"
 
-[node name="Cells" type="Control" parent="Control/Money"]
-anchors_preset = 0
+[node name="Cells" type="VBoxContainer" parent="Control/Money"]
+layout_mode = 0
 mouse_filter = 2
 
 [node name="1" parent="Control/Money/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 26.0
-offset_bottom = 14.0
+layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("1")
 
 [node name="2" parent="Control/Money/Cells" instance=ExtResource("2")]
-visible = false
+modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 18.0
-offset_right = 14.0
-offset_bottom = 32.0
+layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("1")
 
 [node name="3" parent="Control/Money/Cells" instance=ExtResource("2")]
-visible = false
+modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 36.0
-offset_right = 14.0
-offset_bottom = 50.0
+layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("1")
 
 [node name="4" parent="Control/Money/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 54.0
-offset_right = 30.0
-offset_bottom = 68.0
+layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("1")
 
 [node name="5" parent="Control/Money/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(30, 14)
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 72.0
-offset_right = 30.0
-offset_bottom = 86.0
+layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("1")
 

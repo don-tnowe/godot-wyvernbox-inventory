@@ -204,6 +204,14 @@ func _regenerate_view():
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
 
+		if cells is Container:
+			# Container items aren't immediately ordered. Wait for the cells to align correctly.
+			# NO, awaiting Container.sort_children doesn't work, even if you wait a frame. Why? An enigma.
+			await cells.visibility_changed
+			await get_tree().process_frame
+			for i in _view_nodes.size():
+				_redraw_item(_view_nodes[i], inventory.items[i])
+
 
 ## Returns the in-inventory position of the cell clicked from global [code]pos[/code].
 ## Returns [code](-1, -1)[/code] if no cell found.
