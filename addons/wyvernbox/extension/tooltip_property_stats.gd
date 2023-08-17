@@ -53,6 +53,9 @@ func _show_equip_stats(item_stack : ItemStack):
 
 
 func _get_compared_item_stats(to_item : ItemStack) -> Array:
+	if tooltip.compare_to_inventory.is_empty():
+		return []
+
 	var inv = tooltip.get_node(tooltip.compare_to_inventory).inventory._cells
 	var result := []
 	var to_flags := to_item.item_type.slot_flags
