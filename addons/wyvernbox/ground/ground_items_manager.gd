@@ -43,7 +43,7 @@ func _exit_tree():
 ## If [code]throw_vector[/code] not set, item will land a random short distance nearby.
 func add_item(stack : ItemStack, global_pos, throw_vector = null):
 	var item_node = item_scene.instantiate()
-	item_node.set_stack(stack)
+	item_node.item_stack = stack
 	add_child(item_node)
 
 	if item_node is Node2D:
@@ -66,10 +66,9 @@ func load_from_array(array : Array):
 		add_child(new_node)
 		new_node.skip_spawn_animation()
 
-		new_node.item_type = load(x["type"])
-		new_node.item_count = x["count"]
-		new_node.item_extra = x["extra"]
-		new_node.item_affixes = x.get("name", [null])
+		var new_stack := ItemStack.new(load(x["type"]), x["count"], x["extra"])
+		new_stack.name_with_affixes = x.get("name", [null])
+		new_node.item_stack = new_stack
 		if new_node is Node2D:
 			new_node.position = x["position"]
 
@@ -82,11 +81,12 @@ func to_array():
 	var array = []
 	array.resize(children.size())
 	for i in array.size():
+		var cur_stack : ItemStack = children[i].item_stack
 		array[i] = {
-			"type" : children[i].item_type.resource_path,
-			"count" : children[i].item_count,
-			"extra" : children[i].item_extra,
-			"name" : children[i].item_affixes,
+			"type" : cur_stack.item_type.resource_path,
+			"count" : cur_stack.count,
+			"extra" : cur_stack.extra_properties,
+			"name" : cur_stack.name_with_affixes,
 			"position" : (children[i].position if (children[i] is Node2D) else children[i].position)
 		}
 	

@@ -5,14 +5,6 @@ extends CollisionObject3D
 
 signal clicked()
 
-## The [ItemType] of the displayed item.
-@export var item_type: Resource: set = _set_item_type
-
-## The count of the displayed item.
-@export var item_count := 1: set = _set_item_count
-
-## The extra properties of the displayed item - if not set, uses type's [member ItemType.default_properties].
-@export var item_extra : Dictionary: set = _set_item_extra
 
 ## Path to node that displays the item's [member ItemType.texture].
 @export var display_icon : Node
@@ -27,86 +19,62 @@ signal clicked()
 @export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
 
 
-## The [member ItemStack.name_with_affixes] of the displayed item.
-var item_affixes := []: set = _set_item_affixes
-
 ## [code]true[/code] if hidden by parent's [member GroundItemManager.view_filter_patterns].
-var filter_hidden := false: set = _set_filter_hidden
+var filter_hidden := false:
+	set = _set_filter_hidden
 
 ## The [ItemStack] displayed by this node.
-var item_stack : ItemStack
+var item_stack : ItemStack:
+	set = _set_stack
 
 var _jump_tween : Tween
 
 
-func _set_item_type(v):
-	item_type = v
-	_update_stack()
-
-
-func _set_item_count(v):
-	item_count = v
-	_update_stack()
-
-
-func _set_item_extra(v):
-	item_extra = v
-	_update_stack()
-
-
-func _set_item_affixes(v):
-	item_affixes = v
-	_update_stack()
-
-
-func _set_filter_hidden(v):
+func _set_filter_hidden(v : bool):
 	filter_hidden = v
-	# visible = !v
 	display_icon.modulate = filter_hidden_color if v else Color.WHITE
 
 
-func set_label_visible(v):
-	$"LabelView".visible = v
+func _set_stack(v : ItemStack):
+	if v == null: return
 
-## Sets the displayed [ItemStack].
-func set_stack(stack):
-	item_type = stack.item_type
-	item_count = stack.count
-	item_extra = stack.extra_properties
-	item_affixes = stack.name_with_affixes
-	_update_stack()
+	item_stack = v
 
-
-func _ready():
-	_update_stack()
-	set_process_input(false)
-
-
-func _update_stack():
-	if item_type == null: return
-	item_stack = ItemStack.new(item_type, item_count, item_extra)
-	item_stack.name_with_affixes = item_affixes
 
 	if !is_inside_tree(): await self.ready
-	display_mesh.mesh = item_type.mesh
+	display_mesh.mesh = item_stack.item_type.mesh
 	item_stack.display_texture(display_icon)
 
 	for x in display_colorable:
-		x.modulate = item_extra.get("back_color", Color.GRAY)
+		x.modulate = item_stack.extra_properties.get(&"back_color", Color.GRAY)
 
 	$"LabelVP/Label".item_stack = item_stack
 	$"LabelVP".size = $"LabelVP/Label".get_bounding_rect().size
 	$"LabelView".region_enabled = true
 	$"LabelView".region_enabled = false
 
+
+func _ready():
+	set_process_input(false)
+
+## Hides or shows the item name label.
+func set_label_visible(v : bool):
+	$"LabelView".visible = v
+
+## Sets the displayed [ItemStack].
+func set_stack(stack : ItemStack):
+	item_stack = stack
+
 ## Tries to add item into [code]into_inventory[/code], freeing this node on full success.
-func try_pickup(into_inventory):
+func try_pickup(into_inventory : Inventory):
 	var deposited_count = into_inventory.try_add_item(item_stack)
-	item_count -= deposited_count
-	if item_count <= 0:
+	item_stack.count -= deposited_count
+	if item_stack.count <= 0:
 		queue_free()
 
+	item_stack = item_stack  # Call setter
 
+## Interrupts the jump animation.
 func skip_spawn_animation():
 	pass
 

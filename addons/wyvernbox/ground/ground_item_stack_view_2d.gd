@@ -5,69 +5,44 @@ extends Area2D
 
 signal clicked()
 
-## The [ItemType] of the displayed item.
-@export var item_type: Resource: set = _set_item_type
-
-## The count of the displayed item.
-@export var item_count := 1: set = _set_item_count
-
-## The extra properties of the displayed item - if not set, uses type's [member ItemType.default_properties].
-@export var item_extra : Dictionary: set = _set_item_extra
-
 
 ## The modulation to apply if filtered out by [member GroundItemManager.view_filter_patterns]. [code]Color(1, 1, 1, 1)[/code] to disable.
 @export var filter_hidden_color := Color(0.5, 0.5, 0.5, 0.5)
 
 
-## The [member ItemStack.name_with_affixes] of the displayed item.
-var item_affixes := []: set = _set_item_affixes
-
 ## [code]true[/code] if hidden by parent's [member GroundItemManager.view_filter_patterns].
-var filter_hidden := false: set = _set_filter_hidden
+var filter_hidden := false:
+	set = _set_filter_hidden
 
 ## The [ItemStack] displayed by this node.
-var item_stack : ItemStack
+var item_stack : ItemStack:
+	set = _set_stack
 
 var _jump_tween : Tween
-
-
-func _set_item_type(v):
-	item_type = v
-	_update_stack()
-
-
-func _set_item_count(v):
-	item_count = v
-	_update_stack()
-
-
-func _set_item_extra(v):
-	item_extra = v
-	_update_stack()
-
-
-func _set_item_affixes(v):
-	item_affixes = v
-	_update_stack()
 
 
 func _set_filter_hidden(v : bool):
 	filter_hidden = v
 	modulate = filter_hidden_color if v else Color.WHITE
 
+
+func _set_stack(v : ItemStack):
+	if v == null: return
+
+	item_stack = v
+
+	if !is_inside_tree(): await self.ready
+
+	$"Label/Label".item_stack = item_stack
+	$"VisItem/Glow".modulate = item_stack.extra_properties.get(&"back_color", Color.GRAY)
+	item_stack.display_texture($"VisItem/Icons/Icon")
+
+
 ## Sets the displayed [ItemStack].
 func set_stack(stack : ItemStack):
-	item_type = stack.item_type
-	item_count = stack.count
-	item_extra = stack.extra_properties
-	item_affixes = stack.name_with_affixes
-	_update_stack()
+	item_stack = stack
 
-
-func _ready():
-	_update_stack()
-
-
+## Hides or shows the item name label.
 func set_label_visible(v : bool):
 	$"Label/Label".visible = v
 
@@ -93,27 +68,18 @@ func skip_spawn_animation():
 	if _jump_tween != null: _jump_tween.kill()
 	$"Anim".advance(3600.0)
 
-
-func get_label_rect():
+## Returns the [Control] inside the name label.
+func get_label_rect() -> Control:
 	return $"Label/Label/Rect"
 
-
-func _update_stack():
-	if item_type == null: return
-	if !is_inside_tree(): await self.ready
-
-	item_stack = ItemStack.new(item_type, item_count, item_extra)
-	item_stack.name_with_affixes = item_affixes
-	$"Label/Label".item_stack = item_stack
-	$"VisItem/Glow".modulate = item_extra.get("back_color", Color.GRAY)
-	item_stack.display_texture($"VisItem/Icons/Icon")
-
 ## Tries to add item into [code]into_inventory[/code], freeing this node on full success.
-func try_pickup(into_inventory):
+func try_pickup(into_inventory : Inventory):
 	var deposited_count = into_inventory.try_add_item(item_stack)
-	item_count -= deposited_count
-	if item_count <= 0:
+	item_stack.count -= deposited_count
+	if item_stack.count <= 0:
 		queue_free()
+
+	item_stack = item_stack  # Call setter
 
 
 func _on_name_gui_input(event : InputEvent):
