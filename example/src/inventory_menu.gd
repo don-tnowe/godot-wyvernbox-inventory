@@ -12,6 +12,7 @@ var opened_container
 
 func _ready():
 	tabs.set_tab_hidden(0, true)
+	tabs.current_tab = 1
 	for i in tab_icons.size():
 		if tab_icons[i] == null: continue
 		tabs.set_tab_icon(i, tab_icons[i])
