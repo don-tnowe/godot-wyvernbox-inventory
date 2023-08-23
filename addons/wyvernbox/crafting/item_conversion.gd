@@ -93,8 +93,16 @@ func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
 	return all_inventory_views
 
 ## Returns the Rich Text representation of this conversion's inputs and outputs.
-func get_bbcode(owned_item_counts = {}) -> String:
-	var result = "\n[center]" + tr("item_tt_crafting_in")
+## [code]owned_item_counts[/code], optional, is a dictionary of [ItemType] to [int], shown next to requirement counts.
+## [code]*_label[/code] parameters are the labels for input items, output items, the "or" connector if several inputs are possible, and the label for the amount of an item already owned, in that order.
+func get_bbcode(
+  owned_item_counts := {},
+  inputs_label := "[b]Requires:[/b]",
+  outputs_label := "[b]Gives:[/b]",
+  input_or_label := " or ",
+  owned_label := "(have %s)",
+) -> String:
+	var result = "\n[center]" + inputs_label
 	var x
 	var item_text
 	for i in input_types.size():
@@ -104,7 +112,7 @@ func get_bbcode(owned_item_counts = {}) -> String:
 		if x is ItemPattern && x.name == "":
 			## 4[icon] Red Potion OR 4[blue potion] OR 4[purple potion] (have 2)
 			for pattern_i in x.items.size():
-				if item_text != "": item_text += tr("item_tt_items_or")
+				if item_text != "": item_text += input_or_label
 				item_text += "%s%s %s" % [
 					1 / (x.efficiency[pattern_i] * input_counts[i]),
 					InventoryTooltip.get_texture_bbcode(x.items[pattern_i].texture.resource_path),
@@ -122,10 +130,10 @@ func get_bbcode(owned_item_counts = {}) -> String:
 		result += "\n%s [color=#%s]%s[/color]" % [
 			item_text,
 			("ff7f7f" if owned_item_counts.get(x, 0) < input_counts[i] else "ffffff"),
-			tr("item_tt_have_items") % str(owned_item_counts.get(x, 0)),
+			owned_label % str(owned_item_counts.get(x, 0)),
 		]
 		
-	result += "\n\n" + tr("item_tt_crafting_out")
+	result += "\n\n" + outputs_label
 	for i in output_types.size():
 		x = output_types[i]
 		var out_range = output_ranges[i]

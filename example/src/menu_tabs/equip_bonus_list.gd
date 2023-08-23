@@ -2,6 +2,11 @@ extends VBoxContainer
 
 @export var equip_inventory_view := NodePath("../Equip")
 
+@export_group("Fluff")
+@export var no_weapon_text := "Left Hook Right Hook Jab"
+@export var crit_stat_text := "Chance for x%s Damage:"
+@export var item_bonus_locale_string := "item_bonus_%s"
+
 var stats := {}
 var stats_per_item := {}
 
@@ -63,7 +68,7 @@ func _update_stat_view():
 			"[color=#858ffd]"
 			+ ("%.1f" % (stats.get(k, 0.0)))
 			+ "[/color] "
-			+ tr("item_bonus_" + k)
+			+ tr(item_bonus_locale_string % k)
 			+ "\n"
 		)
 
@@ -91,10 +96,16 @@ func _update_hpmp():
 
 func _update_weapon_stats():
 	var weapon = get_node(equip_inventory_view).inventory.get_item_at_position(0, 0)
-	$"WeaponName".text = weapon.get_name() if weapon != null else "no_weapon"
+	$"WeaponName".text = weapon.get_name() if weapon != null else no_weapon_text
 	$"Weapon/B/Dmg/Value".text = str(stats.get("weapon_damage", 0.0) * stats.get("weapon_speed", 1.0))
-	$"Weapon/B/Crit/Label".text = tr("stats_crit") % (stats.get("crit_power", 0.0) * 0.01)
 	$"Weapon/B/Crit/Value".text = str(stats.get("crit_chance", 0.0)) + "%"
+
+	var crit_label := tr(crit_stat_text)
+	if !("%s" in crit_label || "%d" in crit_label || "%f" in crit_label):
+    # Epic localization fail (Github #17)
+		crit_label += " %s"
+	
+	$"Weapon/B/Crit/Label".text = crit_label % (stats.get("crit_power", 0.0) * 0.01)
 
 
 func _update_nullable(node, stat, prefix : String = "", add_to_value : float = 0.0, hide_if_zero : bool = false):

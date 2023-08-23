@@ -38,16 +38,16 @@ theme = ExtResource("1_kfwxf")
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 2
 
-[node name="menu_shop_equipment" type="MarginContainer" parent="TabContainer"]
+[node name="Equipment" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
 
-[node name="Inventory" parent="TabContainer/menu_shop_equipment" instance=ExtResource("19")]
+[node name="Inventory" parent="TabContainer/Equipment" instance=ExtResource("19")]
 custom_minimum_size = Vector2(168, 112)
 layout_mode = 2
 inventory = SubResource("Resource_wcc28")
 interaction_mode = 7
 
-[node name="ShopManager" type="Node" parent="TabContainer/menu_shop_equipment"]
+[node name="ShopManager" type="Node" parent="TabContainer/Equipment"]
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
@@ -57,17 +57,17 @@ stock_counts = Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 stock_restocks = Array[int]([3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
 infinite_restocks = false
 
-[node name="menu_shop_consumables" type="MarginContainer" parent="TabContainer"]
+[node name="Consumables" type="MarginContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 
-[node name="Inventory" parent="TabContainer/menu_shop_consumables" instance=ExtResource("19")]
+[node name="Inventory" parent="TabContainer/Consumables" instance=ExtResource("19")]
 custom_minimum_size = Vector2(168, 112)
 layout_mode = 2
 inventory = SubResource("Resource_r866f")
 interaction_mode = 7
 
-[node name="ShopManager" type="Node" parent="TabContainer/menu_shop_consumables"]
+[node name="ShopManager" type="Node" parent="TabContainer/Consumables"]
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
@@ -93,7 +93,7 @@ offset_bottom = 83.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("20")
-text = "shopkeeper_hello"
+text = "Welcome! Check out my wares!"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("32")
@@ -126,14 +126,14 @@ Unlike Conversions, I apply ItemGenerators
 *before* the cost is consumed! Nothing shady, you get
 what you see."
 
-[connection signal="grab_attempted" from="TabContainer/menu_shop_equipment/Inventory" to="TabContainer/menu_shop_equipment/ShopManager" method="_on_Inventory_grab_attempted"]
-[connection signal="item_stack_added" from="TabContainer/menu_shop_equipment/Inventory" to="TabContainer/menu_shop_equipment/ShopManager" method="_on_Inventory_item_stack_added"]
-[connection signal="item_cant_afford" from="TabContainer/menu_shop_equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_cant_afford"]
-[connection signal="item_given" from="TabContainer/menu_shop_equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_given"]
-[connection signal="item_received" from="TabContainer/menu_shop_equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_received"]
-[connection signal="grab_attempted" from="TabContainer/menu_shop_consumables/Inventory" to="TabContainer/menu_shop_consumables/ShopManager" method="_on_Inventory_grab_attempted"]
-[connection signal="item_stack_added" from="TabContainer/menu_shop_consumables/Inventory" to="TabContainer/menu_shop_consumables/ShopManager" method="_on_Inventory_item_stack_added"]
-[connection signal="item_cant_afford" from="TabContainer/menu_shop_consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_cant_afford"]
-[connection signal="item_given" from="TabContainer/menu_shop_consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_given"]
-[connection signal="item_received" from="TabContainer/menu_shop_consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_received"]
+[connection signal="grab_attempted" from="TabContainer/Equipment/Inventory" to="TabContainer/Equipment/ShopManager" method="_on_Inventory_grab_attempted"]
+[connection signal="item_stack_added" from="TabContainer/Equipment/Inventory" to="TabContainer/Equipment/ShopManager" method="_on_Inventory_item_stack_added"]
+[connection signal="item_cant_afford" from="TabContainer/Equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_cant_afford"]
+[connection signal="item_given" from="TabContainer/Equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_given"]
+[connection signal="item_received" from="TabContainer/Equipment/ShopManager" to="Control/Label" method="_on_ShopManager_item_received"]
+[connection signal="grab_attempted" from="TabContainer/Consumables/Inventory" to="TabContainer/Consumables/ShopManager" method="_on_Inventory_grab_attempted"]
+[connection signal="item_stack_added" from="TabContainer/Consumables/Inventory" to="TabContainer/Consumables/ShopManager" method="_on_Inventory_item_stack_added"]
+[connection signal="item_cant_afford" from="TabContainer/Consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_cant_afford"]
+[connection signal="item_given" from="TabContainer/Consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_given"]
+[connection signal="item_received" from="TabContainer/Consumables/ShopManager" to="Control/Label" method="_on_ShopManager_item_received"]
 [connection signal="pressed" from="Control/Button" to="Control/Popup" method="popup_centered"]

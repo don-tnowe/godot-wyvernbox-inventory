@@ -1,11 +1,37 @@
 extends InventoryTooltipProperty
 
+@export var item_bonus_locale_string := "item_bonus_%s"
 
 
 func _display(item_stack):
 	if item_stack.extra_properties.has(&"stats"):
 		add_bbcode("\n")
 		_show_equip_stats(item_stack)
+
+
+func _get_stats_bbcode(displayed_stats : Dictionary, hex_bonus : String, hex_neutral : String, hex_malus : String) -> String:
+	var first := true
+	var value := 0.0
+	var text := ""
+	for k in displayed_stats:
+		first = true
+		for i in displayed_stats[k].size():
+			value = displayed_stats[k][i]
+			text += ("%s[color=#%s]%s%s" % [
+				("" if first else "/"),
+				(hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus)),
+				("+" if value >= 0.0 else ""),
+				value
+			])
+			first = false
+		
+		text += (
+			" "
+			+ tr(item_bonus_locale_string % k)
+			+ "[/color]\n"
+		)
+
+	return text
 
 
 func _show_equip_stats(item_stack : ItemStack):
@@ -22,7 +48,7 @@ func _show_equip_stats(item_stack : ItemStack):
 		for k in displayed_stats:
 			displayed_stats[k] = [displayed_stats[k]]
 
-		add_bbcode(tooltip.get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus))
+		add_bbcode(_get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus))
 		return
 
 	var compared := _get_compared_item_stats(item_stack)
@@ -30,7 +56,7 @@ func _show_equip_stats(item_stack : ItemStack):
 		for k in displayed_stats:
 			displayed_stats[k] = [displayed_stats[k]]
 
-		add_bbcode(tooltip.get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus))
+		add_bbcode(_get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus))
 		return
 		
 	for k in displayed_stats:
@@ -49,7 +75,7 @@ func _show_equip_stats(item_stack : ItemStack):
 
 			displayed_stats[k][i] -= compared[i].get(k, 0.0)
 
-	add_bbcode(tooltip.get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus))
+	add_bbcode(_get_stats_bbcode(displayed_stats, hex_bonus, hex_neutral, hex_malus))
 
 
 func _get_compared_item_stats(to_item : ItemStack) -> Array:

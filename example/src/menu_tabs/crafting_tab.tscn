@@ -71,7 +71,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/Panel"]
 layout_mode = 2
-text = "menu_craft"
+text = "Craft"
 horizontal_alignment = 1
 vertical_alignment = 2
 

@@ -10,11 +10,11 @@ var _tooltip_last_label : RichTextLabel
 
 ## Override to define tooltip content.
 ## Call [method add_bbcode] and [method add_node] from here. You can acces the tooltip node through the [member tooltip] property.
-func _display(item_stack):
+func _display(item_stack : ItemStack):
 	pass
 
 ## Appends rich text to the tooltip.
-func add_bbcode(text):
+func add_bbcode(text : String):
 	if _tooltip_last_label == null:
 		_tooltip_last_label = tooltip.get_node("%Desc").duplicate()
 		_tooltip_last_label.text = "[center]"
@@ -23,6 +23,6 @@ func add_bbcode(text):
 	_tooltip_last_label.append_text(text)
 
 ## Adds a custom node to the tooltip. Text can still be added after.
-func add_node(node):
+func add_node(node : Node):
 	tooltip.get_node("Box").add_child(node)
 	_tooltip_last_label = null

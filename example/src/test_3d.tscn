@@ -69,7 +69,7 @@ spread_distance = 4.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_hyjxm"]
+[sub_resource type="Resource" id="Resource_eqmra"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -89,7 +89,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_qgydd"]
+[sub_resource type="Resource" id="Resource_jvtmb"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -263,7 +263,7 @@ offset_left = -313.0
 offset_top = -39.0
 offset_right = -201.0
 offset_bottom = 129.0
-inventory = SubResource("Resource_hyjxm")
+inventory = SubResource("Resource_eqmra")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
@@ -292,7 +292,7 @@ offset_left = -201.0
 offset_top = 20.0
 offset_right = -89.0
 offset_bottom = 188.0
-inventory = SubResource("Resource_qgydd")
+inventory = SubResource("Resource_jvtmb")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
@@ -381,7 +381,7 @@ offset_right = 358.0
 offset_bottom = 52.0
 theme = ExtResource("17_ici5q")
 color_neutral = Color(0.376471, 0.376471, 0.376471, 1)
-compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/menu_equip/Control/Equip")
+compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/Equip/Control/Equip")
 
 [connection signal="body_entered" from="Node3D/Hero/Area3D" to="Node3D/Hero" method="_on_ItemPickup_body_entered"]
 [connection signal="item_clicked" from="Node3D/Items" to="Node3D/Hero" method="_on_items_item_clicked"]

@@ -26,7 +26,7 @@
 
 [node name="StatsDisplay" type="VBoxContainer"]
 offset_right = 225.0
-offset_bottom = 119.0
+offset_bottom = 202.0
 size_flags_horizontal = 3
 script = ExtResource("23")
 equip_inventory_view = NodePath("../..")
@@ -41,7 +41,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="Hpmp/Hp"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("20")
-text = "stats_hp"
+text = "Health"
 
 [node name="Control" type="Control" parent="Hpmp/Hp"]
 layout_mode = 2
@@ -72,7 +72,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="Hpmp/Mp"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("20")
-text = "stats_mp"
+text = "Magic Energy"
 
 [node name="Control" type="Control" parent="Hpmp/Mp"]
 layout_mode = 2
@@ -129,7 +129,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("21")
-text = "stats_damage"
+text = "Damage Per Second:"
 
 [node name="Value" type="Label" parent="Weapon/B/Dmg"]
 layout_mode = 2
@@ -199,7 +199,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="OffDef/Off"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("20")
-text = "stats_offensive"
+text = "Offensive"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="OffDef/Off"]
 layout_mode = 2
@@ -229,7 +229,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="OffDef/Def"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("20")
-text = "stats_defensive"
+text = "Defensive"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="OffDef/Def"]
 layout_mode = 2

@@ -2,7 +2,7 @@ extends Label
 
 
 func _ready():
-	call_deferred("say", "shopkeeper_hello", Color.GREEN)
+	say.call_deferred("Welcome! Check out my wares!", Color.GREEN)
 
 
 func say(say_text, color = Color(1.0, 0.9, 0.1, 1.0)):
@@ -14,12 +14,12 @@ func say(say_text, color = Color(1.0, 0.9, 0.1, 1.0)):
 
 
 func _on_ShopManager_item_received(_stack):
-	say("shopkeeper_sold", Color.GREEN)
+	say("Mmm... a fine addition to my collection!", Color.GREEN)
 
 
 func _on_ShopManager_item_given(_stack):
-	say("shopkeeper_purchase", Color.DARK_TURQUOISE)
+	say("Hohoho! Hope you enjoy it!", Color.DARK_TURQUOISE)
 
 
 func _on_ShopManager_item_cant_afford(_stack):
-	say("shopkeeper_cant_afford", Color.RED)
+	say("Hah! Out of your league. Come back when you're... a little richer!", Color.RED)

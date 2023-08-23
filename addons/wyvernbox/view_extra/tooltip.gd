@@ -149,32 +149,6 @@ func get_action_bbcode(action : String) -> String:
 
 	return "[color=#aaa]%s[/color]" % action.capitalize()
 
-## Turns a dictionary of stat bonuses or differences into rich text.
-## [code]hex_bonus[/code], [code]hex_neutral[/code] and [code]hex_malus[/code] are used for added stats, zeroes, and reduced stats respectively.
-static func get_stats_bbcode(displayed_stats : Dictionary, hex_bonus : String, hex_neutral : String, hex_malus : String) -> String:
-	var first := true
-	var value := 0.0
-	var text := ""
-	for k in displayed_stats:
-		first = true
-		for i in displayed_stats[k].size():
-			value = displayed_stats[k][i]
-			text += ("%s[color=#%s]%s%s" % [
-				("" if first else "/"),
-				(hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus)),
-				("+" if value >= 0.0 else ""),
-				value
-			])
-			first = false
-		
-		text += (
-			" "
-			+ TranslationServer.translate("item_bonus_" + k)
-			+ "[/color]\n"
-		)
-
-	return text
-
 ## Turns a [Texture] into rich text.
 ## Allows to specify scale. For a fixed height, see [method get_fixheight_texture_bbcode].
 static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> String:

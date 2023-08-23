@@ -1,5 +1,9 @@
 extends InventoryTooltipProperty
 
+const stock_label := "In Stock: %s"
+const price_label := "Price:"
+const owned_label := "(have %s)"
+
 
 func _display(item_stack):
 	if item_stack.extra_properties.has(&"price"):
@@ -22,9 +26,9 @@ func _show_price(item_stack):
 				x.inventory.count_all_items(owned_item_counts)
 
 		if item_stack.extra_properties.has(&"left_in_stock"):
-			add_bbcode(tr("item_tt_left_in_stock") % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties[&"left_in_stock"]]) + "\n\n")
+			add_bbcode(stock_label % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties[&"left_in_stock"]]) + "\n\n")
 
-	add_bbcode(tr("item_tt_price"))
+	add_bbcode(price_label)
 	var k_loaded  # Because for easier serialization, items are stored as paths
 	var multiplier = item_stack.count if !item_for_sale else 1
 	for k in price:
@@ -39,7 +43,7 @@ func _show_price(item_stack):
 		if item_for_sale:
 			add_bbcode(" [color=#%s]%s[/color] " % [
 				hex_malus if owned_item_counts.get(k_loaded, 0) < price[k] else hex_neutral,
-				tr("item_tt_have_items") % owned_item_counts.get(k_loaded, 0)
+				tr(owned_label) % owned_item_counts.get(k_loaded, 0)
 			])
 
 	add_bbcode("\n\n")
