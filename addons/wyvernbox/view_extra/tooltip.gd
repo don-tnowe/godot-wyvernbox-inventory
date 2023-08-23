@@ -173,8 +173,8 @@ static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) 
 	]
 
 
-func _update_rect(mouseover_node):
-	var left = mouseover_node.global_position.x + mouseover_node.size.x * 0.5 < get_viewport_rect().size.x * 0.5
+func _update_rect(mouseover_node : Control):
+	var left := mouseover_node.global_position.x + mouseover_node.size.x * 0.5 < get_viewport_rect().size.x * 0.5
 	size = Vector2.ZERO
 	position = mouseover_node.global_position + Vector2(
 		(mouseover_node.size.x if left else -size.x),
@@ -183,7 +183,7 @@ func _update_rect(mouseover_node):
 	position.y = clamp(position.y, 0,  get_viewport_rect().size.y - size.y)
 
 
-func _input(event):
+func _input(event : InputEvent):
 	if event.is_action(filter_input) && event.is_pressed():
 		if Input.is_action_pressed(clear_filter_mod_input):
 			for x in get_tree().get_nodes_in_group(&"view_filterable"):
@@ -207,12 +207,12 @@ func _input(event):
 
 
 func _apply_filter_to_inventories():
-	var patterns = _get_filter_to_apply()
+	var patterns := _get_filter_to_apply()
 	for x in get_tree().get_nodes_in_group(&"view_filterable"):
 		x.view_filter_patterns = patterns
 
 
-func _get_filter_to_apply():
+func _get_filter_to_apply() -> Array:
 	if last_func == null: return []
 
 	if last_func.get_method() == &"display_bonus":

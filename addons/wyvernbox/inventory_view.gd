@@ -487,7 +487,7 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 func _can_drop_data(position, data):
 	return true
 
-## Updates item visibility based on [member view_filter_patterns].
+## Updates item visibility based on [member view_filter_patterns]. Call manually after editing the pattern array instead of setting.
 func apply_view_filters(stack_index : int = -1):
 	if stack_index == -1:
 		if view_filter_color == Color(1, 1, 1, 1):

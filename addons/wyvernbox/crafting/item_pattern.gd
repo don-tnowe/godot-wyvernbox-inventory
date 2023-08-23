@@ -26,19 +26,18 @@ func _set_efficiency(v):
 	_update_sizes(v.size())
 
 
-func _update_sizes(new_size):
+func _update_sizes(new_size : int):
 	efficiency.resize(max(new_size, 1))
 	items.resize(max(new_size, 1))
 
 
-func _init(items_ := [], efficiency_ := []):
+func _init(items_ : Array = [], efficiency_ : Array = []):
 	efficiency = []
 	for x in efficiency_: efficiency.append(x)
-	items = []
-	for x in items_: items.append(x)
-	if efficiency.size() == 0:
-		efficiency.resize(items.size())
-		efficiency.fill(1.0)
+
+	var result_items : Array[ItemLike] = []
+	for x in items_: result_items.append(x)
+	items = result_items
 
 ## Returns [code]true[/code] if [code]item_stack[/code] present in [member items].
 ## Override to define special item patterns that match stacks with specific properties.
