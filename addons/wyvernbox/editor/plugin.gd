@@ -31,7 +31,7 @@ var added_scripts := [
 		icons_dir + "item_stack_view.png",
 	],
 	[
-		"Tooltip",
+		"InventoryTooltip",
 		preload(scripts_dir + "view_extra/tooltip.gd"),
 		icons_dir + "tooltip.png",
 	],
@@ -45,7 +45,7 @@ var added_scripts := [
 		preload(scripts_dir + "crafting/vendor.gd"),
 		icons_dir + "vendor.png",
 	],
-	# ITEMLIKES
+	# --- ITEMLIKES ---
 	[
 		"ItemType",
 		preload(scripts_dir + "item_type.gd"),
@@ -66,7 +66,7 @@ var added_scripts := [
 		preload(scripts_dir + "crafting/item_conversion.gd"),
 		icons_dir + "item_conversion.png",
 	],
-	# ITEMLIKES : EXTRA
+	# --- ITEMLIKES : EXTRA ---
 	[
 		"ItemGeneratorEquipmentBonus",
 		preload(scripts_dir + "extension/item_generator_equipment_bonus.gd"),
@@ -87,7 +87,7 @@ var added_scripts := [
 		preload(scripts_dir + "extension/item_pattern_name.gd"),
 		icons_dir + "item_pattern.png",
 	],
-	# INVENTORIES
+	# --- INVENTORIES ---
 	[
 		"Inventory",
 		preload(scripts_dir + "inventories/inventory.gd"),
@@ -108,7 +108,7 @@ var added_scripts := [
 		preload(scripts_dir + "inventories/restricted_inventory.gd"),
 		icons_dir + "restricted_inventory.png",
 	],
-	# GROUND
+	# --- GROUND ---
 	[
 		"GroundItemsManager",
 		preload(scripts_dir + "ground/ground_items_manager.gd"),

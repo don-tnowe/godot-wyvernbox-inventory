@@ -302,7 +302,6 @@ offset_top = -23.0
 offset_right = 358.0
 offset_bottom = 52.0
 theme = ExtResource("17_6ufom")
-color_neutral = Color(0.376471, 0.376471, 0.376471, 1)
 compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/Equip/Control/Equip")
 
 [connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_items_item_clicked"]

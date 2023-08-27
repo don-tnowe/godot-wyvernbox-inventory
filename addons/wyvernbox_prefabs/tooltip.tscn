@@ -14,9 +14,6 @@ size_flags_horizontal = 5
 size_flags_vertical = 9
 mouse_filter = 2
 script = ExtResource("1")
-color_bonus = Color(0.521569, 0.560784, 0.992157, 1)
-color_malus = Color(1, 0.376471, 0.376471, 1)
-color_neutral = Color(0.415686, 0.415686, 0.415686, 1)
 property_scripts = Array[Script]([ExtResource("5"), ExtResource("8"), ExtResource("6"), ExtResource("7")])
 
 [node name="Panel" type="Panel" parent="."]

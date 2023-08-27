@@ -5,6 +5,13 @@ extends Container
 ## The scale for in-text images drawn by [member get_texture_bbcode].
 const TEX_SCALE := 0.5
 
+## Inventory to compare stats to when [member compare_input] is held.
+@export var compare_to_inventory : NodePath
+
+## List of [InventoryTooltipProperty] scripts to display items properties in this tooltip.
+@export var property_scripts : Array[Script]
+
+@export_group("Input Actions")
 
 ## Action for comparing item stats and using quick-transfer (default [kbd]Shift[/kbd]).
 @export var compare_input := &"inventory_more"
@@ -15,34 +22,28 @@ const TEX_SCALE := 0.5
 ## Action for the "Clear filter" mod. Hold, then press [member filter_input] to clear all view filters (default [kbd]Alt[/kbd]).
 @export var clear_filter_mod_input := &"inventory_less"
 
+@export_group("Text colors")
 
 ## Color for positive/higher stat bonuses.
-@export var color_bonus := Color.YELLOW
+@export var color_bonus := Color("858ffd")
 
 ## Color for negative/lower stat bonuses.
-@export var color_malus := Color.RED
+@export var color_malus := Color("ff6060")
 
 ## Color for zero/equal stat bonuses.
-@export var color_neutral := Color.DARK_GRAY
+@export var color_neutral := Color("6a6a6a")
 
 ## Color for the item's description.
 @export var color_description := Color.WHITE
-
-## Inventory to compare stats to when [member compare_input] is held.
-@export var compare_to_inventory : NodePath
-
-
-## List of [InventoryTooltipProperty] scripts to display items properties in this tooltip.
-@export var property_scripts : Array[Script]
 
 
 static var _instance : InventoryTooltip
 
 
-## Last called display function. Either [method display_item], [method display_bonus] or [method display_custom].
+## Last called display function. Either [method display_item] or [method display_custom].
 var last_func : Callable
 
-var _ground_item_state := 0  ## 0 for none, 1 for hovering, 2 for released
+var _ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
 
 
 ## Return a reference to the tooltip node, if present on the scene.

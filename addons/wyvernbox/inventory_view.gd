@@ -6,11 +6,11 @@ extends Control
 ## A view into an [Inventory]. Allows to edit and save the inventory's contents.
 
 enum InteractionFlags {
-	CAN_TAKE = 1 << 0,  # Player can take items from here.
-	VENDOR = 1 << 1,  # The player can only take items if CAN_TAKE_AUTO inventories contain items from the item's price extra property. When taken, items will be consumed.
-	CAN_PLACE = 1 << 2,  # Player can place items here.
-	CAN_TAKE_AUTO = 1 << 3,  # VENDOR inventories can take from this inventory, and ItemConversion.get_takeable_inventories filters out inventories wihout this flag.
-	CAN_QUICK_TRANSFER_HERE = 1 << 4,  # If CAN_PLACE, can be quick-transferred into via Shift-click.
+	CAN_TAKE = 1 << 0,  ## Player can take items from here.
+	VENDOR = 1 << 1,  ## The player can only take items if CAN_TAKE_AUTO inventories contain items from the item's price extra property. When taken, items will be consumed.
+	CAN_PLACE = 1 << 2,  ## Player can place items here.
+	CAN_TAKE_AUTO = 1 << 3,  ## VENDOR inventories can take from this inventory, and ItemConversion.get_takeable_inventories filters out inventories wihout this flag.
+	CAN_QUICK_TRANSFER_HERE = 1 << 4,  ## If CAN_PLACE, can be quick-transferred into via Shift-click.
 }
 
 signal item_stack_added(item_stack)
