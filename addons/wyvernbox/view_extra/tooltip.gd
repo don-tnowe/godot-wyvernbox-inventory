@@ -1,3 +1,4 @@
+@tool
 @icon("res://addons/wyvernbox/icons/tooltip.png")
 class_name InventoryTooltip
 extends Container
@@ -60,6 +61,22 @@ func _exit_tree():
 	if _instance == self: _instance = null
 
 
+func _ready():
+	if get_parent() && !(has_node("%Title") && has_node("%Desc")):
+		var new_node : Node = load("res://addons/wyvernbox_prefabs/tooltip.tscn").instantiate()
+		add_sibling(new_node)
+		await get_tree().process_frame
+		new_node.owner = owner
+		free()
+		return
+
+	if Engine.is_editor_hint():
+		for x in InventoryView.get_instances():
+			x.update_configuration_warnings()
+
+		return
+
+
 ## Empties the display. Called before the tooltip must display something.
 func display_empty():
 	$"%Title/..".self_modulate = Color.WHITE
@@ -106,7 +123,7 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 
 ## Custom display of a title and a rich text description.
 ## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
-## [code]override_filters[/code] is an array of [ItemType] and/or [ItemPattern] that defines which items are highlighted when [member filter_input] is next pressed.
+## [code]override_filters[/code] is, optionally, an array of [ItemType] and/or [ItemPattern] that defines which items are highlighted when [member filter_input] is next pressed.
 func display_custom(mouseover_node : Control, title : String, bbcode_description : String, override_filters : Array[ItemLike] = []):
 	display_empty()
 	$"%Title".text = title

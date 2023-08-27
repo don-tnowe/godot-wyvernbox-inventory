@@ -55,7 +55,18 @@ static func get_instance() -> GrabbedItemStackView:
 
 
 func _ready():
+	if get_parent() && !(has_node("%Texture") && has_node("%Count")):
+		var new_node : Node = load("res://addons/wyvernbox_prefabs/grabbed_item_stack_view.tscn").instantiate()
+		add_sibling(new_node)
+		await get_tree().process_frame
+		new_node.owner = owner
+		free()
+		return
+
 	if Engine.is_editor_hint():
+		for x in InventoryView.get_instances():
+			x.update_configuration_warnings()
+
 		return
 
 	var new_node = Control.new()

@@ -26,7 +26,8 @@ focus_mode = 1
 mouse_default_cursor_shape = 2
 script = ExtResource("3")
 
-[node name="Rarity" type="TextureRect" parent="."]
+[node name="BackColor" type="TextureRect" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,7 +52,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Texture2D" type="TextureRect" parent="Crop"]
+[node name="Texture" type="TextureRect" parent="Crop"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -65,6 +67,7 @@ expand_mode = 1
 stretch_mode = 3
 
 [node name="Count" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

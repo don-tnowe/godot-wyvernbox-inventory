@@ -120,6 +120,23 @@ func _exit_tree():
 	if autosave_intensity >= 1:
 		save_state()
 
+
+func _get_configuration_warnings() -> PackedStringArray:
+	if !Engine.is_editor_hint(): return PackedStringArray()
+	var arr : Array[String] = []
+	if !is_instance_valid(InventoryTooltip.get_instance()):
+		arr.append("""To allow viewing of item descriptions and properties, add an InventoryTooltip object.
+Search for one in the Scene -> Add Node (Ctrl+A) menu or drag the scene from addons/wyvernbox_prefabs."""
+		)
+
+	if !is_instance_valid(GrabbedItemStackView.get_instance()):
+		arr.append("""To allow moving items using the mouse cursor, add a GrabbedItemStackView object.
+Search for one in the Scene -> Add Node (Ctrl+A) menu or drag the scene from addons/wyvernbox_prefabs."""
+		)
+
+	return arr
+
+
 ## Creates a list of all inventory views on the scene.
 static func get_instances() -> Array[InventoryView]:
 	return _instances.duplicate()
