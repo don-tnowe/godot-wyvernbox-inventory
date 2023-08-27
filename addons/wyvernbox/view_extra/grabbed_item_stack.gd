@@ -1,3 +1,4 @@
+@tool
 @icon("res://addons/wyvernbox/icons/grabbed_item_stack.png")
 class_name GrabbedItemStackView
 extends ItemStackView
@@ -39,6 +40,9 @@ var drop_surface_node : Control
 
 
 func _ready():
+	if Engine.is_editor_hint():
+		return
+
 	var new_node = Control.new()
 	new_node.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	new_node.gui_input.connect(_drop_surface_input)
@@ -49,7 +53,8 @@ func _ready():
 	get_parent().move_child(new_node, 0)
 
 	drop_surface_node = new_node
-	connect("visibility_changed", Callable(self, "_on_visibility_changed"))
+	visibility_changed.connect(_on_visibility_changed)
+	add_to_group(&"grabbed_item")
 	hide()
 	_on_visibility_changed()
 

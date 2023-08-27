@@ -9,7 +9,6 @@ drop_at_node = NodePath("")
 drop_ground_item_manager = NodePath("")
 drop_max_distance = 256.0
 drop_camera_3d = NodePath("")
+drop_ray_mask = 1
 unit_size = Vector2(18, 18)
 hide_cursor = false
-
-[node name="Count" parent="." index="2" groups=["grabbed_item"]]
