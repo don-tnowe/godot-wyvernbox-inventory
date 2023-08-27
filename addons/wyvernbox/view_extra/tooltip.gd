@@ -43,6 +43,7 @@ static var _instance : InventoryTooltip
 ## Last called display function. Either [method display_item] or [method display_custom].
 var last_func : Callable
 
+var _next_filter_to_apply : Array[ItemLike] = []
 var _ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
 
 
@@ -102,31 +103,18 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	last_func = display_item.bind(item_stack, mouseover_node, shown_from_inventory)
 	_update_rect.call_deferred(mouseover_node)
 
-## Displays the name and description of an [EquipBonus].
-## [code]node[/code] is the [Control] this tooltip must be placed next to.
-func display_bonus(node : Control, bonus_res : EquipBonus):
-	var desc = tr(bonus_res.description)
-	if desc == bonus_res.description:
-		desc = ""
-	
-	display_custom(
-		node,
-		tr(bonus_res.name),
-		"[center]\n" + desc + "\n\n"
-		+ tr("item_tt_tutorial_filter_bonus") % get_action_bbcode(filter_input)
-	)
-
-	last_func = display_bonus.bind(node, bonus_res)
 
 ## Custom display of a title and a rich text description.
 ## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
-func display_custom(mouseover_node : Control, title : String, bbcode_description : String):
+## [code]override_filters[/code] is an array of [ItemType] and/or [ItemPattern] that defines which items are highlighted when [member filter_input] is next pressed.
+func display_custom(mouseover_node : Control, title : String, bbcode_description : String, override_filters : Array[ItemLike] = []):
 	display_empty()
 	$"%Title".text = title
 	$"%Desc".text = bbcode_description
 
 	_update_rect(mouseover_node)
 	last_func = display_custom.bind(mouseover_node, title, bbcode_description)
+	_next_filter_to_apply = override_filters
 	_update_rect.call_deferred(mouseover_node)
 
 ## Custom display of any data.
@@ -229,11 +217,11 @@ func _apply_filter_to_inventories():
 		x.view_filter_patterns = patterns
 
 
-func _get_filter_to_apply() -> Array:
+func _get_filter_to_apply() -> Array[ItemLike]:
 	if last_func == null: return []
 
-	if last_func.get_method() == &"display_bonus":
-		return [ItemPatternEquipStat.new([], [], [last_func.get_bound_arguments()[1].id])]
+	if last_func.get_method() == &"display_custom":
+		return _next_filter_to_apply
 
 	if last_func.get_method() != &"display_item":
 		return []

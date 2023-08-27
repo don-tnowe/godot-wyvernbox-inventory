@@ -1,5 +1,7 @@
 extends Control
 
+@export var filter_bonus_tutorial_label := "%s to highlight items with this."
+
 # The [EquipBonus] displayed here. Defines icon and tooltip contents.
 @export var shown_res : EquipBonus
 
@@ -14,6 +16,24 @@ func show_bonus(bonus_res : EquipBonus, label : String, label_color : Color = Co
 	$"Value".text = label
 	$"Value".self_modulate = label_color
 
+## Displays the name and description of an [EquipBonus].
+## [code]node[/code] is the [Control] this tooltip must be placed next to.
+func tooltip_display_bonus(bonus_res : EquipBonus):
+	var tt := InventoryTooltip.get_instance()
+	if !is_instance_valid(tt):
+		return
+
+	var desc = tr(bonus_res.description)
+	if desc == bonus_res.description:
+		desc = ""
+
+	tt.display_custom(
+		self,
+		tr(bonus_res.name),
+		"[center]\n%s\n\n%s" % [desc, filter_bonus_tutorial_label % tt.get_action_bbcode(tt.filter_input)],
+		[ItemPatternEquipStat.new([], [], [bonus_res.id])],
+	)
+
 
 func _on_Bonus_mouse_exited():
 	var tooltip := InventoryTooltip.get_instance()
@@ -24,4 +44,4 @@ func _on_Bonus_mouse_exited():
 func _on_Bonus_mouse_entered():
 	var tooltip := InventoryTooltip.get_instance()
 	if is_instance_valid(tooltip):
-		tooltip.display_bonus(self, shown_res)
+		tooltip_display_bonus(shown_res)
