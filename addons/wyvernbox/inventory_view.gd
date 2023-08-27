@@ -106,6 +106,7 @@ func _ready():
 	load_state()
 	add_to_group(&"inventory_view")
 	add_to_group(&"view_filterable")
+	_on_visibility_changed()
 
 
 func _exit_tree():
@@ -312,7 +313,10 @@ func _grab_stack(stack_index : int):
 		return
 
 	# First, handle stacking and swapping
-	var grabbed = get_tree().get_nodes_in_group(&"grabbed_item")[0]
+	var grabbed_stacks := get_tree().get_nodes_in_group(&"grabbed_item")
+	if grabbed_stacks.size() == 0: return
+
+	var grabbed := grabbed_stacks[0]
 	if grabbed.grabbed_stack != null:
 		# With non-placeable invs, stack with the Grabbed stack instead of one in the inv.
 		var grabbed_stack = grabbed.grabbed_stack
