@@ -39,6 +39,21 @@ var grabbed_stack : ItemStack
 var drop_surface_node : Control
 
 
+static var _instance : GrabbedItemStackView
+
+
+func _enter_tree():
+	_instance = self
+
+
+func _exit_tree():
+	if _instance == self: _instance = null
+
+
+static func get_instance() -> GrabbedItemStackView:
+	return _instance
+
+
 func _ready():
 	if Engine.is_editor_hint():
 		return
@@ -69,7 +84,9 @@ func grab(item_stack : ItemStack):
 		else:
 			item_stack.inventory.remove_item(item_stack)
 
-	get_tree().get_nodes_in_group(&"tooltip")[0].hide()
+	var tt := InventoryTooltip.get_instance()
+	if is_instance_valid(tt): tt.hide()
+
 	_set_grabbed_stack(item_stack)
 	_move_to_mouse()
 	if hide_cursor:
@@ -135,8 +152,8 @@ func _move_to_mouse():
 
 func _any_inventory_try_drop_stack(stack):
 	var found_stack : ItemStack
-	var invs = get_tree().get_nodes_in_group(&"inventory_view")
-	var invs_reversed = []
+	var invs := InventoryView.get_instances()
+	var invs_reversed := []
 	# Nodes initialized later are placed above (well, if nothing gets created after the initial scene load)
 	# So reversing the array has a higher chance of a correct order
 	invs_reversed.resize(invs.size())

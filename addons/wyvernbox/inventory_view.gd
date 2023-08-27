@@ -90,6 +90,8 @@ signal grab_attempted(item_stack, success)
 ## The latest autosave time, in seconds since startup.
 var last_autosave_sec := -1.0
 
+static var _instances : Array[InventoryView] = []:
+	set(v): return
 
 var _dragged_node : Control
 var _dragged_stack : ItemStack
@@ -109,9 +111,18 @@ func _ready():
 	_on_visibility_changed()
 
 
+func _enter_tree():
+	_instances.append(self)
+
+
 func _exit_tree():
+	_instances.erase(self)
 	if autosave_intensity >= 1:
 		save_state()
+
+## Creates a list of all inventory views on the scene.
+static func get_instances() -> Array[InventoryView]:
+	return _instances.duplicate()
 
 
 func _set_cell_size(v):
@@ -313,10 +324,9 @@ func _grab_stack(stack_index : int):
 		return
 
 	# First, handle stacking and swapping
-	var grabbed_stacks := get_tree().get_nodes_in_group(&"grabbed_item")
-	if grabbed_stacks.size() == 0: return
+	var grabbed := GrabbedItemStackView.get_instance()
+	if !is_instance_valid(grabbed): return
 
-	var grabbed := grabbed_stacks[0]
 	if grabbed.grabbed_stack != null:
 		# With non-placeable invs, stack with the Grabbed stack instead of one in the inv.
 		var grabbed_stack = grabbed.grabbed_stack
@@ -363,7 +373,7 @@ func _try_buy(stack : ItemStack):
 	
 	var price = stack.extra_properties[&"price"].duplicate()
 	var counts = {}
-	var inventories = get_tree().get_nodes_in_group(&"inventory_view")
+	var inventories := InventoryView.get_instances()
 	inventories.sort_custom(_compare_inventory_priority)
 
 	var k_loaded
@@ -446,15 +456,17 @@ func _quick_transfer_anywhere(stack : ItemStack):
 			return
 
 		# If can't, just drop it.
-#		else:
-#			get_tree().call_group(&"grabbed_item", &"drop_on_ground", returned_stack)
+		# else:
+		# 	var grabbed := GrabbedItemStackView.get_instance()
+		# 	if is_instance_valid(grabbed):
+		# 		grabbed.drop_on_ground(returned_stack)
 
 		grab_attempted.emit(stack, true)
 
 
 func _get_quick_transfer_targets(has_price) -> Array:
 	var result := []
-	for x in get_tree().get_nodes_in_group(&"inventory_view"):
+	for x in InventoryView.get_instances():
 		if (
 			x == self
 			|| !x.is_visible_in_tree()

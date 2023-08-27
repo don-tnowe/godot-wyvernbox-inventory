@@ -43,10 +43,10 @@ func update_availability(_arg0 = null, _arg1 = null, _arg2 = null):
 		)
 
 
-func _on_button_pressed(index):
+func _on_button_pressed(index : int):
 	var output_stacks
 	if input_from_all_takeable:
-		var all_invs = get_tree().get_nodes_in_group(&"inventory_view")
+		var all_invs := InventoryView.get_instances()
 		var drawable_invs = item_conversions[index].get_takeable_inventories_sorted(all_invs)
 		output_stacks = item_conversions[index].apply(
 			drawable_invs, rng,
@@ -64,9 +64,9 @@ func _on_button_pressed(index):
 		return
 
 	var inv = get_node(target_inventory).inventory
-	var grabbed = get_tree().get_nodes_in_group(&"grabbed_item")[0]
+	var grabbed := GrabbedItemStackView.get_instance()
 
-	if just_put_it_into_my_hand:
+	if just_put_it_into_my_hand && is_instance_valid(grabbed):
 		if grabbed.grabbed_stack == null:
 			grabbed.grab(output_stacks.pop_front())
 
@@ -83,13 +83,17 @@ func _on_button_pressed(index):
 		var deposited_count = inv.try_add_item(x)
 		if deposited_count < x.count:
 			x.count -= deposited_count
-			grabbed.drop_on_ground(x)
+			if is_instance_valid(grabbed):
+				grabbed.drop_on_ground(x)
 
 	update_availability()
 
 
-func _on_button_mouse_entered(index):
-	get_tree().call_group(&"tooltip", &"display_custom",
+func _on_button_mouse_entered(index : int):
+	var tt := InventoryTooltip.get_instance()
+	if !is_instance_valid(tt): return
+
+	tt.display_custom(
 		recipe_list_node.get_child(index),
 		tr(item_conversions[index].name),
 		item_conversions[index].get_bbcode(count_all_inventories(item_conversions[index].input_types))
@@ -100,10 +104,11 @@ func count_all_inventories(items_patterns) -> Dictionary:
 	if !input_from_all_takeable:
 		return ItemConversion.count_all_inventories([get_node(source_inventory)], items_patterns)
 
-	var all = get_tree().get_nodes_in_group(&"inventory_view")
-	var drawable = ItemConversion.get_takeable_inventories(all)
+	var all := InventoryView.get_instances()
+	var drawable := ItemConversion.get_takeable_inventories(all)
 	return ItemConversion.count_all_inventories(drawable, items_patterns)
 
 
 func _on_button_mouse_exited():
-	get_tree().call_group(&"tooltip", &"hide")
+	var tt := InventoryTooltip.get_instance()
+	if is_instance_valid(tt): tt.hide()

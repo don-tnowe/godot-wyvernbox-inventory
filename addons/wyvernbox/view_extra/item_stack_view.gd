@@ -28,8 +28,12 @@ func update_stack(item_stack, unit_size, show_background = true):
 
 
 func _on_mouse_entered():
-	get_tree().call_group(&"tooltip", &"display_item", stack, self)
+	var tt := InventoryTooltip.get_instance()
+	if is_instance_valid(tt):
+		tt.display_item(stack, self)
 
 
 func _on_mouse_exited():
-	get_tree().call_group(&"tooltip", &"hide")
+	var tt := InventoryTooltip.get_instance()
+	if is_instance_valid(tt):
+		tt.hide()

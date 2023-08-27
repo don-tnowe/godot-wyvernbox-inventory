@@ -91,7 +91,10 @@ func _on_name_gui_input(event : InputEvent):
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			clicked.emit()
 		
-		var tt = get_tree().get_nodes_in_group("tooltip")[0]
+		var tt := InventoryTooltip.get_instance()
+		if !is_instance_valid(tt):
+			return
+
 		tt.display_item(item_stack, $"HoverRect", false)
 		if !Input.is_action_pressed(&"inventory_more"):
 			tt.hide()
@@ -100,7 +103,9 @@ func _on_name_gui_input(event : InputEvent):
 func _on_HoverRect_mouse_exited():
 	if !Input.is_action_pressed(&"inventory_less"):
 		set_label_visible(false)
-		get_tree().get_nodes_in_group(&"tooltip")[0]._on_ground_item_released()
+		var tt := InventoryTooltip.get_instance()
+		if is_instance_valid(tt):
+			tt._on_ground_item_released()
 
 
 func _on_HoverRect_mouse_entered():

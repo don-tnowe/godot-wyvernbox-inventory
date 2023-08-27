@@ -36,10 +36,26 @@ const TEX_SCALE := 0.5
 @export var property_scripts : Array[Script]
 
 
+static var _instance : InventoryTooltip
+
+
 ## Last called display function. Either [method display_item], [method display_bonus] or [method display_custom].
 var last_func : Callable
 
 var _ground_item_state := 0  ## 0 for none, 1 for hovering, 2 for released
+
+
+## Return a reference to the tooltip node, if present on the scene.
+static func get_instance() -> InventoryTooltip:
+	return _instance
+
+
+func _enter_tree():
+	_instance = self
+
+
+func _exit_tree():
+	if _instance == self: _instance = null
 
 
 ## Empties the display. Called before the tooltip must display something.

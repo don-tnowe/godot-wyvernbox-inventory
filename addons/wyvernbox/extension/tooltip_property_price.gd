@@ -20,7 +20,7 @@ func _show_price(item_stack):
 
 	add_bbcode("[color=#fff]")
 	if item_for_sale:
-		var inventories = tooltip.get_tree().get_nodes_in_group(&"inventory_view")
+		var inventories := InventoryView.get_instances()
 		for x in inventories:
 			if (x.interaction_mode & InventoryView.InteractionFlags.CAN_TAKE_AUTO) != 0:
 				x.inventory.count_all_items(owned_item_counts)
