@@ -1,7 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://buk5dqg0uoud3"]
 
 [ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus_view.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://dujvynl7q4g3e" path="res://example/graphics/gradients/gray.tres" id="4"]
+
+[sub_resource type="Gradient" id="Gradient_bkcxj"]
+colors = PackedColorArray(0.372549, 0.372549, 0.431373, 1, 0.597656, 0.597656, 0.597656, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q5fw8"]
+gradient = SubResource("Gradient_bkcxj")
+fill_from = Vector2(1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tnbgi"]
 outline_size = 1
@@ -26,7 +32,7 @@ offset_top = 1.0
 offset_right = -1.0
 offset_bottom = -1.0
 mouse_filter = 2
-texture = ExtResource("4")
+texture = SubResource("GradientTexture2D_q5fw8")
 expand_mode = 1
 
 [node name="Icon" type="TextureRect" parent="."]
