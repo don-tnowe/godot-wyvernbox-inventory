@@ -55,6 +55,7 @@ static func get_instance() -> InventoryTooltip:
 
 func _enter_tree():
 	_instance = self
+	hide()
 
 
 func _exit_tree():
@@ -152,7 +153,7 @@ func display_custom_data(mouseover_node : Control, title : String, tooltip_prope
 
 ## Shows the tooltip again after hidden, with the same contents.
 func display_last():
-	if last_func != null:
+	if last_func != null && last_func.is_valid():
 		# Breaks if a parameter is null.
     # last_func.call()
 

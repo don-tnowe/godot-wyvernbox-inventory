@@ -122,6 +122,7 @@ func _set_grabbed_stack(item_stack : ItemStack):
 
 ## Drop the whole stack onto the first inventory under the cursor.
 func drop():
+	if grabbed_stack == null: return
 	_any_inventory_try_drop_stack(grabbed_stack)
 	update_stack(grabbed_stack, unit_size, false)
 
@@ -239,7 +240,14 @@ func _drop_surface_input(event : InputEvent):
 
 
 func _on_visibility_changed():
-	var v = get_parent().is_visible_in_tree()
+	var v := false
+	var parent := get_parent()
+	if parent is CanvasItem:
+		v = parent.is_visible_in_tree()
+
+	elif parent is CanvasLayer:
+		v = parent.visible
+
 	set_process_input(v && visible)
 	if !v && grabbed_stack != null:
 		drop_on_ground(grabbed_stack, get_global_mouse_position())
