@@ -1,7 +1,7 @@
 [gd_scene load_steps=25 format=3 uid="uid://dfwlhkhfag51y"]
 
 [ext_resource type="PackedScene" uid="uid://dsoiq0u4jfsqb" path="res://example/src/inventory_menu.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://example/src/world/char.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://coca3cj5aa8qc" path="res://example/src/world/char.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://cjdtl6ek4qp7d" path="res://addons/wyvernbox_prefabs/ground_item_stack_view_2d.tscn" id="4"]
 [ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="5"]
 [ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="6"]

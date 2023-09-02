@@ -23,7 +23,7 @@ resources_spreadsheet_view/resource_preview_size=32.0
 
 config/name="Addon: Inventory"
 run/main_scene="res://example/src/test_2d.tscn"
-config/features=PackedStringArray("4.0")
+config/features=PackedStringArray("4.1")
 config/icon="res://icon.png"
 
 [audio]
@@ -119,7 +119,7 @@ inventory_filter={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://example/translation/items.en.translation", "res://example/translation/items.uk.translation", "res://example/translation/ui.en.translation", "res://example/translation/ui.uk.translation")
+locale/translations=PackedStringArray("res://example/translation/items.en.translation", "res://example/translation/items.uk.translation")
 
 [locale]
 
