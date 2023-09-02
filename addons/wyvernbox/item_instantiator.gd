@@ -52,16 +52,17 @@ func get_rng(passed_rng):
 	return rng if passed_rng == null else passed_rng
 
 
-## Adds listed items to the inventory.
-func populate_inventory(inventory_view : InventoryView, rng : RandomNumberGenerator = null):
+## Adds listed items to an [InventoryView] or [Inventory].
+## [b]Note:[/b] timed insertions only work if used on an [InventoryView].
+func populate_inventory(target_inventory : Object, rng : RandomNumberGenerator = null):
 	rng = get_rng(rng)
-	var inventory = inventory_view.inventory
+	var inventory : Inventory = target_inventory.inventory if target_inventory is InventoryView else target_inventory
 	var generated_items = get_items(rng)
 	if !randomize_locations:
 		for x in generated_items:
 			inventory.try_add_item(x)
-			if delay_between_items > 0.0:
-				await inventory_view.get_tree().create_timer(delay_between_items).timeout
+			if delay_between_items > 0.0 && target_inventory is Node:
+				await target_inventory.get_tree().create_timer(delay_between_items).timeout
 
 	else:
 		## TODO: optimize this heckin' chonker
@@ -109,8 +110,8 @@ func populate_inventory(inventory_view : InventoryView, rng : RandomNumberGenera
 					free_cells[k].erase(place_in_cell)
 
 			inventory.try_place_stackv(x, place_in_cell)
-			if delay_between_items > 0.0:
-				await inventory_view.get_tree().create_timer(delay_between_items).timeout
+			if delay_between_items > 0.0 && target_inventory is Node:
+				await target_inventory.get_tree().create_timer(delay_between_items).timeout
 
 		## print(start_time - OS.get_ticks_usec())
 
