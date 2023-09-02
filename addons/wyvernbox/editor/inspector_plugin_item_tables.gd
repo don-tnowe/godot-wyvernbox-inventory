@@ -56,7 +56,8 @@ func _parse_property(object, type, path, hint, hint_text, usage, wide):
 				x[2],
 				x[3],
 				x[4],
-				x[5]
+				x[5],
+				x[6] if x.size() >= 7 else []
 			)
 		)
 		return true

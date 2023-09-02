@@ -207,5 +207,5 @@ func _get_wyvernbox_item_lists() -> Array:
 	return [[
 		"Items To Add", ["items_to_add", "item_repeat_ranges", "item_chances"],
 		["Min", "Max", "Chance"], [true, false], [Vector2(1, 1), 100.0],
-		[ItemType, ItemGenerator]
+		[ItemType, ItemGenerator], ["ItemType", "ItemGenerator"],
 	]]

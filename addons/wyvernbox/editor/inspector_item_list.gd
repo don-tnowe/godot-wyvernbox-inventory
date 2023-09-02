@@ -19,6 +19,7 @@ var browse_button := Button.new()
 var browse_window : Control
 var options_button := Button.new()
 
+var bottom_box := VBoxContainer.new()
 var bottom := HBoxContainer.new()
 var grid_l := GridContainer.new()
 var grid_r := GridContainer.new()
@@ -36,7 +37,8 @@ func _init(
 	column_labels : Array,
 	columns_int : Array = [],
 	column_defaults : Array = [],
-	allowed_types : Array = [ItemType]
+	allowed_types : Array = [ItemType],
+	allowed_types_string : Array = []
 ):
 	self.columns = columns
 	self.plugin = plugin
@@ -61,8 +63,32 @@ func _init(
 	add_focusable(browse_button)
 	add_focusable(options_button)
 
-	add_child(bottom)
-	set_bottom_editor(bottom)
+	bottom_box.add_child(bottom)
+	var picker_cont := HBoxContainer.new()
+	var picker_label := Label.new()
+	var add_picker := EditorResourcePicker.new()
+	picker_label.text = "Add new:"
+	picker_cont.add_child(picker_label)
+	picker_cont.add_child(add_picker)
+	bottom_box.add_child(picker_cont)
+	add_picker.size_flags_horizontal = SIZE_EXPAND_FILL
+	# add_picker.base_type = ",".join(allowed_types.map(func(x):
+	# 	return x.???
+	#   # https://github.com/godotengine/godot/issues/21789
+	#   # https://github.com/godotengine/godot/pull/80487
+	# ))
+	if allowed_types_string.size() == 0:
+		add_picker.base_type = "ItemLike" if (allowed_types.has(ItemType)) else "Resource"
+
+	else:
+		add_picker.base_type = ",".join(allowed_types_string)
+
+	add_child(bottom_box)
+	set_bottom_editor(bottom_box)
+	add_picker.resource_changed.connect(func(x):
+		add_picker.edited_resource = null
+		add_item(x)
+	)
 
 	grid_l.size_flags_horizontal = SIZE_EXPAND_FILL
 	grid_r.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -105,7 +131,7 @@ func _can_drop_data(position, data):
 	return true
 
 
-func _drop_data(position, data):
+func _drop_data(position : Vector2, data):
 	if data.has(&"inspector_item_list_drag_from") && data[&"inside_list"] == self:
 		move_item(data[&"inspector_item_list_drag_from"], _get_mouseover_item(get_global_mouse_position()))
 		return
@@ -137,7 +163,7 @@ static func instance_has_recursive(inst : Object, script : Script) -> bool:
 	return false
 
 
-func _gui_input(event):
+func _gui_input(event : InputEvent):
 	if event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
 		var index_grabbed = _get_mouseover_item(event.global_position)
 		if index_grabbed < 0: return
@@ -149,12 +175,13 @@ func _gui_input(event):
 		)
 
 
-func _get_mouseover_item(global_pos):
-	var icon = grid_l.get_child(grid_l.columns)
-	return floor((global_pos.y - icon.global_position.y) / (icon.size.y + grid_l.get_theme_constant("v_separation")))
+func _get_mouseover_item(global_pos : Vector2) -> int:
+	var icon := grid_l.get_child(grid_l.columns)
+	var index := floor((global_pos.y - icon.global_position.y) / (icon.size.y + grid_l.get_theme_constant("v_separation")))
+	return mini(index, columns.values()[0].size() - 1)
 
 
-func add_item(item):
+func add_item(item : Resource):
 	var column_properties = columns.keys()
 	var column_arrays = columns.values()
 	if column_arrays[0][0] == null:
@@ -177,7 +204,7 @@ func add_item(item):
 	_add_delete_button()
 
 
-func move_item(from_index, to_index):
+func move_item(from_index : int, to_index : int):
 	if from_index < 0 || to_index < 0: return
 	for x in columns.values():
 		x.insert(to_index, x.pop_at(from_index))
@@ -188,7 +215,7 @@ func move_item(from_index, to_index):
 		emit_changed(k, columns[k], "", true)
 
 
-func remove_item(row_index):
+func remove_item(row_index : int):
 	var column_properties = columns.keys()
 	var column_arrays = columns.values()
 	if column_arrays[0].size() == 1:
@@ -351,7 +378,7 @@ func _init_headers(column_labels):
 	grid_r.add_child(Control.new())
 
 
-func _init_items(columns_int):
+func _init_items(columns_int : Array):
 	if columns_int.size() < columns.size() - 1:
 		columns_int.resize(columns.size())
 		columns_int.fill(false)

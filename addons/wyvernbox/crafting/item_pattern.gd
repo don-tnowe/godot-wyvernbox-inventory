@@ -92,5 +92,5 @@ func _get_wyvernbox_item_lists() -> Array:
 	return [[
 		"Matches", ["items", "efficiency"],
 		["Efficiency"], [false], [1],
-		[ItemType, load("res://addons/wyvernbox/crafting/item_pattern.gd")]
+		[ItemType, ItemPattern], ["ItemType", "ItemPattern"],
 	]]

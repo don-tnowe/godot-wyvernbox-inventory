@@ -77,6 +77,6 @@ func _get_wyvernbox_item_lists() -> Array:
 	result.append([
 		"Bonuses", ["possible_affixes", "affix_weights"],
 		["Weight"], [false], [1],
-		[EquipBonus]
+		[EquipBonus], ["EquipBonus"],
 	])
 	return result

@@ -160,12 +160,12 @@ func _get_wyvernbox_item_lists() -> Array:
 		[
 			"Inputs", ["input_types", "input_counts"],
 			["Count"], [true], [1],
-			[ItemType, ItemPattern]
+			[ItemType, ItemPattern], ["ItemType", "ItemPattern"],
 		],
 		[
 			"Outputs", ["output_types", "output_ranges"],
 			["Min", "Max"], [true], [Vector2(1, 1)],
-			[ItemType, ItemGenerator]
+			[ItemType, ItemGenerator], ["ItemType", "ItemGenerator"],
 		],
 	]
 

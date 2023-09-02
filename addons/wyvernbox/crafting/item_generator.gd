@@ -90,7 +90,7 @@ func _get_wyvernbox_item_lists() -> Array:
 	return [[
 		"Outcomes", ["results", "weights", "count_ranges"],
 		["Weight", "Min", "Max"], [false, true], [1, Vector2(1, 1)],
-		[ItemType, load("res://addons/wyvernbox/crafting/item_generator.gd")]
+		[ItemType, ItemGenerator], ["ItemType", "ItemGenerator"],
 	]]
 
 ## Returns a random number. Non-normalized chances are defined inside [member weights].

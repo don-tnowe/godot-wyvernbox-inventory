@@ -127,7 +127,7 @@ func _get_wyvernbox_item_lists() -> Array:
 	return [[
 		"Stock", ["stock", "stock_counts", "stock_restocks"],
 		["Count", "Restocks"], [true, true], [1, 0],
-		[ItemType, ItemGenerator]
+		[ItemType, ItemGenerator], ["ItemType", "ItemGenerator"],
 	]]
 
 
