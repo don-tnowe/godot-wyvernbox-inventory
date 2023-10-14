@@ -23,6 +23,52 @@ const TEX_SCALE := 0.5
 ## Action for the "Clear filter" mod. Hold, then press [member filter_input] to clear all view filters (default [kbd]Alt[/kbd]).
 @export var clear_filter_mod_input := &"inventory_less"
 
+@export_group("Visuals")
+
+## Panel to use under the name. If empty, uses the theme's [code]PanelContainer/panel[/code] stylebox.
+@export var nameplate_panel : StyleBox:
+	set(v):
+		nameplate_panel = v
+		if get_child_count() == 0: await ready
+		if v != null:
+			$"%Title/..".add_theme_stylebox_override(&"panel", v)
+
+		else:
+			$"%Title/..".remove_theme_stylebox_override(&"panel")
+
+## Panel to use under the description box. If empty, uses the theme's [code]RichTextLabel/normal[/code] stylebox. [br]
+@export var desc_panel : StyleBox:
+	set(v):
+		desc_panel = v
+		if get_child_count() == 0: await ready
+		if v != null:
+			$"%Desc".add_theme_stylebox_override(&"normal", v)
+			$"%Desc".add_theme_stylebox_override(&"focus", v)
+
+		else:
+			$"%Desc".remove_theme_stylebox_override(&"normal")
+			$"%Desc".remove_theme_stylebox_override(&"focus")
+
+## Panel to use under the entire tooltip box. If empty, uses the theme's [code]Panel/panel[/code] stylebox.
+## [b]Note: [/b]if using a panel with a border at the top, prefer [member desc_panel] instead.
+@export var back_panel : StyleBox:
+	set(v):
+		back_panel = v
+		if get_child_count() == 0: await ready
+		if has_node("Panel"):
+			# Check for the node first, breaks compatibility in case of reliance on it not existing
+			if v != null:
+				$"Panel".add_theme_stylebox_override(&"panel", v)
+
+			else:
+				$"Panel".remove_theme_stylebox_override(&"panel")
+
+## At [code]1.0[/code], the item's name will fully take the color from the [code]&"back_color"[/code] extra property.
+@export var back_color_name_tint := 0.1
+
+## At [code]1.0[/code], the item's name panel will fully take the color from the [code]&"back_color"[/code] extra property.
+@export var back_color_nameplate_tint := 0.9
+
 @export_group("Text colors")
 
 ## Color for positive/higher stat bonuses.
@@ -103,7 +149,9 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	
 	display_empty()
 	$"%Title".text = item_stack.get_name()
-	$"%Title/..".self_modulate = Color.WHITE.blend(item_stack.extra_properties.get("back_color", Color.GRAY)) * 2.0
+	var item_back_color : Color = item_stack.extra_properties.get("back_color", Color.GRAY)
+	$"%Title/..".self_modulate = Color.WHITE.blend(Color(item_back_color, back_color_nameplate_tint))
+	$"%Title".self_modulate = Color.WHITE.blend(Color(item_back_color, back_color_name_tint))
 	
 	var bbcode_label = $"%Desc"
 	bbcode_label.text = "[center]"
