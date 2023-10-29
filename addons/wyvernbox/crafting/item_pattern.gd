@@ -7,6 +7,9 @@ extends ItemLike
 @export var name := ""
 ## The pattern's icon displayed in tooltips.
 @export var texture : Texture2D
+## If the result changes based on item's slot and inventory contents, set this to [code]true[/code].[br]
+## Useful for filters inside [member Inventory.entry_filter] to gain access to insertion position and inventory contents..
+@export var position_dependent := false
 
 ## The ItemTypes or ItemPatterns this pattern matches.
 @export var items : Array[ItemLike] = []: set = _set_items

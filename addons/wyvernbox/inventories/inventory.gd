@@ -20,6 +20,10 @@ signal loaded_from_dict(dict)
 			old_restricted.resize(v)
 			self.restricted_to_types = old_restricted
 
+## When an item is attempted to be inserted, it's checked against this [ItemPattern]. [br]
+## The pattern can use the item's [member ItemStack.inventory] and [member ItemStack.position_in_inventory] to check insertion position. Enable [member ItemPattern.position_dependent] to make it control automatic insertion.
+@export var entry_filter : ItemPattern
+
 ## The list of items in this inventory.
 ## Setting and editing may lead to unpredictable behaviour.
 var items := []
@@ -78,10 +82,6 @@ func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 
 	else: return null
 
-## Returns [code]true[/code] if cell at [code]position[/code] is free.
-func can_place_item(item : ItemStack, position : Vector2) -> bool:
-	return _cells[position.x + position.y * width] == null
-
 ## Adds [code]delta[/code] or removes [code]-delta[/code] items to [code]item_stack[/code], removing the stack if it becomes empty and emitting [signal item_stack_changed] otherwise.
 func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
 	item_stack.count += delta
@@ -127,12 +127,16 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	var found_stack := get_item_at_position(pos.x, pos.y)
 	return _place_stackv(item_stack, found_stack, pos)
 
+## Returns [code]true[/code] if cell at [code]position[/code] is free.
+func can_place_item(item : ItemStack, position : Vector2) -> bool:
+	return matches_entry_filter(item, position) && _cells[position.x] == null
+
 ## Returns the first cell the [code]item_stack[/code] can be placed without stacking.
 ## Returns [code](-1, -1)[/code] if no empty cells in inventory.
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
-		if _cells[i] == null:
-			return Vector2(i % width, i / width)
+		if _cells[i] == null && matches_entry_filter(item_stack, Vector2(i, 0)):
+			return Vector2(i, 0)
 
 	return Vector2(-1, -1)
 
@@ -145,6 +149,25 @@ func get_item_at_position(x : int, y : int = 0) -> ItemStack:
 ## Override to create inventory types with a custom stack limit.
 func get_max_count(item_type):
 	return item_type.max_stack_count
+
+## Returns [code]true[/code] if the [member entry_filter] allows insertion at the specified cell position.
+func matches_entry_filter(item_stack : ItemStack, pos : Vector2 = Vector2.ZERO) -> bool:
+	if entry_filter == null:
+		return true
+
+	if !entry_filter.position_dependent:
+		return entry_filter.matches(item_stack)
+
+	var item_stack_position := item_stack.position_in_inventory
+	var item_stack_inventory := item_stack.inventory
+	item_stack.position_in_inventory = pos
+	item_stack.inventory = self
+
+	var result := entry_filter.matches(item_stack)
+	item_stack.position_in_inventory = item_stack_position
+	item_stack.inventory = item_stack_inventory
+
+	return result
 
 
 func _add_to_items_array(item_stack):
@@ -181,6 +204,9 @@ func _fill_stack_cells(item_stack : ItemStack):
 
 
 func _place_stackv(top : ItemStack, bottom : ItemStack, pos : Vector2) -> ItemStack:
+	if !matches_entry_filter(top, pos):
+		return top
+
 	## If placing on a cell with item, return that item or stacking remainder
 	if bottom != null:
 		bottom = _swap_stacks(top, bottom)

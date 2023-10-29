@@ -3,11 +3,15 @@
 class_name RestrictedInventory
 extends Inventory
 
-## If set and inventory full, quick-transferring into here will shift all items by one cell.
+## If set and inventory full, quick-transferring into here will shift all items by one cell. [br]
+## [b]Warning:[/b] might ignore [member entry_filter].
 @export var allow_rotation := true
 
 ## Each cell's [member ItemType.slot_flags]. Items that don't match won't fit in.
-@export var restricted_to_types : Array[ItemType.SlotFlags] = []
+@export var restricted_to_types : Array[ItemType.SlotFlags] = []:
+	set(v):
+		restricted_to_types = v
+		v.resize(width)
 
 
 ## Returns the first cell the [code]item_stack[/code] can be placed without stacking.
@@ -15,8 +19,8 @@ extends Inventory
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	var flags = item_stack.item_type.slot_flags
 	for i in _cells.size():
-		if _cells[i] == null && flags & restricted_to_types[i] != 0:
-			return Vector2(i % width, i / width)
+		if _cells[i] == null && flags & restricted_to_types[i] != 0 && matches_entry_filter(item_stack):
+			return Vector2(i, 0)
 
 	return Vector2(-1, -1)
 

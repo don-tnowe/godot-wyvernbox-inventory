@@ -21,21 +21,55 @@ func _update_size():
 	for x in items:
 		_fill_stack_cells(x)
 
+## Returns [code]true[/code] if cells under the [code]item[/code] are free.
+func can_place_item(item : ItemStack, position : Vector2) -> bool:
+	return matches_entry_filter(item, position) && _is_rect_free(
+		position.x,
+		position.y,
+		item.item_type.in_inventory_width,
+		item.item_type.in_inventory_height
+	)
+
 ## Returns the top-left of the first position the [code]item_stack[/code] can fit into.
 func get_free_position(item_stack : ItemStack) -> Vector2:
-	var item_type = item_stack.item_type
+	var entry_filter_positional := entry_filter != null && entry_filter.position_dependent
+	if !entry_filter_positional && !matches_entry_filter(item_stack):
+		return Vector2(-1, -1)
+
+	## PERFORMANCE: since inventories can be massive, avoid setting everything through [method matches_entry_filter] every time.
+	var item_stack_position := item_stack.position_in_inventory
+	var item_stack_inventory := item_stack.inventory
+	item_stack.inventory = self
+
+	var item_type := item_stack.item_type
 	if item_type.in_inventory_height >= item_type.in_inventory_width:
 		for j in height - item_type.in_inventory_height + 1:
 			for i in width - item_type.in_inventory_width + 1:
+				if entry_filter_positional:
+					item_stack.position_in_inventory = Vector2(i, j)
+					if !entry_filter.matches(item_stack):
+						continue
+
 				if _is_rect_free(i, j, item_type.in_inventory_width, item_type.in_inventory_height):
+					item_stack.position_in_inventory = item_stack_position
+					item_stack.inventory = item_stack_inventory
 					return Vector2(i, j)
 
 	else:
 		for i in width - item_type.in_inventory_width + 1:
 			for j in height - item_type.in_inventory_height + 1:
+				if entry_filter_positional:
+					item_stack.position_in_inventory = Vector2(i, j)
+					if !entry_filter.matches(item_stack):
+						continue
+
 				if _is_rect_free(i, j, item_type.in_inventory_width, item_type.in_inventory_height):
+					item_stack.position_in_inventory = item_stack_position
+					item_stack.inventory = item_stack_inventory
 					return Vector2(i, j)
 
+	item_stack.position_in_inventory = item_stack_position
+	item_stack.inventory = item_stack_inventory
 	return Vector2(-1, -1)
 
 ## Returns [code]false[/code] if cell out of bounds.
@@ -68,15 +102,6 @@ func _clear_stack_cells(item_stack : ItemStack):
 			_cells[i][j] = null
 
 	item_stack.inventory = null
-
-## Returns [code]true[/code] if cells under the [code]item[/code] are free.
-func can_place_item(item : ItemStack, position : Vector2) -> bool:
-	return _is_rect_free(
-		position.x,
-		position.y,
-		item.item_type.in_inventory_width,
-		item.item_type.in_inventory_height
-	)
 
 ## Tries to place [code]item_stack[/code] into cell [code]pos[/code].
 ## Returns the stack that appeared in hand after, which is [code]null[/code] if rect was empty or the [code]item_stack[/code] if it could not be placed.

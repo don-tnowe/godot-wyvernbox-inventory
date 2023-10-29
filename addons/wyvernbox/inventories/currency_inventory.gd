@@ -17,7 +17,12 @@ func get_max_count(item_type):
 ## Returns the first empty cell position the [code]item_stack[/code] can fit into.
 func get_free_position(item_stack : ItemStack) -> Vector2:
 	for i in _cells.size():
-		if _cells[i] == null && restricted_to_types[i] != null && restricted_to_types[i].matches(item_stack):
+		if (
+			_cells[i] == null
+			&& restricted_to_types[i] != null
+			&& restricted_to_types[i].matches(item_stack)
+			&& matches_entry_filter(item_stack, Vector2(i, 0))
+		):
 			return Vector2(i, 0)
 
 	return Vector2(-1, -1)
