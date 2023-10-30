@@ -95,7 +95,7 @@ func can_apply_with_items(item_counts : Dictionary) -> bool:
 ## Sorts [code]all_inventory_views[/code] by their [member InventoryView.auto_take_priority].
 func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
 	all_inventory_views = get_takeable_inventories(all_inventory_views)
-	all_inventory_views.sort_custom(Callable(self, "_compare_priorities"))
+	all_inventory_views.sort_custom(_compare_priorities)
 	return all_inventory_views
 
 ## Returns the Rich Text representation of this conversion's inputs and outputs. [br]

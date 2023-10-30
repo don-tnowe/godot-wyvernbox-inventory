@@ -45,7 +45,7 @@ func _init(item_type : ItemType, item_count : int = 1, item_extra_properties = n
 ## Creates a copy of the stack with the specified count. [br]
 ## Useful for splitting a stack into multiple.
 func duplicate_with_count(new_count : int):
-	var new_stack = get_script().new(
+	var new_stack = ItemStack.new(
 		item_type, new_count, extra_properties.duplicate(true)
 	)
 	new_stack.name_with_affixes = name_with_affixes.duplicate()

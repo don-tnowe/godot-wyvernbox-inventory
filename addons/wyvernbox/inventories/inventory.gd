@@ -352,7 +352,7 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 ## Returns items ordered by cell position.
 func get_items_ordered():
 	var arr = items.duplicate()
-	arr.sort_custom(Callable(self, "_compare_pos_sort"))
+	arr.sort_custom(_compare_pos_sort)
 	return arr
 
 ## Returns position vectors of all free cells in the inventory.
