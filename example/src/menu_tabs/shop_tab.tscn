@@ -37,6 +37,7 @@ theme = ExtResource("1_kfwxf")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 2
+tab_focus_mode = 0
 
 [node name="Equipment" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
@@ -111,6 +112,7 @@ offset_right = 105.0
 offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 0
 text = "?"
 
 [node name="Popup" type="AcceptDialog" parent="Control"]

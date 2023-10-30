@@ -107,6 +107,7 @@ offset_right = 132.0
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 0
 text = "?"
 
 [node name="Popup" type="AcceptDialog" parent="VBoxContainer/Control"]

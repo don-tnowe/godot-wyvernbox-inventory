@@ -82,6 +82,7 @@ mouse_filter = 2
 theme = ExtResource("4")
 script = ExtResource("11")
 tab_icons = Array[Texture2D]([null, SubResource("2"), SubResource("3"), SubResource("1"), SubResource("4")])
+metadata/_edit_lock_ = true
 
 [node name="Box" type="VBoxContainer" parent="."]
 layout_mode = 0
@@ -106,6 +107,7 @@ autosave_file_path = "items/hero/main.dat"
 
 [node name="NameFilter" type="LineEdit" parent="Box"]
 layout_mode = 2
+focus_mode = 1
 placeholder_text = "Filter by name..."
 clear_button_enabled = true
 
@@ -124,6 +126,7 @@ alignment = 1
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1")
+tab_focus_mode = 0
 
 [node name="Inworld" type="MarginContainer" parent="CenterContainer/TabContainer"]
 layout_mode = 2
@@ -193,11 +196,13 @@ offset_bottom = -12.0
 [node name="Sort" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Sort"
 
 [node name="ClearAllInvViewFilters" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Clear Filters (Alt+F)"
 script = ExtResource("5")
 

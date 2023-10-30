@@ -9,8 +9,8 @@
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="8"]
 [ext_resource type="Resource" uid="uid://bc5mn5etsfr76" path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" id="9"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="10"]
-[ext_resource type="PackedScene" path="res://example/src/world/inworld_container2d.tscn" id="11"]
-[ext_resource type="PackedScene" path="res://example/src/world/touch_dropper.tscn" id="12"]
+[ext_resource type="PackedScene" uid="uid://cj8xupbmut288" path="res://example/src/world/inworld_container2d.tscn" id="11"]
+[ext_resource type="PackedScene" uid="uid://bqu2js8tntbjn" path="res://example/src/world/touch_dropper.tscn" id="12"]
 [ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="13"]
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="17"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="17_6ufom"]
@@ -88,6 +88,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 texture = SubResource("3")
 expand_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="Gameplay" type="Node2D" parent="."]
 
@@ -106,73 +107,61 @@ item_scene = ExtResource("4")
 [node name="Loot" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(222, 124)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("22")
 
 [node name="Loot2" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(151, 50)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("22")
 
 [node name="Loot3" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(69, 116)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("22")
 
 [node name="Loot11" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(71, 189)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("22")
 
 [node name="Loot12" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(230, 174)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("22")
 
 [node name="Loot4" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(157, 227)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("22")
 
 [node name="Loot5" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(501, 74)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("21")
 
 [node name="Loot6" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(428, 121)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("21")
 
 [node name="Loot7" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(420, 191)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("21")
 
 [node name="Loot8" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(501, 233)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("21")
 
 [node name="Loot9" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(578, 191)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("21")
 
 [node name="Loot10" parent="Gameplay/Node2D/Loot" instance=ExtResource("12")]
 position = Vector2(570, 124)
 ground_item_manager = NodePath("../../Items")
-collide_with_group = &"hero"
 loot_table = SubResource("21")
 
 [node name="Openable" type="Node2D" parent="Gameplay/Node2D"]
@@ -237,33 +226,37 @@ text = "?"
 
 [node name="Inventory" type="CanvasLayer" parent="."]
 
-[node name="Generator" type="Button" parent="Inventory"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+[node name="MarginContainer" type="MarginContainer" parent="Inventory"]
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -70.0
-offset_right = 58.0
-offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Box" type="VBoxContainer" parent="Inventory/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_constants/separation = -8
+
+[node name="Generator" type="Button" parent="Inventory/MarginContainer/Box"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 4
 focus_mode = 1
 text = "Loot"
 
-[node name="Label" type="Label" parent="Inventory/Generator"]
-layout_mode = 0
-offset_left = -39.0
-offset_top = 22.0
-offset_right = 173.0
-offset_bottom = 36.0
+[node name="Label" type="Label" parent="Inventory/MarginContainer/Box"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "(Press Tab or I to open inventory)"
 
-[node name="Label2" type="Label" parent="Inventory/Generator"]
-layout_mode = 0
-offset_left = -39.0
-offset_top = 37.0
-offset_right = 175.0
-offset_bottom = 51.0
+[node name="Label2" type="Label" parent="Inventory/MarginContainer/Box"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "(Hold Alt to highlight items)"
 
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource("1")]
@@ -307,4 +300,4 @@ compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/E
 [connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_items_item_clicked"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Chest/Inventory/Control2/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Another Chest/Inventory/Control/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
-[connection signal="pressed" from="Inventory/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]
+[connection signal="pressed" from="Inventory/MarginContainer/Box/Generator" to="Gameplay/Node2D/Char" method="_on_Generator_pressed"]

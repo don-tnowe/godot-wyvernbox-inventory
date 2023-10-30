@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bqu2js8tntbjn"]
 
-[ext_resource path="res://example/src/world/touch_dropper.gd" type="Script" id=1]
-[ext_resource path="res://addons/wyvernbox/item_instantiator.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://example/src/world/touch_dropper.gd" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="2"]
 
-[sub_resource type="Resource" id=7]
+[sub_resource type="Resource" id="7"]
 resource_local_to_scene = true
-script = ExtResource( 2 )
+script = ExtResource("2")
 items_to_add = null
 item_repeat_ranges = null
 item_chances = null
@@ -16,13 +16,13 @@ spread_distance = null
 spread_cone_degrees = null
 spread_angle_degrees = null
 
-[sub_resource type="RectangleShape2D" id=6]
-size = Vector2( 13.5, 10 )
+[sub_resource type="RectangleShape2D" id="6"]
+size = Vector2(13.5, 10)
 
 [node name="Loot" type="Area2D" groups=["touch_loot"]]
-script = ExtResource( 1 )
-collide_with_group = "hero"
-loot_table = SubResource( 7 )
+script = ExtResource("1")
+collide_with_group = &"hero"
+loot_table = SubResource("7")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -10.0
@@ -31,4 +31,4 @@ offset_right = 10.0
 offset_bottom = 10.0
 
 [node name="Shape3D" type="CollisionShape2D" parent="."]
-shape = SubResource( 6 )
+shape = SubResource("6")

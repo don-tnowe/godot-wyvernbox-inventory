@@ -1,26 +1,26 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://cj8xupbmut288"]
 
-[ext_resource path="res://example/src/world/inworld_container.gd" type="Script" id=3]
+[ext_resource type="Script" path="res://example/src/world/inworld_container.gd" id="3"]
 
-[sub_resource type="RectangleShape2D" id=6]
-size = Vector2( 13.5, 10 )
+[sub_resource type="RectangleShape2D" id="6"]
+size = Vector2(13.5, 10)
 
 [node name="Chest" type="Area2D" groups=["inworld_openable"]]
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="Visuals"]
-position = Vector2( 0, -3 )
-polygon = PackedVector2Array( -10, -8, -14, 1, 15, 1, 10, -8 )
+position = Vector2(0, -3)
+polygon = PackedVector2Array(-10, -8, -14, 1, 15, 1, 10, -8)
 
 [node name="Polygon2D2" type="Polygon2D" parent="Visuals"]
-position = Vector2( 0, -3 )
-polygon = PackedVector2Array( -14, 3, -13, 13, 14, 13, 15, 3, 3, 3, 3, 6, -2, 6, -2, 3 )
+position = Vector2(0, -3)
+polygon = PackedVector2Array(-14, 3, -13, 13, 14, 13, 15, 3, 3, 3, 3, 6, -2, 6, -2, 3)
 
 [node name="Shape3D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.5, 0 )
-shape = SubResource( 6 )
+position = Vector2(0.5, 0)
+shape = SubResource("6")
 
 [node name="Button" type="Button" parent="."]
 visible = false
@@ -28,6 +28,5 @@ offset_left = -23.0
 offset_top = -43.0
 offset_right = 24.0
 offset_bottom = -23.0
-focus_mode = 0
 focus_mode = 0
 text = "Open"
