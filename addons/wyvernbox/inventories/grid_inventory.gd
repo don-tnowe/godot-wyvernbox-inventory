@@ -76,11 +76,14 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 ## Returns [code]false[/code] if cell out of bounds.
 func has_cell(x : int, y : int) -> bool:
-	return super.has_cell(x, y) && y <= height
+	if x < 0 || y < 0: return false
+	if x >= width || y >= height: return false
+	return true
 
 
 func _is_rect_free(x : int, y : int, r_width : int, r_height : int) -> bool:
-	if !has_cell(x, y) || !has_cell(x + r_width, y + r_height): return false
+	if !has_cell(x, y) || !has_cell(x + r_width - 1, y + r_height - 1):
+		return false
 
 	for i in r_width:
 		for j in r_height:
@@ -110,8 +113,8 @@ func _clear_stack_cells(item_stack : ItemStack):
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if !has_cell(pos.x, pos.y): return item_stack
 	if !has_cell(
-		pos.x + item_stack.item_type.in_inventory_width,
-		pos.y + item_stack.item_type.in_inventory_height
+		pos.x + item_stack.item_type.in_inventory_width - 1,
+		pos.y + item_stack.item_type.in_inventory_height - 1,
 	):
 		return item_stack
 	

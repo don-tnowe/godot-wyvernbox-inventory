@@ -155,10 +155,16 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 	return Vector2(-1, -1)
 
-## Returns the [ItemStack] in cell [code]x[/code]; returns [code]null[/code] if cell empty or out of bounds.
+## Returns the [ItemStack] in cell [code]x[/code]; returns [code]null[/code] if cell empty or out of bounds. [br]
+## Non-vector counterpart of [method get_item_at_positionv].
 func get_item_at_position(x : int, y : int = 0) -> ItemStack:
 	if !has_cell(x, y): return null
-	return _cells[y * width + x]
+	return _cells[x]
+
+## Returns the [ItemStack] in cell [code]pos[/code]; returns [code]null[/code] if cell empty or out of bounds. [br]
+## Vector counterpart of [method get_item_at_position].
+func get_item_at_positionv(pos : Vector2) -> ItemStack:
+	return get_item_at_position(pos.x, pos.y)
 
 ## Returns the item's max stack count. [br]
 ## Override to create inventory types with a custom stack limit.
@@ -255,9 +261,15 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 	return top
 
 ## Returns [code]false[/code] if cell out of bounds.
+## Vector counterpart of [method has_cell].
+func has_cellv(pos : Vector2) -> bool:
+	return has_cell(pos.x, pos.y)
+
+## Returns [code]false[/code] if cell out of bounds.
+## Non-vector counterpart of [method has_cellv].
 func has_cell(x : int, y : int) -> bool:
 	if x < 0 || y < 0: return false
-	if x > width: return false
+	if x >= width || y > 0: return false
 	return true
 
 ## Counts all items, incrementing entries in [code]into_dict[/code]. [br]
@@ -404,11 +416,12 @@ func load_from_array(array : Array):
 
 	for x in array:
 		new_item = ItemStack.new_from_dict(x)
-		if new_item.position_in_inventory.x == -1:
+		if !has_cell(new_item.position_in_inventory.x, new_item.position_in_inventory.y):
 			try_add_item(new_item)
 
 		else:
 			try_place_stackv(new_item, new_item.position_in_inventory)
+
 
 ## Loads contents from a dictionary. its [code]"contents"[/code] key must be an array created via [code]to_array[/code]. [br]
 ## [signal loaded_from_dict] is emitted to process other values in the dictionary.

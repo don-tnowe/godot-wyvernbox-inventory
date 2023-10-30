@@ -93,6 +93,15 @@ func get_name() -> String:
 	
 	return " ".join(trd)
 
+## Returns the [Rect2] of cells this item stack occupies.
+func get_rect() -> Rect2:
+	return Rect2(position_in_inventory, item_type.get_size_in_inventory())
+
+## Call after you change an [member extra_properties] that must update the item's in-inventory visuals.
+func emit_changed():
+	if inventory == null: return
+	inventory.item_stack_changed.emit(self, 0)
+
 ## Returns how many items would overflow above [code]maxcount[/code], if [code]added[/code] was to be added. [br]
 ## Static version of [code]get_overflow_if_added[/code].
 static func get_stack_overflow_if_added(count, added, maxcount) -> int:
