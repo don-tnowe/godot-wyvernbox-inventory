@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=26 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -36,6 +36,23 @@ resource_name = "GridInventory"
 script = ExtResource("14")
 height = 18
 width = 18
+
+[sub_resource type="GDScript" id="GDScript_ru3x2"]
+script/source = "extends Node
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+  pass
+
+
+func _on_main_inventory_item_stack_deselected(item_view):
+  print(\"deselected \", item_view.stack)
+
+
+func _on_main_inventory_item_stack_selected(item_view):
+  print(\"selected \", item_view.stack)
+"
 
 [sub_resource type="Gradient" id="11"]
 offsets = PackedFloat32Array(0, 0.66)
@@ -101,15 +118,18 @@ custom_minimum_size = Vector2(252, 252)
 layout_mode = 2
 size_flags_vertical = 1
 inventory = SubResource("Resource_dcpxd")
+selected_item_empty_only = false
 interaction_mode = 29
 auto_take_priority = -32
 autosave_file_path = "items/hero/main.dat"
 
 [node name="NameFilter" type="LineEdit" parent="Box"]
 layout_mode = 2
-focus_mode = 1
 placeholder_text = "Filter by name..."
 clear_button_enabled = true
+
+[node name="Node" type="Node" parent="Box"]
+script = SubResource("GDScript_ru3x2")
 
 [node name="CenterContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
@@ -154,6 +174,12 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="0"]
+selected_item_empty_only = false
+
+[node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="0"]
+selected_item_empty_only = false
+
 [node name="Stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
 layout_mode = 2
@@ -165,6 +191,7 @@ custom_minimum_size = Vector2(168, 168)
 layout_mode = 2
 size_flags_horizontal = 4
 inventory = SubResource("Resource_spve3")
+selected_item_empty_only = false
 autosave_file_path = "items/hero/stash1.dat"
 
 [node name="Label" type="Label" parent="CenterContainer/TabContainer/Stash"]
@@ -177,6 +204,7 @@ custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
 size_flags_horizontal = 4
 inventory = SubResource("Resource_yg5x8")
+selected_item_empty_only = false
 contents = SubResource("13")
 interaction_mode = 5
 view_filter_color = Color(0.101961, 0.14902, 0.301961, 0.74902)
@@ -206,9 +234,6 @@ focus_mode = 0
 text = "Clear Filters (Alt+F)"
 script = ExtResource("5")
 
-[connection signal="item_stack_added" from="Box/MainInventory" to="CenterContainer/TabContainer/Craft/Control" method="update_availability"]
-[connection signal="item_stack_changed" from="Box/MainInventory" to="CenterContainer/TabContainer/Craft/Control" method="update_availability"]
-[connection signal="item_stack_removed" from="Box/MainInventory" to="CenterContainer/TabContainer/Craft/Control" method="update_availability"]
 [connection signal="text_changed" from="Box/NameFilter" to="HBoxContainer/ClearAllInvViewFilters" method="_on_search_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Sort" to="Box/MainInventory" method="sort_inventory"]
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dgxmix0ikbfc2"]
+[gd_scene load_steps=9 format=3 uid="uid://dgxmix0ikbfc2"]
 
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="3"]
+[ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="4_h84jl"]
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="6"]
 
 [sub_resource type="Resource" id="3"]
@@ -27,6 +28,8 @@ mouse_filter = 2
 script = ExtResource("2")
 inventory = SubResource("3")
 item_scene = ExtResource("6")
+selected_item_style = ExtResource("4_h84jl")
+selected_item_empty_only = null
 show_backgrounds = false
 
 [node name="Cells" type="VBoxContainer" parent="."]

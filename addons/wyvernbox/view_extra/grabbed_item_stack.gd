@@ -178,8 +178,9 @@ func _any_inventory_try_drop_stack(stack):
 		if !x.is_visible_in_tree():
 			continue
 		
+		var cpos = x.global_position_to_cell(get_global_mouse_position(), stack)
 		found_stack =	x.try_place_stackv(
-			stack, x.global_position_to_cell(get_global_mouse_position(), stack)
+			stack, cpos
 		)
 		if found_stack != stack:
 			get_viewport().set_input_as_handled()

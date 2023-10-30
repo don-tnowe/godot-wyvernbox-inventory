@@ -18,9 +18,6 @@ func _physics_process(_delta):
 
 	else:
 		var input_vec = Input.get_vector(
-			&"ui_left", &"ui_right",
-			&"ui_up", &"ui_down"
-		) + Input.get_vector(
 			&"move_left", &"move_right",
 			&"move_up", &"move_down"
 		)

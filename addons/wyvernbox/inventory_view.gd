@@ -26,6 +26,13 @@ signal item_stack_removed(item_stack : ItemStack)
 ## Emitted when a grab is attempted by the user. [code]false[/code] if [member interaction_mode] disallows it completely, or if it states this is a vendor and item price isn't fulfilled.
 signal grab_attempted(item_stack : ItemStack, success : bool)
 
+## Emitted when an item stack's view receives GUI input. Use [member ItemStackView]
+signal item_stack_gui_input(event : InputEvent, item_view : ItemStackView)
+## Emitted when an item stack's view receives selection, whether through mouse or keyboard.
+signal item_stack_selected(item_view : ItemStackView)
+## Emitted when an item stack's view loses selection, whether through mouse or keyboard.[br]
+signal item_stack_deselected(item_view : ItemStackView)
+
 ## The [Inventory] this node displays.
 @export var inventory : Inventory:
 	set = _set_inventory
@@ -58,13 +65,18 @@ signal grab_attempted(item_stack : ItemStack, success : bool)
 ## A slot's size, in pixels. Affects item icon scale, and for [GridInventory], the grid size.
 @export var cell_size := Vector2(14, 14): set = _set_cell_size
 
+## When an item or cell gets selected, place this stylebox over it.
+@export var selected_item_style : StyleBox = load("res://addons/wyvernbox_prefabs/graphics/selected_cell.tres")
+
+## If [code]true[/code], only show the [member selected_item_style] if an empty cell is selected. Otherwise, the tooltip will still be visible.
+@export var selected_item_empty_only := false
+
 ## For [GridInventory], the [Control] to be stretched to the view's size.
 @export var grid_background : NodePath
 
 ## The node to be stretched to the view's [member cell_size]. [br]
 ## If a [ViewportTexture] is used as a tiled background, this should be the rendered [SubViewport].
 @export var grid_resize_cell : NodePath
-
 
 ## Whether to show item's "back_color" extra property as a background behind it.
 @export var show_backgrounds := true
@@ -97,6 +109,38 @@ signal grab_attempted(item_stack : ItemStack, success : bool)
 
 ## The latest autosave time, in seconds since startup.
 var last_autosave_sec := -1.0
+## The currently selected inventory cell.
+var selected_cell := Vector2(-1, -1):
+	set(v):
+		var formerly_selected := inventory.get_item_at_positionv(selected_cell)
+		if formerly_selected != null:
+			_on_item_stack_mouse_exited(formerly_selected.index_in_inventory)
+			_view_nodes[formerly_selected.index_in_inventory].tooltip_set_visible(false)
+
+		var newly_selected := inventory.get_item_at_positionv(v)
+		if inventory is GridInventory:
+			var sel_move_direction := v - selected_cell
+			while newly_selected == formerly_selected:
+				if newly_selected == null || sel_move_direction.length() != 1.0:
+					break
+
+				v += sel_move_direction
+				newly_selected = inventory.get_item_at_positionv(v)
+		
+		if newly_selected != null:
+			var new_index := newly_selected.index_in_inventory
+			_item_stack_selected(new_index)
+			_view_nodes[new_index].tooltip_set_visible(true)
+
+		if !inventory.has_cell(v.x, v.y):
+			v = Vector2(-1, -1)
+			if has_focus(): release_focus()
+
+		selected_cell = v
+		var sel_rect := get_selected_rect()
+		_selection_node.size = sel_rect.size
+		_selection_node.position = sel_rect.position
+		_selection_node.queue_redraw()
 
 static var _instances : Array[InventoryView] = []:
 	set(v): return
@@ -104,6 +148,8 @@ static var _instances : Array[InventoryView] = []:
 var _dragged_node : Control
 var _dragged_stack : ItemStack
 var _view_nodes := []
+var _deselect_signal_interrupted := false
+var _selection_node : Control
 
 
 func _ready():
@@ -111,8 +157,45 @@ func _ready():
 		_regenerate_view()
 		return
 
+	if has_node("Cells"):
+		for x in get_node("Cells").get_children():
+			_connect_cell(x)
+
+	focus_mode = Control.FOCUS_CLICK
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_entered.connect(_on_focus_entered)
+	focus_exited.connect(func(): selected_cell = Vector2(-1, -1))
+	if inventory is GridInventory:
+		focus_neighbor_left = "."
+		focus_neighbor_right = "."
+		focus_neighbor_top = "."
+		focus_neighbor_bottom = "."
+		focus_previous = "."
+		focus_next = "."
+
+	var bg_node : Control = get_node_or_null(grid_background)
+	if is_instance_valid(bg_node):
+		bg_node.gui_input.connect(_on_cell_gui_input)
+		bg_node.focus_mode = Control.FOCUS_ALL
+		bg_node.focus_entered.connect(func(): grab_focus())
+
 	visibility_changed.connect(_on_visibility_changed)
+
+	_selection_node = Control.new()
+	_selection_node.name = "Selection"
+	_selection_node.draw.connect(func():
+		if selected_item_style == null: return
+		if selected_item_empty_only && inventory.get_item_at_positionv(selected_cell) != null:
+			return
+
+		_selection_node.draw_style_box(selected_item_style, Rect2(Vector2.ZERO, _selection_node.size))
+	)
+	_selection_node.z_index = 1
+	_selection_node.mouse_filter = MOUSE_FILTER_STOP
+	add_child(_selection_node)
+
 	await get_tree().process_frame
+
 	load_state()
 	add_to_group(&"inventory_view")
 	add_to_group(&"view_filterable")
@@ -229,6 +312,7 @@ func _regenerate_view():
 			cell.custom_minimum_size = cell_size
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
+			_connect_cell(cell)
 
 		var diff := cells.get_child_count() - (inventory.width if inventory != null else 1)
 		while diff > 0:
@@ -240,6 +324,7 @@ func _regenerate_view():
 			diff += 1
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
+			_connect_cell(cell)
 
 		if cells is Container:
 			# Container items aren't immediately ordered. Wait for the cells to align correctly.
@@ -249,6 +334,19 @@ func _regenerate_view():
 			for i in _view_nodes.size():
 				_redraw_item(_view_nodes[i], inventory.items[i])
 
+
+func _connect_cell(cell : Control):
+	cell.focus_mode = Control.FOCUS_ALL
+	cell.mouse_filter = Control.MOUSE_FILTER_STOP
+	cell.focus_entered.connect(func():
+		selected_cell = Vector2(cell.get_index(), 0)
+		var selected_item := inventory.get_item_at_position(selected_cell.x)
+		if selected_item != null:
+			_item_stack_selected(selected_item.index_in_inventory)
+	)
+	cell.focus_exited.connect(func():
+		selected_cell = Vector2(-1, -1)
+	)
 
 ## Returns the in-inventory position of the cell clicked from global [code]pos[/code]. [br]
 ## Returns [code](-1, -1)[/code] if no cell found.
@@ -270,6 +368,23 @@ func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 
 		return Vector2(-1, -1)
 
+## Returns the [Rect2] that encloses the item or cell, as if it was selected, in local coordinates.
+func get_selected_rect(cell : Vector2 = selected_cell) -> Rect2:
+	if !inventory.has_cell(cell.x, cell.y):
+		return Rect2()
+
+	var item_selected := inventory.get_item_at_positionv(cell)
+	if inventory is GridInventory:
+		if item_selected == null:
+			return Rect2(cell * cell_size, cell_size)
+
+		return Rect2(
+			item_selected.position_in_inventory * cell_size,
+			item_selected.item_type.get_size_in_inventory() * cell_size
+		)
+
+	return $"Cells".get_child(cell.x).get_rect()
+
 
 func _redraw_item(node : Control, item_stack : ItemStack):
 	node.update_stack(item_stack, cell_size, show_backgrounds)
@@ -289,8 +404,9 @@ func _position_item(node : Control, item_stack : ItemStack):
 func _on_item_stack_added(item_stack : ItemStack):
 	var new_node := item_scene.instantiate()
 	if !has_node("ItemViews"):
-		var item_views = Control.new()
+		var item_views := Control.new()
 		item_views.name = "ItemViews"
+		item_views.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(item_views)
 		item_views.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 
@@ -300,6 +416,7 @@ func _on_item_stack_added(item_stack : ItemStack):
 	_redraw_item(new_node, item_stack)
 	new_node.gui_input.connect(_on_item_stack_gui_input.bind(item_stack.index_in_inventory))
 	new_node.mouse_entered.connect(_on_item_stack_mouse_entered.bind(item_stack.index_in_inventory))
+	new_node.mouse_exited.connect(_on_item_stack_mouse_exited.bind(item_stack.index_in_inventory))
 
 	apply_view_filters()
 	item_stack_added.emit(item_stack)
@@ -309,6 +426,9 @@ func _on_item_stack_added(item_stack : ItemStack):
 
 
 func _on_item_stack_removed(item_stack : ItemStack):
+	item_stack_deselected.emit(_view_nodes[item_stack.index_in_inventory])
+	_deselect_signal_interrupted = true
+
 	var nodes = _view_nodes.duplicate()
 	_view_nodes.pop_back().queue_free()
 	var items = inventory.items
@@ -320,8 +440,10 @@ func _on_item_stack_removed(item_stack : ItemStack):
 		_view_nodes[node_idx] = nodes[node_idx]
 		nodes[node_idx].gui_input.disconnect(_on_item_stack_gui_input)
 		nodes[node_idx].mouse_entered.disconnect(_on_item_stack_mouse_entered)
+		nodes[node_idx].mouse_exited.disconnect(_on_item_stack_mouse_exited)
 		nodes[node_idx].gui_input.connect(_on_item_stack_gui_input.bind(inv_idx))
 		nodes[node_idx].mouse_entered.connect(_on_item_stack_mouse_entered.bind(inv_idx))
+		nodes[node_idx].mouse_exited.connect(_on_item_stack_mouse_exited.bind(inv_idx))
 		_redraw_item(nodes[node_idx], inventory.items[inv_idx])
 
 	apply_view_filters()
@@ -341,7 +463,7 @@ func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 
 
 func _grab_stack(stack_index : int):
-	var stack = inventory.items[stack_index]
+	var stack : ItemStack = inventory.items[stack_index]
 	if interaction_mode & InteractionFlags.CAN_TAKE == 0:
 		# If configured as not takeable, emit the fail signal. (can register clicks on items)
 		grab_attempted.emit(stack, false)
@@ -353,10 +475,10 @@ func _grab_stack(stack_index : int):
 
 	if grabbed.grabbed_stack != null:
 		# With non-placeable invs, stack with the Grabbed stack instead of one in the inv.
-		var grabbed_stack = grabbed.grabbed_stack
+		var grabbed_stack := grabbed.grabbed_stack
 		if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 			if grabbed_stack.can_stack_with(stack):
-				var transferred = grabbed_stack.get_delta_if_added(stack.count)
+				var transferred := grabbed_stack.get_delta_if_added(stack.count)
 				grabbed.add_items_to_stack(transferred)
 				inventory.add_items_to_stack(stack, -transferred)
 				grab_attempted.emit(stack, true)
@@ -513,6 +635,19 @@ func _get_quick_transfer_targets(has_price) -> Array:
 	
 
 func _on_item_stack_mouse_entered(stack_index : int):
+	selected_cell = inventory.items[stack_index].position_in_inventory
+	_deselect_signal_interrupted = false
+	if has_node("Cells"):
+		$"Cells".get_child(selected_cell.x).grab_focus()
+
+	else:
+		grab_focus()
+
+	_item_stack_selected(stack_index)
+
+
+func _item_stack_selected(stack_index : int):
+	item_stack_selected.emit(_view_nodes[stack_index])
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && Input.is_action_pressed(&"inventory_more"):
 		if inventory.items.size() > stack_index:
 			_quick_transfer_anywhere(inventory.items[stack_index])
@@ -520,7 +655,15 @@ func _on_item_stack_mouse_entered(stack_index : int):
 		force_drag(0, null)
 
 
+func _on_item_stack_mouse_exited(stack_index : int):
+	if _deselect_signal_interrupted:
+		return
+
+	item_stack_deselected.emit(_view_nodes[stack_index])
+
+
 func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
+	item_stack_gui_input.emit(event, _view_nodes[stack_index])
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
 			if !Input.is_action_pressed(&"inventory_more"):
@@ -529,6 +672,84 @@ func _on_item_stack_gui_input(event : InputEvent, stack_index : int):
 			else:
 				_quick_transfer_anywhere(inventory.items[stack_index])
 				force_drag(0, null)
+
+
+func _on_cell_gui_input(event : InputEvent, cell_index : int = -1):
+	if cell_index == -1 && event.is_pressed():
+		grab_focus()
+
+
+func _gui_input(event : InputEvent):
+	if event is InputEventMouseMotion:
+		pass
+
+	if event is InputEventKey && event.pressed:
+		var input_vec := Vector2(
+			event.get_action_strength(&"ui_right") - event.get_action_strength(&"ui_left"),
+			event.get_action_strength(&"ui_down") - event.get_action_strength(&"ui_up"),
+		)
+		if input_vec == Vector2.ZERO:
+			return
+
+		var formerly_selected := inventory.get_item_at_positionv(selected_cell)
+		var formerly_selected_cell := selected_cell
+		selected_cell += input_vec
+
+		if inventory.has_cell(selected_cell.x, selected_cell.y):
+			return
+
+		var container := get_node_or_null("Cells")
+		var new_focus : Control
+		focus_mode = Control.FOCUS_NONE
+		if is_instance_valid(container):
+			new_focus = _item_grab_focus_neighbor(container.get_child(selected_cell.x), input_vec, true)
+
+		elif is_instance_valid(formerly_selected):
+			new_focus = _item_grab_focus_neighbor(_view_nodes[formerly_selected.index_in_inventory], input_vec)
+
+		else:
+			new_focus = _item_grab_focus_neighbor(_selection_node, input_vec)
+
+		if inventory is GridInventory:
+			focus_mode = Control.FOCUS_ALL
+
+		if !is_instance_valid(new_focus):
+			grab_focus()
+			selected_cell = formerly_selected_cell
+
+
+func _item_grab_focus_neighbor(item : Control, direction : Vector2, items_only : bool = false) -> Control:
+	if !&"find_valid_focus_neighbor" in self:
+		# Check for 4.1, 4.0 compat - [method find_valid_focus_neighbor] wasn't exposed
+		return null
+
+	var focus_side := SIDE_LEFT
+	if direction.x > 0:
+		focus_side = SIDE_RIGHT
+
+	if direction.y > 0:
+		focus_side = SIDE_BOTTOM
+
+	if direction.y < 0:
+		focus_side = SIDE_TOP
+
+	var found_nb := item.find_valid_focus_neighbor(focus_side)
+	if is_instance_valid(found_nb):
+		if items_only && !found_nb is ItemStackView:
+			return null
+
+		found_nb.grab_focus()
+		return found_nb
+
+	return null
+
+
+func _on_focus_entered():
+	# TODO
+	if !inventory.has_cell(selected_cell.x, selected_cell.y):
+		selected_cell = Vector2(0, 0)
+
+	pass
 
 
 func _can_drop_data(position, data):
@@ -569,7 +790,6 @@ func save_state(filepath = ""):
 
 	inventory.save_state(autosave_file_path if filepath == "" else filepath, extras)
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
-
 
 ## Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
 func load_state(filepath = ""):

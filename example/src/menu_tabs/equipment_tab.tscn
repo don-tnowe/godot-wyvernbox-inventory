@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://0r7o3wklblhy"]
+[gd_scene load_steps=18 format=3 uid="uid://0r7o3wklblhy"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="5"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="5_8nmbe"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/restricted_inventory.gd" id="8"]
+[ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="8_wco16"]
 [ext_resource type="PackedScene" uid="uid://cwwnfgekeptfo" path="res://addons/wyvernbox_prefabs/inventories/equipment_inventory.tscn" id="9"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="10"]
 
@@ -24,9 +25,9 @@ fill_to = Vector2(0.5, 2)
 [sub_resource type="Resource" id="5"]
 resource_name = "CurrencyInventory"
 script = ExtResource("10")
-restricted_to_types = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("4_yln8c"), null, null, ExtResource("4_hpc6g"), ExtResource("5_8nmbe")])
+restricted_to_types = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("4_yln8c"), ExtResource("4_hpc6g"), ExtResource("5_8nmbe")])
 max_stack = 99999999
-width = 5
+width = 3
 
 [sub_resource type="Gradient" id="2"]
 
@@ -89,41 +90,45 @@ script = ExtResource("5")
 inventory = SubResource("5")
 item_scene = ExtResource("1")
 interaction_mode = 29
+selected_item_style = ExtResource("8_wco16")
 autosave_file_path = "items/hero/currency.dat"
 
-[node name="Cells" type="VBoxContainer" parent="Control/Money"]
-layout_mode = 0
+[node name="Cells" type="Control" parent="Control/Money"]
+anchors_preset = 0
 mouse_filter = 2
 
 [node name="1" parent="Control/Money/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 2
-size_flags_horizontal = 0
-texture = SubResource("1")
-
-[node name="2" parent="Control/Money/Cells" instance=ExtResource("2")]
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(30, 14)
-layout_mode = 2
-size_flags_horizontal = 0
-texture = SubResource("1")
-
-[node name="3" parent="Control/Money/Cells" instance=ExtResource("2")]
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(30, 14)
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 30.0
+offset_bottom = 14.0
 size_flags_horizontal = 0
 texture = SubResource("1")
 
 [node name="4" parent="Control/Money/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 54.0
+offset_right = 30.0
+offset_bottom = 68.0
 size_flags_horizontal = 0
 texture = SubResource("1")
 
 [node name="5" parent="Control/Money/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(30, 14)
 layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 72.0
+offset_right = 30.0
+offset_bottom = 86.0
 size_flags_horizontal = 0
 texture = SubResource("1")
 
@@ -140,6 +145,7 @@ script = ExtResource("5")
 inventory = SubResource("6")
 item_scene = ExtResource("1")
 interaction_mode = 5
+selected_item_style = ExtResource("8_wco16")
 autosave_file_path = "items/hero/potions.dat"
 
 [node name="Cells" type="GridContainer" parent="Control/Potions"]

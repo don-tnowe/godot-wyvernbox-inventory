@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cejqdb7jkd2o2"]
+[gd_scene load_steps=7 format=3 uid="uid://cejqdb7jkd2o2"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="3"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/inventory.gd" id="4"]
+[ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="4_s1m03"]
 
 [sub_resource type="Resource" id="1"]
 resource_name = "Inventory"
@@ -17,6 +18,8 @@ script = ExtResource("2")
 inventory = SubResource("1")
 item_scene = ExtResource("1")
 interaction_mode = 5
+selected_item_style = ExtResource("4_s1m03")
+selected_item_empty_only = null
 
 [node name="Cells" type="GridContainer" parent="."]
 layout_mode = 2

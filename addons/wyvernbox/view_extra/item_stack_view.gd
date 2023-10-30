@@ -11,6 +11,7 @@ var stack : ItemStack
 func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	focus_entered.connect(_on_mouse_entered)
 
 ## Sets the displayed stack. [br]
 ## [code]unit_size[/code] is the width of the inventory's cells. [br]
@@ -31,14 +32,22 @@ func update_stack(item_stack, unit_size, show_background = true):
 		back.visible = show_background
 		back.self_modulate = item_stack.extra_properties.get(&"back_color", Color.TRANSPARENT)
 
+## If [code]true[/code], shows the tooltip with this item. Otherwise, hides it.
+func tooltip_set_visible(status : bool):
+	var tt := InventoryTooltip.get_instance()
+	if !is_instance_valid(tt):
+		return
+
+	if status:
+		tt.display_item(stack, self)
+	
+	else:
+		tt.hide()
+
 
 func _on_mouse_entered():
-	var tt := InventoryTooltip.get_instance()
-	if is_instance_valid(tt):
-		tt.display_item(stack, self)
+	tooltip_set_visible(true)
 
 
 func _on_mouse_exited():
-	var tt := InventoryTooltip.get_instance()
-	if is_instance_valid(tt):
-		tt.hide()
+	tooltip_set_visible(false)
