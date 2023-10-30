@@ -41,7 +41,7 @@ var added_scripts := [
 		icons_dir + "tooltip_property.png",
 	],
 	[
-		"ShopManager",
+		"InventoryVendor",
 		preload(scripts_dir + "crafting/vendor.gd"),
 		icons_dir + "vendor.png",
 	],

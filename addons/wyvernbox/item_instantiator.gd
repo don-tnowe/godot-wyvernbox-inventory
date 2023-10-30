@@ -2,32 +2,35 @@
 class_name ItemInstantiator
 extends Resource
 
-## The [ItemTypes] or [ItemGenerators] to instantiate.
+## A list of items with random chances and amounts.
+##
+## Can be used to initialize inventories or describe loot drop tables.
+
+## The [ItemType]s or [ItemGenerator]s to instantiate.
 @export var items_to_add : Array[ItemLike]
 
 ## The minimum and maximum repeat counts of each item instantiated.
 @export var item_repeat_ranges : Array[Vector2]
 
-## The percentage chances for each item to be instantiated. 100 is "Always", 0 is "Never".
+## The percentage chances for each item to be instantiated. 100 is "Always", 0 is "Never". [br]
 ## If you need only one of the items to spawn with different chances, add an [ItemGenerator] instead.
 @export var item_chances : Array[float]
 
 ## Optionally, a generator to modify all instantiated items.
 @export var apply_to_all_results : ItemGenerator
 
-## Defines order of [member item_repeat_ranges] and [member item_chances].
-## If [code]true[/code], spawns [code]x-y[/code] items if spawn succeeds, and none otherwise.
+## Defines order of [member item_repeat_ranges] and [member item_chances]. [br]
+## If [code]true[/code], spawns [code]x-y[/code] items if spawn succeeds, and none otherwise. [br]
 ## If [code]false[/code], checks chance [code]x-y[/code] times and spawn once for every success.
 @export var repeat_post_chance := true
 
-## If [code]true[/code], spawn items at random positions.
+## If [code]true[/code], spawn items at random positions. [br]
 ## If [code]false[/code], an [InventoryView] will receive items in first available slots with stacking,
 ## and a [GroundItemManager] will spawn items in a circle or arc.
 @export var randomize_locations := true
 
-
 ## Delay between item spawns when a [code]populate_*[/code] method is called.
-@export var delay_between_items := 0.0 # (float, 0.0, 60.0)
+@export_range(0, 60.0) var delay_between_items := 0.0
 
 @export_group("Ground")
 
@@ -35,16 +38,16 @@ extends Resource
 @export var spread_distance := 32.0
 
 ## For ground drops, sets the angle range the items get thrown in.
-@export var spread_cone_degrees := 360.0 # (float, 0, 360)
+@export_range(0, 360.0) var spread_cone_degrees := 360.0
 
 ## For cone-shaped ground drops, sets the median angle the items get thrown in.
-@export var spread_angle_degrees := 0.0 # (float, 0, 360)
+@export_range(0, 360.0) var spread_angle_degrees := 0.0
 
 ## The [RandomNumberGenerator] this object uses to randomize drops.
 var rng : RandomNumberGenerator = null
 
 
-func get_rng(passed_rng):
+func get_rng(passed_rng : RandomNumberGenerator):
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
@@ -52,7 +55,7 @@ func get_rng(passed_rng):
 	return rng if passed_rng == null else passed_rng
 
 
-## Adds listed items to an [InventoryView] or [Inventory].
+## Adds listed items to an [InventoryView] or [Inventory]. [br]
 ## [b]Note:[/b] timed insertions only work if used on an [InventoryView].
 func populate_inventory(target_inventory : Object, rng : RandomNumberGenerator = null):
 	rng = get_rng(rng)
@@ -166,7 +169,7 @@ func populate_ground(origin : Node, ground : GroundItemManager, rng : RandomNumb
 
 	return generated_items
 
-## Returns a list filled with [member items_to_add] with [member item_chances] percent chances repeated [member item_repeat_ranges] times.
+## Returns a list filled with [member items_to_add] with [member item_chances] percent chances repeated [member item_repeat_ranges] times. [br]
 ## Used internally, but you can use this manually to define custom spawning behaviour.
 func get_items(rng : RandomNumberGenerator = null) -> Array:
 	if rng == null: rng = self.rng
@@ -195,13 +198,13 @@ func get_items(rng : RandomNumberGenerator = null) -> Array:
 	return actual_generated_items
 
 
-## Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
-## The returned arrays must contain:
-## - Property editor label : String
-## - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
-## - Column labels : Array[String] (each vector array must have two/three)
-## - Columns are integer? : bool (each vector array maps to one)
-## - Column default values : Variant
+## Must return settings for displays of item lists. Override to change behaviour, or add to your own class. [br]
+## The returned arrays must contain: [br]
+## - Property editor label : String [br]
+## - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array) [br]
+## - Column labels : Array[String] (each vector array must have two/three) [br]
+## - Columns are integer? : bool (each vector array maps to one) [br]
+## - Column default values : Variant [br]
 # - Allowed resource types : Array[Script or Classname]
 func _get_wyvernbox_item_lists() -> Array:
 	return [[

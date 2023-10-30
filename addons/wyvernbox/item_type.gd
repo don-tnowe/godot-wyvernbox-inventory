@@ -3,6 +3,10 @@
 class_name ItemType
 extends ItemLike
 
+## A template for an item.
+##
+## Write [code]ItemStack.new(this_item_type, count)[/code] to create an item that can be inserted into an [Inventory], or used for other purposes.
+
 enum SlotFlags {
 	SMALL = 1 << 0,
 	LARGE = 1 << 1,
@@ -48,6 +52,9 @@ const EQUIPMENT_FLAGS := (
 ## The item's description. Can be empty or a locale string.
 @export_multiline var description := ""
 
+## Tags, for any custom purpose.
+@export var tags : Array[StringName]
+
 ## The item's texture.
 @export var texture : Texture2D:
 	set(v):
@@ -67,7 +74,7 @@ const EQUIPMENT_FLAGS := (
 ## How many cells, vertically, this item occupies in a [GridInventory].
 @export var in_inventory_height := 1
 
-## The [code]SlotFlags[/code] of this item. Used in [RestrictedInventory].
+## The [enum SlotFlags] of this item. Used in [RestrictedInventory].
 @export_flags(
 "SMALL",
 "LARGE",
@@ -114,11 +121,12 @@ const EQUIPMENT_FLAGS := (
 		if converted is Dictionary: default_properties = converted
 		default_properties_converting = false
 
-## The type's default property dictionary.
-## For editing, [default_properties_string] or the Dictionary Inspector addon are recommended.
-## Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses.
-## [code]price[/code] is used for vendor prices, selling and buying.
-## [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground.
+## The type's default property dictionary. [br]
+## For editing, [default_properties_string] or the Dictionary Inspector addon are recommended. [br]
+## Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses. [br]
+## [code]price[/code] is used for vendor prices, selling and buying. [br]
+## [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground. [br]
+## For more, edit an [ItemType] with the plugin enabled and search the inspector.
 @export var default_properties : Dictionary:
 	set(v):
 		default_properties = v

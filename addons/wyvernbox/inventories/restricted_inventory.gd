@@ -3,6 +3,10 @@
 class_name RestrictedInventory
 extends Inventory
 
+## A type of [Inventory] only allowing a specific [member ItemType.slot_flags] flag in each slot. Intended primarily for character equipment
+##
+## This inventory can allow [kbd]Shift+Click[/kbd] quick-transfers even if no items can fit, cycling through possible slots to place.
+
 ## If set and inventory full, quick-transferring into here will shift all items by one cell. [br]
 ## [b]Warning:[/b] might ignore [member entry_filter].
 @export var allow_rotation := true

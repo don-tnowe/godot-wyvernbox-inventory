@@ -1,14 +1,16 @@
 class_name InventoryTooltipProperty
 extends RefCounted
 
-## The [InventoryTooltip] this script must display on. Use this property to access Tooltip configuration.
+## Extend this class to create a script that lets [InventoryTooltip] show more.
+
+## The [InventoryTooltip] this script must display on. Use this property to access Tooltip configuration. [br]
 ## The class contains many useful methods for generating BBCode.
 var tooltip : InventoryTooltip
 
 var _tooltip_last_label : RichTextLabel
 
 
-## Override to define tooltip content.
+## Override to define tooltip content. [br]
 ## Call [method add_bbcode] and [method add_node] from here. You can acces the tooltip node through the [member tooltip] property.
 func _display(item_stack : ItemStack):
 	pass

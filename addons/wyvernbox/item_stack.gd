@@ -1,7 +1,9 @@
 class_name ItemStack
 extends RefCounted
 
-## Array containing all affixes of this [ItemStack]. Can be locale strings.
+## An instance of an [ItemType] with count, name, and extra property overrides.
+
+## Array containing all affixes of this [ItemStack]. Can be locale strings. [br]
 ## A [code]null[/code] value will be replaced by the [ItemType]'s name.
 var name_with_affixes := []
 
@@ -20,16 +22,17 @@ var inventory : Inventory
 ## The item's [ItemType].
 var item_type : ItemType
 
-## The item's extra property dictionary.
-## Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses.
-## [code]price[/code] is used for vendor prices, selling and buying.
-## [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground.
+## The item's extra property dictionary. [br]
+## Can contain various data for display in [InventoryTooltip] via its [InventoryTooltipProperty], or other, game-specific uses. [br]
+## [code]price[/code] is used for vendor prices, selling and buying. [br]
+## [code]back_color[/code] is used to show a colored background in inventories and a glow on the ground. [br]
+## For more, edit an [ItemType] with the plugin enabled and search the inspector.
 var extra_properties : Dictionary
 
 
-## Creates an [ItemStack] with [code]item_count[/code] items of type [code]item_type[/code].
+## Creates an [ItemStack] with [code]item_count[/code] items of type [code]item_type[/code]. [br]
 ## If the [code]item_extra_properties[/code] dictionary is not set, copies [code]item_type[/code]'s [member ItemType.default_properties].
-func _init(item_type, item_count = 1, item_extra_properties = null):
+func _init(item_type : ItemType, item_count : int = 1, item_extra_properties = null):
 	self.item_type = item_type
 	count = item_count
 	extra_properties = (
@@ -37,11 +40,11 @@ func _init(item_type, item_count = 1, item_extra_properties = null):
 		if item_extra_properties != null && item_extra_properties.size() > 0 else
 		item_type.default_properties.duplicate(true)
 	)
-	name_with_affixes = extra_properties.get("name", [null])
+	name_with_affixes = extra_properties.get(&"name", [null])
 
-## Creates a copy of the stack with the specified count.
+## Creates a copy of the stack with the specified count. [br]
 ## Useful for splitting a stack into multiple.
-func duplicate_with_count(new_count):
+func duplicate_with_count(new_count : int):
 	var new_stack = get_script().new(
 		item_type, new_count, extra_properties.duplicate(true)
 	)
@@ -55,23 +58,23 @@ func get_bottom_right() -> Vector2:
 		position_in_inventory.y + item_type.in_inventory_height
 	)
 
-## Returns how many items would overflow above [member max_stack_count], if [code]count_delta[/code] was to be added.
+## Returns how many items would overflow above [member max_stack_count], if [code]count_delta[/code] was to be added. [br]
 ## Returns 0 if everything fits.
 func get_overflow_if_added(count_delta) -> int:
 	return int(max(count + count_delta - item_type.max_stack_count, 0))
 
-## Returns how many items out of [code]count_delta[/code] would fit into [member max_stack_count].
+## Returns how many items out of [code]count_delta[/code] would fit into [member max_stack_count]. [br]
 ## Returns the provided [code]count_delta[/code] if everything fits, 0 if already full.
 func get_delta_if_added(count_delta) -> int:
 	return int(min(item_type.max_stack_count - count, count_delta))
 
-## Returns [code]true[/code] if the stacks have the same type, name and extra properties.
+## Returns [code]true[/code] if the stacks have the same type, name and extra properties. [br]
 ## Disable [code]compare_extras[/code] to ignore extra properties.
 func can_stack_with(stack, compare_extras : bool = true) -> bool:
 	return (
 		item_type == stack.item_type
-		&& arrays_equal(name_with_affixes, stack.name_with_affixes)
-		&& (!compare_extras || extras_equal(extra_properties, stack.extra_properties))
+		&& name_with_affixes == stack.name_with_affixes
+		&& (!compare_extras || extra_properties == stack.extra_properties)
 	)
 
 ## Returns [code]true[/code] if stacks can be stacked together. See [method can_stack_with].
@@ -90,7 +93,7 @@ func get_name() -> String:
 	
 	return " ".join(trd)
 
-## Returns how many items would overflow above [code]maxcount[/code], if [code]added[/code] was to be added.
+## Returns how many items would overflow above [code]maxcount[/code], if [code]added[/code] was to be added. [br]
 ## Static version of [code]get_overflow_if_added[/code].
 static func get_stack_overflow_if_added(count, added, maxcount) -> int:
 	return int(max(count + added - maxcount, 0))
@@ -100,11 +103,11 @@ static func get_stack_overflow_if_added(count, added, maxcount) -> int:
 static func get_stack_delta_if_added(count, added, maxcount) -> int:
 	return int(min(maxcount - count, added))
 
-## Display texture on `node`, or its siblings if item has multiple layers. Nodes are created if needed.
-## Texture is shown based on [member item_type], but before that, [member extra_properties] is checked.
-## If [code]"custom_texture"[/code] is a [String] or [Texture], loads it.
-## If [code]"custom_texture"[/code] is a [Dictionary], tries to load it as an image. See [member Image.data].
-## If [code]"custom_texture"[/code] is an [Array], loads each item in a separate node. Nodes are created as needed.
+## Display texture on `node`, or its siblings if item has multiple layers. Nodes are created if needed. [br]
+## Texture is shown based on [member item_type], but before that, [member extra_properties] is checked. [br]
+## If [code]"custom_texture"[/code] is a [String] or [Texture], loads it. [br]
+## If [code]"custom_texture"[/code] is a [Dictionary], tries to load it as an image. See [member Image.data]. [br]
+## If [code]"custom_texture"[/code] is an [Array], loads each item in a separate node. Nodes are created as needed. [br]
 ## [code]"custom_colors"[/code] is an array defining color of each layer.
 func display_texture(node : Node):
 	for x in node.get_parent().get_children():
@@ -158,7 +161,8 @@ func _display_texture_internal(node : Node, data_or_paths, colors : Array = [], 
 		node.texture = data_or_paths
 		return
 
-## Returns [code]true[/code] if dictionaries are equal.
+## [b]Deprecated.[/b] Returns [code]true[/code] if dictionaries are equal. [br]
+## [b]Note:[/b] since Godot 4, the comparison [code]==[/code] operator compares both Arrays and Dictionaries by value. 
 static func extras_equal(a : Dictionary, b : Dictionary) -> bool:
 	if a.size() != b.size(): return false
 	for k in a:
@@ -172,7 +176,8 @@ static func extras_equal(a : Dictionary, b : Dictionary) -> bool:
 
 	return true
 
-# Returns [code]true[/code] if arrays are equal.
+# [b]Deprecated.[/b] Returns [code]true[/code] if arrays are equal. [br]
+## [b]Note:[/b] since Godot 4, the comparison [code]==[/code] operator compares both Arrays and Dictionaries by value. 
 static func arrays_equal(a : Array, b : Array) -> bool:
 	if a.size() != b.size(): return false
 	for i in a.size():

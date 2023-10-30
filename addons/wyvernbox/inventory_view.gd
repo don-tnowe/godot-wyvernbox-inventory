@@ -4,6 +4,10 @@ class_name InventoryView
 extends Control
 
 ## A view into an [Inventory]. Allows to edit and save the inventory's contents.
+##
+## This node automatically arranges child nodes according to the inventory's type and settings. For non-grids, changing the type of the created [Container] node
+## allows different arrangements of cells. [br]
+## This node type emits useful signals that can help with implementing custom inventory logic.[br]
 
 enum InteractionFlags {
 	CAN_TAKE = 1 << 0,  ## Player can take items from here.
@@ -13,10 +17,14 @@ enum InteractionFlags {
 	CAN_QUICK_TRANSFER_HERE = 1 << 4,  ## If CAN_PLACE, can be quick-transferred into via Shift-click.
 }
 
-signal item_stack_added(item_stack)
-signal item_stack_changed(item_stack, count_delta)
-signal item_stack_removed(item_stack)
-signal grab_attempted(item_stack, success)
+## Emitted when an item stack is added to any slot.
+signal item_stack_added(item_stack : ItemStack)
+## Emitted when an item changes count. It is recommended to emit manually if a view-affecting [ItemStack.extra_properties] is changed.
+signal item_stack_changed(item_stack : ItemStack, count_delta : int)
+## Emitted when an item stack is fully removed from a slot.
+signal item_stack_removed(item_stack : ItemStack)
+## Emitted when a grab is attempted by the user. [code]false[/code] if [member interaction_mode] disallows it completely, or if it states this is a vendor and item price isn't fulfilled.
+signal grab_attempted(item_stack : ItemStack, success : bool)
 
 ## The [Inventory] this node displays.
 @export var inventory : Inventory:
@@ -33,7 +41,7 @@ signal grab_attempted(item_stack, success)
 
 @export_group("IO")
 
-## The [code]InteractionFlags[/code] of this inventory.
+## The [enum InteractionFlags] of this inventory.
 @export_flags(
 "Can Take",
 "Vendor",
@@ -70,7 +78,7 @@ signal grab_attempted(item_stack, success)
 @export_group("Autosave")
 
 
-## File path to autosave into.
+## File path to autosave into. [br]
 ## Only supports "user://" paths.
 @export var autosave_file_path := ""
 
@@ -82,7 +90,7 @@ signal grab_attempted(item_stack, success)
 "Paranoic // On any item added/removed"
 	) var autosave_intensity := 2
 
-## Change to save more data when [method save_state] is called.
+## Change to save more data when [method save_state] is called. [br]
 ## Gets changed on autoload, or call to [method load_state].
 @export var save_extra_data : Dictionary
 
@@ -222,13 +230,13 @@ func _regenerate_view():
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
 
-		var diff = cells.get_child_count() - (inventory.width if inventory != null else 1)
+		var diff := cells.get_child_count() - (inventory.width if inventory != null else 1)
 		while diff > 0:
 			diff -= 1
 			cells.get_child(cells.get_child_count() - 1).free()
 
 		while diff < 0:
-			var cell = cells.get_child(0).duplicate()
+			var cell := cells.get_child(0).duplicate()
 			diff += 1
 			cells.add_child(cell)
 			cell.owner = owner if owner != null else self
@@ -242,21 +250,20 @@ func _regenerate_view():
 				_redraw_item(_view_nodes[i], inventory.items[i])
 
 
-## Returns the in-inventory position of the cell clicked from global [code]pos[/code].
+## Returns the in-inventory position of the cell clicked from global [code]pos[/code]. [br]
 ## Returns [code](-1, -1)[/code] if no cell found.
 func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
+	var xform := get_global_transform().affine_inverse()
 	if inventory is GridInventory:
-		var topleft = global_position
 		if has_node(grid_background):
-			topleft = get_node(grid_background).global_position
+			xform = get_node(grid_background).get_global_transform().affine_inverse()
 
-		return (Vector2(
-			(pos.x - topleft.x) / cell_size.x,
-			(pos.y - topleft.y) / cell_size.y
+		return ((
+			(xform * pos) / cell_size
 		) - item.item_type.get_size_in_inventory() * 0.5).round()
 
 	else:
-		var cells = $"Cells".get_children()
+		var cells := $"Cells".get_children()
 		for i in cells.size():
 			if cells[i].get_global_rect().has_point(pos):
 				return Vector2(i, 0)
@@ -271,11 +278,11 @@ func _redraw_item(node : Control, item_stack : ItemStack):
 
 func _position_item(node : Control, item_stack : ItemStack):
 	if inventory is GridInventory:
-		node.global_position = global_position + cell_size * item_stack.position_in_inventory
+		node.global_position = get_global_transform() * (cell_size * item_stack.position_in_inventory)
 		return
 
 	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
-	node.position = cell.position
+	node.global_position = cell.global_position
 	node.size = cell.size
 
 
@@ -291,8 +298,8 @@ func _on_item_stack_added(item_stack : ItemStack):
 	
 	_view_nodes.append(new_node)
 	_redraw_item(new_node, item_stack)
-	new_node.connect("gui_input", Callable(self, "_on_item_stack_gui_input").bind(item_stack.index_in_inventory))
-	new_node.connect("mouse_entered", Callable(self, "_on_item_stack_mouse_entered").bind(item_stack.index_in_inventory))
+	new_node.gui_input.connect(_on_item_stack_gui_input.bind(item_stack.index_in_inventory))
+	new_node.mouse_entered.connect(_on_item_stack_mouse_entered.bind(item_stack.index_in_inventory))
 
 	apply_view_filters()
 	item_stack_added.emit(item_stack)
@@ -311,10 +318,10 @@ func _on_item_stack_removed(item_stack : ItemStack):
 
 		node_idx += 1
 		_view_nodes[node_idx] = nodes[node_idx]
-		nodes[node_idx].disconnect("gui_input", Callable(self, "_on_item_stack_gui_input"))
-		nodes[node_idx].disconnect("mouse_entered", Callable(self, "_on_item_stack_mouse_entered"))
-		nodes[node_idx].connect("gui_input", Callable(self, "_on_item_stack_gui_input").bind(inv_idx))
-		nodes[node_idx].connect("mouse_entered", Callable(self, "_on_item_stack_mouse_entered").bind(inv_idx))
+		nodes[node_idx].gui_input.disconnect(_on_item_stack_gui_input)
+		nodes[node_idx].mouse_entered.disconnect(_on_item_stack_mouse_entered)
+		nodes[node_idx].gui_input.connect(_on_item_stack_gui_input.bind(inv_idx))
+		nodes[node_idx].mouse_entered.connect(_on_item_stack_mouse_entered.bind(inv_idx))
 		_redraw_item(nodes[node_idx], inventory.items[inv_idx])
 
 	apply_view_filters()
@@ -422,15 +429,22 @@ func _try_buy(stack : ItemStack):
 
 	return true
 
-## Tries to place [code]stack[/code] into a cell with position [code]pos[/code].
+## Tries to place [code]stack[/code] into a cell with position [code]pos_x, pos_y[/code]. [br]
+## Non-vector counterpart of [method try_place_stackv] - for non-grid inventories, only X needs to be set. [br]
 ## Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]stack[/code] if it could not be placed.
-## Note: to convert from global coords into cell position, use [method global_position_to_cell].
+func try_place_stack(stack : ItemStack, pos_x : int, pos_y : int = 0) -> ItemStack:
+	return try_place_stackv(stack, Vector2(pos_x, pos_y))
+
+## Tries to place [code]stack[/code] into a cell with position [code]pos[/code]. [br]
+## Vector counterpart of [method try_place_stackv]. [br]
+## Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]stack[/code] if it could not be placed. [br]
+## [b]Note:[/b] to convert from global coords into cell position, use [method global_position_to_cell].
 func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 		return stack
 
 	if interaction_mode & InteractionFlags.VENDOR != 0 && (
-		!stack.extra_properties.has("price")
+		!stack.extra_properties.has(&"price")
 		|| !inventory.can_place_item(stack, pos)
 	):
 		return stack
@@ -444,7 +458,7 @@ func _quick_transfer_anywhere(stack : ItemStack):
 		return
 
 	var original_pos = stack.position_in_inventory
-	var targets = _get_quick_transfer_targets(stack.extra_properties.has("price"))
+	var targets = _get_quick_transfer_targets(stack.extra_properties.has(&"price"))
 	if targets.size() == 0: return
 
 	if stack.count > stack.item_type.max_stack_count:

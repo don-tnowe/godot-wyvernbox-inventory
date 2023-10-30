@@ -3,6 +3,10 @@
 class_name InventoryTooltip
 extends Container
 
+## A node collection required to view item information.
+##
+## Can be expanded to show more information by adding scripts that extend [TooltipProperty]. Check out [code]addons/wyvernbox/extension/[/code] for starters!
+
 ## The scale for in-text images drawn by [member get_texture_bbcode].
 const TEX_SCALE := 0.5
 
@@ -49,7 +53,7 @@ const TEX_SCALE := 0.5
 			$"%Desc".remove_theme_stylebox_override(&"normal")
 			$"%Desc".remove_theme_stylebox_override(&"focus")
 
-## Panel to use under the entire tooltip box. If empty, uses the theme's [code]Panel/panel[/code] stylebox.
+## Panel to use under the entire tooltip box. If empty, uses the theme's [code]Panel/panel[/code] stylebox. [br]
 ## [b]Note: [/b]if using a panel with a border at the top, prefer [member desc_panel] instead.
 @export var back_panel : StyleBox:
 	set(v):
@@ -134,7 +138,7 @@ func display_empty():
 
 	show()
 
-## Displays an item's name and calls all [member property_scripts] display methods.
+## Displays an item's name and calls all [member property_scripts] display methods.[br]
 ## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
 func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_inventory : bool = true):
 	if shown_from_inventory:
@@ -170,8 +174,8 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	_update_rect.call_deferred(mouseover_node)
 
 
-## Custom display of a title and a rich text description.
-## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
+## Custom display of a title and a rich text description. [br]
+## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to. [br]
 ## [code]override_filters[/code] is, optionally, an array of [ItemType] and/or [ItemPattern] that defines which items are highlighted when [member filter_input] is next pressed.
 func display_custom(mouseover_node : Control, title : String, bbcode_description : String, override_filters : Array[ItemLike] = []):
 	display_empty()
@@ -183,9 +187,9 @@ func display_custom(mouseover_node : Control, title : String, bbcode_description
 	_next_filter_to_apply = override_filters
 	_update_rect.call_deferred(mouseover_node)
 
-## Custom display of any data.
-## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
-## [code]tooltip_property[/code] is an [InventoryTooltipProperty] that will display the custom data.
+## Custom display of any data. [br]
+## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to. [br]
+## [code]tooltip_property[/code] is an [InventoryTooltipProperty] that will display the custom data. [br]
 ## [code]data[/code] will be passed in [code]tooltip_property[/code]'s [method InventoryTooltipProperty._display] method.
 func display_custom_data(mouseover_node : Control, title : String, tooltip_property : RefCounted, data = null):
 	display_empty()
@@ -220,7 +224,7 @@ func get_action_bbcode(action : String) -> String:
 
 	return "[color=#aaa]%s[/color]" % action.capitalize()
 
-## Turns a [Texture] into rich text.
+## Turns a [Texture] into rich text. [br]
 ## Allows to specify scale. For a fixed height, see [method get_fixheight_texture_bbcode].
 static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> String:
 	var loaded = load(tex_path)
@@ -231,7 +235,7 @@ static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> St
 		tex_path,
 	]
 
-## Turns a [Texture] into rich text.
+## Turns a [Texture] into rich text. [br]
 ## Allows to specify a fixed height, in pixels. For a fixed pixel size, see [method get_texture_bbcode].
 static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) -> String:
 	var loaded = load(tex_path)

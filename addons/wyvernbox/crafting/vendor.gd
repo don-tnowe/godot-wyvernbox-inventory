@@ -3,18 +3,23 @@
 class_name InventoryVendor
 extends Node
 
-signal item_received(item_stack)
-signal item_given(item_stack)
-signal item_cant_afford(item_stack)
+## I provide services on selling wares you give me! Give me an [InventoryView] and I shall bring you the [ItemStack]s taken right from adventurers' inventories.
 
-## The [InventoryView] I can place my stock into!
+## Emitted when one gives me an item, and I gladly accept before granting a reward. After this, it's mine to sell!
+signal item_received(item_stack : ItemStack)
+## Emitted when one asks for an item and I gladly provide, after I put up another for sale.
+signal item_given(item_stack : ItemStack)
+## Emitted when one asks for an item, but need to be a little richer!
+signal item_cant_afford(item_stack : ItemStack)
+
+## The [InventoryView] I can place my stock into! Must use the VENDOR [enum InventoryView.InteractionFlags].
 @export var vendor_inventory := NodePath()
 
 ## The [InventoryView] where I can place the price of items I receive!
 @export var sell_reward_into_inventory := NodePath()
 
-## How expensive and prestige my wares are!
-## Price will be from the item's "price" extra property multiplied by this.
+## How expensive and prestige my wares are! [br]
+## Price will be from the item's [code]&"price"[/br] extra property multiplied by this.
 @export var price_markup := 2.0
 
 ## Apply this [ItemGenerator] to all of my stock!
@@ -39,7 +44,7 @@ signal item_cant_afford(item_stack)
 ## If set, I will remove the price tag off my items, so they can not be re-sold anywhere!
 @export var remove_price_on_buy := false
 
-## If set, items the Player sells me will be gone forever once they look away! (or my parent node becomes invisible)
+## If set, items the Player sells me will be gone forever once they look away! (or my parent node becomes invisible) [br]
 ## [method clear_sold_items] can be called manually to clear on demand.
 @export var clear_sold_items_when_hidden := true
 
@@ -132,21 +137,21 @@ func _get_wyvernbox_item_lists() -> Array:
 
 
 func _put_up_for_sale(stack : ItemStack, inventory : Inventory, stash_index : int):
-	stack.extra_properties["seller_stash_index"] = stash_index
-	stack.extra_properties["for_sale"] = true
+	stack.extra_properties[&"seller_stash_index"] = stash_index
+	stack.extra_properties[&"for_sale"] = true
 	if stash_index != -1 || !free_buyback:
 		_apply_price_markup(stack)
 
 	if stash_index != -1 && !infinite_restocks && stock_restocks[stash_index] > 0:
-		stack.extra_properties["left_in_stock"] = stock_restocks[stash_index]
+		stack.extra_properties[&"left_in_stock"] = stock_restocks[stash_index]
 
 
 func _apply_price_markup(stack : ItemStack):
 	if !stack.extra_properties.has(&"price"):
 		return
 	
-	var price_dict = stack.extra_properties["price"]
-	stack.extra_properties["real_price"] = price_dict.duplicate()
+	var price_dict = stack.extra_properties[&"price"]
+	stack.extra_properties[&"real_price"] = price_dict.duplicate()
 	for k in price_dict:
 		price_dict[k] = int(price_dict[k] * price_markup)
 
@@ -156,7 +161,7 @@ func _multiply_price_by_count(stack : ItemStack, reverse : bool = false):
 	if reverse:
 		coeff = 1 / coeff
 
-	var price_dict = stack.extra_properties["price"]
+	var price_dict = stack.extra_properties[&"price"]
 	for k in price_dict:
 		price_dict[k] = int(price_dict[k] * coeff)
 
@@ -164,12 +169,12 @@ func _multiply_price_by_count(stack : ItemStack, reverse : bool = false):
 func _remove_from_sale(stack : ItemStack):
 	var props = stack.extra_properties
 	if props.has(&"price"):
-		props["price"] = props.get(
-			"real_price", props["price"]
+		props[&"price"] = props.get(
+			&"real_price", props[&"price"]
 		)
 		props.erase(&"real_price")
 
-	if props["seller_stash_index"] == -1:
+	if props[&"seller_stash_index"] == -1:
 		_multiply_price_by_count(stack, true)
 
 	props.erase(&"for_sale")
@@ -192,11 +197,11 @@ func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
 
 
 func _restock_item(item_stack : ItemStack, inventory : Inventory):
-	var stash_idx = item_stack.extra_properties["seller_stash_index"]
+	var stash_idx = item_stack.extra_properties[&"seller_stash_index"]
 	if stash_idx == -1:
 		return
 
-	var left_in_stock = item_stack.extra_properties.get("left_in_stock", -1)
+	var left_in_stock = item_stack.extra_properties.get(&"left_in_stock", -1)
 	var restock_item = get_stock(stash_idx)
 	var restock_pos = item_stack.position_in_inventory
 
@@ -213,7 +218,7 @@ func _restock_item(item_stack : ItemStack, inventory : Inventory):
 
 	elif left_in_stock > 1:
 		_put_up_for_sale(restock_item, inventory, stash_idx)
-		restock_item.extra_properties["left_in_stock"] = left_in_stock - 1
+		restock_item.extra_properties[&"left_in_stock"] = left_in_stock - 1
 		inventory.try_place_stackv(restock_item, restock_pos)
 
 
@@ -225,7 +230,7 @@ func _on_Inventory_item_stack_added(item_stack : ItemStack):
 	item_received.emit(item_stack)
 	if item_stack.extra_properties.has(&"price") && has_node(sell_reward_into_inventory):
 		var inventory = get_node(sell_reward_into_inventory).inventory
-		var reward = item_stack.extra_properties["price"]
+		var reward = item_stack.extra_properties[&"price"]
 		for k in reward:
 			inventory.try_add_item(ItemStack.new(load(k), reward[k] * item_stack.count))
 	

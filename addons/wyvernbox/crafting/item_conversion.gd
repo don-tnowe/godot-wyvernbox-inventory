@@ -3,8 +3,14 @@
 class_name ItemConversion
 extends Resource
 
+## Describes a list of inputs and a list of outputs. Can draw items from an array of inventories to apply the conversion.
+##
+## You can utilize [ItemPattern]s to allow several input item types or match for specific rules, and [ItemGenerator]s to randomize the output or process the input.
+
 ## Name of the conversion displayed in tooltips. Can be a locale string.
 @export var name := "Insert name or full locale string"
+## Tags, for any purpose.
+@export var tags : Array[StringName]
 ## The input [ItemType]s or [ItemPattern]s.
 @export var input_types : Array[Resource]:
 	set = _set_input_types
@@ -38,8 +44,8 @@ func _set_output_ranges(v):
 	output_ranges = v
 	output_types.resize(v.size())
 
-## Applies conversion, consuming items from [code]draw_from_inventories[/code].
-## Set [code]rng[/code] to define a generator to determine [ItemGenerator] outcomes; if not set, uses global RNG.
+## Applies conversion, consuming items from [code]draw_from_inventories[/code]. [br]
+## Set [code]rng[/code] to define a generator to determine [ItemGenerator] outcomes; if not set, uses global RNG. [br]
 ## Set [code]unsafe[/code] to avoid checking if all required items are present.
 func apply(draw_from_inventories : Array, rng : RandomNumberGenerator = null, unsafe : bool = false) -> Array:
 	if !unsafe && !can_apply(draw_from_inventories):
@@ -92,8 +98,8 @@ func get_takeable_inventories_sorted(all_inventory_views : Array) -> Array:
 	all_inventory_views.sort_custom(Callable(self, "_compare_priorities"))
 	return all_inventory_views
 
-## Returns the Rich Text representation of this conversion's inputs and outputs.
-## [code]owned_item_counts[/code], optional, is a dictionary of [ItemType] to [int], shown next to requirement counts.
+## Returns the Rich Text representation of this conversion's inputs and outputs. [br]
+## [code]owned_item_counts[/code], optional, is a dictionary of [ItemType] to [int], shown next to requirement counts. [br]
 ## [code]*_label[/code] parameters are the labels for input items, output items, the "or" connector if several inputs are possible, and the label for the amount of an item already owned, in that order.
 func get_bbcode(
   owned_item_counts := {},
@@ -147,14 +153,14 @@ func get_bbcode(
 	
 	return result
 
-## Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
-## The returned arrays must contain:
-## - Property editor label : String
-## - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array)
-## - Column labels : Array[String] (each vector array must have two/three)
-## - Columns are integer? : bool (each vector array maps to one)
-## - Column default values : Variant
-## - Allowed resource types : Array[Script or Classname]
+## Must return settings for displays of item lists. Override to change behaviour, or add to your own class. [br]
+## The returned arrays must contain: [br]
+## - Property editor label : String [br]
+## - Array properties edited : Array[String] (the resource array must be first; the folowing props skip the resource array) [br]
+## - Column labels : Array[String] (each vector array must have two/three) [br]
+## - Columns are integer? : bool (each vector array maps to one) [br]
+## - Column default values : Variant [br]
+## - Allowed resource types : Array[Script or Classname] [br]
 func _get_wyvernbox_item_lists() -> Array:
 	return [
 		[

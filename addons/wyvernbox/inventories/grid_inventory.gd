@@ -3,6 +3,8 @@
 class_name GridInventory
 extends Inventory
 
+## A type of [Inventory] that allows items to span multiple cells in a rectangle shape.
+
 ## Inventory's vertical cell count.
 @export var height := 1:
 	set(v):

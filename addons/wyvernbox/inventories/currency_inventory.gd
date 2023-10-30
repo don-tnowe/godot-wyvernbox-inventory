@@ -3,6 +3,8 @@
 class_name CurrencyInventory
 extends Inventory
 
+## A type of [Inventory] only allowing a specific item in each slot, but providing a higher stack limit.
+
 ## Each cell's [ItemType] or [ItemPattern]. Items that don't match won't fit in.
 @export var restricted_to_types : Array[ItemLike] = []
 
@@ -27,7 +29,7 @@ func get_free_position(item_stack : ItemStack) -> Vector2:
 
 	return Vector2(-1, -1)
 
-## Tries to place [code]item_stack[/code] into cell [code]pos[/code].
+## Tries to place [code]item_stack[/code] into cell [code]pos[/code]. [br]
 ## Returns the stack that appeared in hand after, which is [code]null[/code] if slot was empty or the [code]item_stack[/code] if it could not be placed.
 func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	if restricted_to_types[pos.x] == null || !restricted_to_types[pos.x].matches(item_stack):

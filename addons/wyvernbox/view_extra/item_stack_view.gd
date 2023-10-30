@@ -2,6 +2,8 @@
 class_name ItemStackView
 extends Control
 
+## A view into an [ItemStack] inside an inventory.
+
 ## The displayed [ItemStack].
 var stack : ItemStack
 
@@ -10,8 +12,8 @@ func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
-## Sets the displayed stack.
-## [code]unit_size[/code] is the width of the inventory's cells.
+## Sets the displayed stack. [br]
+## [code]unit_size[/code] is the width of the inventory's cells. [br]
 ## [code]show_background[/code], if not disabled, will make this [ItemStackView] show the stack's "back_color" extra property as background.
 func update_stack(item_stack, unit_size, show_background = true):
 	stack = item_stack

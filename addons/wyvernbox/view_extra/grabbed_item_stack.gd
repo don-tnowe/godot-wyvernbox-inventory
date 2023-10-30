@@ -3,6 +3,8 @@
 class_name GrabbedItemStackView
 extends ItemStackView
 
+## A node required for handling mouse input in [InventoryView]s.
+
 @export_group("Drop")
 
 ## The node whose position [method drop_on_ground] uses for spawning a ground item.
@@ -27,7 +29,7 @@ extends ItemStackView
 ## The size of the item's texture, if its in-inventory size was [code](1, 1)[/code].
 @export var unit_size := Vector2(18, 18)
 
-## Hide the mouse cursor while item is grabbed.
+## Hide the mouse cursor while item is grabbed. [br]
 ## If item texture lags 1 frame behind the user's cursor, set this to [code]false[/code] to reduce the "floaty" feel.
 @export var hide_cursor := false
 
