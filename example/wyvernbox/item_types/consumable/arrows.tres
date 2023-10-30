@@ -11,6 +11,7 @@ region = Rect2(12, 24, 24, 12)
 script = ExtResource("2")
 name = "item_name_arrows"
 description = "item_desc_arrows"
+tags = Array[StringName]([])
 texture = SubResource("1")
 texture_scale = 1.0
 max_stack_count = 20

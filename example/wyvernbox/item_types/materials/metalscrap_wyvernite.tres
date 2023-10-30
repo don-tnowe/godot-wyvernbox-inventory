@@ -11,6 +11,7 @@ region = Rect2(48, 36, 12, 12)
 script = ExtResource("2")
 name = "item_name_metalscrap_wyvernite"
 description = "item_desc_metalscrap_wyvernite"
+tags = Array[StringName]([])
 texture = SubResource("1")
 texture_scale = 1.0
 max_stack_count = 20

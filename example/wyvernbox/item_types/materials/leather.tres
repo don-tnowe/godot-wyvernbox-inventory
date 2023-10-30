@@ -11,6 +11,7 @@ region = Rect2(60, 24, 24, 12)
 script = ExtResource("2")
 name = "item_name_leather"
 description = "item_desc_leather"
+tags = Array[StringName]([])
 texture = SubResource("AtlasTexture_fidnm")
 texture_scale = 1.0
 max_stack_count = 20
