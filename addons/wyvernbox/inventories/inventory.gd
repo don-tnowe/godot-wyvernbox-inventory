@@ -50,6 +50,7 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 	var item_type = stack.item_type
 	var count = stack.count
 	var maxcount = get_max_count(item_type)
+	if count == 0: return 0
 	while count > maxcount:
 		var deposited_overflow = try_add_item(stack.duplicate_with_count(maxcount))
 		count -= maxcount
