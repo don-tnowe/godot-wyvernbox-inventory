@@ -68,7 +68,7 @@ func add_affix(item, rng : RandomNumberGenerator):
 		+ random_level * price_increase_per_level
 	)
 	random_affix.apply_to(extras[&"stats"], random_level, 1.0)
-	random_affix.append_affix(item.name_with_affixes, only_one_affix)
+	random_affix.append_affix(item, only_one_affix)
 
 # Must return settings for displays of item lists. Override to change behaviour, or add to your own class.
 # See [method ItemGenerator._get_wyvernbox_item_lists].

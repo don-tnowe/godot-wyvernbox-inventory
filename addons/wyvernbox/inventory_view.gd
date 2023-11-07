@@ -120,7 +120,7 @@ func _ready():
 
 
 func _enter_tree():
-	_instances.append(self)
+	_instances.push_front(self)
 
 
 func _exit_tree():
@@ -145,7 +145,7 @@ Search for one in the Scene -> Add Node (Ctrl+A) menu or drag the scene from add
 	return arr
 
 
-## Creates a list of all inventory views on the scene.
+## Creates a list of all inventory views on the scene. Inventories created last are at the start of the list.
 static func get_instances() -> Array[InventoryView]:
 	return _instances.duplicate()
 
@@ -251,16 +251,29 @@ func _regenerate_view():
 
 
 ## Returns the in-inventory position of the cell clicked from global [code]pos[/code]. [br]
+## Providing an [ItemStack] returns the cell into which the item would be placed. [br]
 ## Returns [code](-1, -1)[/code] if no cell found.
-func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
+func global_position_to_cell(pos : Vector2, item : ItemStack = null) -> Vector2:
 	var xform := get_global_transform().affine_inverse()
 	if inventory is GridInventory:
 		if has_node(grid_background):
 			xform = get_node(grid_background).get_global_transform().affine_inverse()
 
-		return ((
-			(xform * pos) / cell_size
-		) - item.item_type.get_size_in_inventory() * 0.5).round()
+		var result_pos := Vector2()
+		if item != null:
+			result_pos = ((
+				(xform * pos) / cell_size
+			) - item.item_type.get_size_in_inventory() * 0.5).round()
+
+		else:
+			result_pos = (
+				(xform * pos) / cell_size
+			).floor()
+
+		if !inventory.has_cell(result_pos.x, result_pos.y):
+			return Vector2(-1, -1)
+
+		return result_pos
 
 	else:
 		var cells := $"Cells".get_children()
@@ -269,6 +282,26 @@ func global_position_to_cell(pos : Vector2, item : ItemStack) -> Vector2:
 				return Vector2(i, 0)
 
 		return Vector2(-1, -1)
+
+## Returns the [ItemStackView] in cell [code]x[/code]; returns [code]null[/code] if cell empty or out of bounds. [br]
+## Non-vector counterpart of [method get_item_view_at_positionv]. [br]
+## [b]Note:[/b] position uses inventory cell coordinates. To get them from a global position, use [method global_position_to_cell].
+func get_item_view_at_position(x : int, y : int = 0) -> ItemStackView:
+	var found_item := inventory.get_item_at_position(x, y)
+	if found_item == null:
+		return null
+
+	return _view_nodes[found_item.index_in_inventory]
+
+## Returns the [ItemStackView] in cell [code]pos[/code]; returns [code]null[/code] if cell empty or out of bounds. [br]
+## Vector counterpart of [method get_item_view_at_position]. [br]
+## [b]Note:[/b] position uses inventory cell coordinates. To get them from a global position, use [method global_position_to_cell].
+func get_item_view_at_positionv(pos : Vector2) -> ItemStackView:
+	var found_item := inventory.get_item_at_positionv(pos)
+	if found_item == null:
+		return null
+
+	return _view_nodes[found_item.index_in_inventory]
 
 
 func _redraw_item(node : Control, item_stack : ItemStack):

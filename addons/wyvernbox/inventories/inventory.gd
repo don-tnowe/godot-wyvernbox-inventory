@@ -109,6 +109,11 @@ func remove_item(item_stack : ItemStack):
 
 	item_stack_removed.emit(item_stack)
 
+## Removes all item stacks from this inventory.
+func clear():
+	for x in items.duplicate():
+		remove_item(x)
+
 ## Moves [code]item_stack[/code] to cell [code]pos[/code] in this inventory, removing it from its old inventory if needed.
 func move_item_to_pos(item_stack : ItemStack, pos : Vector2):
 	if item_stack.count == 0: return
@@ -411,9 +416,7 @@ func _compare_pos_sort(a : ItemStack, b : ItemStack):
 ## Loads contents from an array created via [code]to_array[/code].
 func load_from_array(array : Array):
 	var new_item : ItemStack
-	for x in items.duplicate():
-		remove_item(x)
-
+	clear()
 	for x in array:
 		new_item = ItemStack.new_from_dict(x)
 		if !has_cell(new_item.position_in_inventory.x, new_item.position_in_inventory.y):

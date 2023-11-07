@@ -68,14 +68,9 @@ func load_from_array(array : Array):
 		add_child(new_node)
 		new_node.skip_spawn_animation()
 
-		var new_stack := ItemStack.new(load(x["type"]), x["count"], x["extra"])
-		new_stack.name_with_affixes = x.get("name", [null])
+		var new_stack := ItemStack.new_from_dict(x)
 		new_node.item_stack = new_stack
-		if new_node is Node2D:
-			new_node.position = x["position"]
-
-		else:
-			new_node.position = x["position"]
+		new_node.position = x[&"position"]
 
 ## Returns all ground items as an array of dictionaries. Useful for serialization.
 func to_array():
@@ -85,11 +80,11 @@ func to_array():
 	for i in array.size():
 		var cur_stack : ItemStack = children[i].item_stack
 		array[i] = {
-			"type" : cur_stack.item_type.resource_path,
-			"count" : cur_stack.count,
-			"extra" : cur_stack.extra_properties,
-			"name" : cur_stack.name_with_affixes,
-			"position" : (children[i].position if (children[i] is Node2D) else children[i].position)
+			&"type" : cur_stack.item_type.resource_path,
+			&"count" : cur_stack.count,
+			&"extra" : cur_stack.extra_properties,
+			&"name" : [cur_stack.name_prefixes, cur_stack.name_override, cur_stack.name_suffixes],
+			&"position" : children[i].position,
 		}
 	
 	return array

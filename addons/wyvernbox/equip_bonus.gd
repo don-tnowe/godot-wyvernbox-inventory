@@ -57,11 +57,13 @@ func apply_to(stats_dict : Dictionary, level : int, multiplier : float = 1.0):
 	stats_dict[id] = stats_dict.get(id, 0.0) + get_value(level) * multiplier
 
 # Add the affix to an item's name array. If [code]only_if_empty[/code], only append if there's no affix at the same position.
-func append_affix(affixes_array : Array, only_if_empty : bool = false):
+func append_affix(item : ItemStack, only_if_empty : bool = false):
+	if only_if_empty || affix_position == 0:
+		item.set_name(affix, affix_position)
+		return
+
 	if affix_position < 0:
-		if !only_if_empty || affixes_array[0] == null:
-			affixes_array.insert(0, affix)
+		item.set_name(affix, -(item.name_prefixes.size() + 1))
 
 	else:
-		if !only_if_empty || affixes_array[-1] == null:
-			affixes_array.append(affix)
+		item.set_name(affix, item.name_suffixes.size() + 1)
