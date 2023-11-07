@@ -444,7 +444,7 @@ func to_array() -> Array:
 ## Writes inventory contents to file [code]filename[/code]. [br]
 ## Supply [code]extra_data[/code] to store more data - retrieve it by listening to [signal loaded_from_dictionary]. [br]
 ## Only [code]user://[/code] paths are supported.
-func save_state(filename : String, extra_data : Dictionary = {}):
+func save_state(filename : String, extra_data : Dictionary = {}, as_text : bool = true):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 
@@ -455,7 +455,11 @@ func save_state(filename : String, extra_data : Dictionary = {}):
 	var file = FileAccess.open(filename, FileAccess.WRITE)
 	var data = {"contents" : to_array()}
 	data.merge(extra_data)
-	file.store_var(data)
+	if as_text:
+		file.store_var(var_to_str(data))
+
+	else:
+		file.store_var(data)
 
 ## Loads inventory contents from file [code]filename[/code]. [br]
 ## Only [code]user://[/code] paths are supported.
@@ -467,6 +471,9 @@ func load_state(filename):
 	if file == null: return
 
 	var data = file.get_var()
+	if data is String:
+		data = str_to_var(data)
+
 	if data is Array:
 		load_from_array(data)
 

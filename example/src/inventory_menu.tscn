@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=27 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -9,7 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://t1f7781n680v" path="res://example/src/menu_tabs/shop_tab.tscn" id="7"]
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="8"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="9"]
+[ext_resource type="Resource" uid="uid://bd1ddeel6achx" path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" id="10_j5svr"]
 [ext_resource type="Script" path="res://example/src/inventory_menu.gd" id="11"]
+[ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="11_v8equ"]
 [ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="12"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="13"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="14"]
@@ -153,6 +155,15 @@ layout_mode = 2
 [node name="Shop" parent="CenterContainer/TabContainer" instance=ExtResource("7")]
 visible = false
 layout_mode = 2
+
+[node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="1"]
+sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
+
+[node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="1"]
+sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
+stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("10_j5svr"), ExtResource("11_v8equ")])
+stock_counts = Array[int]([1, 1])
+stock_restocks = Array[int]([3, 3])
 
 [node name="Stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false

@@ -232,7 +232,7 @@ func _on_Inventory_item_stack_added(item_stack : ItemStack):
 		var inventory = get_node(sell_reward_into_inventory).inventory
 		var reward = item_stack.extra_properties[&"price"]
 		for k in reward:
-			inventory.try_add_item(ItemStack.new(load(k), reward[k] * item_stack.count))
+			inventory.try_add_item(ItemStack.new(load(k) if k is String else k, reward[k] * item_stack.count))
 	
 	_put_up_for_sale(item_stack, get_node(vendor_inventory).inventory, -1)
 	_multiply_price_by_count(item_stack, false)

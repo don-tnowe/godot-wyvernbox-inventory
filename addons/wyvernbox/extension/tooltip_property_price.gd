@@ -32,7 +32,7 @@ func _show_price(item_stack):
 	var k_loaded  # Because for easier serialization, items are stored as paths
 	var multiplier = item_stack.count if !item_for_sale else 1
 	for k in price:
-		k_loaded = load(k)
+		k_loaded = load(k) if k is String else k
 		add_bbcode(
 			"\n[color=#"
 			+ k_loaded.default_properties.get(&"back_color", Color.WHITE).to_html()

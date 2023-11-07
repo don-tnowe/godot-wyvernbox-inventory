@@ -436,9 +436,10 @@ func _try_buy(stack : ItemStack):
 	var k_loaded
 	for k in price.keys():
 		# Stored inside items as paths. When deducting, must use objects
-		k_loaded = load(k)
-		price[k_loaded] = price[k] * stack.count
-		price.erase(k)
+		if k is String:
+			k_loaded = load(k)
+			price[k_loaded] = price[k] * stack.count
+			price.erase(k)
 
 	for x in inventories:
 		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
