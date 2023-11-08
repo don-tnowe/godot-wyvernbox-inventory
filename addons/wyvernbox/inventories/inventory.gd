@@ -50,6 +50,7 @@ func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
 	var item_type = stack.item_type
 	var count = stack.count
 	var maxcount = get_max_count(item_type)
+	if count == 0: return 0
 	while count > maxcount:
 		var deposited_overflow = try_add_item(stack.duplicate_with_count(maxcount))
 		count -= maxcount
@@ -108,6 +109,11 @@ func remove_item(item_stack : ItemStack):
 		items[i].index_in_inventory = i
 
 	item_stack_removed.emit(item_stack)
+
+## Removes all item stacks from this inventory.
+func clear():
+	for x in items.duplicate():
+		remove_item(x)
 
 ## Moves [code]item_stack[/code] to cell [code]pos[/code] in this inventory, removing it from its old inventory if needed.
 func move_item_to_pos(item_stack : ItemStack, pos : Vector2):
@@ -352,7 +358,7 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 ## Returns items ordered by cell position.
 func get_items_ordered():
 	var arr = items.duplicate()
-	arr.sort_custom(Callable(self, "_compare_pos_sort"))
+	arr.sort_custom(_compare_pos_sort)
 	return arr
 
 ## Returns position vectors of all free cells in the inventory.
@@ -411,9 +417,7 @@ func _compare_pos_sort(a : ItemStack, b : ItemStack):
 ## Loads contents from an array created via [code]to_array[/code].
 func load_from_array(array : Array):
 	var new_item : ItemStack
-	for x in items.duplicate():
-		remove_item(x)
-
+	clear()
 	for x in array:
 		new_item = ItemStack.new_from_dict(x)
 		if !has_cell(new_item.position_in_inventory.x, new_item.position_in_inventory.y):
@@ -441,7 +445,7 @@ func to_array() -> Array:
 ## Writes inventory contents to file [code]filename[/code]. [br]
 ## Supply [code]extra_data[/code] to store more data - retrieve it by listening to [signal loaded_from_dictionary]. [br]
 ## Only [code]user://[/code] paths are supported.
-func save_state(filename : String, extra_data : Dictionary = {}):
+func save_state(filename : String, extra_data : Dictionary = {}, as_text : bool = true):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 
@@ -452,7 +456,11 @@ func save_state(filename : String, extra_data : Dictionary = {}):
 	var file = FileAccess.open(filename, FileAccess.WRITE)
 	var data = {"contents" : to_array()}
 	data.merge(extra_data)
-	file.store_var(data)
+	if as_text:
+		file.store_var(var_to_str(data))
+
+	else:
+		file.store_var(data)
 
 ## Loads inventory contents from file [code]filename[/code]. [br]
 ## Only [code]user://[/code] paths are supported.
@@ -464,6 +472,9 @@ func load_state(filename):
 	if file == null: return
 
 	var data = file.get_var()
+	if data is String:
+		data = str_to_var(data)
+
 	if data is Array:
 		load_from_array(data)
 

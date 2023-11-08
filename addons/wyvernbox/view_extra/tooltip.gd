@@ -301,7 +301,8 @@ func _get_filter_to_apply() -> Array[ItemLike]:
 	if Input.is_action_pressed(compare_input) && item_stack.extra_properties.has(&"price"):
 		var price_items = item_stack.extra_properties[&"price"].keys()
 		for i in price_items.size():
-			price_items[i] = load(price_items[i])
+			if price_items[i] is String:
+				price_items[i] = load(price_items[i])
 
 		return [ItemPatternHighlightStack.new(price_items, [], item_stack)]
 
