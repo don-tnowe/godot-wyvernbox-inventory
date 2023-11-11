@@ -315,9 +315,9 @@ func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
 			
 	return true
 
-## Consumes items matching types and patterns inside [code]item_type_counts[/code]. [br]
+## Consumes items matching [code]item_type_counts[/code]. Keys of the dictionary must be [ItemType] and [ItemPattern] objects, and values must the the counts of each.[br]
 ## Returns all stacks consumed. [br]
-## Set [code]check_only[/code] to not actually consume items - this is useful to highlight stacks that would be affected, or show which items are not of sufficient amount. [br]
+## Set [code]check_only[/code] to not actually consume items - this is useful to check if the conversion can be done, to highlight stacks that would be affected, or show which items are not of sufficient amount. [br]
 ## Note: this method modifies the [code]item_type_counts[/code] dictionary. The resulting values will match the types/patterns that could not be fully fulfilled. [br]
 ## If [code]prepacked_reqs[/code] set, checks only items (not patterns!) in the keys. In most cases, it makes the method work faster.
 func consume_items(item_type_counts : Dictionary, check_only : bool = false, prepacked_reqs : Dictionary = {}) -> Array:

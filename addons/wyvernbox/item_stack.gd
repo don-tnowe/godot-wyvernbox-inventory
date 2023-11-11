@@ -18,7 +18,8 @@ var name_prefixes : Array = []
 ## Item's suffixes, [method get_name] shows them after the name itself. Can be locale strings.
 var name_suffixes : Array = []
 
-## How many item are in this stack. To set, prefer [Inventory.add_items_to_stack].
+## How many item are in this stack. To set, prefer [Inventory.add_items_to_stack]. [br]
+## [b]Warning:[/b] does not update the inventory's view. Call [method emit_changed] after changing this to update.
 var count := 1
 
 ## The stack's index in the [member Inventory.items] array of its inventory. Should not be set externally.
@@ -177,7 +178,11 @@ func get_rect() -> Rect2:
 ## Call after you change an [member extra_properties] that must update the item's in-inventory visuals.
 func emit_changed():
 	if inventory == null: return
-	inventory.item_stack_changed.emit(self, 0)
+	if count <= 0:
+		inventory.item_stack_removed.emit(self)
+
+	else:
+		inventory.item_stack_changed.emit(self, 0)
 
 ## Returns how many items would overflow above [code]maxcount[/code], if [code]added[/code] was to be added. [br]
 ## Static version of [code]get_overflow_if_added[/code].
