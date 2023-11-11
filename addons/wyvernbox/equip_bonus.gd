@@ -2,13 +2,13 @@ class_name EquipBonus
 extends Resource
 
 # The bonus's ID, stored in item's [member ItemStack.extra_properties] at "stats".
-@export var id := "health"
+@export var id := &"health"
 
 # The bonus's name. Can be a locale string.
-@export var name := "health"
+@export var name := &"health"
 
 # The bonus's description. Can be a locale string, or empty.
-@export var description := "health" # (String, MULTILINE)
+@export_multiline var description := "health"
 
 # The affix appended or prepended to the name. Can be a locale string.
 @export var affix := ""

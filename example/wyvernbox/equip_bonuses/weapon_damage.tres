@@ -1,18 +1,18 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" script_class="EquipBonus" load_steps=4 format=3 uid="uid://bbpa5pcdc3t82"]
 
-[ext_resource path="res://example/graphics/gradients/red1.tres" type="Texture2D" id=1]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_22.tres" type="Texture2D" id=2]
-[ext_resource path="res://addons/wyvernbox/equip_bonus.gd" type="Script" id=3]
+[ext_resource type="Texture2D" uid="uid://cgn3ge62o533w" path="res://example/graphics/gradients/red1.tres" id="1"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_22.tres" id="2"]
+[ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus.gd" id="3"]
 
 [resource]
-script = ExtResource( 3 )
-id = "weapon_damage"
+script = ExtResource("3")
+id = "weapon_damage+"
 name = "item_bonus_weapon_damage"
 description = "item_bonus_desc_weapon_damage"
 affix = "item_affix_weapon_damage"
 affix_position = -1
-texture = ExtResource( 2 )
-texture_back = ExtResource( 1 )
+texture = ExtResource("2")
+texture_back = ExtResource("1")
 max_level = 10
 bonus_init = 10.0
 bonus_linear = 5.0

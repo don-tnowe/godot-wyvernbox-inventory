@@ -25,8 +25,8 @@ default_properties_string = "{
 \"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 10
 },
 \"stats\": {
-\"weapon_damage\": 8.0,
-\"weapon_speed\": 0.8
+\"weapon_damage+\": 8.0,
+\"weapon_speed+\": 0.8
 }
 }"
 default_properties = {
@@ -36,7 +36,7 @@ default_properties = {
 "res://example/wyvernbox/item_types/consumable/coin_purple.tres": 10
 },
 "stats": {
-"weapon_damage": 8.0,
-"weapon_speed": 0.8
+"weapon_damage+": 8.0,
+"weapon_speed+": 0.8
 }
 }

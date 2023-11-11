@@ -226,13 +226,13 @@ func _update_mouse_selected_item():
 ## Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
 func drop_on_ground(stack : ItemStack, click_pos = null):
 	var node = get_node(drop_at_node)
-	var spawn_at_pos = node.global_position if node is Node2D else node.global_position
+	var spawn_at_pos = node.global_position
 	var throw_vec
 	if click_pos == null:
 		throw_vec = null
 
 	elif node is Node2D:
-		throw_vec = (node.get_viewport().canvas_transform.affine_inverse() * click_pos - spawn_at_pos).limit_length(drop_max_distance)
+		throw_vec = (node.get_canvas_transform().affine_inverse() * (get_canvas_transform() * click_pos) - spawn_at_pos).limit_length(drop_max_distance)
 
 	else:
 		var cam : Camera3D = get_node(drop_camera_3d)
@@ -278,11 +278,11 @@ func _drop_surface_input(event : InputEvent):
 
 	if event is InputEventMouseButton && grabbed_stack != null && !event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			drop_on_ground(grabbed_stack, event.global_position)
+			drop_on_ground(grabbed_stack, event.position)
 			_set_grabbed_stack(null)
 			
 		if event.button_index == MOUSE_BUTTON_RIGHT:
-			drop_on_ground(grabbed_stack.duplicate_with_count(1), event.global_position)
+			drop_on_ground(grabbed_stack.duplicate_with_count(1), event.position)
 			grabbed_stack.count -= 1
 			if grabbed_stack.count == 0:
 				_set_grabbed_stack(null)

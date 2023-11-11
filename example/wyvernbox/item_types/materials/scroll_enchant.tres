@@ -19,8 +19,14 @@ in_inventory_width = 1
 in_inventory_height = 2
 slot_flags = 1
 default_properties_string = "{
-\"back_color\": Color(0.67451, 0.270588, 0.972549, 1)
+\"back_color\": Color(0.67451, 0.270588, 0.972549, 1),
+\"price\": {
+\"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 3.0
+}
 }"
 default_properties = {
-"back_color": Color(0.67451, 0.270588, 0.972549, 1)
+"back_color": Color(0.67451, 0.270588, 0.972549, 1),
+"price": {
+"res://example/wyvernbox/item_types/consumable/coin_purple.tres": 3.0
+}
 }

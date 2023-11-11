@@ -33,8 +33,8 @@ corner_radius_bottom_left = 3
 
 [node name="Tooltip" type="MarginContainer" groups=["tooltip"]]
 custom_minimum_size = Vector2(160, 0)
-offset_right = 64.0
-offset_bottom = 56.0
+offset_right = 160.0
+offset_bottom = 76.0
 size_flags_horizontal = 5
 size_flags_vertical = 9
 mouse_filter = 2

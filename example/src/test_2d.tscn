@@ -101,9 +101,6 @@ position = Vector2(311, 159)
 script = ExtResource("18")
 autosave_file_path = "items/ground/area1.dat"
 item_scene = ExtResource("4")
-view_filter_patterns = null
-spawn_jump_length_range = null
-spawn_jump_upwards = null
 
 [node name="Loot" type="Node2D" parent="Gameplay/Node2D"]
 

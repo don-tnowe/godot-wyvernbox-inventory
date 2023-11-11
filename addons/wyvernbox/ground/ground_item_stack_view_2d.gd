@@ -19,6 +19,7 @@ var item_stack : ItemStack:
 	set = _set_stack
 
 var _jump_tween : Tween
+var _mouse_in_label := false
 
 
 func _set_filter_hidden(v : bool):
@@ -88,6 +89,7 @@ func _on_name_gui_input(event : InputEvent):
 		$"Label/Label".force_drag(0, null)
 
 	if event is InputEventMouseMotion:
+		_mouse_in_label = true
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			clicked.emit()
 		
@@ -101,14 +103,33 @@ func _on_name_gui_input(event : InputEvent):
 
 
 func _on_HoverRect_mouse_exited():
-	if !Input.is_action_pressed(&"inventory_less"):
-		set_label_visible(false)
-		var tt := InventoryTooltip.get_instance()
-		if is_instance_valid(tt):
-			tt._on_ground_item_released()
+	if Input.is_action_pressed(&"inventory_less"):
+		return
+
+	_mouse_in_label = false
+	await get_tree().process_frame
+	if _mouse_in_label:
+		_mouse_in_label = false
+		return
+
+	set_label_visible(false)
+	var tt := InventoryTooltip.get_instance()
+	if is_instance_valid(tt):
+		tt._on_ground_item_released()
 
 
 func _on_HoverRect_mouse_entered():
+	_mouse_in_label = true
 	if !filter_hidden && !$"Label/Label".visible:
 		set_label_visible(true)
 		$"Label".position = Vector2(0, -2)
+
+
+func _on_label_mouse_exited():
+	_mouse_in_label = false
+	await get_tree().process_frame
+	if _mouse_in_label:
+		_mouse_in_label = false
+		return
+
+	set_label_visible(false)

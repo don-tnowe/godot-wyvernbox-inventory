@@ -1,6 +1,57 @@
 extends InventoryTooltipProperty
 
-@export var item_bonus_locale_string := "item_bonus_%s"
+static var all_bonuses_dict := {}
+
+const item_bonus_locale_string := "item_bonus_%s"
+const item_bonus_paths := "res://example/wyvernbox/equip_bonuses/"
+const wyvernshield_suffixes := [43, 37, 36, 42, 38, 47, 94, 95]  # "+%$*&/^_"
+const wyvernshield_suffix_labels := ["{0}", "{0}%", "x{0}", "x{0}", "{0}", "{0}", "{0}", "{0}"]
+const wyvernshield_suffix_show_plus := [true, true, false, false, true, true, false, false]
+
+## Returns a formatted display of a stat with a value. [br]
+## If [code]use_rich[/code], you can specify colors for bonus (+), malus (-) and neutral (=0)
+static func get_stat_label(stat_with_suffix : String, values, use_rich : bool = false, hex_bonus : String = "858ffd", hex_malus : String = "ff6060", hex_neutral : String = "6a6a6a") -> String:
+	if !values is Array: values = [values]
+	var first := true
+	var stat_suffix_idx : int = wyvernshield_suffixes.find(stat_with_suffix.unicode_at(stat_with_suffix.length() - 1))
+	var line := ""
+	for i in values.size():
+		var value = values[i]
+		if use_rich:
+			line += ("%s[color=#%s]%s%s" % [
+				("" if first else "/"),
+				(hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus)),
+				("+" if value >= 0.0 && (stat_suffix_idx == -1 || wyvernshield_suffix_show_plus[stat_suffix_idx]) else ""),
+				value
+			])
+		first = false
+
+	if stat_suffix_idx != -1:
+		line = wyvernshield_suffix_labels[stat_suffix_idx].format([line])
+
+	var bonus_res : EquipBonus = null
+	if !all_bonuses_dict.has(stat_with_suffix):
+		bonus_res = load(item_bonus_paths.path_join(stat_with_suffix.left(stat_with_suffix.length() - 1) if stat_suffix_idx != -1 else stat_with_suffix) + ".tres")
+		all_bonuses_dict[stat_with_suffix] = bonus_res
+
+	else:
+		bonus_res = all_bonuses_dict[stat_with_suffix]
+
+	if bonus_res == null:
+		line += (
+			" "
+			+ TranslationServer.translate(item_bonus_locale_string % stat_with_suffix)
+			+ ("[/color]" if use_rich else "")
+		)
+
+	else:
+		line += (
+			" "
+			+ TranslationServer.translate(bonus_res.name)
+			+ ("[/color]" if use_rich else "")
+		)
+
+	return line
 
 
 func _display(item_stack):
@@ -10,28 +61,12 @@ func _display(item_stack):
 
 
 func _get_stats_bbcode(displayed_stats : Dictionary, hex_bonus : String, hex_neutral : String, hex_malus : String) -> String:
-	var first := true
 	var value := 0.0
-	var text := ""
+	var text : Array[String] = []
 	for k in displayed_stats:
-		first = true
-		for i in displayed_stats[k].size():
-			value = displayed_stats[k][i]
-			text += ("%s[color=#%s]%s%s" % [
-				("" if first else "/"),
-				(hex_bonus if value > 0.0 else (hex_neutral if value == -0.0 else hex_malus)),
-				("+" if value >= 0.0 else ""),
-				value
-			])
-			first = false
-		
-		text += (
-			" "
-			+ tr(item_bonus_locale_string % k)
-			+ "[/color]\n"
-		)
+		text.append(get_stat_label(k, displayed_stats[k], true, hex_bonus, hex_malus, hex_neutral))
 
-	return text
+	return "\n".join(text)
 
 
 func _show_equip_stats(item_stack : ItemStack):

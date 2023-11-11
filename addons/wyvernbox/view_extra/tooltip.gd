@@ -96,6 +96,7 @@ var last_func : Callable
 
 var _next_filter_to_apply : Array[ItemLike] = []
 var _ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
+var _first_displayed := false
 
 
 ## Return a reference to the tooltip node, if present on the scene.
@@ -105,7 +106,9 @@ static func get_instance() -> InventoryTooltip:
 
 func _enter_tree():
 	_instance = self
-	hide()
+	if Engine.is_editor_hint():
+		# If scene root, don't hide. Otherwise, must start hidden
+		visible = owner == null
 
 
 func _exit_tree():
@@ -249,13 +252,20 @@ static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) 
 
 
 func _update_rect(mouseover_node : Control):
+	size.y = 0
+	if !_first_displayed:
+		# I don't know why it starts being stretched to the entire screen height, but I need this workaround.
+		_first_displayed = true
+		await get_tree().process_frame
+
 	var left := mouseover_node.global_position.x + mouseover_node.size.x * 0.5 < get_viewport_rect().size.x * 0.5
-	size = Vector2.ZERO
+	var minsize := get_combined_minimum_size()
 	position = mouseover_node.global_position + Vector2(
-		(mouseover_node.size.x if left else -size.x),
-		(mouseover_node.size.y - size.y) * 0.5
+		(mouseover_node.size.x if left else -minsize.x),
+		(mouseover_node.size.y - minsize.y) * 0.5
 	)
-	position.y = clamp(position.y, 0,  get_viewport_rect().size.y - size.y)
+	position.y = clamp(position.y, 0,  get_viewport_rect().size.y - minsize.y)
+	size.y = 0
 
 
 func _input(event : InputEvent):

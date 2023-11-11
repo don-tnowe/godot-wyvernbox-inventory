@@ -1,18 +1,18 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" script_class="EquipBonus" load_steps=4 format=3 uid="uid://cuglsf8233a1f"]
 
-[ext_resource path="res://example/graphics/gradients/irid1.tres" type="Texture2D" id=1]
-[ext_resource path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_20.tres" type="Texture2D" id=2]
-[ext_resource path="res://addons/wyvernbox/equip_bonus.gd" type="Script" id=3]
+[ext_resource type="Texture2D" uid="uid://dp7qllrxy41ga" path="res://example/graphics/gradients/irid1.tres" id="1"]
+[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_20.tres" id="2"]
+[ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus.gd" id="3"]
 
 [resource]
-script = ExtResource( 3 )
-id = "resistance_lightning"
+script = ExtResource("3")
+id = "resistance_lightning+"
 name = "item_bonus_resistance_lightning"
 description = "item_bonus_desc_resistance_lightning"
 affix = "item_affix_resistance_lightning"
 affix_position = 1
-texture = ExtResource( 2 )
-texture_back = ExtResource( 1 )
+texture = ExtResource("2")
+texture_back = ExtResource("1")
 max_level = 10
 bonus_init = 10.0
 bonus_linear = 5.0
