@@ -16,21 +16,21 @@ func _ready():
 ## Sets the displayed stack. [br]
 ## [code]unit_size[/code] is the width of the inventory's cells. [br]
 ## [code]show_background[/code], if not disabled, will make this [ItemStackView] show the stack's "back_color" extra property as background.
-func update_stack(item_stack, unit_size, show_background = true):
-	stack = item_stack
-	if item_stack == null: return
+func update_stack(new_stack : ItemStack, unit_size : Vector2, show_background = true):
+	stack = new_stack
+	if new_stack == null: return
 
-	item_stack.display_texture($"%Texture")
-	$"%Texture".scale = Vector2.ONE * item_stack.item_type.texture_scale
-	size = unit_size * item_stack.item_type.get_size_in_inventory()
+	new_stack.display_texture($"%Texture")
+	$"%Texture".scale = Vector2.ONE * new_stack.item_type.texture_scale
+	size = unit_size * new_stack.item_type.get_size_in_inventory()
 
-	$"%Count".text = str(item_stack.count)
-	$"%Count".visible = item_stack.count != 1
+	$"%Count".text = str(new_stack.count)
+	$"%Count".visible = new_stack.count != 1
 
 	var back := get_node_or_null("%BackColor")
 	if back != null:
 		back.visible = show_background
-		back.self_modulate = item_stack.extra_properties.get(&"back_color", Color.TRANSPARENT)
+		back.self_modulate = new_stack.extra_properties.get(&"back_color", Color.TRANSPARENT)
 
 ## If [code]true[/code], shows the tooltip with this item. Otherwise, hides it.
 func tooltip_set_visible(status : bool):

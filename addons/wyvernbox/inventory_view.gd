@@ -506,9 +506,9 @@ func _grab_stack(stack_index : int):
 	var grabbed := GrabbedItemStackView.get_instance()
 	if !is_instance_valid(grabbed): return
 
-	if grabbed.grabbed_stack != null:
+	if grabbed.stack != null:
 		# With non-placeable invs, stack with the Grabbed stack instead of one in the inv.
-		var grabbed_stack := grabbed.grabbed_stack
+		var grabbed_stack := grabbed.stack
 		if interaction_mode & InteractionFlags.CAN_PLACE == 0:
 			if grabbed_stack.can_stack_with(stack):
 				var transferred := grabbed_stack.get_delta_if_added(stack.count)

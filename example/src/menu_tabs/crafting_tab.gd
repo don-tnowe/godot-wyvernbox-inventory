@@ -67,17 +67,17 @@ func _on_button_pressed(index : int):
 	var grabbed := GrabbedItemStackView.get_instance()
 
 	if just_put_it_into_my_hand && is_instance_valid(grabbed):
-		if grabbed.grabbed_stack == null:
+		if grabbed.stack == null:
 			grabbed.grab(output_stacks.pop_front())
 
-		elif grabbed.grabbed_stack.can_stack_with(output_stacks[0]):
+		elif grabbed.stack.can_stack_with(output_stacks[0]):
 			var out_count = output_stacks[0].count
-			output_stacks[0].count = grabbed.grabbed_stack.get_overflow_if_added(out_count)
-			grabbed.grabbed_stack.count += grabbed.grabbed_stack.get_delta_if_added(out_count)
+			output_stacks[0].count = grabbed.stack.get_overflow_if_added(out_count)
+			grabbed.stack.count += grabbed.stack.get_delta_if_added(out_count)
 			if output_stacks[0].count <= 0:
 				output_stacks.pop_front()
 
-			grabbed.grab(grabbed.grabbed_stack)
+			grabbed.grab(grabbed.stack)
 
 	for x in output_stacks:
 		var deposited_count = inv.try_add_item(x)

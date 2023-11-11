@@ -41,9 +41,13 @@ signal input_on_empty(event : InputEvent, grabbed_item : ItemStack)
 ## If item texture lags 1 frame behind the user's cursor, set this to [code]false[/code] to reduce the "floaty" feel.
 @export var hide_cursor := false
 
+## [b]Deprecated:[/b] use the [member ItemStackView.stack] property.
+var grabbed_stack : ItemStack:
+	set(v):
+		stack = v
 
-## The stack currently grabbed, to be released on click.
-var grabbed_stack : ItemStack
+	get:
+		return stack
 
 ## The [Control] that will trigger [method drop_on_ground] when clicked. Created automatically.
 var drop_surface_node : Control
@@ -103,6 +107,12 @@ func _ready():
 	hide()
 	_on_visibility_changed()
 
+## Sets the displayed stack.
+func update_stack(new_stack: ItemStack, unit_size: Vector2 = unit_size, show_background = false):
+	super(new_stack, unit_size, false)
+	drop_surface_node.visible = visible
+	visible = new_stack != null
+
 ## Grabs a stack, removing it from its inventory.
 func grab(item_stack : ItemStack):
 	if item_stack.inventory != null:
@@ -117,64 +127,50 @@ func grab(item_stack : ItemStack):
 	var tt := InventoryTooltip.get_instance()
 	if is_instance_valid(tt): tt.hide()
 
-	_set_grabbed_stack(item_stack)
+	update_stack(item_stack)
 	_move_to_mouse()
 	if hide_cursor:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 ## Adds items to the grabbed stack, updating its visual representation.
 func add_items_to_stack(delta : int):
-	grabbed_stack.count += delta
-	_set_grabbed_stack(grabbed_stack)
-
-
-func _set_grabbed_stack(item_stack : ItemStack):
-	grabbed_stack = item_stack
-	set_deferred("visible", item_stack != null)
-	if item_stack == null:
-		drop_surface_node.hide()
-		return
-
-	drop_surface_node.show()
-	visible = true
-	update_stack(item_stack, unit_size, false)
+	stack.count += delta
+	update_stack(stack)
 
 ## Drop the whole stack onto the first inventory under the cursor.
 func drop():
-	if grabbed_stack == null: return
-	_any_inventory_try_drop_stack(grabbed_stack)
-	update_stack(grabbed_stack, unit_size, false)
+	if stack == null: return
+	_any_inventory_try_drop_stack(stack)
+	update_stack(stack, unit_size, false)
 
 ## Drop one item from the stack onto the first inventory under the cursor.
 func drop_one():
 	## If you right-click before scene loads, APPARENTLY an error is thrown here.
-	if grabbed_stack == null: return
-	if grabbed_stack.count == 1:
-		_any_inventory_try_drop_stack(grabbed_stack)
-		update_stack(grabbed_stack, unit_size, false)
+	if stack == null: return
+	if stack.count == 1:
+		_any_inventory_try_drop_stack(stack)
+		update_stack(stack, unit_size, false)
 		return
 	
-	var one = grabbed_stack
-	var all_but_one = grabbed_stack.duplicate_with_count(grabbed_stack.count - 1)
-	grabbed_stack.count = 1
-	## Drop first. This function changes grabbed_stack to whatever's returned.
-	_any_inventory_try_drop_stack(grabbed_stack)
+	var one = stack
+	var all_but_one = stack.duplicate_with_count(stack.count - 1)
+	stack.count = 1
+	## Drop first. This function changes stack to whatever's returned.
+	_any_inventory_try_drop_stack(stack)
 
 	## If nothing was there, drop the 1 and keep holding the rest.
-	if grabbed_stack == null:
-		_set_grabbed_stack(all_but_one)
+	if stack == null:
+		stack = all_but_one
 	
 	## If the dropped 1 was returned (can't place), combine the stacks._add_random_item
-	elif grabbed_stack == one:
+	elif stack == one:
 		one.count += all_but_one.count
 
 	## If there was something in place, just drop all instead of 1.
 	else:
-		var grabbed = grabbed_stack
 		_any_inventory_try_drop_stack(all_but_one)
-		_set_grabbed_stack(grabbed)
 		
-	update_stack(grabbed_stack, unit_size, false)
+	update_stack(stack, unit_size, false)
 
 
 func _move_to_mouse():
@@ -198,7 +194,7 @@ func _any_inventory_try_drop_stack(stack : ItemStack):
 			if found_stack == null && hide_cursor:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			
-			_set_grabbed_stack(found_stack)
+			update_stack(found_stack)
 			return
 
 
@@ -254,7 +250,7 @@ func _input(event : InputEvent):
 	if is_instance_valid(selected_item_inventory):
 		item_input_cancelled = false
 		input_on_inventory.emit(
-			event, grabbed_stack, selected_item_inventory.get_item_view_at_positionv(selected_item_position)
+			event, stack, selected_item_inventory.get_item_view_at_positionv(selected_item_position)
 		)
 		if item_input_cancelled:
 			item_input_cancelled = false
@@ -271,24 +267,24 @@ func _input(event : InputEvent):
 
 func _drop_surface_input(event : InputEvent):
 	item_input_cancelled = false
-	input_on_empty.emit(event, grabbed_stack)
+	input_on_empty.emit(event, stack)
 	if item_input_cancelled:
 		item_input_cancelled = false
 		return
 
-	if event is InputEventMouseButton && grabbed_stack != null && !event.pressed:
+	if event is InputEventMouseButton && stack != null && !event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			drop_on_ground(grabbed_stack, event.position)
-			_set_grabbed_stack(null)
+			drop_on_ground(stack, event.position)
+			update_stack(null)
 			
 		if event.button_index == MOUSE_BUTTON_RIGHT:
-			drop_on_ground(grabbed_stack.duplicate_with_count(1), event.position)
-			grabbed_stack.count -= 1
-			if grabbed_stack.count == 0:
-				_set_grabbed_stack(null)
+			drop_on_ground(stack.duplicate_with_count(1), event.position)
+			stack.count -= 1
+			if stack.count == 0:
+				update_stack(null)
 
 			else:
-				_set_grabbed_stack(grabbed_stack)
+				update_stack(stack)
 
 
 func _on_visibility_changed():
@@ -301,6 +297,6 @@ func _on_visibility_changed():
 		v = parent.visible
 
 	set_process_input(v && visible)
-	if !v && grabbed_stack != null:
-		drop_on_ground(grabbed_stack, get_global_mouse_position())
-		_set_grabbed_stack(null)
+	if !v && stack != null:
+		drop_on_ground(stack, get_global_mouse_position())
+		update_stack(null)
