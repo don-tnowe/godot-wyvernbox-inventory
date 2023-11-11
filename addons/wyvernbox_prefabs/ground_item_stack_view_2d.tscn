@@ -317,10 +317,10 @@ shape = SubResource("3")
 disabled = true
 
 [node name="Anim" type="AnimationPlayer" parent="."]
-autoplay = "init"
 libraries = {
 "": SubResource("AnimationLibrary_12fv6")
 }
+autoplay = "init"
 
 [node name="HoverRect" type="Control" parent="."]
 layout_mode = 3
@@ -338,10 +338,10 @@ show_behind_parent = true
 visible = false
 offset_top = -21.0
 offset_bottom = -7.0
-mouse_filter = 1
 text = ""
 
 [connection signal="gui_input" from="HoverRect" to="." method="_on_name_gui_input"]
 [connection signal="mouse_entered" from="HoverRect" to="." method="_on_HoverRect_mouse_entered"]
 [connection signal="mouse_exited" from="HoverRect" to="." method="_on_HoverRect_mouse_exited"]
 [connection signal="gui_input" from="Label/Label" to="." method="_on_name_gui_input"]
+[connection signal="mouse_exited" from="Label/Label" to="." method="_on_label_mouse_exited"]

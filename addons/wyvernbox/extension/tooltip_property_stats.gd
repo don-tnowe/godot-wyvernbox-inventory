@@ -10,7 +10,7 @@ const wyvernshield_suffix_show_plus := [true, true, false, false, true, true, fa
 
 ## Returns a formatted display of a stat with a value. [br]
 ## If [code]use_rich[/code], you can specify colors for bonus (+), malus (-) and neutral (=0)
-static func get_stat_label(stat_with_suffix : String, values, use_rich : bool = false, hex_bonus : String = "858ffd", hex_neutral : String = "6a6a6a", hex_malus : String = "ff6060") -> String:
+static func get_stat_label(stat_with_suffix : String, values, use_rich : bool = false, hex_bonus : String = "858ffd", hex_malus : String = "ff6060", hex_neutral : String = "6a6a6a") -> String:
 	if !values is Array: values = [values]
 	var first := true
 	var stat_suffix_idx : int = wyvernshield_suffixes.find(stat_with_suffix.unicode_at(stat_with_suffix.length() - 1))
