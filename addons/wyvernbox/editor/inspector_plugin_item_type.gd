@@ -3,8 +3,8 @@ extends EditorInspectorPlugin
 const FLAG_VIEW_CELL_SIZE := Vector2(17, 17)
 const BUILTIN_EXTRAS := [
 	[&"back_color", "Color", Color.WHITE, "The color associated with the item.\nAffects ItemStackView's background, Tooltip title background, and GroundItemStackView glow."],
-	[&"price", "Dict[String path : int]", {}, "The items ([i]and their amounts[/i]) needed to buy the item from vendors or sell it.[br][b]Note:[/b] Can be an ItemType Resource from the project files, but internally, Wyvernbox stores prices as path strings."],
-	[&"stats", "Dict[StringName : float]", {}, "Flat stats added by the item."],
+	[&"price", "Dict[String path : int]", {}, "The items ([i]and their amounts[/i]) needed to buy the item from vendors or sell it.\n[b]Note:[/b] Can be an ItemType Resource from the project files, but internally, Wyvernbox stores prices as path strings."],
+	[&"stats", "Dict[StringName : float]", {}, "Stat bonuses added by the item. Recommended to append a character at the end to use with Wyvernshield's [b]set_suffixed()[/b] method:\n \"health+\" will add to the base value of health, \"health%\" to additive multiplier, \"health*\" to multiplicatively stacking multiplier"],
 	[&"name", "Array[String]", ["", null, ""], "Default name override. Includes all affixes. The null-value gets replaces by the default name."],
 	[&"custom_texture", "Variant", "res://", "Texture override.[br]- If String, loads from specified path.[br]- If Dictionary, loads it like an Image's [code]data[/code] property.[br]- If Array, displays each non-null element of the array on top of each other - see above."],
 	[&"texture_colors", "Array[Color]", [Color.WHITE], "Color overrides.[br]If no [code]custom_texture[/code], should be an array with one color. If [code]custom_texture[/code] is present and is an array, each item must match a color here."],

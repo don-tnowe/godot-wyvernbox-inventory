@@ -10,14 +10,14 @@
 [ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_26.tres" id="8"]
 [ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_4.tres" id="9"]
 [ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_15.tres" id="10"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/defense.tres" id="11"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" id="12"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" id="13"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" id="14"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" id="15"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" id="16"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" id="17"]
-[ext_resource type="Resource" path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" id="18"]
+[ext_resource type="Resource" uid="uid://8aroi58f1m7q" path="res://example/wyvernbox/equip_bonuses/defense.tres" id="11"]
+[ext_resource type="Resource" uid="uid://ceekyscfqxmct" path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" id="12"]
+[ext_resource type="Resource" uid="uid://ow3ooxrppuja" path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" id="13"]
+[ext_resource type="Resource" uid="uid://ctado0tbv8u75" path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" id="14"]
+[ext_resource type="Resource" uid="uid://bbpa5pcdc3t82" path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" id="15"]
+[ext_resource type="Resource" uid="uid://eo1p2kljsv6n" path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" id="16"]
+[ext_resource type="Resource" uid="uid://jsi7l5ly6yfq" path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" id="17"]
+[ext_resource type="Resource" uid="uid://c78dtcec4la61" path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" id="18"]
 [ext_resource type="PackedScene" uid="uid://buk5dqg0uoud3" path="res://addons/wyvernbox_prefabs/equip_bonus_view.tscn" id="19"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="20"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_body.tres" id="21"]
@@ -257,6 +257,10 @@ layout_mode = 2
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
 
 [editable path="Weapon/F"]
 [editable path="Weapon/L"]

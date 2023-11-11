@@ -1,17 +1,16 @@
 extends VBoxContainer
 
 @export var base_stats : Dictionary = {
-  "health" : 20.0,
-  "magic" : 0.0,
-  "weapon_speed" : 1.0,
-  "crit_power" : 150.0,
+  "health+" : 20.0,
+  "magic+" : 0.0,
+  "weapon_speed+" : 1.0,
+  "crit_power+" : 150.0,
 }
 @export var equip_inventory_view := NodePath("../Equip")
 
 @export_group("Fluff")
 @export var no_weapon_text := "Left Hook Right Hook Jab"
 @export var crit_stat_text := "Chance for x%s Damage:"
-@export var item_bonus_locale_string := "item_bonus_%s"
 
 var stats := {}
 var stats_per_item := {}
@@ -27,7 +26,7 @@ func _on_Equip_item_stack_removed(item_stack):
 
 
 func _on_Equip_item_stack_added(item_stack):
-	var item_stats = item_stack.extra_properties["stats"]
+	var item_stats = item_stack.extra_properties[&"stats"]
 	stats_per_item[item_stack.position_in_inventory] = item_stats
 	update_view()
 	
@@ -47,56 +46,53 @@ func update_view():
 func _update_stat_view():
 	_update_hpmp()
 	_update_weapon_stats()
-	_update_nullable($"OffDef/Off/HBoxContainer/W", "weapon_damage")
-	_update_nullable($"OffDef/Off/HBoxContainer/S", "spell_damage")
-	_update_nullable($"OffDef/Def/HBoxContainer/Def", "defense")
-	_update_nullable($"OffDef/Def/HBoxContainer/Dodge", "dodgerate")
+	_update_nullable($"OffDef/Off/HBoxContainer/W", "weapon_damage+")
+	_update_nullable($"OffDef/Off/HBoxContainer/S", "spell_damage+")
+	_update_nullable($"OffDef/Def/HBoxContainer/Def", "defense+")
+	_update_nullable($"OffDef/Def/HBoxContainer/Dodge", "dodgerate+")
 
 	var already_shown_stats = {
-		&"weapon_damage" : true,
-		&"weapon_speed" : true,
-		&"spell_damage" : true,
-		&"defense" : true,
-		&"dodgerate" : true,
-		&"health" : true,
-		&"magic" : true,
-		&"health_regen" : true,
-		&"magic_regen" : true,
-		&"crit_chance" : true,
-		&"crit_power" : true,
+		&"weapon_damage+" : true,
+		&"weapon_speed+" : true,
+		&"spell_damage+" : true,
+		&"defense+" : true,
+		&"dodgerate+" : true,
+		&"health+" : true,
+		&"magic+" : true,
+		&"health_regen+" : true,
+		&"magic_regen+" : true,
+		&"crit_chance+" : true,
+		&"crit_power+" : true,
 	}
 	var other_list : RichTextLabel = $"OtherStats"
 	other_list.clear()
 	var stats_sorted = stats.keys()
 	stats_sorted.sort()
+	var equip_bonus_tooltip : Script = load("res://addons/wyvernbox/extension/tooltip_property_stats.gd")
 	for k in stats_sorted:
 		if k in already_shown_stats:
 			continue
 		
-		other_list.append_text("[color=#858ffd]%.1f[/color] %s\n" % [
-			stats.get(k, 0.0),
-			tr(item_bonus_locale_string % k),
-		])
-
+		other_list.append_text(equip_bonus_tooltip.get_stat_label(k, floor(stats.get(k, 0.0) * 1000) * 0.001, true, "858ffd", "858ffd", "858ffd") + "\n")
 
 func _update_hpmp():
-	var health_str := str(stats.get(&"health", 0.0))
+	var health_str := str(stats.get(&"health+", 0.0))
 	$"Hpmp/Hp/Num".text = (
 		health_str + "/" + health_str  # TODO: replace with actual health
-		if stats.get(&"health_regen", 0.0) == 0 else
+		if stats.get(&"health_regen+", 0.0) == 0 else
 		"%s/%s (+%s/s)" % [
 		health_str,
 		health_str,
-		stats.get(&"health_regen", 0.0),
+		stats.get(&"health_regen+", 0.0),
 	])
-	var magic_str := str(stats.get(&"magic", 0.0))
+	var magic_str := str(stats.get(&"magic+", 0.0))
 	$"Hpmp/Mp/Num".text = (
 		magic_str + "/" + magic_str  # TODO: replace with actual magic energy
-		if stats.get(&"magic_regen", 0.0) == 0 else
+		if stats.get(&"magic_regen+", 0.0) == 0 else
 		"%s/%s (+%s/s)" % [
 		magic_str,
 		magic_str,
-		stats.get(&"magic_regen", 0.0),
+		stats.get(&"magic_regen+", 0.0),
 	])
 
 

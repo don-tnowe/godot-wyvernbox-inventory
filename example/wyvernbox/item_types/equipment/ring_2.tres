@@ -25,7 +25,7 @@ default_properties_string = "{
 \"res://example/wyvernbox/item_types/consumable/coin_purple.tres\": 10
 },
 \"stats\": {
-\"health\": 8.0
+\"health+\": 8.0
 }
 }"
 default_properties = {
@@ -35,6 +35,6 @@ default_properties = {
 "res://example/wyvernbox/item_types/consumable/coin_purple.tres": 10
 },
 "stats": {
-"health": 8.0
+"health+": 8.0
 }
 }
