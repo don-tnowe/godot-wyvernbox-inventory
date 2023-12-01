@@ -64,6 +64,8 @@ var item_input_cancelled := false
 
 static var _instance : GrabbedItemStackView
 
+var _last_input_non_pointer := false
+
 
 func _enter_tree():
 	_instance = self
@@ -103,6 +105,7 @@ func _ready():
 
 	drop_surface_node = new_node
 	visibility_changed.connect(_on_visibility_changed)
+	focus_entered.connect(_on_focus_entered)
 	add_to_group(&"grabbed_item")
 	hide()
 	_on_visibility_changed()
@@ -210,11 +213,18 @@ func _update_mouse_selected_item():
 		if !x.is_visible_in_tree():
 			continue
 		
-		found_pos =	x.global_position_to_cell(mouse_pos)
+		found_pos =	x.global_position_to_cell(mouse_pos, stack)
 		if found_pos != Vector2(-1, -1):
+			if selected_item_inventory != null:
+				selected_item_inventory.selected_cell = Vector2(-1, -1)
+
 			selected_item_inventory = x
 			selected_item_position = found_pos
+			x.selected_cell = found_pos
 			return
+
+	if selected_item_inventory != null:
+		selected_item_inventory.selected_cell = Vector2(-1, -1)
 
 	selected_item_inventory = null
 	selected_item_position = Vector2(-1, -1)
@@ -244,6 +254,7 @@ func drop_on_ground(stack : ItemStack, click_pos = null):
 
 func _input(event : InputEvent):
 	if event is InputEventMouseMotion:
+		_last_input_non_pointer = false
 		_move_to_mouse()
 		_update_mouse_selected_item()
 
@@ -263,6 +274,69 @@ func _input(event : InputEvent):
 
 		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
 			drop_one()
+
+
+func _gui_input(event : InputEvent):
+	if !event is InputEventMouse && event.is_pressed():
+		_last_input_non_pointer = true
+		var input_vec := Vector2(
+			event.get_action_strength(&"ui_right") - event.get_action_strength(&"ui_left"),
+			event.get_action_strength(&"ui_down") - event.get_action_strength(&"ui_up"),
+		)
+		if input_vec == Vector2.ZERO:
+			return
+
+		var inventory_res := selected_item_inventory.inventory
+		var formerly_selected := inventory_res.get_item_at_positionv(selected_item_position)
+		var formerly_selected_position := selected_item_position
+		selected_item_position += input_vec
+
+		if inventory_res.has_cell(selected_item_position.x, selected_item_position.y):
+			return
+
+		var container := get_node_or_null("Cells")
+		var new_focus : Control
+		if is_instance_valid(container):
+			new_focus = _item_grab_focus_neighbor(container.get_child(selected_item_position.x), input_vec, true)
+
+		elif is_instance_valid(formerly_selected):
+			new_focus = _item_grab_focus_neighbor(inventory_res._view_nodes[formerly_selected.index_in_inventory], input_vec)
+
+		else:
+			new_focus = _item_grab_focus_neighbor(inventory_res._selection_node, input_vec)
+
+		if !is_instance_valid(new_focus):
+			grab_focus()
+			selected_item_position = formerly_selected_position
+			selected_item_inventory.selected_cell = formerly_selected_position
+			position = (selected_item_inventory.get_canvas_transform() * selected_item_inventory.get_selected_rect()).get_center()
+
+
+func _item_grab_focus_neighbor(item : Control, direction : Vector2, items_only : bool = false) -> Control:
+	if !&"find_valid_focus_neighbor" in self:
+		# Check for 4.1, 4.0 compat - [method find_valid_focus_neighbor] wasn't exposed
+		return null
+
+	var focus_side := SIDE_LEFT
+	if direction.x > 0:
+		focus_side = SIDE_RIGHT
+
+	if direction.y > 0:
+		focus_side = SIDE_BOTTOM
+
+	if direction.y < 0:
+		focus_side = SIDE_TOP
+
+	var found_nb := item.find_valid_focus_neighbor(focus_side)
+	if is_instance_valid(found_nb):
+		if items_only && !found_nb is ItemStackView:
+			return null
+
+		position = found_nb.get_rect().get_center()
+		found_nb.grab_focus()
+		return found_nb
+
+	return null
 
 
 func _drop_surface_input(event : InputEvent):
@@ -300,3 +374,11 @@ func _on_visibility_changed():
 	if !v && stack != null:
 		drop_on_ground(stack, get_global_mouse_position())
 		update_stack(null)
+
+
+func _on_focus_entered():
+	# TODO
+	if !selected_item_inventory.inventory.has_cell(selected_item_position.x, selected_item_position.y):
+		selected_item_position = Vector2(0, 0)
+
+	pass
