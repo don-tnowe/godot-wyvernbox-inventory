@@ -17,8 +17,12 @@ func _ready():
 ## [code]unit_size[/code] is the width of the inventory's cells. [br]
 ## [code]show_background[/code], if not disabled, will make this [ItemStackView] show the stack's "back_color" extra property as background.
 func update_stack(new_stack : ItemStack, unit_size : Vector2, show_background = true):
+	if new_stack != null && new_stack.count <= 0:
+		new_stack = null
+
 	stack = new_stack
-	if new_stack == null: return
+	if new_stack == null:
+		return
 
 	new_stack.display_texture($"%Texture")
 	$"%Texture".scale = Vector2.ONE * new_stack.item_type.texture_scale

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dr5hmv204a1sj"]
+[gd_scene load_steps=19 format=3 uid="uid://dr5hmv204a1sj"]
 
 [ext_resource type="Script" path="res://example/src/menu_tabs/crafting_tab.gd" id="1"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_gtsdm"]
@@ -31,14 +31,6 @@ resource_name = "GridInventory"
 script = ExtResource("15_rhpox")
 height = 6
 width = 16
-
-[sub_resource type="Gradient" id="2"]
-
-[sub_resource type="GradientTexture2D" id="1"]
-gradient = SubResource("2")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(4.85, 0.5)
 
 [node name="Crafting" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 240)
@@ -82,14 +74,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 inventory = SubResource("Resource_oimt6")
 interaction_mode = 29
-
-[node name="Cells" type="GridContainer" parent="VBoxContainer/Output"]
-layout_mode = 2
-columns = 8
-
-[node name="Cell" parent="VBoxContainer/Output/Cells" instance=ExtResource("5")]
-layout_mode = 2
-texture = SubResource("1")
 
 [node name="Control" type="Control" parent="VBoxContainer"]
 layout_mode = 2

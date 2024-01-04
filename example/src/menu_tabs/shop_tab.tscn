@@ -52,11 +52,15 @@ interaction_mode = 7
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
+price_markup = 2.0
 apply_to_all_stock = ExtResource("1")
 stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("37"), ExtResource("22"), ExtResource("39"), ExtResource("40"), ExtResource("44"), ExtResource("43"), ExtResource("42"), ExtResource("41"), ExtResource("36"), ExtResource("38")])
 stock_counts = Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 stock_restocks = Array[int]([3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
 infinite_restocks = false
+remove_price_on_buy = false
+clear_sold_items_when_hidden = true
+free_buyback = true
 
 [node name="Consumables" type="MarginContainer" parent="TabContainer"]
 visible = false
@@ -72,9 +76,15 @@ interaction_mode = 7
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
-stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("2")])
-stock_counts = Array[int]([1])
-stock_restocks = Array[int]([3])
+price_markup = 2.0
+apply_to_all_stock = null
+stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("2"), null])
+stock_counts = Array[int]([1, 0])
+stock_restocks = Array[int]([3, 0])
+infinite_restocks = true
+remove_price_on_buy = false
+clear_sold_items_when_hidden = true
+free_buyback = true
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2

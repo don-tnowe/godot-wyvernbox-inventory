@@ -75,6 +75,7 @@ offset_left = 0.0
 offset_top = 6.0
 offset_right = 0.0
 offset_bottom = 6.0
+selected_item_empty_only = false
 autosave_file_path = "items/hero/equip.dat"
 
 [node name="Money" type="Control" parent="Control"]
@@ -106,6 +107,8 @@ anchor_bottom = 0.0
 offset_right = 30.0
 offset_bottom = 14.0
 size_flags_horizontal = 0
+focus_mode = 2
+mouse_filter = 0
 texture = SubResource("1")
 
 [node name="4" parent="Control/Money/Cells" instance=ExtResource("2")]
@@ -118,6 +121,8 @@ offset_top = 54.0
 offset_right = 30.0
 offset_bottom = 68.0
 size_flags_horizontal = 0
+focus_mode = 2
+mouse_filter = 0
 texture = SubResource("1")
 
 [node name="5" parent="Control/Money/Cells" instance=ExtResource("2")]
@@ -130,6 +135,8 @@ offset_top = 72.0
 offset_right = 30.0
 offset_bottom = 86.0
 size_flags_horizontal = 0
+focus_mode = 2
+mouse_filter = 0
 texture = SubResource("1")
 
 [node name="Potions" type="Control" parent="Control"]
@@ -158,26 +165,38 @@ columns = 2
 [node name="Cell" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell2" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell3" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell4" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell5" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell6" parent="Control/Potions/Cells" instance=ExtResource("2")]
 custom_minimum_size = Vector2(14, 26)
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Labels" type="Control" parent="Control"]
 anchors_preset = 0

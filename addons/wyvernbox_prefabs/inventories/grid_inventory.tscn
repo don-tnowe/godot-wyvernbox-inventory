@@ -34,11 +34,22 @@ size_flags_vertical = 6
 mouse_filter = 2
 script = ExtResource("1")
 inventory = SubResource("Resource_plmu5")
+contents = null
+init_contents = true
 item_scene = ExtResource("3")
+interaction_mode = 21
+auto_take_priority = 0
+cell_size = Vector2(14, 14)
 selected_item_style = ExtResource("4_e45g3")
-selected_item_empty_only = null
+selected_item_empty_only = false
 grid_background = NodePath("BG")
 grid_resize_cell = NodePath("SubViewport")
+show_backgrounds = true
+view_filter_color = Color(0.1, 0.15, 0.3, 0.75)
+view_filter_patterns = []
+autosave_file_path = ""
+autosave_intensity = 2
+save_extra_data = {}
 
 [node name="Border" type="NinePatchRect" parent="."]
 layout_mode = 2

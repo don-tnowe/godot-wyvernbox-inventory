@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=31 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -9,10 +9,13 @@
 [ext_resource type="PackedScene" uid="uid://t1f7781n680v" path="res://example/src/menu_tabs/shop_tab.tscn" id="7"]
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="8"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="9"]
+[ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="10_7begv"]
 [ext_resource type="Resource" uid="uid://bd1ddeel6achx" path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" id="10_j5svr"]
 [ext_resource type="Script" path="res://example/src/inventory_menu.gd" id="11"]
+[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="11_4e6cg"]
 [ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="11_v8equ"]
 [ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="12"]
+[ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="12_4t1c3"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="13"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="14"]
 [ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="16"]
@@ -122,7 +125,6 @@ size_flags_vertical = 1
 inventory = SubResource("Resource_dcpxd")
 interaction_mode = 29
 auto_take_priority = -32
-selected_item_empty_only = false
 autosave_file_path = "items/hero/main.dat"
 
 [node name="NameFilter" type="LineEdit" parent="Box"]
@@ -177,19 +179,43 @@ visible = false
 layout_mode = 2
 
 [node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="0"]
-selected_item_empty_only = false
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+script = ExtResource("10_7begv")
+item_scene = ExtResource("11_4e6cg")
+selected_item_style = ExtResource("12_4t1c3")
+grid_background = NodePath("BG")
+grid_resize_cell = NodePath("SubViewport")
 
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
+price_markup = 2.0
+remove_price_on_buy = false
+clear_sold_items_when_hidden = true
+free_buyback = true
 
 [node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="0"]
-selected_item_empty_only = false
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+script = ExtResource("10_7begv")
+item_scene = ExtResource("11_4e6cg")
+selected_item_style = ExtResource("12_4t1c3")
+grid_background = NodePath("BG")
+grid_resize_cell = NodePath("SubViewport")
 
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
+price_markup = 2.0
+apply_to_all_stock = null
 stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("10_j5svr"), ExtResource("11_v8equ")])
 stock_counts = Array[int]([1, 1])
 stock_restocks = Array[int]([3, 3])
+infinite_restocks = true
+remove_price_on_buy = false
+clear_sold_items_when_hidden = true
+free_buyback = true
 
 [node name="Stash" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
@@ -202,7 +228,6 @@ custom_minimum_size = Vector2(168, 168)
 layout_mode = 2
 size_flags_horizontal = 4
 inventory = SubResource("Resource_spve3")
-selected_item_empty_only = false
 autosave_file_path = "items/hero/stash1.dat"
 
 [node name="Label" type="Label" parent="CenterContainer/TabContainer/Stash"]
@@ -217,7 +242,6 @@ size_flags_horizontal = 4
 inventory = SubResource("Resource_yg5x8")
 contents = SubResource("13")
 interaction_mode = 5
-selected_item_empty_only = false
 view_filter_color = Color(0.101961, 0.14902, 0.301961, 0.74902)
 autosave_intensity = 0
 

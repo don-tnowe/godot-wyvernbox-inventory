@@ -3,7 +3,7 @@
 class_name GrabbedItemStackView
 extends ItemStackView
 
-## A node required for handling mouse input in [InventoryView]s.
+## A node required for handling any input in [InventoryView]s.
 
 ## Emitted before an input happens onto another item in an inventory, only while an item is being held. [br]
 ## [code]onto_item_view[/code]'s [member ItemStackView.stack] contains the [ItemStack] under the cursor, which in turn contains the inventory. [br]
@@ -41,19 +41,17 @@ signal input_on_empty(event : InputEvent, grabbed_item : ItemStack)
 ## If item texture lags 1 frame behind the user's cursor, set this to [code]false[/code] to reduce the "floaty" feel.
 @export var hide_cursor := false
 
-## [b]Deprecated:[/b] use the [member ItemStackView.stack] property.
-var grabbed_stack : ItemStack:
+## The currently grabbed stack - returns [code]null[/code] if none, or if no instances of this class exist.
+static var grabbed_stack : ItemStack:
 	set(v):
-		stack = v
-
+		if !is_instance_valid(_instance): return
+		_instance.stack = v
 	get:
-		return stack
+		if !is_instance_valid(_instance): return null
+		return _instance.stack
 
 ## The [Control] that will trigger [method drop_on_ground] when clicked. Created automatically.
 var drop_surface_node : Control
-
-## Cell position of the item under the cursor.
-var selected_item_position := Vector2(-1, -1)
 
 ## [InventoryView] of the item under the cursor.
 var selected_item_inventory : InventoryView
@@ -79,6 +77,31 @@ static func get_instance() -> GrabbedItemStackView:
 	return _instance
 
 
+static func select_cell(view : InventoryView, cell : Vector2, only_if_grabbed : bool = false):
+	if !is_instance_valid(_instance): return
+	if only_if_grabbed && _instance.stack == null: return
+	_instance.selected_item_inventory = view
+	view.selected_cell = cell
+
+	_instance.grab_focus()
+
+
+static func select_cell_nearest(view : InventoryView):
+	if !is_instance_valid(_instance): return
+	var former_selected := _instance.selected_item_inventory
+	var cell := Vector2(0, 0)
+	if is_instance_valid(former_selected):
+		# TODO
+		# var pos := former_selected.cell_position_to_global(former_selected.selected_cell)
+		# cell = view.get_nearest_cell_to_global_position(pos)
+		# cell = pos
+		pass
+
+	_instance.selected_item_inventory = view
+	view.selected_cell = cell
+	_instance.grab_focus()
+
+
 func _ready():
 	if get_parent() && !(has_node("%Texture") && has_node("%Count")):
 		var new_node : Node = load("res://addons/wyvernbox_prefabs/grabbed_item_stack_view.tscn").instantiate()
@@ -93,6 +116,13 @@ func _ready():
 			x.update_configuration_warnings()
 
 		return
+
+	focus_neighbor_left = "."
+	focus_neighbor_right = "."
+	focus_neighbor_top = "."
+	focus_neighbor_bottom = "."
+	focus_previous = "."
+	focus_next = "."
 
 	var new_node = Control.new()
 	new_node.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -115,6 +145,8 @@ func update_stack(new_stack: ItemStack, unit_size: Vector2 = unit_size, show_bac
 	super(new_stack, unit_size, false)
 	drop_surface_node.visible = visible
 	visible = new_stack != null
+	if !visible:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 ## Grabs a stack, removing it from its inventory.
 func grab(item_stack : ItemStack):
@@ -181,53 +213,17 @@ func _move_to_mouse():
 
 
 func _any_inventory_try_drop_stack(stack : ItemStack):
-	var found_stack : ItemStack
-	var invs := InventoryView.get_instances()
-	var invs_reversed := invs
-	for x in invs_reversed:
-		if !x.is_visible_in_tree():
-			continue
+	if !is_instance_valid(selected_item_inventory):
+		return
+
+	var found_stack = selected_item_inventory.try_place_stackv(stack, selected_item_inventory.selected_cell)
+	if found_stack != stack:
+		get_viewport().set_input_as_handled()
+		if found_stack == null && hide_cursor:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
-		var cpos = x.global_position_to_cell(get_global_mouse_position(), stack)
-		found_stack =	x.try_place_stackv(
-			stack, cpos
-		)
-		if found_stack != stack:
-			get_viewport().set_input_as_handled()
-			if found_stack == null && hide_cursor:
-				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			
-			update_stack(found_stack)
-			return
-
-
-func _update_mouse_selected_item():
-	var invs := InventoryView.get_instances()
-	var invs_reversed := invs
-	# Nodes initialized later are placed above (well, if nothing gets created after the initial scene load)
-	# So reversing the array has a higher chance of a correct order
-	# Which is why the get_instances() array pushes each new inventory to front
-	var mouse_pos := get_global_mouse_position()
-	var found_pos : Vector2
-	for x in invs_reversed:
-		if !x.is_visible_in_tree():
-			continue
-		
-		found_pos =	x.global_position_to_cell(mouse_pos, stack)
-		if found_pos != Vector2(-1, -1):
-			if selected_item_inventory != null:
-				selected_item_inventory.selected_cell = Vector2(-1, -1)
-
-			selected_item_inventory = x
-			selected_item_position = found_pos
-			x.selected_cell = found_pos
-			return
-
-	if selected_item_inventory != null:
-		selected_item_inventory.selected_cell = Vector2(-1, -1)
-
-	selected_item_inventory = null
-	selected_item_position = Vector2(-1, -1)
+		update_stack(found_stack)
+		return
 
 ## Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
 func drop_on_ground(stack : ItemStack, click_pos = null):
@@ -254,14 +250,19 @@ func drop_on_ground(stack : ItemStack, click_pos = null):
 
 func _input(event : InputEvent):
 	if event is InputEventMouseMotion:
+		# if stack != null && _last_input_non_pointer:
+			# Input.warp_mouse(get_viewport_transform().affine_inverse() * get_global_rect().get_center())
+			# if !hide_cursor:
+			# 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 		_last_input_non_pointer = false
+
 		_move_to_mouse()
-		_update_mouse_selected_item()
 
 	if is_instance_valid(selected_item_inventory):
 		item_input_cancelled = false
 		input_on_inventory.emit(
-			event, stack, selected_item_inventory.get_item_view_at_positionv(selected_item_position)
+			event, stack, selected_item_inventory.get_item_view_at_positionv(selected_item_inventory.selected_cell)
 		)
 		if item_input_cancelled:
 			item_input_cancelled = false
@@ -277,6 +278,9 @@ func _input(event : InputEvent):
 
 
 func _gui_input(event : InputEvent):
+	if event is InputEventMouse:
+		_last_input_non_pointer = false
+
 	if !event is InputEventMouse && event.is_pressed():
 		_last_input_non_pointer = true
 		var input_vec := Vector2(
@@ -286,34 +290,49 @@ func _gui_input(event : InputEvent):
 		if input_vec == Vector2.ZERO:
 			return
 
+		var selected_item_position := selected_item_inventory.selected_cell
 		var inventory_res := selected_item_inventory.inventory
 		var formerly_selected := inventory_res.get_item_at_positionv(selected_item_position)
 		var formerly_selected_position := selected_item_position
-		selected_item_position += input_vec
+		if selected_item_inventory.inventory is GridInventory:
+			selected_item_position += input_vec
+			var newly_selected := inventory_res.get_item_at_positionv(selected_item_position)
+			if stack == null:
+				while newly_selected == formerly_selected && newly_selected != null:
+					selected_item_position += input_vec
+					newly_selected = inventory_res.get_item_at_positionv(selected_item_position)
 
-		if inventory_res.has_cell(selected_item_position.x, selected_item_position.y):
+			if !inventory_res.has_cell(selected_item_position.x, selected_item_position.y):
+				selected_item_inventory.selection_out_of_bounds.emit(selected_item_position - input_vec, input_vec)
+
+			global_position = selected_item_inventory.cell_position_to_global(selected_item_position) - size
+			selected_item_inventory.selected_cell = selected_item_position
 			return
 
-		var container := get_node_or_null("Cells")
+		var container := selected_item_inventory.get_node_or_null("Cells")
 		var new_focus : Control
-		if is_instance_valid(container):
-			new_focus = _item_grab_focus_neighbor(container.get_child(selected_item_position.x), input_vec, true)
+		# if is_instance_valid(container):
+		# 	new_focus = _item_grab_focus_neighbor(container.get_child(selected_item_position.x), input_vec, true)
 
-		elif is_instance_valid(formerly_selected):
-			new_focus = _item_grab_focus_neighbor(inventory_res._view_nodes[formerly_selected.index_in_inventory], input_vec)
+		# elif is_instance_valid(formerly_selected):
+		# 	new_focus = _item_grab_focus_neighbor(selected_item_inventory._view_nodes[formerly_selected.index_in_inventory], input_vec)
 
-		else:
-			new_focus = _item_grab_focus_neighbor(inventory_res._selection_node, input_vec)
+		# else:
+		# 	new_focus = _item_grab_focus_neighbor(selected_item_inventory._selection_node, input_vec)
 
 		if !is_instance_valid(new_focus):
 			grab_focus()
 			selected_item_position = formerly_selected_position
 			selected_item_inventory.selected_cell = formerly_selected_position
-			position = (selected_item_inventory.get_canvas_transform() * selected_item_inventory.get_selected_rect()).get_center()
+			selected_item_inventory.selection_out_of_bounds.emit(formerly_selected_position, input_vec)
+			global_position = (selected_item_inventory.get_canvas_transform() * selected_item_inventory.get_selected_rect()).get_center()
+
+		elif container == new_focus.get_parent():
+			selected_item_inventory.selected_cell = selected_item_position
 
 
 func _item_grab_focus_neighbor(item : Control, direction : Vector2, items_only : bool = false) -> Control:
-	if !&"find_valid_focus_neighbor" in self:
+	if !has_method(&"find_valid_focus_neighbor"):
 		# Check for 4.1, 4.0 compat - [method find_valid_focus_neighbor] wasn't exposed
 		return null
 
@@ -378,7 +397,7 @@ func _on_visibility_changed():
 
 func _on_focus_entered():
 	# TODO
-	if !selected_item_inventory.inventory.has_cell(selected_item_position.x, selected_item_position.y):
-		selected_item_position = Vector2(0, 0)
+	# if !selected_item_inventory.inventory.has_cell(selected_item_position.x, selected_item_position.y):
+	# 	selected_item_position = Vector2(0, 0)
 
 	pass
