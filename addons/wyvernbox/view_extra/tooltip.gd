@@ -33,7 +33,7 @@ const TEX_SCALE := 0.5
 @export var nameplate_panel : StyleBox:
 	set(v):
 		nameplate_panel = v
-		if get_child_count() == 0: await ready
+		if !is_inside_tree(): await ready
 		if v != null:
 			$"%Title/..".add_theme_stylebox_override(&"panel", v)
 
@@ -44,7 +44,7 @@ const TEX_SCALE := 0.5
 @export var desc_panel : StyleBox:
 	set(v):
 		desc_panel = v
-		if get_child_count() == 0: await ready
+		if !is_inside_tree(): await ready
 		if v != null:
 			$"%Desc".add_theme_stylebox_override(&"normal", v)
 			$"%Desc".add_theme_stylebox_override(&"focus", v)
@@ -58,14 +58,12 @@ const TEX_SCALE := 0.5
 @export var back_panel : StyleBox:
 	set(v):
 		back_panel = v
-		if get_child_count() == 0: await ready
-		if has_node("Panel"):
-			# Check for the node first, breaks compatibility in case of reliance on it not existing
-			if v != null:
-				$"Panel".add_theme_stylebox_override(&"panel", v)
+		if !is_inside_tree(): await ready
+		if v != null:
+			add_theme_stylebox_override(&"panel", v)
 
-			else:
-				$"Panel".remove_theme_stylebox_override(&"panel")
+		else:
+			remove_theme_stylebox_override(&"panel")
 
 ## At [code]1.0[/code], the item's name will fully take the color from the [code]&"back_color"[/code] extra property.
 @export var back_color_name_tint := 0.1
@@ -159,12 +157,9 @@ func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_i
 	var item_back_color : Color = item_stack.extra_properties.get("back_color", Color.GRAY)
 	$"%Title/..".self_modulate = Color.WHITE.blend(Color(item_back_color, back_color_nameplate_tint))
 	$"%Title".self_modulate = Color.WHITE.blend(Color(item_back_color, back_color_name_tint))
-	
-	var bbcode_label = $"%Desc"
-	bbcode_label.text = "[center]"
 
-	var property_instance
-	var last_label = bbcode_label
+	var property_instance : InventoryTooltipProperty
+	var last_label : RichTextLabel = null
 	for x in property_scripts:
 		property_instance = x.new()
 		property_instance.tooltip = self

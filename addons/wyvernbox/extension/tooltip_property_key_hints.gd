@@ -4,7 +4,8 @@ const filter_label := "%s to highlight same items."
 const price_label := "%s+%s to highlight all requirements."
 
 
-func _display(item_stack):
+func _display(item_stack : ItemStack):
+	if !is_label_empty(): add_spacing(2.0, false)
 	add_bbcode("[color=#%s]" % tooltip.color_neutral.to_html())
 	add_bbcode(filter_label % [
 		tooltip.get_action_bbcode(tooltip.filter_input)

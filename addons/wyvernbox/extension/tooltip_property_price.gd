@@ -7,6 +7,7 @@ const owned_label := "(have %s)"
 
 func _display(item_stack : ItemStack):
 	if item_stack.extra_properties.has(&"price"):
+		if !is_label_empty(): add_spacing(2.0, false)
 		_show_price(item_stack)
 
 
@@ -26,7 +27,7 @@ func _show_price(item_stack : ItemStack):
 				x.inventory.count_all_items(owned_item_counts)
 
 		if item_stack.extra_properties.has(&"left_in_stock"):
-			add_bbcode(stock_label % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties[&"left_in_stock"]]) + "\n\n")
+			add_bbcode(stock_label % ("[color=#%s]%s[/color]" % [hex_malus, item_stack.extra_properties[&"left_in_stock"]]) + "\n")
 
 	add_bbcode(price_label)
 	# For easier serialization, items are stored as paths - load their resources.
@@ -47,5 +48,3 @@ func _show_price(item_stack : ItemStack):
 				hex_malus if owned_item_counts.get(k_loaded, 0) < price[k] else hex_neutral,
 				tr(owned_label) % owned_item_counts.get(k_loaded, 0)
 			])
-
-	add_bbcode("\n\n")

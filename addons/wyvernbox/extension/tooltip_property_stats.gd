@@ -56,7 +56,7 @@ static func get_stat_label(stat_with_suffix : String, values, use_rich : bool = 
 
 func _display(item_stack):
 	if item_stack.extra_properties.has(&"stats"):
-		add_bbcode("\n")
+		if !is_label_empty(): add_spacing(2.0, false)
 		_show_equip_stats(item_stack)
 
 
@@ -78,7 +78,7 @@ func _show_equip_stats(item_stack : ItemStack):
 	var displayed_stats := {}
 	for k in stats:
 		displayed_stats[k] = stats[k]
-	
+
 	if !Input.is_action_pressed(tooltip.compare_input):
 		for k in displayed_stats:
 			displayed_stats[k] = [displayed_stats[k]]

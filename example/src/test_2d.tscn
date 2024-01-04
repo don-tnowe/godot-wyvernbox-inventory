@@ -298,15 +298,9 @@ offset_right = 358.0
 offset_bottom = 52.0
 theme = ExtResource("17_6ufom")
 compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/Equip/Control/Equip")
-compare_input = &"inventory_more"
-filter_input = &"inventory_filter"
-clear_filter_mod_input = &"inventory_less"
-back_color_name_tint = 0.1
-back_color_nameplate_tint = 0.9
 color_bonus = Color(0.521569, 0.560784, 0.992157, 1)
 color_malus = Color(1, 0.376471, 0.376471, 1)
 color_neutral = Color(0.415686, 0.415686, 0.415686, 1)
-color_description = Color(1, 1, 1, 1)
 
 [connection signal="item_clicked" from="Gameplay/Node2D/Items" to="Gameplay/Node2D/Char" method="_on_items_item_clicked"]
 [connection signal="pressed" from="Gameplay/Node2D/Openable/Chest/Inventory/Control2/Button" to="Inventory/InventoryMenu/InworlnventoriesTutorial" method="popup"]
