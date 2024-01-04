@@ -111,6 +111,9 @@ const EQUIPMENT_FLAGS := (
 ## If not set, uses scene set in [GroundItemManager] with [member mesh] or [member texture].
 @export var custom_ground_prefab : PackedScene
 
+## Custom type-specific data stored in a [Resource] of any type.
+@export var custom_data : Resource
+
 ## The string representation of the type's [member default_properties].
 @export_multiline var default_properties_string : String:
 	set(v):
@@ -144,10 +147,10 @@ func get_size_in_inventory() -> Vector2:
 
 ## Returns [code]true[/code] if stack has the same type.
 ## For compatibility with [method ItemPattern.matches].
-func matches(stack) -> bool:
+func matches(stack : ItemStack) -> bool:
 	return stack.item_type == self
 
 ## Returns the value it contributes to an [ItemConversion]. Equals to the stack's [member ItemStack.count].
 ## For compatibility with [method ItemPattern.get_value].
-func get_value(stack) -> int:
+func get_value(stack : ItemStack) -> int:
 	return stack.count

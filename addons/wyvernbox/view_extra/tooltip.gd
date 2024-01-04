@@ -253,10 +253,11 @@ func _update_rect(mouseover_node : Control):
 		_first_displayed = true
 		await get_tree().process_frame
 
-	var left := mouseover_node.global_position.x + mouseover_node.size.x * 0.5 < get_viewport_rect().size.x * 0.5
+	var node_global_pos := mouseover_node.get_global_transform_with_canvas().origin
+	var left_half := node_global_pos.x + mouseover_node.size.x * 0.5 < get_viewport_rect().size.x * 0.5
 	var minsize := get_combined_minimum_size()
-	position = mouseover_node.global_position + Vector2(
-		(mouseover_node.size.x if left else -minsize.x),
+	position = node_global_pos + Vector2(
+		(mouseover_node.size.x if left_half else -size.x),
 		(mouseover_node.size.y - minsize.y) * 0.5
 	)
 	position.y = clamp(position.y, 0,  get_viewport_rect().size.y - minsize.y)

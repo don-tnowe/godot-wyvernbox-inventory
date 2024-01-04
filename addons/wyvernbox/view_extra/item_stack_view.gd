@@ -25,8 +25,9 @@ func update_stack(new_stack : ItemStack, unit_size : Vector2, show_background = 
 		return
 
 	new_stack.display_texture($"%Texture")
-	$"%Texture".scale = Vector2.ONE * new_stack.item_type.texture_scale
-	size = unit_size * new_stack.item_type.get_size_in_inventory()
+	var item_size := unit_size * new_stack.item_type.get_size_in_inventory()
+	$"%Texture".custom_minimum_size = item_size * new_stack.item_type.texture_scale
+	size = item_size
 
 	$"%Count".text = str(new_stack.count)
 	$"%Count".visible = new_stack.count != 1

@@ -19,7 +19,7 @@ var name_prefixes : Array = []
 var name_suffixes : Array = []
 
 ## How many item are in this stack. To set, prefer [Inventory.add_items_to_stack]. [br]
-## [b]Warning:[/b] does not update the inventory's view. Call [method emit_changed] after changing this to update.
+## [b]Warning:[/b] does not update the inventory's view. Call [method set_count_and_update] instead to update.
 var count := 1
 
 ## The stack's index in the [member Inventory.items] array of its inventory. Should not be set externally.
@@ -62,6 +62,10 @@ func duplicate_with_count(new_count : int):
 	)
 	new_stack.copy_name(self)
 	return new_stack
+
+## Sets the count of the item, also updating inventory views.
+func set_count_and_update(new_count : int):
+	inventory.add_items_to_stack(self, new_count - count)
 
 ## Returns how many items would overflow above [member max_stack_count], if [code]count_delta[/code] was to be added. [br]
 ## Returns 0 if everything fits.

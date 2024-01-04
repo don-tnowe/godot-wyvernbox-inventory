@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="2"]
 
 [node name="Item" instance=ExtResource("1")]
+mouse_filter = 2
 script = ExtResource("2")
 drop_at_node = NodePath("")
 drop_ground_item_manager = NodePath("")

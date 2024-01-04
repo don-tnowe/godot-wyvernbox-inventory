@@ -292,6 +292,7 @@ inventory layouts and extra nodes (like this ? button) can be used!"
 
 [node name="Tooltip" parent="Inventory" instance=ExtResource("19")]
 visible = false
+z_index = 2
 offset_left = 198.0
 offset_top = -23.0
 offset_right = 358.0

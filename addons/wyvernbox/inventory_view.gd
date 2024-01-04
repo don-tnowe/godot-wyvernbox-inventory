@@ -302,7 +302,7 @@ func _regenerate_view():
 		if has_node(grid_background):
 			get_node(grid_background).hide()
 
-		var cells = get_node_or_null("Cells")
+		var cells := get_node_or_null("Cells")
 		if cells == null:
 			cells = GridContainer.new()
 			cells.columns = 8
@@ -329,9 +329,9 @@ func _regenerate_view():
 			cells.get_child(cells.get_child_count() - 1).free()
 
 		while diff < 0:
-			var cell := cells.get_child(0).duplicate()
+			var cell := cells.get_child(0).duplicate(DUPLICATE_USE_INSTANTIATION)
 			diff += 1
-			cells.add_child(cell)
+			cells.add_child(cell, true)
 			cell.owner = owner if owner != null else self
 			_connect_cell(cell)
 
@@ -519,7 +519,7 @@ func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 		save_state()
 
 
-func _grab_stack(stack_index : int):
+func _grab_stack(stack_index : int, grab_count : int = 2147483648):
 	var stack : ItemStack = inventory.items[stack_index]
 	if interaction_mode & InteractionFlags.CAN_TAKE == 0:
 		# If configured as not takeable, emit the fail signal. (can register clicks on items)
@@ -561,6 +561,9 @@ func _grab_stack(stack_index : int):
 
 	# If nothing grabbed, just take the item (or not if can't afford)
 	else:
+		grab_count = minf(stack.count, grab_count)
+		var left_count := stack.count - grab_count
+		stack.count = grab_count
 		if !_try_buy(stack):
 			grab_attempted.emit(stack, false)
 			return
@@ -568,6 +571,12 @@ func _grab_stack(stack_index : int):
 		grab_attempted.emit(stack, true)
 		if !grabbed.visible:
 			grabbed.grab(stack)
+			if left_count > 0:
+				var left_placed := try_place_stackv(stack.duplicate_with_count(left_count), stack.position_in_inventory)
+				if left_placed != null:
+					# Failed to put other half back - just add it back to count.
+					# Can only ever have the same item type, so just add the count.
+					grabbed.add_items_to_stack(left_placed.count)
 
 
 func _try_buy(stack : ItemStack):
@@ -727,6 +736,10 @@ func _on_item_stack_mouse_exited(stack_view : ItemStackView):
 func _on_item_stack_gui_input(event : InputEvent, stack_view : ItemStackView):
 	item_stack_gui_input.emit(event, stack_view)
 	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
+			var stack := stack_view.stack
+			_grab_stack(stack.index_in_inventory, ceili(mini(stack.count, stack.item_type.max_stack_count) * 0.5))
+
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
 			if !Input.is_action_pressed(&"inventory_more"):
 				_grab_stack(stack_view.stack.index_in_inventory)

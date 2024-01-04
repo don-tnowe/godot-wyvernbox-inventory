@@ -330,7 +330,7 @@ func _add_cell_control(value, property_name, is_int = false, vec_component = -1)
 		return
 
 	var slider = EditorSpinSlider.new()
-	slider.step = 1.0 if is_int else 0.01
+	slider.step = 1.0 if is_int else 0.001
 	slider.allow_greater = true
 	slider.hide_slider = true
 	slider.max_value = 999999999.9

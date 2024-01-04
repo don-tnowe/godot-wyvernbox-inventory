@@ -2,18 +2,18 @@
 
 [ext_resource type="Script" path="res://addons/wyvernbox/view_extra/item_stack_view.gd" id="3"]
 
-[sub_resource type="Gradient" id="1"]
+[sub_resource type="Gradient" id="Gradient_wd551"]
 offsets = PackedFloat32Array(0.38983, 1)
 colors = PackedColorArray(0.395988, 0.410969, 0.570313, 0, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture2D" id="2"]
-gradient = SubResource("1")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kjert"]
+gradient = SubResource("Gradient_wd551")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 1.1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_vq3ob"]
-font_size = 12
+[sub_resource type="LabelSettings" id="LabelSettings_10pam"]
+font_size = 14
 outline_size = 4
 outline_color = Color(0, 0, 0, 0.752941)
 
@@ -39,11 +39,10 @@ offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = SubResource("2")
+texture = SubResource("GradientTexture2D_kjert")
 expand_mode = 1
 
 [node name="Crop" type="Control" parent="."]
-clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -64,22 +63,23 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 3
 
 [node name="Count" type="Label" parent="."]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = -13.0
-offset_right = -1.0
-offset_bottom = 5.0
-grow_horizontal = 2
+offset_left = -1.0
+offset_top = -16.0
+offset_right = 1.0
+offset_bottom = 7.0
+grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.498039)
-label_settings = SubResource("LabelSettings_vq3ob")
+label_settings = SubResource("LabelSettings_10pam")
 horizontal_alignment = 2
 vertical_alignment = 2
