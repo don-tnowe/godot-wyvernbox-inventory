@@ -554,17 +554,19 @@ func _try_buy(stack : ItemStack):
 	if (interaction_mode & InteractionFlags.VENDOR) == 0 || !stack.extra_properties.has(&"price"):
 		return true
 	
-	var price = stack.extra_properties[&"price"].duplicate()
-	var counts = {}
+	var price : Dictionary = stack.extra_properties[&"price"].duplicate()
+	var counts := {}
 	var inventories := InventoryView.get_instances()
 	inventories.sort_custom(_compare_inventory_priority)
 
-	var k_loaded
+	var k_loaded : Resource
+	# [InventoryVendor]s can sell stacks. In this case, price might be set for the whole stack, not per item in stack.
+	var count_multiplier := (1 if stack.extra_properties.has(&"for_sale") else stack.count)
 	for k in price.keys():
 		# Stored inside items as paths. When deducting, must use objects
 		if k is String:
 			k_loaded = load(k)
-			price[k_loaded] = price[k] * stack.count
+			price[k_loaded] = price[k] * count_multiplier
 			price.erase(k)
 
 	for x in inventories:
