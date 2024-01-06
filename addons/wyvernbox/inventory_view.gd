@@ -116,9 +116,13 @@ var selected_cell := Vector2(-1, -1):
 	set(v):
 		var grabbed := GrabbedItemStackView.get_instance()
 		var sel_rect := Rect2()
+		var formerly_selected := inventory.get_item_at_positionv(selected_cell)
 		if v == Vector2(-1, -1):
 			selected_cell = v
 			_selection_node.queue_redraw()
+			if formerly_selected != null:
+				_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
+
 			return
 
 		if inventory is GridInventory && GrabbedItemStackView.grabbed_stack != null:
@@ -134,9 +138,12 @@ var selected_cell := Vector2(-1, -1):
 		_selection_node.queue_redraw()
 
 		var newly_selected := inventory.get_item_at_positionv(v)
-		if newly_selected != null:
-			var new_index := newly_selected.index_in_inventory
-			_item_stack_selected(_view_nodes[new_index])
+		if formerly_selected != newly_selected:
+			if formerly_selected != null:
+				_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
+
+			if newly_selected != null:
+				_item_stack_selected(_view_nodes[newly_selected.index_in_inventory])
 
 		if !inventory.has_cell(v.x, v.y):
 			v = Vector2(-1, -1)
@@ -352,9 +359,6 @@ func _connect_cell(cell : Control):
 	cell.mouse_filter = Control.MOUSE_FILTER_STOP
 	cell.focus_entered.connect(func():
 		selected_cell = Vector2(cell.get_index(), 0)
-		var selected_item := inventory.get_item_at_position(selected_cell.x)
-		if selected_item != null:
-			_item_stack_selected(_view_nodes[selected_item.index_in_inventory])
 	)
 	cell.gui_input.connect(_on_cell_gui_input.bind(cell.get_index()))
 	cell.focus_exited.connect(func():
@@ -713,6 +717,11 @@ func _on_item_stack_mouse_entered(stack_view : ItemStackView):
 		cells_node.get_child(stack_view.stack.position_in_inventory.x).grab_focus()
 
 
+func _item_stack_deselected(stack_view : ItemStackView):
+	var stack_index := stack_view.stack.index_in_inventory
+	item_stack_deselected.emit(_view_nodes[stack_index])
+
+
 func _item_stack_selected(stack_view : ItemStackView):
 	var stack_index := stack_view.stack.index_in_inventory
 	item_stack_selected.emit(_view_nodes[stack_index])
@@ -729,7 +738,6 @@ func _on_item_stack_mouse_exited(stack_view : ItemStackView):
 	if _deselect_signal_interrupted:
 		return
 
-	item_stack_deselected.emit(stack_view)
 	selected_cell = Vector2(-1, -1)
 
 
