@@ -14,9 +14,25 @@ var name_with_affixes:
 ## Item's name override. If empty, uses type's string. Can be locale strings.
 var name_override := ""
 ## Item's prefixes, [method get_name] shows them before the name itself. Can be locale strings.
-var name_prefixes : Array = []
+var name_prefixes : Array:
+	set(v):
+		if v.size() == 0:
+			extra_properties.erase(&"name_prefixes")
+
+		else:
+			extra_properties[&"name_prefixes"] = v
+	get:
+		return extra_properties.get(&"name_prefixes", [])
 ## Item's suffixes, [method get_name] shows them after the name itself. Can be locale strings.
-var name_suffixes : Array = []
+var name_suffixes : Array:
+	set(v):
+		if v.size() == 0:
+			extra_properties.erase(&"name_suffixes")
+
+		else:
+			extra_properties[&"name_suffixes"] = v
+	get:
+		return extra_properties.get(&"name_suffixes", [])
 
 ## How many item are in this stack. To set, prefer [Inventory.add_items_to_stack]. [br]
 ## [b]Warning:[/b] does not update the inventory's view. Call [method set_count_and_update] instead to update.
@@ -121,20 +137,24 @@ func set_name(new_name : String, affix_pos : int = 0):
 		name_override = new_name
 
 	elif affix_pos < 0:
-		if name_prefixes.size() < -affix_pos:
-			name_prefixes.resize(-affix_pos)
-			for i in name_prefixes.size():
-				if name_prefixes[i] == null: name_prefixes[i] = ""
+		var name_prefixes_tmp := name_prefixes
+		if name_prefixes_tmp.size() < -affix_pos:
+			name_prefixes_tmp.resize(-affix_pos)
+			for i in name_prefixes_tmp.size():
+				if name_prefixes_tmp[i] == null: name_prefixes_tmp[i] = ""
 
-		name_prefixes[-affix_pos - 1] = new_name
+		name_prefixes_tmp[-affix_pos - 1] = new_name
+		name_prefixes = name_prefixes_tmp
 
 	else:
-		if name_suffixes.size() < affix_pos:
-			name_suffixes.resize(affix_pos)
-			for i in name_suffixes.size():
-				if name_suffixes[i] == null: name_suffixes[i] = ""
+		var name_suffixes_tmp := name_suffixes
+		if name_suffixes_tmp.size() < affix_pos:
+			name_suffixes_tmp.resize(affix_pos)
+			for i in name_suffixes_tmp.size():
+				if name_suffixes_tmp[i] == null: name_suffixes_tmp[i] = ""
 
-		name_suffixes[affix_pos - 1] = new_name
+		name_suffixes_tmp[affix_pos - 1] = new_name
+		name_suffixes = name_suffixes_tmp
 
 	emit_changed()
 

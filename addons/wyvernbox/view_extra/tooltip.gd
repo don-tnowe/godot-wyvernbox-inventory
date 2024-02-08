@@ -13,6 +13,9 @@ const TEX_SCALE := 0.5
 ## Inventory to compare stats to when [member compare_input] is held.
 @export var compare_to_inventory : NodePath
 
+## Register to be accessible through [method get_instance]. Only one InventoryTooltip can be accessible like this.
+@export var register_as_singleton := true
+
 ## List of [InventoryTooltipProperty] scripts to display items properties in this tooltip.
 @export var property_scripts : Array[Script]
 
@@ -103,7 +106,9 @@ static func get_instance() -> InventoryTooltip:
 
 
 func _enter_tree():
-	_instance = self
+	if register_as_singleton:
+		_instance = self
+
 	if Engine.is_editor_hint():
 		# If scene root, don't hide. Otherwise, must start hidden
 		visible = owner == null
@@ -140,18 +145,14 @@ func display_empty():
 	show()
 
 ## Displays an item's name and calls all [member property_scripts] display methods.[br]
-## [code]mouseover_node[/code] is the [Control] this tooltip must be placed next to.
-func display_item(item_stack : ItemStack, mouseover_node : Control, shown_from_inventory : bool = true):
+## [code]mouseover_node[/code] is the [Control] this tooltip will be automatically placed next to.
+func display_item(item_stack : ItemStack, mouseover_node : Control = null, shown_from_inventory : bool = true):
 	if shown_from_inventory:
 		_ground_item_state = 0
 	
 	else:
 		_ground_item_state = 1
 
-	if mouseover_node == null:
-		hide()
-		return
-	
 	display_empty()
 	$"%Title".text = item_stack.get_name()
 	var item_back_color : Color = item_stack.extra_properties.get("back_color", Color.GRAY)
@@ -248,6 +249,9 @@ static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) 
 
 func _update_rect(mouseover_node : Control):
 	size.y = 0
+	if mouseover_node == null:
+		return
+
 	if !_first_displayed:
 		# I don't know why it starts being stretched to the entire screen height, but I need this workaround.
 		_first_displayed = true
