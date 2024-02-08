@@ -2,12 +2,12 @@ extends Control
 
 @export var tab_icons : Array[Texture2D]
 
-@onready var main_inventory = $"Box/MainInventory".inventory
+@onready var main_inventory : Inventory = $"Box/MainInventory".inventory
 @onready var ui_inventory := $"CenterContainer/TabContainer/Inworld"
-@onready var tabs = ui_inventory.get_parent()
+@onready var tabs := ui_inventory.get_parent()
 
 
-var opened_container
+var opened_container : Control
 
 
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
 		tabs.set_tab_title(i, "")
 
 
-func open_inworld_inventory(inventory_view : InventoryView, inventory_name : String):
+func open_inworld_inventory(inventory_view : Control, inventory_name : String):
 	if opened_container != null:
 		close_inworld_inventory(opened_container)
 
@@ -36,10 +36,18 @@ func open_inworld_inventory(inventory_view : InventoryView, inventory_name : Str
 	show()
 
 
-func close_inworld_inventory(inventory_view : InventoryView):
+func close_inworld_inventory(inventory_view : Control):
 	if opened_container != inventory_view: return
 
-	inventory_view.save_state()
+	if inventory_view is InventoryView:
+		inventory_view.save_state()
+
+	else:
+		for x in inventory_view.get_children():
+			if x is InventoryView:
+				x.save_state()
+				break
+
 	tabs.set_tab_hidden(0, true)
 	if tabs.current_tab == 0:
 		tabs.current_tab = 1

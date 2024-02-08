@@ -12,12 +12,12 @@ script = ExtResource("4")
 height = 8
 width = 8
 
-[sub_resource type="Gradient" id="11"]
+[sub_resource type="Gradient" id="Gradient_c0yux"]
 offsets = PackedFloat32Array(0, 0.66)
 colors = PackedColorArray(0.464844, 0.464844, 0.464844, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="12"]
-gradient = SubResource("11")
+gradient = SubResource("Gradient_c0yux")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)

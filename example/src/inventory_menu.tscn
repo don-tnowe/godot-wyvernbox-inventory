@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=27 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -13,7 +13,6 @@
 [ext_resource type="Script" path="res://example/src/inventory_menu.gd" id="11"]
 [ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="11_v8equ"]
 [ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="12"]
-[ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="12_4t1c3"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="13"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="14"]
 [ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="16"]
@@ -40,12 +39,12 @@ script = ExtResource("14")
 height = 18
 width = 18
 
-[sub_resource type="Gradient" id="11"]
+[sub_resource type="Gradient" id="Gradient_qbsss"]
 offsets = PackedFloat32Array(0, 0.66)
 colors = PackedColorArray(0.464844, 0.464844, 0.464844, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="12"]
-gradient = SubResource("11")
+gradient = SubResource("Gradient_qbsss")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 2)
@@ -106,7 +105,6 @@ size_flags_vertical = 1
 inventory = SubResource("Resource_dcpxd")
 interaction_mode = 29
 auto_take_priority = -32
-selected_item_style = ExtResource("12_4t1c3")
 autosave_file_path = "items/hero/main.dat"
 
 [node name="NameFilter" type="LineEdit" parent="Box"]
@@ -159,14 +157,12 @@ layout_mode = 2
 
 [node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="0"]
 mouse_filter = 2
-selected_item_style = ExtResource("12_4t1c3")
 
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
 
 [node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="0"]
 mouse_filter = 2
-selected_item_style = ExtResource("12_4t1c3")
 
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
@@ -185,7 +181,6 @@ custom_minimum_size = Vector2(168, 168)
 layout_mode = 2
 size_flags_horizontal = 4
 inventory = SubResource("Resource_spve3")
-selected_item_style = ExtResource("12_4t1c3")
 autosave_file_path = "items/hero/stash1.dat"
 
 [node name="Label" type="Label" parent="CenterContainer/TabContainer/Stash"]
@@ -200,7 +195,6 @@ size_flags_horizontal = 4
 inventory = SubResource("Resource_yg5x8")
 contents = SubResource("13")
 interaction_mode = 5
-selected_item_style = ExtResource("12_4t1c3")
 view_filter_color = Color(0.101961, 0.14902, 0.301961, 0.74902)
 autosave_intensity = 0
 

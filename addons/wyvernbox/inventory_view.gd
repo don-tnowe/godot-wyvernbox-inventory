@@ -35,7 +35,7 @@ signal item_stack_deselected(item_view : ItemStackView)
 ## Emitted when keyboard or controller input makes the selection go out of bounds.[br]
 signal selection_out_of_bounds(old_cell : Vector2, direction : Vector2)
 
-## The [Inventory] this node displays.
+## The [Inventory] this node displays. Can be assigned at runtime - will update the displayed contents.
 @export var inventory : Inventory:
 	set = _set_inventory
 
@@ -357,13 +357,15 @@ func _connect_cell(cell : Control):
 
 	cell.focus_mode = Control.FOCUS_ALL
 	cell.mouse_filter = Control.MOUSE_FILTER_STOP
-	cell.focus_entered.connect(func():
+	var enter_handler := func():
 		selected_cell = Vector2(cell.get_index(), 0)
-	)
-	cell.gui_input.connect(_on_cell_gui_input.bind(cell.get_index()))
-	cell.focus_exited.connect(func():
+	var exit_handler := func():
 		selected_cell = Vector2(-1, -1)
-	)
+	cell.focus_entered.connect(enter_handler)
+	cell.mouse_entered.connect(enter_handler)
+	cell.mouse_exited.connect(exit_handler)
+	cell.focus_exited.connect(exit_handler)
+	cell.gui_input.connect(_on_cell_gui_input.bind(cell.get_index()))
 
 ## Returns the in-inventory position of the cell clicked from global [code]pos[/code]. [br]
 ## Providing an [ItemStack] returns the cell into which the item would be placed. [br]
@@ -515,6 +517,9 @@ func _on_item_stack_removed(item_stack : ItemStack):
 
 
 func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
+	if inventory.get_item_at_positionv(item_stack.position_in_inventory) != item_stack:
+		return
+
 	var node = _view_nodes[item_stack.index_in_inventory]
 	_redraw_item(node, item_stack)
 	item_stack_changed.emit(item_stack, count_delta)

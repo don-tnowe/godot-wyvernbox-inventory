@@ -52,7 +52,7 @@ func _on_ItemPickup_area_entered(area : Area2D):
 		area.try_pickup(get_node(inventory_menu).main_inventory)
 
 
-func _on_inworld_inv_button_pressed(inventory_view, inventory_name):
+func _on_inworld_inv_button_pressed(inventory_view : Control, inventory_name : String):
 		get_node(inventory_menu).open_inworld_inventory(inventory_view, inventory_name)
 
 
