@@ -17,7 +17,12 @@ const TEX_SCALE := 0.5
 @export var register_as_singleton := true
 
 ## List of [InventoryTooltipProperty] scripts to display items properties in this tooltip.
-@export var property_scripts : Array[Script]
+@export var property_scripts : Array[Script]:
+	set(v):
+		property_scripts = v
+		_property_script_instances.clear()
+		for x in v:
+			_property_script_instances.append(x.new())
 
 @export_group("Input Actions")
 
@@ -98,6 +103,7 @@ var last_func : Callable
 var _next_filter_to_apply : Array[ItemLike] = []
 var _ground_item_state := 0  # 0 for none, 1 for hovering, 2 for released
 var _first_displayed := false
+var _property_script_instances : Array[InventoryTooltipProperty]
 
 
 ## Return a reference to the tooltip node, if present on the scene.
@@ -159,14 +165,12 @@ func display_item(item_stack : ItemStack, mouseover_node : Control = null, shown
 	$"%Title/..".self_modulate = Color.WHITE.blend(Color(item_back_color, back_color_nameplate_tint))
 	$"%Title".self_modulate = Color.WHITE.blend(Color(item_back_color, back_color_name_tint))
 
-	var property_instance : InventoryTooltipProperty
 	var last_label : RichTextLabel = null
-	for x in property_scripts:
-		property_instance = x.new()
-		property_instance.tooltip = self
-		property_instance._tooltip_last_label = last_label
-		property_instance._display(item_stack)
-		last_label = property_instance._tooltip_last_label
+	for x in _property_script_instances:
+		x.tooltip = self
+		x._tooltip_last_label = last_label
+		x._display(item_stack)
+		last_label = x._tooltip_last_label
 
 	_update_rect(mouseover_node)
 	last_func = display_item.bind(item_stack, mouseover_node, shown_from_inventory)
