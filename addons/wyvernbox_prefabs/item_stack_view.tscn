@@ -66,6 +66,7 @@ expand_mode = 1
 
 [node name="Count" type="Label" parent="."]
 unique_name_in_owner = true
+show_behind_parent = true
 z_index = 1
 layout_mode = 1
 anchors_preset = 3

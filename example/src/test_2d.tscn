@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dfwlhkhfag51y"]
+[gd_scene load_steps=24 format=3 uid="uid://dfwlhkhfag51y"]
 
 [ext_resource type="PackedScene" uid="uid://dsoiq0u4jfsqb" path="res://example/src/inventory_menu.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://coca3cj5aa8qc" path="res://example/src/world/char.tscn" id="3"]
@@ -12,11 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://cj8xupbmut288" path="res://example/src/world/inworld_container2d.tscn" id="11"]
 [ext_resource type="PackedScene" uid="uid://bqu2js8tntbjn" path="res://example/src/world/touch_dropper.tscn" id="12"]
 [ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="13"]
-[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="17"]
+[ext_resource type="PackedScene" uid="uid://boij7wcxmvnq7" path="res://addons/wyvernbox_prefabs/grabbed_item_stack_view.tscn" id="14_j0ghj"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="17_6ufom"]
 [ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_items_manager.gd" id="18"]
 [ext_resource type="PackedScene" uid="uid://cqa45c6lfsffv" path="res://addons/wyvernbox_prefabs/tooltip.tscn" id="19"]
-[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="20"]
 
 [sub_resource type="Gradient" id="2"]
 colors = PackedColorArray(0.09375, 0.0308418, 0.00622559, 1, 0.738281, 0.64915, 0.242249, 1)
@@ -264,23 +263,9 @@ text = "(Hold Alt to highlight items)"
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource("1")]
 visible = false
 
-[node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("17")]
-visible = false
-z_index = 1
-offset_left = 220.787
-offset_top = 69.0519
-offset_right = 220.787
-offset_bottom = 69.0519
-scale = Vector2(1.5, 1.5)
-mouse_filter = 2
-script = ExtResource("20")
+[node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("14_j0ghj")]
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
-drop_max_distance = 256.0
-drop_camera_3d = NodePath("")
-drop_ray_mask = 1
-unit_size = Vector2(14, 14)
-hide_cursor = false
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.
@@ -292,7 +277,6 @@ inventory layouts and extra nodes (like this ? button) can be used!"
 
 [node name="Tooltip" parent="Inventory" instance=ExtResource("19")]
 visible = false
-z_index = 2
 offset_left = 198.0
 offset_top = -23.0
 offset_right = 358.0

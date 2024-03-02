@@ -237,12 +237,14 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 	var arr : Array[String] = []
 	if !is_instance_valid(InventoryTooltip.get_instance()):
-		arr.append("""To allow viewing of item descriptions and properties, add an InventoryTooltip object.
+		arr.append("""To allow viewing of item descriptions and properties, add an InventoryTooltip object and enable register_as_singleton.
+Only one per game scene should exist - not one for each inventory!
 Search for one in the Scene -> Add Node (Ctrl+A) menu or drag the scene from addons/wyvernbox_prefabs."""
 		)
 
 	if !is_instance_valid(GrabbedItemStackView.get_instance()):
 		arr.append("""To allow moving items using the mouse cursor, add a GrabbedItemStackView object.
+Only one per game scene should exist - not one for each inventory!
 Search for one in the Scene -> Add Node (Ctrl+A) menu or drag the scene from addons/wyvernbox_prefabs."""
 		)
 

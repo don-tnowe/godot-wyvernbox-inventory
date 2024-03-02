@@ -307,13 +307,18 @@ static func arrays_equal(a : Array, b : Array) -> bool:
 
 # Creates a new [ItemStack] from a dictionary obtained via [method to_dict].
 static func new_from_dict(dict : Dictionary) -> ItemStack:
-	var new_item = ItemStack.new(
+	var new_item := ItemStack.new(
 		load(dict[&"type"]),
 		dict[&"count"],
 		dict[&"extra"],
 	)
 	new_item.set_name_from_serialized(dict.get(&"name", ""))
-	new_item.position_in_inventory = dict.get(&"position", Vector2(-1, -1))
+	var new_position = dict.get(&"position", Vector2(-1, -1))
+	if new_position is Vector3:
+		# Can happen if loaded from GroundItemManager.
+		new_position = Vector2(-1, -1)
+
+	new_item.position_in_inventory = new_position
 	return new_item
 
 # Returns a dictionary representation of this [ItemStack]. Useful for serialization.
@@ -322,7 +327,7 @@ func to_dict():
 		&"type" : item_type.resource_path,
 		&"count" : count,
 		&"extra" : extra_properties,
-		&"name" : [name_prefixes, name_override, name_suffixes],
+		&"name" : name_override,
 		&"position" : position_in_inventory,
 	}
 

@@ -1,9 +1,7 @@
-[gd_scene load_steps=33 format=3 uid="uid://blxmwn4jq2mot"]
+[gd_scene load_steps=32 format=3 uid="uid://blxmwn4jq2mot"]
 
 [ext_resource type="PackedScene" uid="uid://dsoiq0u4jfsqb" path="res://example/src/inventory_menu.tscn" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://cqa45c6lfsffv" path="res://addons/wyvernbox_prefabs/tooltip.tscn" id="3"]
-[ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="4"]
 [ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_items_manager.gd" id="5"]
 [ext_resource type="PackedScene" uid="uid://e8rkhrvavj7l" path="res://example/src/world/inworld_container.tscn" id="6"]
 [ext_resource type="Script" path="res://example/src/test_3d_char.gd" id="7"]
@@ -14,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="12"]
 [ext_resource type="Resource" uid="uid://bc5mn5etsfr76" path="res://example/wyvernbox/item_generators/random_enchanted_equip.tres" id="13"]
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="14"]
+[ext_resource type="PackedScene" uid="uid://boij7wcxmvnq7" path="res://addons/wyvernbox_prefabs/grabbed_item_stack_view.tscn" id="14_ucbti"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="15"]
 [ext_resource type="Script" path="res://example/src/world/touch_dropper.gd" id="16"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="17_ici5q"]
@@ -69,7 +68,7 @@ spread_distance = 4.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_eqmra"]
+[sub_resource type="Resource" id="Resource_vp2fs"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -89,7 +88,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_jvtmb"]
+[sub_resource type="Resource" id="Resource_uf5ui"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -263,7 +262,7 @@ offset_left = -313.0
 offset_top = -39.0
 offset_right = -201.0
 offset_bottom = 129.0
-inventory = SubResource("Resource_eqmra")
+inventory = SubResource("Resource_vp2fs")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
@@ -292,7 +291,7 @@ offset_left = -201.0
 offset_top = 20.0
 offset_right = -89.0
 offset_bottom = 188.0
-inventory = SubResource("Resource_jvtmb")
+inventory = SubResource("Resource_uf5ui")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
@@ -348,22 +347,10 @@ text = "(Hold Alt to highlight items)"
 
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource("1")]
 
-[node name="GrabbedItem" parent="Inventory/InventoryMenu" groups=["grabbed_item"] instance=ExtResource("4")]
-visible = false
-offset_left = 220.787
-offset_top = 69.0519
-offset_right = 220.787
-offset_bottom = 69.0519
-scale = Vector2(1.5, 1.5)
-mouse_filter = 2
-script = ExtResource("2")
+[node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("14_ucbti")]
 drop_at_node = NodePath("../../../Node3D/Hero")
 drop_ground_item_manager = NodePath("../../../Node3D/Items")
-drop_max_distance = 8.0
-drop_camera_3d = NodePath("../../../Node3D/Camera3D")
-drop_ray_mask = 1
-unit_size = Vector2(14, 14)
-hide_cursor = false
+drop_camera_3d = null
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.
@@ -380,8 +367,8 @@ offset_top = -23.0
 offset_right = 358.0
 offset_bottom = 52.0
 theme = ExtResource("17_ici5q")
-color_neutral = Color(0.376471, 0.376471, 0.376471, 1)
 compare_to_inventory = NodePath("../InventoryMenu/CenterContainer/TabContainer/Equip/Control/Equip")
+color_neutral = Color(0.376471, 0.376471, 0.376471, 1)
 
 [connection signal="body_entered" from="Node3D/Hero/Area3D" to="Node3D/Hero" method="_on_ItemPickup_body_entered"]
 [connection signal="item_clicked" from="Node3D/Items" to="Node3D/Hero" method="_on_items_item_clicked"]

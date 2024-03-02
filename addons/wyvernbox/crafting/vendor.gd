@@ -88,7 +88,7 @@ func _ready():
 func refill_stock():
 	var inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items:
-		inventory.remove(x)
+		inventory.remove_item(x)
 
 	for i in stock.size():
 		var stack = get_stock(i)
