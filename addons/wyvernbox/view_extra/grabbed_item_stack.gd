@@ -66,6 +66,7 @@ var _last_input_non_pointer := false
 
 
 func _enter_tree():
+	assert(!is_instance_valid(_instance), "Multiple GrabbedItemStack instances detected in the scene - perhaps you added one to an instantiated scene?. Only one GrabbedItemStack can exist in the game scene.")
 	_instance = self
 
 

@@ -113,6 +113,7 @@ static func get_instance() -> InventoryTooltip:
 
 func _enter_tree():
 	if register_as_singleton:
+		assert(!is_instance_valid(_instance), "Multiple InventoryTooltip instances with register_as_singleton detected in the scene - perhaps you added one to an instantiated scene?. Only one InventoryTooltip instance can be registered as a singleton.")
 		_instance = self
 
 	if Engine.is_editor_hint():

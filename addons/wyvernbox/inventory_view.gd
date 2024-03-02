@@ -231,7 +231,10 @@ func _exit_tree():
 
 
 func _get_configuration_warnings() -> PackedStringArray:
-	if !Engine.is_editor_hint(): return PackedStringArray()
+	if !Engine.is_editor_hint() || owner == null:
+		# Don't push errors if it's a prefab's root.
+		return PackedStringArray()
+
 	var arr : Array[String] = []
 	if !is_instance_valid(InventoryTooltip.get_instance()):
 		arr.append("""To allow viewing of item descriptions and properties, add an InventoryTooltip object.
