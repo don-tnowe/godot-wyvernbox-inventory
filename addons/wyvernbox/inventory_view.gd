@@ -134,7 +134,14 @@ var selected_cell := Vector2(-1, -1):
 			sel_rect = get_selected_rect(v)
 
 		_selection_node.size = sel_rect.size
+		_selection_node.rotation = 0.0
 		_selection_node.position = sel_rect.position
+		if has_node(grid_background):
+			var xform : Transform2D = _selection_node.get_transform() * get_node(grid_background).get_transform()
+			_selection_node.size *= xform.get_scale()
+			_selection_node.rotation = xform.get_rotation()
+			_selection_node.position = xform.origin
+
 		_selection_node.queue_redraw()
 
 		var newly_selected := inventory.get_item_at_positionv(v)
@@ -408,6 +415,9 @@ func cell_position_to_global(pos : Vector2, topleft : bool = false) -> Vector2:
 
 	if inventory is GridInventory:
 		pos.y = clamp(pos.y, 0, inventory.height)
+		if has_node(grid_background):
+			return get_node(grid_background).get_global_transform() * (pos * cell_size)
+
 		return get_global_transform() * (pos * cell_size)
 
 	else:
@@ -461,7 +471,11 @@ func _redraw_item(node : Control, item_stack : ItemStack):
 
 func _position_item(node : Control, item_stack : ItemStack):
 	if inventory is GridInventory:
-		node.global_position = get_global_transform() * (cell_size * item_stack.position_in_inventory)
+		var xform := get_global_transform()
+		if has_node(grid_background):
+			xform = get_node(grid_background).get_global_transform()
+
+		node.global_position = xform * (cell_size * item_stack.position_in_inventory)
 		return
 
 	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
