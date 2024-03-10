@@ -68,7 +68,7 @@ spread_distance = 4.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_vp2fs"]
+[sub_resource type="Resource" id="Resource_flmx5"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -88,7 +88,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_uf5ui"]
+[sub_resource type="Resource" id="Resource_ciqfj"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -262,10 +262,19 @@ offset_left = -313.0
 offset_top = -39.0
 offset_right = -201.0
 offset_bottom = 129.0
-inventory = SubResource("Resource_vp2fs")
+inventory = SubResource("Resource_flmx5")
 contents = SubResource("12")
+init_contents = true
 interaction_mode = 5
+auto_take_priority = 0
+cell_size = Vector2(14, 14)
+selected_item_empty_only = false
+show_backgrounds = true
+view_filter_color = Color(0.1, 0.15, 0.3, 0.75)
+view_filter_patterns = []
 autosave_file_path = "items/world/chest1.dat"
+autosave_intensity = 2
+save_extra_data = {}
 
 [node name="Control2" type="Control" parent="Node3D/Openable/Chest/Inventory"]
 layout_mode = 2
@@ -291,10 +300,19 @@ offset_left = -201.0
 offset_top = 20.0
 offset_right = -89.0
 offset_bottom = 188.0
-inventory = SubResource("Resource_uf5ui")
+inventory = SubResource("Resource_ciqfj")
 contents = SubResource("12")
+init_contents = true
 interaction_mode = 5
+auto_take_priority = 0
+cell_size = Vector2(14, 14)
+selected_item_empty_only = false
+show_backgrounds = true
+view_filter_color = Color(0.1, 0.15, 0.3, 0.75)
+view_filter_patterns = []
 autosave_file_path = "items/world/chest2.dat"
+autosave_intensity = 2
+save_extra_data = {}
 
 [node name="Control" type="Control" parent="Node3D/Openable/Chest2/Inventory"]
 layout_mode = 2
@@ -350,7 +368,6 @@ text = "(Hold Alt to highlight items)"
 [node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("14_ucbti")]
 drop_at_node = NodePath("../../../Node3D/Hero")
 drop_ground_item_manager = NodePath("../../../Node3D/Items")
-drop_camera_3d = null
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.

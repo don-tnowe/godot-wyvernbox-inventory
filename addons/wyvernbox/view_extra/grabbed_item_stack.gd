@@ -227,8 +227,11 @@ func _any_inventory_try_drop_stack(stack : ItemStack):
 		return
 
 ## Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
-func drop_on_ground(stack : ItemStack, click_pos = null):
-	var node = get_node(drop_at_node)
+func drop_on_ground(stack : ItemStack, click_pos = null) -> bool:
+	var node := get_node_or_null(drop_at_node)
+	if !is_instance_valid(node):
+		return false
+
 	var spawn_at_pos = node.global_position
 	var throw_vec
 	if click_pos == null:
@@ -238,16 +241,22 @@ func drop_on_ground(stack : ItemStack, click_pos = null):
 		throw_vec = (node.get_canvas_transform().affine_inverse() * (get_canvas_transform() * click_pos) - spawn_at_pos).limit_length(drop_max_distance)
 
 	else:
-		var cam : Camera3D = get_node(drop_camera_3d)
-		var origin := cam.project_ray_origin(click_pos)
-		var ray := PhysicsRayQueryParameters3D.create(origin, origin + cam.project_ray_normal(click_pos) * 9999, drop_ray_mask)
-		var hit = node.get_world_3d().direct_space_state.intersect_ray(ray)
-		throw_vec = (hit.position - spawn_at_pos).limit_length(drop_max_distance)
+		var cam : Camera3D = get_node_or_null(drop_camera_3d)
+		if is_instance_valid(cam):
+			var origin := cam.project_ray_origin(click_pos)
+			var ray := PhysicsRayQueryParameters3D.create(origin, origin + cam.project_ray_normal(click_pos) * 9999, drop_ray_mask)
+			var hit : Dictionary = node.get_world_3d().direct_space_state.intersect_ray(ray)
+			if !hit.is_empty():
+				throw_vec = (hit.position - spawn_at_pos).limit_length(drop_max_distance)
 
-	get_node(drop_ground_item_manager).add_item(stack, spawn_at_pos, throw_vec)
+	var ground_items := get_node(drop_ground_item_manager)
+	assert(is_instance_valid(ground_items), "GrabbedItemStackView can not spawn dropped items without a GroundItemManager! Add one to the scene, or remove the drop_at_node reference and connect to the input_on_empty(event, item_stack) signal to handle the drop.")
+
+	ground_items.add_item(stack, spawn_at_pos, throw_vec)
 	if hide_cursor:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+	return true
 
 func _input(event : InputEvent):
 	if event is InputEventMouseMotion:
@@ -368,11 +377,15 @@ func _drop_surface_input(event : InputEvent):
 
 	if event is InputEventMouseButton && stack != null && !event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			drop_on_ground(stack, event.position)
+			if !drop_on_ground(stack, event.position):
+				return
+
 			update_stack(null)
 			
 		if event.button_index == MOUSE_BUTTON_RIGHT:
-			drop_on_ground(stack.duplicate_with_count(1), event.position)
+			if !drop_on_ground(stack.duplicate_with_count(1), event.position):
+				return
+
 			stack.count -= 1
 			if stack.count == 0:
 				update_stack(null)
