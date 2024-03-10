@@ -250,7 +250,7 @@ func drop_on_ground(stack : ItemStack, click_pos = null) -> bool:
 				throw_vec = (hit.position - spawn_at_pos).limit_length(drop_max_distance)
 
 	var ground_items := get_node(drop_ground_item_manager)
-	assert(is_instance_valid(ground_items), "GrabbedItemStackView can not spawn dropped items without a GroundItemManager! Add one to the scene, or remove the drop_at_node reference and connect to the input_on_empty(event, item_stack) signal to handle the drop.")
+	assert(is_instance_valid(ground_items), "GrabbedItemStackView can not spawn dropped items without a GroundItemManager! Add one to the scene and check GrabbedItemStackView properties, or connect the input_on_empty(event, item_stack) signal to a script to handle the drop yourself.")
 
 	ground_items.add_item(stack, spawn_at_pos, throw_vec)
 	if hide_cursor:
