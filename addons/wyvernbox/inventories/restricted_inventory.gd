@@ -15,8 +15,14 @@ extends Inventory
 @export var restricted_to_types : Array[ItemType.SlotFlags] = []:
 	set(v):
 		restricted_to_types = v
-		v.resize(width)
+		if !_restricted_to_types_changing:
+			_restricted_to_types_changing = true
+			width = v.size()
+			_restricted_to_types_changing = false
 
+		emit_changed()
+
+var _restricted_to_types_changing := false
 
 ## Returns the first cell the [code]item_stack[/code] can be placed without stacking.
 ## Returns [code](-1, -1)[/code] if no empty cells in inventory, or the item type doesn't fit due to flags.

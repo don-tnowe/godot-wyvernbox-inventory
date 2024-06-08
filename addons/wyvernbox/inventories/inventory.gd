@@ -22,11 +22,14 @@ signal loaded_from_dict(dict)
 		if v < 1: v = 1
 		width = v
 		_update_size()
-		emit_changed()
-		if &"restricted_to_types" in self:
+		if &"restricted_to_types" in self && !self._restricted_to_types_changing:
+			self._restricted_to_types_changing = true
 			var old_restricted = self.restricted_to_types.duplicate()
 			old_restricted.resize(v)
 			self.restricted_to_types = old_restricted
+			self._restricted_to_types_changing = false
+
+		emit_changed()
 
 ## When an item is attempted to be inserted, it's checked against this [ItemPattern]. [br]
 ## The pattern can use the item's [member ItemStack.inventory] and [member ItemStack.position_in_inventory] to check insertion position. Enable [member ItemPattern.position_dependent] to make it control automatic insertion.

@@ -6,11 +6,20 @@ extends Inventory
 ## A type of [Inventory] only allowing a specific item in each slot, but providing a higher stack limit.
 
 ## Each cell's [ItemType] or [ItemPattern]. Items that don't match won't fit in.
-@export var restricted_to_types : Array[ItemLike] = []
+@export var restricted_to_types : Array[ItemLike] = []:
+	set(v):
+		restricted_to_types = v
+		if !_restricted_to_types_changing:
+			_restricted_to_types_changing = true
+			width = v.size()
+			_restricted_to_types_changing = false
+
+		emit_changed()
 
 ## The custom capacity of all stacks in this inventory.
 @export var max_stack := 99999999
 
+var _restricted_to_types_changing := false
 
 ## Returns the configured [member max_stack].
 func get_max_count(item_type):
