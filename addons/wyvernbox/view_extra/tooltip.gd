@@ -254,13 +254,16 @@ static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) 
 
 func _update_rect(mouseover_node : Control):
 	size.y = 0
-	if mouseover_node == null:
+	if !is_instance_valid(mouseover_node):
 		return
 
 	if !_first_displayed:
 		# I don't know why it starts being stretched to the entire screen height, but I need this workaround.
 		_first_displayed = true
 		await get_tree().process_frame
+
+	if !is_instance_valid(mouseover_node):
+		return
 
 	var node_global_pos := mouseover_node.get_global_transform_with_canvas().origin
 	var left_half := node_global_pos.x + mouseover_node.size.x * 0.5 < get_viewport_rect().size.x * 0.5

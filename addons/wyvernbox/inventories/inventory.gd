@@ -237,35 +237,25 @@ func _place_stackv(top : ItemStack, bottom : ItemStack, pos : Vector2) -> ItemSt
 
 	## If placing on a cell with item, return that item or stacking remainder
 	if bottom != null:
-		bottom = _swap_stacks(top, bottom)
-	
+		if !bottom.can_stack_with(top):
+			## If can't be stacked, just swap places.
+			remove_item(bottom)
+
+		else:
+			var bottom_count_delta := ItemStack.get_stack_delta_if_added(bottom.count, top.count, get_max_count(bottom.item_type))
+			top.count = ItemStack.get_stack_overflow_if_added(bottom.count, top.count, get_max_count(bottom.item_type))
+			bottom.count += bottom_count_delta
+			if top.count == 0:
+				top = null
+
+			item_stack_changed.emit(bottom, bottom_count_delta)
+			bottom = top
+
 	## Only move top item to slot if it's not stacking remainder
 	if top != bottom:
 		move_item_to_pos(top, pos)
 
 	return bottom
-
-
-func _drop_stack_on_stack(top : ItemStack, bottom : ItemStack) -> int:
-	var top_count := top.count
-	var bottom_count_delta := ItemStack.get_stack_delta_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
-	top.count = ItemStack.get_stack_overflow_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
-	bottom.count += bottom_count_delta
-	return bottom_count_delta
-
-
-func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
-	if !bottom.can_stack_with(top):
-		## If can't be stacked, just swap places.
-		remove_item(bottom)
-		return bottom
-	
-	var bottom_count_delta := _drop_stack_on_stack(top, bottom)
-	if top.count == 0:
-		top = null
-	
-	item_stack_changed.emit(bottom, bottom_count_delta)
-	return top
 
 ## Returns [code]false[/code] if cell out of bounds.
 ## Vector counterpart of [method has_cell].
@@ -427,7 +417,6 @@ func load_from_array(array : Array):
 		else:
 			try_place_stackv(new_item, new_item.position_in_inventory)
 
-
 ## Loads contents from a dictionary. its [code]"contents"[/code] key must be an array created via [code]to_array[/code]. [br]
 ## [signal loaded_from_dict] is emitted to process other values in the dictionary.
 func load_from_dict(dict : Dictionary):
@@ -465,7 +454,7 @@ func save_state(filename : String, extra_data : Dictionary = {}, as_text : bool 
 
 ## Loads inventory contents from file [code]filename[/code]. [br]
 ## Only [code]user://[/code] paths are supported.
-func load_state(filename):
+func load_state(filename : String):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 

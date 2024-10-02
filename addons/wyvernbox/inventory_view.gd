@@ -115,55 +115,13 @@ signal selection_out_of_bounds(old_cell : Vector2, direction : Vector2)
 var last_autosave_sec := -1.0
 ## The currently selected inventory cell, for keyboard or controller navigation.
 var selected_cell := Vector2(-1, -1):
-	set(v):
-		var grabbed := GrabbedItemStackView.get_instance()
-		var sel_rect := Rect2()
-		var formerly_selected := inventory.get_item_at_positionv(selected_cell)
-		if v == Vector2(-1, -1):
-			selected_cell = v
-			_selection_node.queue_redraw()
-			if formerly_selected != null:
-				_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
-
-			return
-
-		if inventory is GridInventory && GrabbedItemStackView.grabbed_stack != null:
-			var item_size := grabbed.stack.item_type.get_size_in_inventory()
-			if inventory.has_cellv(v) && inventory.has_cellv(v + item_size - Vector2.ONE):
-				sel_rect = Rect2(cell_size * v, cell_size * item_size)
-
-		else:
-			sel_rect = get_selected_rect(v)
-
-		_selection_node.size = sel_rect.size
-		_selection_node.rotation = 0.0
-		_selection_node.position = sel_rect.position
-		if has_node(grid_background):
-			var xform : Transform2D = _selection_node.get_transform() * get_node(grid_background).get_transform()
-			_selection_node.size *= xform.get_scale()
-			_selection_node.rotation = xform.get_rotation()
-			_selection_node.position = xform.origin
-
-		_selection_node.queue_redraw()
-
-		var newly_selected := inventory.get_item_at_positionv(v)
-		if formerly_selected != newly_selected:
-			if formerly_selected != null:
-				_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
-
-			if newly_selected != null:
-				_item_stack_selected(_view_nodes[newly_selected.index_in_inventory])
-
-		if !inventory.has_cell(v.x, v.y):
-			v = Vector2(-1, -1)
-			if has_focus(): release_focus()
-
-		selected_cell = v
+	set = _set_selected_cell
 
 
 static var _instances : Array[InventoryView] = []:
 	set(v): return
 
+var _cell_parent : Control
 var _dragged_node : Control
 var _dragged_stack : ItemStack
 var _view_nodes : Array[Control] = []
@@ -178,7 +136,8 @@ func _ready():
 		return
 
 	if has_node("Cells"):
-		for x in get_node("Cells").get_children():
+		_cell_parent = get_node("Cells")
+		for x in _cell_parent.get_children():
 			_connect_cell(x)
 
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -258,7 +217,7 @@ static func get_instances() -> Array[InventoryView]:
 	return _instances.duplicate()
 
 
-func _set_cell_size(v):
+func _set_cell_size(v : Vector2):
 	cell_size = v
 	if !grid_resize_cell.is_empty():
 		get_node(grid_resize_cell).size = v
@@ -266,12 +225,12 @@ func _set_cell_size(v):
 	_regenerate_view()
 
 
-func _set_view_filter(v):
+func _set_view_filter(v : Array):
 	view_filter_patterns = v
 	apply_view_filters()
 
 
-func _set_inventory(v):
+func _set_inventory(v : Inventory):
 	if inventory != null:
 		inventory.changed.disconnect(_regenerate_view)
 		inventory.item_stack_added.disconnect(_on_item_stack_added)
@@ -289,8 +248,9 @@ func _set_inventory(v):
 
 	if !is_inside_tree(): await self.ready
 	if has_node("Cells"):
+		_cell_parent = get_node("Cells")
 		if !v is GridInventory:
-			v.width = get_node("Cells").get_child_count()
+			v.width = _cell_parent.get_child_count()
 
 	if Engine.is_editor_hint(): return
 
@@ -304,6 +264,52 @@ func _set_inventory(v):
 		_on_item_stack_added(x)
 
 	_regenerate_view()
+
+
+func _set_selected_cell(v : Vector2):
+	var grabbed := GrabbedItemStackView.get_instance()
+	var sel_rect := Rect2()
+	var formerly_selected := inventory.get_item_at_positionv(selected_cell)
+	if v == Vector2(-1, -1):
+		selected_cell = v
+		_selection_node.queue_redraw()
+		if formerly_selected != null:
+			_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
+
+		return
+
+	if inventory is GridInventory && GrabbedItemStackView.grabbed_stack != null:
+		var item_size := grabbed.stack.item_type.get_size_in_inventory()
+		if inventory.has_cellv(v) && inventory.has_cellv(v + item_size - Vector2.ONE):
+			sel_rect = Rect2(cell_size * v, cell_size * item_size)
+
+	else:
+		sel_rect = get_selected_rect(v)
+
+	_selection_node.size = sel_rect.size
+	_selection_node.rotation = 0.0
+	_selection_node.position = sel_rect.position
+	if has_node(grid_background):
+		var xform : Transform2D = _selection_node.get_transform() * get_node(grid_background).get_transform()
+		_selection_node.size *= xform.get_scale()
+		_selection_node.rotation = xform.get_rotation()
+		_selection_node.position = xform.origin
+
+	_selection_node.queue_redraw()
+
+	var newly_selected := inventory.get_item_at_positionv(v)
+	if formerly_selected != newly_selected:
+		if formerly_selected != null:
+			_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
+
+		if newly_selected != null:
+			_item_stack_selected(_view_nodes[newly_selected.index_in_inventory])
+
+	if !inventory.has_cell(v.x, v.y):
+		v = Vector2(-1, -1)
+		if has_focus(): release_focus()
+
+	selected_cell = v
 
 
 func _regenerate_view():
@@ -330,6 +336,7 @@ func _regenerate_view():
 			cells.name = "Cells"
 			add_child(cells)
 			cells.owner = owner if owner != null else self
+			_cell_parent = cells
 
 		cells.mouse_filter = MOUSE_FILTER_IGNORE
 		if cells.get_child_count() == 0:
@@ -407,7 +414,7 @@ func global_position_to_cell(pos : Vector2, item : ItemStack = null) -> Vector2:
 		return result_pos
 
 	else:
-		var cells := $"Cells".get_children()
+		var cells := _cell_parent.get_children()
 		for i in cells.size():
 			if cells[i].get_global_rect().has_point(pos):
 				return Vector2(i, 0)
@@ -415,7 +422,6 @@ func global_position_to_cell(pos : Vector2, item : ItemStack = null) -> Vector2:
 		return Vector2(-1, -1)
 
 ## Returns the global position of the center of a cell, or top-left if [code]topleft[/code] is set. [br]
-## Providing an [ItemStack] returns the cell into which the item would be placed. [br]
 ## Returns cell with nearest cell position if provided cell is not in inventory.
 func cell_position_to_global(pos : Vector2, topleft : bool = false) -> Vector2:
 	pos.x = clamp(pos.x, 0, inventory.width)
@@ -428,10 +434,9 @@ func cell_position_to_global(pos : Vector2, topleft : bool = false) -> Vector2:
 		return get_global_transform() * (pos * cell_size)
 
 	else:
-		var cells := $"Cells".get_children()
+		var cells := _cell_parent.get_children()
 		var xform : Transform2D = cells[pos.x].get_global_transform()
 		return xform.origin if topleft else xform.origin + xform.basis_xform(cells[pos.x].size)
-
 
 ## Returns the [ItemStackView] in cell [code]x[/code]; returns [code]null[/code] if cell empty or out of bounds. [br]
 ## Non-vector counterpart of [method get_item_view_at_positionv]. [br]
@@ -468,15 +473,11 @@ func get_selected_rect(cell : Vector2 = selected_cell) -> Rect2:
 			item_selected.item_type.get_size_in_inventory() * cell_size
 		)
 
-	return $"Cells".get_child(cell.x).get_rect()
+	return _cell_parent.get_child(cell.x).get_rect()
 
 
 func _redraw_item(node : Control, item_stack : ItemStack):
 	node.update_stack(item_stack, cell_size, show_backgrounds)
-	_position_item(node, item_stack)
-
-
-func _position_item(node : Control, item_stack : ItemStack):
 	if inventory is GridInventory:
 		var xform := get_global_transform()
 		if has_node(grid_background):
@@ -485,7 +486,7 @@ func _position_item(node : Control, item_stack : ItemStack):
 		node.global_position = xform * (cell_size * item_stack.position_in_inventory)
 		return
 
-	var cell : Control = $"Cells".get_child(item_stack.position_in_inventory.x)
+	var cell : Control = _cell_parent.get_child(item_stack.position_in_inventory.x)
 	node.global_position = cell.global_position
 	node.size = cell.size
 
@@ -720,7 +721,7 @@ func _quick_transfer_anywhere(stack_view : ItemStackView):
 	grab_attempted.emit(stack, true)
 
 
-func _get_quick_transfer_targets(has_price) -> Array[InventoryView]:
+func _get_quick_transfer_targets(has_price : bool) -> Array[InventoryView]:
 	var result : Array[InventoryView] = []
 	for x in InventoryView.get_instances():
 		if (
@@ -735,16 +736,15 @@ func _get_quick_transfer_targets(has_price) -> Array[InventoryView]:
 		result.append(x)
 
 	return result
-	
+
 
 func _on_item_stack_mouse_entered(stack_view : ItemStackView):
 	_deselect_signal_interrupted = false
-	var cells_node := get_node_or_null("Cells")
 	if GrabbedItemStackView.grabbed_stack == null:
 		GrabbedItemStackView.select_cell(self, stack_view.stack.position_in_inventory)
 
-	if is_instance_valid(cells_node):
-		cells_node.get_child(stack_view.stack.position_in_inventory.x).grab_focus()
+	if is_instance_valid(_cell_parent):
+		_cell_parent.get_child(stack_view.stack.position_in_inventory.x).grab_focus()
 
 
 func _item_stack_deselected(stack_view : ItemStackView):
@@ -799,7 +799,7 @@ func _on_cell_gui_input(event : InputEvent, cell_index : int = -1):
 		GrabbedItemStackView.select_cell(self, cell_pos, true)
 
 
-func _can_drop_data(position, data):
+func _can_drop_data(position : Vector2, data):
 	return true
 
 ## Updates item visibility based on [member view_filter_patterns]. Call manually after editing the pattern array instead of setting.
@@ -827,7 +827,7 @@ func sort_inventory():
 	inventory.sort()
 
 ## Saves the inventory to disk into the specified file, or the one set in [member autosave_file_path].
-func save_state(filepath = ""):
+func save_state(filepath : String = ""):
 	if Engine.is_editor_hint(): return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
 
@@ -839,7 +839,7 @@ func save_state(filepath = ""):
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 
 ## Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
-func load_state(filepath = ""):
+func load_state(filepath : String = ""):
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 
@@ -859,7 +859,7 @@ func _on_loaded_from_dict(dict : Dictionary):
 			save_extra_data[k] = dict[k]
 
 
-func _compare_inventory_priority(a, b):
+func _compare_inventory_priority(a : InventoryView, b : InventoryView):
 	return a.auto_take_priority <= b.auto_take_priority
 
 

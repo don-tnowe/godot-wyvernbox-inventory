@@ -258,6 +258,7 @@ func drop_on_ground(stack : ItemStack, click_pos = null) -> bool:
 
 	return true
 
+
 func _input(event : InputEvent):
 	if event is InputEventMouseMotion:
 		# if stack != null && _last_input_non_pointer:
