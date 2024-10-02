@@ -1,14 +1,15 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" script_class="ItemConversion" load_steps=5 format=3 uid="uid://bog5yg0tq4vx0"]
 
-[ext_resource path="res://example/wyvernbox/item_types/consumable/arrows.tres" type="Resource" id=1]
-[ext_resource path="res://example/wyvernbox/item_types/materials/feather.tres" type="Resource" id=2]
-[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=3]
-[ext_resource path="res://example/wyvernbox/item_types/materials/wood.tres" type="Resource" id=4]
+[ext_resource type="Resource" uid="uid://duga6dcb1u8qe" path="res://example/wyvernbox/item_types/consumable/arrows.tres" id="1"]
+[ext_resource type="Resource" uid="uid://d4ibtv16wnn3i" path="res://example/wyvernbox/item_types/materials/feather.tres" id="2"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="3"]
+[ext_resource type="Resource" uid="uid://d2ky32anikp7h" path="res://example/wyvernbox/item_types/materials/wood.tres" id="4"]
 
 [resource]
-script = ExtResource( 3 )
+script = ExtResource("3")
 name = "craft_arrows"
-input_types = [ ExtResource( 4 ), ExtResource( 2 ) ]
-input_counts = [ 1, 4 ]
-output_types = [ ExtResource( 1 ) ]
-output_ranges = [ Vector2( 6, 10 ) ]
+tags = Array[StringName]([])
+input_types = Array[Resource]([ExtResource("4"), ExtResource("2")])
+input_counts = Array[int]([1, 4])
+output_types = Array[Resource]([ExtResource("1")])
+output_ranges = Array[Vector2]([Vector2(6, 10)])

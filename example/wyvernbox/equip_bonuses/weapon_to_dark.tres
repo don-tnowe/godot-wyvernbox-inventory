@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("3")
 id = "weapon_to_dark+"
-name = "item_bonus_weapon_to_dark"
+name = &"item_bonus_weapon_to_dark"
 description = "item_bonus_desc_weapon_to_dark"
 affix = "item_affix_weapon_to_dark"
 affix_position = -3

@@ -1,9 +1,10 @@
-[gd_scene load_steps=32 format=3 uid="uid://blxmwn4jq2mot"]
+[gd_scene load_steps=33 format=3 uid="uid://blxmwn4jq2mot"]
 
 [ext_resource type="PackedScene" uid="uid://dsoiq0u4jfsqb" path="res://example/src/inventory_menu.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://cqa45c6lfsffv" path="res://addons/wyvernbox_prefabs/tooltip.tscn" id="3"]
 [ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_items_manager.gd" id="5"]
 [ext_resource type="PackedScene" uid="uid://e8rkhrvavj7l" path="res://example/src/world/inworld_container.tscn" id="6"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="6_po8vd"]
 [ext_resource type="Script" path="res://example/src/test_3d_char.gd" id="7"]
 [ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="8"]
 [ext_resource type="PackedScene" uid="uid://cesxtk10fira3" path="res://addons/wyvernbox_prefabs/ground_item_stack_view_3d.tscn" id="9"]
@@ -41,7 +42,7 @@ material = SubResource("StandardMaterial3D_i1865")
 [sub_resource type="Resource" id="22"]
 resource_name = "Drop Chaotically"
 script = ExtResource("10")
-items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
+items_to_add = Array[ExtResource("6_po8vd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
@@ -58,7 +59,7 @@ spread_angle_degrees = 0.0
 [sub_resource type="Resource" id="21"]
 resource_name = "Drop In Circle"
 script = ExtResource("10")
-items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
+items_to_add = Array[ExtResource("6_po8vd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
 repeat_post_chance = true
@@ -68,7 +69,7 @@ spread_distance = 4.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_flmx5"]
+[sub_resource type="Resource" id="Resource_wx6tc"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -78,7 +79,7 @@ width = 8
 [sub_resource type="Resource" id="12"]
 resource_name = "Random Equips"
 script = ExtResource("10")
-items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("13"), ExtResource("15"), ExtResource("15"), ExtResource("14"), ExtResource("14"), ExtResource("14"), ExtResource("14")])
+items_to_add = Array[ExtResource("6_po8vd")]([ExtResource("13"), ExtResource("15"), ExtResource("15"), ExtResource("14"), ExtResource("14"), ExtResource("14"), ExtResource("14")])
 item_repeat_ranges = Array[Vector2]([Vector2(8, 8), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100)])
 item_chances = Array[float]([100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0])
 repeat_post_chance = true
@@ -88,7 +89,7 @@ spread_distance = 32.0
 spread_cone_degrees = 360.0
 spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_ciqfj"]
+[sub_resource type="Resource" id="Resource_sun7j"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
@@ -262,19 +263,10 @@ offset_left = -313.0
 offset_top = -39.0
 offset_right = -201.0
 offset_bottom = 129.0
-inventory = SubResource("Resource_flmx5")
+inventory = SubResource("Resource_wx6tc")
 contents = SubResource("12")
-init_contents = true
 interaction_mode = 5
-auto_take_priority = 0
-cell_size = Vector2(14, 14)
-selected_item_empty_only = false
-show_backgrounds = true
-view_filter_color = Color(0.1, 0.15, 0.3, 0.75)
-view_filter_patterns = []
 autosave_file_path = "items/world/chest1.dat"
-autosave_intensity = 2
-save_extra_data = {}
 
 [node name="Control2" type="Control" parent="Node3D/Openable/Chest/Inventory"]
 layout_mode = 2
@@ -300,19 +292,10 @@ offset_left = -201.0
 offset_top = 20.0
 offset_right = -89.0
 offset_bottom = 188.0
-inventory = SubResource("Resource_ciqfj")
+inventory = SubResource("Resource_sun7j")
 contents = SubResource("12")
-init_contents = true
 interaction_mode = 5
-auto_take_priority = 0
-cell_size = Vector2(14, 14)
-selected_item_empty_only = false
-show_backgrounds = true
-view_filter_color = Color(0.1, 0.15, 0.3, 0.75)
-view_filter_patterns = []
 autosave_file_path = "items/world/chest2.dat"
-autosave_intensity = 2
-save_extra_data = {}
 
 [node name="Control" type="Control" parent="Node3D/Openable/Chest2/Inventory"]
 layout_mode = 2

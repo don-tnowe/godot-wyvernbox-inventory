@@ -1,14 +1,15 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" script_class="ItemConversion" load_steps=5 format=3 uid="uid://dopqku7jo7o5s"]
 
-[ext_resource path="res://example/wyvernbox/item_types/materials/herb.tres" type="Resource" id=1]
-[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=2]
-[ext_resource path="res://example/wyvernbox/item_types/materials/magic_crystal.tres" type="Resource" id=3]
-[ext_resource path="res://example/wyvernbox/item_types/consumable/potion_purple.tres" type="Resource" id=4]
+[ext_resource type="Resource" uid="uid://c30h5hufp3auc" path="res://example/wyvernbox/item_types/materials/herb.tres" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="2"]
+[ext_resource type="Resource" uid="uid://cyouqylier542" path="res://example/wyvernbox/item_types/materials/magic_crystal.tres" id="3"]
+[ext_resource type="Resource" uid="uid://dl1km864jbx5q" path="res://example/wyvernbox/item_types/consumable/potion_purple.tres" id="4"]
 
 [resource]
-script = ExtResource( 2 )
+script = ExtResource("2")
 name = "craft_brew_purple_potion"
-input_types = [ ExtResource( 1 ), ExtResource( 3 ) ]
-input_counts = [ 8, 4 ]
-output_types = [ ExtResource( 4 ) ]
-output_ranges = [ Vector2( 1, 1 ) ]
+tags = Array[StringName]([])
+input_types = Array[Resource]([ExtResource("1"), ExtResource("3")])
+input_counts = Array[int]([8, 4])
+output_types = Array[Resource]([ExtResource("4")])
+output_ranges = Array[Vector2]([Vector2(1, 1)])

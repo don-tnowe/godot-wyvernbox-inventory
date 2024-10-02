@@ -1,14 +1,15 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" script_class="ItemConversion" load_steps=5 format=3 uid="uid://in0jr5vbr5rt"]
 
-[ext_resource path="res://example/wyvernbox/item_generators/enchant_item.tres" type="Resource" id=1]
-[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=33]
-[ext_resource path="res://example/wyvernbox/item_types/equipment/wand_red.tres" type="Resource" id=36]
-[ext_resource path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" type="Resource" id=37]
+[ext_resource type="Resource" uid="uid://ddeg8trd3hwno" path="res://example/wyvernbox/item_generators/enchant_item.tres" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="33"]
+[ext_resource type="Resource" uid="uid://uhwf6cm33oja" path="res://example/wyvernbox/item_types/equipment/wand_red.tres" id="36"]
+[ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="37"]
 
 [resource]
-script = ExtResource( 33 )
+script = ExtResource("33")
 name = "craft_enchant_wand_red"
-input_types = [ ExtResource( 36 ), ExtResource( 37 ) ]
-input_counts = [ 1, 4 ]
-output_types = [ ExtResource( 1 ) ]
-output_ranges = [ Vector2( 1, 1 ) ]
+tags = Array[StringName]([])
+input_types = Array[Resource]([ExtResource("36"), ExtResource("37")])
+input_counts = Array[int]([1, 4])
+output_types = Array[Resource]([ExtResource("1")])
+output_ranges = Array[Vector2]([Vector2(1, 1)])

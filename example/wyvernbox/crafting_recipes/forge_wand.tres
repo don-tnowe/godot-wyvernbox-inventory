@@ -1,13 +1,14 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" script_class="ItemConversion" load_steps=4 format=3 uid="uid://lbxfx5w36s7w"]
 
-[ext_resource path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" type="Resource" id=1]
-[ext_resource path="res://addons/wyvernbox/crafting/item_conversion.gd" type="Script" id=2]
-[ext_resource path="res://example/wyvernbox/item_types/equipment/wand_red.tres" type="Resource" id=4]
+[ext_resource type="Resource" uid="uid://c8gdxqqb85pht" path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" id="1"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="2"]
+[ext_resource type="Resource" uid="uid://uhwf6cm33oja" path="res://example/wyvernbox/item_types/equipment/wand_red.tres" id="4"]
 
 [resource]
-script = ExtResource( 2 )
+script = ExtResource("2")
 name = "craft_forge_wand"
-input_types = [ ExtResource( 1 ) ]
-input_counts = [ 40 ]
-output_types = [ ExtResource( 4 ) ]
-output_ranges = [ Vector2( 1, 1 ) ]
+tags = Array[StringName]([])
+input_types = Array[Resource]([ExtResource("1")])
+input_counts = Array[int]([40])
+output_types = Array[Resource]([ExtResource("4")])
+output_ranges = Array[Vector2]([Vector2(1, 1)])
