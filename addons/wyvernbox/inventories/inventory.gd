@@ -46,44 +46,39 @@ func _update_size():
 
 ## Tries to place [code]stack[/code] into first possible stacks or cells. [br]
 ## Returns the number of items deposited, which equates to stack's [member ItemStack.count] on success and [code]0[/code] if inventory was full. [br]
-## [code]total_deposited[/code] should not be set, as it is used internally.
-func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
+func try_add_item(stack : ItemStack) -> int:
+	var count_to_deposit := stack.count
+	if count_to_deposit == 0:
+		return 0
+
 	var item_type := stack.item_type
-	var count := stack.count
 	var maxcount := get_max_count(item_type)
-	if count == 0: return 0
-	while count > maxcount:
-		var deposited_overflow := try_add_item(stack.duplicate_with_count(maxcount))
-		count -= maxcount
-		if deposited_overflow < maxcount:
-			return deposited_overflow + total_deposited
+	var total_deposited := 0
 
-	var deposited_through_stacking := _try_stack_item(stack, count)
-	if deposited_through_stacking > 0:
-		## If all items deposited, return.
-		if count - deposited_through_stacking <= 0:
-			return total_deposited + deposited_through_stacking
-
-		## If a stack got filled,
-		## create another stack from the items that did not fit.
-		total_deposited += deposited_through_stacking
-		return try_add_item(
-			stack.duplicate_with_count(count - deposited_through_stacking),
-			total_deposited
-		)
-
-	var rect_pos := get_free_position(stack)
-	if rect_pos.x == -1:
+	var deposited_through_stacking := _try_stack_item(stack, count_to_deposit)
+	total_deposited += deposited_through_stacking
+	count_to_deposit -= deposited_through_stacking
+	if count_to_deposit == 0:
 		return total_deposited
-	
-	stack = stack.duplicate_with_count(count)
-	stack.position_in_inventory = rect_pos
-	_fill_stack_cells(stack)
-	_add_to_items_array(stack)
-	return count + total_deposited
+
+	## If all stacks got filled,
+	## create more stacks from the items that did not fit.
+	while count_to_deposit > 0:
+		var rect_pos := get_free_position(stack)
+		if rect_pos.x == -1:
+			return total_deposited
+
+		stack = stack.duplicate_with_count(mini(count_to_deposit, maxcount))
+		count_to_deposit -= stack.count
+		total_deposited += stack.count
+		stack.position_in_inventory = rect_pos
+		_fill_stack_cells(stack)
+		_add_to_items_array(stack)
+
+	return total_deposited
 
 ## Tries to insert items here after a [kbd]Shift+Click[/kbd] on a stack elsewhere. [br]
-## Returns the stack that appears where the clicked stack was, which is null on success and the same stack on fail.
+## Returns the stack that appears where the clicked stack was, which is null on success and the same stack if some items could not get transferred.
 func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
 	var count_transferred := try_add_item(item_stack)
 	item_stack.count -= count_transferred
@@ -101,8 +96,11 @@ func add_items_to_stack(item_stack : ItemStack, delta : int = 1):
 	else:
 		remove_item(item_stack)
 
-## Removes the stack from this inventory, it it was in here.
+## Removes the stack from this inventory, if it was in here.
 func remove_item(item_stack : ItemStack):
+	if item_stack.inventory != self:
+		return
+
 	items.remove_at(item_stack.index_in_inventory)
 	_clear_stack_cells(item_stack)
 
@@ -208,17 +206,23 @@ func _add_to_items_array(item_stack : ItemStack):
 func _try_stack_item(item_stack : ItemStack, count_delta : int = 1) -> int:
 	if count_delta == 0: return 0
 
+	var maxcount := get_max_count(item_stack.item_type)
 	var deposited_count := 0
 	for x in items:
-		if x.can_stack_with(item_stack):
-			deposited_count = ItemStack.get_stack_delta_if_added(x.count, count_delta, get_max_count(item_stack.item_type))
-			## If stack full, move on.
-			if deposited_count == 0: continue
-			x.count += deposited_count
-			item_stack_changed.emit(x, deposited_count)
-			return deposited_count
+		if !x.can_stack_with(item_stack):
+			continue
 
-	return 0
+		var deposited_in_stack := ItemStack.get_stack_delta_if_added(x.count, count_delta - deposited_count, maxcount)
+		if deposited_in_stack == 0:
+			continue
+
+		x.count += deposited_in_stack
+		deposited_count += deposited_in_stack
+		item_stack_changed.emit(x, deposited_in_stack)
+		if deposited_in_stack == count_delta:
+			break
+
+	return deposited_count
 
 
 func _clear_stack_cells(item_stack : ItemStack):
