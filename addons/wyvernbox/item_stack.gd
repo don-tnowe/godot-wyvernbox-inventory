@@ -68,7 +68,6 @@ func _init(item_type : ItemType, item_count : int = 1, item_extra_properties = n
 		if item_extra_properties != null && item_extra_properties.size() > 0 else
 		item_type.default_properties.duplicate(true)
 	)
-	set_name_from_serialized(extra_properties.get(&"name", ""))
 
 ## Creates a copy of the stack with the specified count. [br]
 ## Useful for splitting a stack into multiple.
@@ -76,7 +75,6 @@ func duplicate_with_count(new_count : int) -> ItemStack:
 	var new_stack := ItemStack.new(
 		item_type, new_count, extra_properties.duplicate(true)
 	)
-	new_stack.copy_name(self)
 	return new_stack
 
 ## Sets the count of the item, also updating inventory views.
@@ -312,7 +310,6 @@ static func new_from_dict(dict : Dictionary) -> ItemStack:
 		dict[&"count"],
 		dict[&"extra"],
 	)
-	new_item.set_name_from_serialized(dict.get(&"name", ""))
 	var new_position = dict.get(&"position", Vector2(-1, -1))
 	if new_position is Vector3:
 		# Can happen if loaded from GroundItemManager.
