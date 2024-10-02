@@ -13,7 +13,7 @@ signal input_on_inventory(event : InputEvent, grabbed_item : ItemStack, onto_ite
 ## Set [member item_input_cancelled] while handling this signal to prevent the action.
 signal input_on_empty(event : InputEvent, grabbed_item : ItemStack)
 
-@export_group("Drop")
+@export_group("Drop On Ground")
 
 ## The node whose position [method drop_on_ground] uses for spawning a ground item.
 @export var drop_at_node := NodePath("")
@@ -24,15 +24,13 @@ signal input_on_empty(event : InputEvent, grabbed_item : ItemStack)
 ## The max distance an item dropped by [method drop_on_ground] can fly.
 @export var drop_max_distance := 256.0
 
-@export_group("Drop/3D")
-
 ## The [Camera3D] used for dropping the item into a 3D scene. In 2D, unused.
 @export var drop_camera_3d := NodePath("")
 
 ## For dropping items in 3D, the physics layers to hit when determining destination position.
 @export_flags_3d_physics var drop_ray_mask := 1
 
-@export_group("View")
+@export_group("View and Gestures")
 
 ## The size of the item's texture, if its in-inventory size was [code](1, 1)[/code].
 @export var unit_size := Vector2(18, 18)
@@ -40,6 +38,9 @@ signal input_on_empty(event : InputEvent, grabbed_item : ItemStack)
 ## Hide the mouse cursor while item is grabbed. [br]
 ## If item texture lags 1 frame behind the user's cursor, set this to [code]false[/code] to reduce the "floaty" feel.
 @export var hide_cursor := false
+
+## Maximum time between clicks to register a double-click, a gesture for grabbing all items of one type. Set to 0 to disable.
+@export var double_click_time_msec := 200
 
 ## The currently grabbed stack - returns [code]null[/code] if none, or if no instances of this class exist.
 static var grabbed_stack : ItemStack:
@@ -61,6 +62,8 @@ var item_input_cancelled := false
 
 
 static var _instance : GrabbedItemStackView
+static var _last_click_time_msec := 0
+static var _last_click_pos := Vector2()
 
 var _last_input_non_pointer := false
 
@@ -101,6 +104,14 @@ static func select_cell_nearest(view : InventoryView):
 	_instance.selected_item_inventory = view
 	view.selected_cell = cell
 	_instance.grab_focus()
+
+
+static func double_click_valid() -> bool:
+	return (
+		_instance != null
+		&& Time.get_ticks_msec() <= _last_click_time_msec + _instance.double_click_time_msec
+		&& _last_click_pos == _instance.global_position
+	)
 
 
 func _ready():
@@ -208,6 +219,28 @@ func drop_one():
 		
 	update_stack(stack, unit_size, false)
 
+## Gather all items that would stack with the grabbed item, from a specific inventory, until full.
+func gather_same(from_inventory : Inventory):
+	if stack == null:
+		return
+
+	var left_to_grab := stack.item_type.max_stack_count - stack.count
+	if left_to_grab == 0:
+		drop()
+		return
+
+	for x in from_inventory.items.duplicate():
+		if x.can_stack_with(stack):
+			var transfered_count := mini(left_to_grab, x.count)
+			from_inventory.add_items_to_stack(x, -transfered_count)
+			add_items_to_stack(transfered_count)
+			left_to_grab -= transfered_count
+
+		if left_to_grab == 0:
+			break
+
+	update_stack(stack, unit_size, false)
+
 
 func _move_to_mouse():
 	global_position = get_global_mouse_position() - size * 0.5 * scale
@@ -280,12 +313,21 @@ func _input(event : InputEvent):
 			return
 
 	if event is InputEventMouseButton:
-		if Input.is_action_pressed(&"inventory_more"): return
+		if Input.is_action_pressed(&"inventory_more"):
+			return
+
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			drop()
+			if double_click_valid() && selected_item_inventory != null:
+				gather_same(selected_item_inventory.inventory)
+
+			else:
+				drop()
 
 		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
 			drop_one()
+
+		_last_click_time_msec = Time.get_ticks_msec()
+		_last_click_pos = global_position
 
 
 func _gui_input(event : InputEvent):

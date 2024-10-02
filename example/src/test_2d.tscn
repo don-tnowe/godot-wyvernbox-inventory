@@ -267,6 +267,7 @@ visible = false
 [node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("14_j0ghj")]
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
+double_click_time_msec = 200
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.

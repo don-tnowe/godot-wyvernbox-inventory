@@ -80,6 +80,10 @@ func duplicate_with_count(new_count : int) -> ItemStack:
 
 ## Sets the count of the item, also updating inventory views.
 func set_count_and_update(new_count : int):
+	if inventory == null:
+		count = new_count
+		return
+
 	inventory.add_items_to_stack(self, new_count - count)
 
 ## Returns how many items would overflow above [member max_stack_count], if [code]count_delta[/code] was to be added. [br]
