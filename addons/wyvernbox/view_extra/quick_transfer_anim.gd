@@ -3,14 +3,16 @@ extends Control
 
 ## Animates the Quick Transfer (default: Shift + Left-Click) user action for inventory views.
 ##
-## This node has global effect, [b]but[/b] will not animate new inventories - register them via [method register_inventory].
+## This node has global effect, [b]but[/b] will not animate inventories added after this node - register them via [method register_inventory]. [br]
+## This node also does not respect the [code]"custom_texture"[/code] and [/code]"texture_colors"[/code] [member ItemType.extra_properties], only drawing the default texture of the item type.
 
 class QuickTransferAnimInstance extends RefCounted:
 	var global_xform_start := Transform2D()
 	var global_xform_end := Transform2D()
 	var size_start := Vector2()
 	var size_end := Vector2()
-	var item_type : ItemType
+	var item_stack : ItemStack
+	var item_stack_tex_half_size : Vector2
 	var progress := 0.0
 	var finished := false
 
@@ -21,6 +23,7 @@ class QuickTransferAnimInstance extends RefCounted:
 @export var anim_ghost_spacing_sec := 0.1
 @export var anim_ghost_color := Color.WHITE
 @export var anim_destination_color := Color.WHITE
+@export var anim_item_color := Color.WHITE
 
 var _ongoing_anims : Array[QuickTransferAnimInstance] = []
 var _ongoing_anims_active := 0
@@ -92,8 +95,12 @@ func _draw() -> void:
 
 		draw_set_transform_matrix(x.global_xform_end)
 		draw_rect(Rect2(Vector2.ZERO, x.size_end), Color(anim_destination_color, anim_destination_color.a * (1.0 - x.progress)))
-		draw_set_transform_matrix(item_tex_xform)
-		draw_texture(x.item_type.texture, Vector2.ZERO)
+		draw_set_transform_matrix(
+			item_tex_xform
+			.scaled_local(x.item_stack.item_type.texture_scale * Vector2.ONE)
+			.translated(x.item_stack_tex_half_size + x.size_end * 0.5)
+		)
+		draw_texture(x.item_stack.item_type.texture, Vector2.ZERO, anim_item_color)
 
 
 func _on_quick_transfer(potential_targets : Array[InventoryView], stack_transfered : ItemStack, stack_view_local_rect : Rect2, inventory_view : InventoryView):
@@ -133,4 +140,5 @@ func _on_item_stack_changed(stack : ItemStack, count_delta : int, inventory_view
 	new_anim.global_xform_end = inventory_view.get_global_transform().translated_local(item_rect.position)
 	new_anim.size_end = item_rect.size
 	new_anim.progress = -anim_ghost_spacing_sec * anim_ghost_count
-	new_anim.item_type = stack.item_type
+	new_anim.item_stack = stack
+	new_anim.item_stack_tex_half_size = -stack.item_type.texture.get_size() * stack.item_type.texture_scale * 0.5

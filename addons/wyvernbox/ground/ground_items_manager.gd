@@ -83,7 +83,7 @@ func to_array():
 			&"type" : cur_stack.item_type.resource_path,
 			&"count" : cur_stack.count,
 			&"extra" : cur_stack.extra_properties,
-			&"name" : [cur_stack.name_prefixes, cur_stack.name_override, cur_stack.name_suffixes],
+			&"name" : cur_stack.name_override,
 			&"position" : children[i].position,
 		}
 	
