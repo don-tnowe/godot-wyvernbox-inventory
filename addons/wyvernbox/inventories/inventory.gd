@@ -24,9 +24,7 @@ signal loaded_from_dict(dict)
 		_update_size()
 		if &"restricted_to_types" in self && !self._restricted_to_types_changing:
 			self._restricted_to_types_changing = true
-			var old_restricted = self.restricted_to_types.duplicate()
-			old_restricted.resize(v)
-			self.restricted_to_types = old_restricted
+			self.restricted_to_types.resize(v)
 			self._restricted_to_types_changing = false
 
 		emit_changed()
@@ -50,12 +48,12 @@ func _update_size():
 ## Returns the number of items deposited, which equates to stack's [member ItemStack.count] on success and [code]0[/code] if inventory was full. [br]
 ## [code]total_deposited[/code] should not be set, as it is used internally.
 func try_add_item(stack : ItemStack, total_deposited : int = 0) -> int:
-	var item_type = stack.item_type
-	var count = stack.count
-	var maxcount = get_max_count(item_type)
+	var item_type := stack.item_type
+	var count := stack.count
+	var maxcount := get_max_count(item_type)
 	if count == 0: return 0
 	while count > maxcount:
-		var deposited_overflow = try_add_item(stack.duplicate_with_count(maxcount))
+		var deposited_overflow := try_add_item(stack.duplicate_with_count(maxcount))
 		count -= maxcount
 		if deposited_overflow < maxcount:
 			return deposited_overflow + total_deposited
@@ -177,7 +175,7 @@ func get_item_at_positionv(pos : Vector2) -> ItemStack:
 
 ## Returns the item's max stack count. [br]
 ## Override to create inventory types with a custom stack limit.
-func get_max_count(item_type):
+func get_max_count(item_type : ItemType) -> int:
 	return item_type.max_stack_count
 
 ## Returns [code]true[/code] if the [member entry_filter] allows insertion at the specified cell position.
@@ -200,7 +198,7 @@ func matches_entry_filter(item_stack : ItemStack, pos : Vector2 = Vector2.ZERO) 
 	return result
 
 
-func _add_to_items_array(item_stack):
+func _add_to_items_array(item_stack : ItemStack):
 	item_stack.inventory = self
 	item_stack.index_in_inventory = items.size()
 	items.append(item_stack)
@@ -249,8 +247,8 @@ func _place_stackv(top : ItemStack, bottom : ItemStack, pos : Vector2) -> ItemSt
 
 
 func _drop_stack_on_stack(top : ItemStack, bottom : ItemStack) -> int:
-	var top_count = top.count
-	var bottom_count_delta = ItemStack.get_stack_delta_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
+	var top_count := top.count
+	var bottom_count_delta := ItemStack.get_stack_delta_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
 	top.count = ItemStack.get_stack_overflow_if_added(bottom.count, top_count, get_max_count(bottom.item_type))
 	bottom.count += bottom_count_delta
 	return bottom_count_delta
@@ -262,7 +260,7 @@ func _swap_stacks(top : ItemStack, bottom : ItemStack) -> ItemStack:
 		remove_item(bottom)
 		return bottom
 	
-	var bottom_count_delta = _drop_stack_on_stack(top, bottom)
+	var bottom_count_delta := _drop_stack_on_stack(top, bottom)
 	if top.count == 0:
 		top = null
 	
@@ -294,7 +292,7 @@ func count_all_items(into_dict : Dictionary = {}) -> Dictionary:
 ## Note: this method modifies the passed dictionary.
 func count_items(items_patterns, into_dict : Dictionary = {}, prepacked_reqs : Dictionary = {}) -> Dictionary:
 	var matched_pattern
-	var check_reqs = prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
+	var check_reqs := prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
 	for x in items:
 		## Dictionary lookup is faster than _get_match(), which has an array search
 		## and a call on an array of type-unknown objects
@@ -324,9 +322,9 @@ func has_items(items_patterns, item_type_counts : Dictionary) -> bool:
 ## Note: this method modifies the [code]item_type_counts[/code] dictionary. The resulting values will match the types/patterns that could not be fully fulfilled. [br]
 ## If [code]prepacked_reqs[/code] set, checks only items (not patterns!) in the keys. In most cases, it makes the method work faster.
 func consume_items(item_type_counts : Dictionary, check_only : bool = false, prepacked_reqs : Dictionary = {}) -> Array:
-	var consumed_stacks = []
+	var consumed_stacks := []
 	## See count_items().
-	var check_reqs = prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
+	var check_reqs := prepacked_reqs.size() > 0 && !prepacked_reqs.has(null)
 	var matched_pattern
 	var stack_value : float
 	for x in get_items_ordered():
@@ -343,7 +341,7 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 		stack_value = matched_pattern.get_value(x)
 		item_type_counts[matched_pattern] -= stack_value
 		if item_type_counts[matched_pattern] <= 0:
-			var consumed_from_stack = x.count + ceil(item_type_counts[matched_pattern] / (stack_value / x.count))
+			var consumed_from_stack : int = x.count + ceili(item_type_counts[matched_pattern] / (stack_value / x.count))
 			consumed_stacks.append(x.duplicate_with_count(consumed_from_stack))
 			if !check_only:
 				add_items_to_stack(x, -consumed_from_stack)
@@ -359,15 +357,15 @@ func consume_items(item_type_counts : Dictionary, check_only : bool = false, pre
 	return consumed_stacks
 
 ## Returns items ordered by cell position.
-func get_items_ordered():
-	var arr = items.duplicate()
+func get_items_ordered() -> Array:
+	var arr := items.duplicate()
 	arr.sort_custom(_compare_pos_sort)
 	return arr
 
 ## Returns position vectors of all free cells in the inventory.
 func get_all_free_positions(for_size_x : int = 1, for_size_y : int = 1) -> Array:
 	var free_cells := []
-	var height = self.height if &"height" in self else 1
+	var height : int = self.height if &"height" in self else 1
 	for i in width:
 		for j in height:
 			if get_item_at_position(i, j) == null:
@@ -388,7 +386,7 @@ func _get_match(item : ItemStack, items_patterns) -> Resource:
 
 ## Sorts the inventory by item size, then type.
 func sort():
-	var by_size_type = {}
+	var by_size_type := {}
 	var cur_size : Vector2
 	for x in items.duplicate():
 		cur_size = x.item_type.get_size_in_inventory()
@@ -401,7 +399,7 @@ func sort():
 		by_size_type[cur_size][x.item_type].append(x)
 		remove_item(x)
 	
-	var sizes = by_size_type.keys()
+	var sizes := by_size_type.keys()
 	sizes.sort_custom(_compare_size_sort)
 
 	for k in sizes:
@@ -438,7 +436,7 @@ func load_from_dict(dict : Dictionary):
 
 ## Returns the contents of this inventory as an array of dictionaries. Useful for serialization.
 func to_array() -> Array:
-	var array = []
+	var array := []
 	array.resize(items.size())
 	for i in array.size():
 		array[i] = items[i].to_dict()
@@ -456,8 +454,8 @@ func save_state(filename : String, extra_data : Dictionary = {}, as_text : bool 
 	if DirAccess.open(filename_dir) == null:
 		DirAccess.make_dir_recursive_absolute(filename_dir)
 
-	var file = FileAccess.open(filename, FileAccess.WRITE)
-	var data = {"contents" : to_array()}
+	var file := FileAccess.open(filename, FileAccess.WRITE)
+	var data := {"contents" : to_array()}
 	data.merge(extra_data)
 	if as_text:
 		file.store_var(var_to_str(data))
@@ -471,7 +469,7 @@ func load_state(filename):
 	if filename == "": return
 	filename = "user://" + filename.trim_prefix("user://")
 
-	var file = FileAccess.open(filename, FileAccess.READ)
+	var file := FileAccess.open(filename, FileAccess.READ)
 	if file == null: return
 
 	var data = file.get_var()

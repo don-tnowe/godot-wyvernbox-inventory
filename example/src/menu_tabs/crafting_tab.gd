@@ -7,14 +7,14 @@ extends MarginContainer
 @export var input_from_all_takeable := true
 @export var just_put_it_into_my_hand := true
 
-@onready var recipe_list_node = $"VBoxContainer/ScrollContainer/VBoxContainer"
+@onready var recipe_list_node := $"VBoxContainer/ScrollContainer/VBoxContainer"
 
-var rng = RandomNumberGenerator.new()
+var rng := RandomNumberGenerator.new()
 
 
 func _ready():
 	rng.randomize()
-	var _1 = connect("visibility_changed", Callable(self, "update_availability"))
+	connect("visibility_changed", Callable(self, "update_availability"))
 	var new_btn
 	for i in item_conversions.size():
 		new_btn = Button.new()

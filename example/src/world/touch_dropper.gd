@@ -7,7 +7,7 @@ extends Node
 
 
 func _ready():
-	var _1 = connect("body_entered", Callable(self, "_on_body_entered"))
+	connect("body_entered", Callable(self, "_on_body_entered"))
 	if loot_table == null:
 		loot_table = ItemInstantiator.new()
 

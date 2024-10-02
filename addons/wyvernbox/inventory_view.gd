@@ -164,7 +164,7 @@ static var _instances : Array[InventoryView] = []:
 
 var _dragged_node : Control
 var _dragged_stack : ItemStack
-var _view_nodes := []
+var _view_nodes : Array[Control] = []
 var _deselect_signal_interrupted := false
 var _selection_node : Control
 var _last_quick_transfer := Vector2(-1, -1)
@@ -483,7 +483,7 @@ func _position_item(node : Control, item_stack : ItemStack):
 		node.global_position = xform * (cell_size * item_stack.position_in_inventory)
 		return
 
-	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
+	var cell : Control = $"Cells".get_child(item_stack.position_in_inventory.x)
 	node.global_position = cell.global_position
 	node.size = cell.size
 
@@ -516,9 +516,9 @@ func _on_item_stack_removed(item_stack : ItemStack):
 	item_stack_deselected.emit(_view_nodes[item_stack.index_in_inventory])
 	_deselect_signal_interrupted = true
 
-	var nodes = _view_nodes.duplicate()
+	var nodes := _view_nodes.duplicate()
 	_view_nodes.pop_back().queue_free()
-	var items = inventory.items
+	var items := inventory.items
 	var node_idx := -1
 	for inv_idx in items.size():
 		if items[inv_idx] == null: continue
@@ -539,7 +539,7 @@ func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 	if inventory.get_item_at_positionv(item_stack.position_in_inventory) != item_stack:
 		return
 
-	var node = _view_nodes[item_stack.index_in_inventory]
+	var node := _view_nodes[item_stack.index_in_inventory]
 	_redraw_item(node, item_stack)
 	item_stack_changed.emit(item_stack, count_delta)
 
@@ -630,7 +630,7 @@ func _try_buy(stack : ItemStack):
 		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
 			x.inventory.count_items(price, counts)
 
-	var items_to_check = {}
+	var items_to_check := {}
 	for k in price:
 		if !counts.has(k) || counts[k] < price[k]:
 			return false
@@ -676,8 +676,8 @@ func _quick_transfer_anywhere(stack : ItemStack):
 		grab_attempted.emit(stack, false)
 		return
 
-	var original_pos = stack.position_in_inventory
-	var targets = _get_quick_transfer_targets(stack.extra_properties.has(&"price"))
+	var original_pos := stack.position_in_inventory
+	var targets := _get_quick_transfer_targets(stack.extra_properties.has(&"price"))
 	if targets.size() == 0: return
 
 	if stack.count > stack.item_type.max_stack_count:
@@ -825,7 +825,7 @@ func save_state(filepath = ""):
 	if Engine.is_editor_hint(): return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
 
-	var extras = _get_saved_properties()
+	var extras := _get_saved_properties()
 	if save_extra_data != null:
 		extras.merge(save_extra_data, true)
 
@@ -838,7 +838,7 @@ func load_state(filepath = ""):
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 
 
-func _get_saved_properties():
+func _get_saved_properties() -> Dictionary:
 	return {
 		&"$_init_contents" : init_contents,
 	}

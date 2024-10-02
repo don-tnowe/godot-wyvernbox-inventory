@@ -26,7 +26,7 @@ func open_inworld_inventory(inventory_view : Control, inventory_name : String):
 	tabs.set_tab_hidden(0, false)
 	tabs.current_tab = 0
 
-	var copied_inventory = inventory_view.duplicate()
+	var copied_inventory := inventory_view.duplicate()
 	ui_inventory.add_child(copied_inventory)
 	copied_inventory.name = "Inventory"
 	copied_inventory.show()

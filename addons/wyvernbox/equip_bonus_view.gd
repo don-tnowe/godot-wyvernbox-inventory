@@ -23,7 +23,7 @@ func tooltip_display_bonus(bonus_res : EquipBonus):
 	if !is_instance_valid(tt):
 		return
 
-	var desc = tr(bonus_res.description)
+	var desc := tr(bonus_res.description)
 	if desc == bonus_res.description:
 		desc = ""
 

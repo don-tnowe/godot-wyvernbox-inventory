@@ -47,18 +47,18 @@ func _on_id_selected(id : int):
 				list_node.emit_changed(k, list_node.columns[k], "", true)
 
 		OPTION_NEW_PATTERN:
-			var new_res = ItemPattern.new()
+			var new_res := ItemPattern.new()
 			list_node._drop_data(Vector2.ONE, {"resources" : [new_res]})
 
 		OPTION_NEW_GENERATOR:
-			var new_res = ItemGenerator.new()
+			var new_res := ItemGenerator.new()
 			list_node._drop_data(Vector2.ONE, {"resources" : [new_res]})
 
 	icon = get_theme_icon("GuiTabMenuHl", "EditorIcons")
 
 
-static func var_to_str_without_sorted_keys(dict):
-	var strings = []
+static func var_to_str_without_sorted_keys(dict : Dictionary) -> String:
+	var strings := []
 	for k in dict:
 		strings.append("\"%s\":%s" % [k, var_to_str(dict[k])])
 

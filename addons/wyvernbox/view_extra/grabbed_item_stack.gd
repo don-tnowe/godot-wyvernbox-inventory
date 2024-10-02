@@ -125,7 +125,7 @@ func _ready():
 	focus_previous = "."
 	focus_next = "."
 
-	var new_node = Control.new()
+	var new_node := Control.new()
 	new_node.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	new_node.gui_input.connect(_drop_surface_input)
 	new_node.name = "DropSurface"
@@ -152,7 +152,7 @@ func update_stack(new_stack: ItemStack, unit_size: Vector2 = unit_size, show_bac
 ## Grabs a stack, removing it from its inventory.
 func grab(item_stack : ItemStack):
 	if item_stack.inventory != null:
-		var max_count = item_stack.item_type.max_stack_count
+		var max_count := item_stack.item_type.max_stack_count
 		if item_stack.count > max_count:
 			item_stack.inventory.add_items_to_stack(item_stack, -max_count)
 			item_stack = item_stack.duplicate_with_count(max_count)
@@ -188,8 +188,8 @@ func drop_one():
 		update_stack(stack, unit_size, false)
 		return
 	
-	var one = stack
-	var all_but_one = stack.duplicate_with_count(stack.count - 1)
+	var one := stack
+	var all_but_one := stack.duplicate_with_count(stack.count - 1)
 	stack.count = 1
 	## Drop first. This function changes stack to whatever's returned.
 	_any_inventory_try_drop_stack(stack)
@@ -356,7 +356,7 @@ func _item_grab_focus_neighbor(item : Control, direction : Vector2, items_only :
 	if direction.y < 0:
 		focus_side = SIDE_TOP
 
-	var found_nb := item.find_valid_focus_neighbor(focus_side)
+	var found_nb : Control = item.find_valid_focus_neighbor(focus_side)
 	if is_instance_valid(found_nb):
 		if items_only && !found_nb is ItemStackView:
 			return null

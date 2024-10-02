@@ -67,7 +67,7 @@ func set_stack(stack : ItemStack):
 
 ## Tries to add item into [code]into_inventory[/code], freeing this node on full success.
 func try_pickup(into_inventory : Inventory):
-	var deposited_count = into_inventory.try_add_item(item_stack)
+	var deposited_count := into_inventory.try_add_item(item_stack)
 	item_stack.count -= deposited_count
 	if item_stack.count <= 0:
 		queue_free()

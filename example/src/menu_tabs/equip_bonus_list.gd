@@ -26,7 +26,7 @@ func _on_Equip_item_stack_removed(item_stack):
 
 
 func _on_Equip_item_stack_added(item_stack):
-	var item_stats = item_stack.extra_properties[&"stats"]
+	var item_stats : Dictionary = item_stack.extra_properties[&"stats"]
 	stats_per_item[item_stack.position_in_inventory] = item_stats
 	update_view()
 	
@@ -51,7 +51,7 @@ func _update_stat_view():
 	_update_nullable($"OffDef/Def/HBoxContainer/Def", "defense+")
 	_update_nullable($"OffDef/Def/HBoxContainer/Dodge", "dodgerate+")
 
-	var already_shown_stats = {
+	var already_shown_stats := {
 		&"weapon_damage+" : true,
 		&"weapon_speed+" : true,
 		&"spell_damage+" : true,
@@ -66,7 +66,7 @@ func _update_stat_view():
 	}
 	var other_list : RichTextLabel = $"OtherStats"
 	other_list.clear()
-	var stats_sorted = stats.keys()
+	var stats_sorted := stats.keys()
 	stats_sorted.sort()
 	var equip_bonus_tooltip : Script = load("res://addons/wyvernbox/extension/tooltip_property_stats.gd")
 	for k in stats_sorted:

@@ -60,7 +60,7 @@ func get_rng(passed_rng : RandomNumberGenerator):
 func populate_inventory(target_inventory : Object, rng : RandomNumberGenerator = null):
 	rng = get_rng(rng)
 	var inventory : Inventory = target_inventory.inventory if target_inventory is InventoryView else target_inventory
-	var generated_items = get_items(rng)
+	var generated_items := get_items(rng)
 	if !randomize_locations:
 		for x in generated_items:
 			inventory.try_add_item(x)
@@ -123,10 +123,10 @@ func populate_inventory(target_inventory : Object, rng : RandomNumberGenerator =
 ## Drops listed items to the ground.
 func populate_ground(origin : Node, ground : GroundItemManager, rng : RandomNumberGenerator = null):
 	rng = get_rng(rng)
-	var tree = ground.get_tree()
+	var tree := ground.get_tree()
 	var generated_items := get_items(rng)
 	var is_3d := !origin is Node2D
-	var spawn_origin = origin.global_position if is_3d else origin.global_position
+	var spawn_origin = origin.global_position
 
 	await tree.process_frame  # Ground items tend to have phys objects and be created when something's destroyed
 
@@ -176,7 +176,7 @@ func get_items(rng : RandomNumberGenerator = null) -> Array:
 
 	var generated_items := []
 	for i in items_to_add.size():
-		var item = items_to_add[i]
+		var item := items_to_add[i]
 		var repeats := rng.randi_range(item_repeat_ranges[i].x, item_repeat_ranges[i].y)
 
 		for i_pre in repeats if !repeat_post_chance else 1:

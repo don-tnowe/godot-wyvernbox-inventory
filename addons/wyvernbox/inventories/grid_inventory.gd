@@ -118,10 +118,10 @@ func try_place_stackv(item_stack : ItemStack, pos : Vector2) -> ItemStack:
 	):
 		return item_stack
 	
-	var found_stack = null
+	var found_stack : ItemStack = null
 	for i in range(pos.x, pos.x + item_stack.item_type.in_inventory_width):
 		for j in range(pos.y, pos.y + item_stack.item_type.in_inventory_height):
-			var found_now = get_item_at_position(i, j)
+			var found_now := get_item_at_position(i, j)
 			if found_now == item_stack: continue
 			if found_now != found_stack:
 				if found_stack == null:

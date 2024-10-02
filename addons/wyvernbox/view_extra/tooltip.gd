@@ -231,7 +231,7 @@ func get_action_bbcode(action : String) -> String:
 ## Turns a [Texture] into rich text. [br]
 ## Allows to specify scale. For a fixed height, see [method get_fixheight_texture_bbcode].
 static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> String:
-	var loaded = load(tex_path)
+	var loaded := load(tex_path)
 	if loaded == null: return ""
 	return "[img=%sx%s]%s[/img]" % [
 		loaded.get_width() * tex_scale * TEX_SCALE,
@@ -242,9 +242,9 @@ static func get_texture_bbcode(tex_path : String, tex_scale : float = 1.0) -> St
 ## Turns a [Texture] into rich text. [br]
 ## Allows to specify a fixed height, in pixels. For a fixed pixel size, see [method get_texture_bbcode].
 static func get_fixheight_texture_bbcode(tex_path : String, tex_height : float) -> String:
-	var loaded = load(tex_path)
+	var loaded := load(tex_path)
 	if loaded == null: return ""
-	var tex_scale = loaded.get_height() / tex_height
+	var tex_scale : float = loaded.get_height() / tex_height
 	return "[img=%sx%s]%s[/img]" % [
 		loaded.get_width() * tex_scale,
 		loaded.get_height() * tex_scale,
@@ -311,10 +311,10 @@ func _get_filter_to_apply() -> Array[ItemLike]:
 	if last_func.get_method() != &"display_item":
 		return []
 
-	var item_stack = last_func.get_bound_arguments()[0]
+	var item_stack : ItemStack = last_func.get_bound_arguments()[0]
 
 	if Input.is_action_pressed(compare_input) && item_stack.extra_properties.has(&"price"):
-		var price_items = item_stack.extra_properties[&"price"].keys()
+		var price_items : Array = item_stack.extra_properties[&"price"].keys()
 		for i in price_items.size():
 			if price_items[i] is String:
 				price_items[i] = load(price_items[i])

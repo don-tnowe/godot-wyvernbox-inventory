@@ -53,7 +53,7 @@ signal item_cant_afford(item_stack : ItemStack)
 
 
 ## The [RandomNumberGenerator] used by my intricate [ItemGenerator]s!
-var rng = RandomNumberGenerator.new()
+var rng := RandomNumberGenerator.new()
 
 
 func _set_stock(v):
@@ -86,12 +86,12 @@ func _ready():
 
 ## Replenishes the inventory's contents with fresh stock from get_stock.
 func refill_stock():
-	var inventory = get_node(vendor_inventory).inventory
+	var inventory : Inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items:
 		inventory.remove_item(x)
 
 	for i in stock.size():
-		var stack = get_stock(i)
+		var stack := get_stock(i)
 		_put_up_for_sale(stack, inventory, i)
 		inventory.try_add_item(stack)
 
@@ -115,7 +115,7 @@ func get_stock(index : int) -> ItemStack:
 ## Clears all items placed here by the player.
 ## If [member clear_sold_items_when_hidden], gets called automatically when the parent [CanvasItem] gets hidden.
 func clear_sold_items():
-	var inventory = get_node(vendor_inventory).inventory
+	var inventory : Inventory = get_node(vendor_inventory).inventory
 	for x in inventory.items.duplicate():
 		if x.extra_properties["seller_stash_index"] == -1:
 			inventory.remove_item(x)
@@ -150,24 +150,24 @@ func _apply_price_markup(stack : ItemStack):
 	if !stack.extra_properties.has(&"price"):
 		return
 	
-	var price_dict = stack.extra_properties[&"price"]
+	var price_dict : Dictionary = stack.extra_properties[&"price"]
 	stack.extra_properties[&"real_price"] = price_dict.duplicate()
 	for k in price_dict:
 		price_dict[k] = int(price_dict[k] * price_markup)
 
 
 func _multiply_price_by_count(stack : ItemStack, reverse : bool = false):
-	var coeff = float(stack.count)
+	var coeff := float(stack.count)
 	if reverse:
 		coeff = 1 / coeff
 
-	var price_dict = stack.extra_properties[&"price"]
+	var price_dict : Dictionary = stack.extra_properties[&"price"]
 	for k in price_dict:
 		price_dict[k] = int(price_dict[k] * coeff)
 
 
 func _remove_from_sale(stack : ItemStack):
-	var props = stack.extra_properties
+	var props := stack.extra_properties
 	if props.has(&"price"):
 		props[&"price"] = props.get(
 			&"real_price", props[&"price"]
@@ -183,7 +183,7 @@ func _remove_from_sale(stack : ItemStack):
 
 
 func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
-	var inventory = get_node(vendor_inventory).inventory
+	var inventory : Inventory = get_node(vendor_inventory).inventory
 	if success:
 		_restock_item(item_stack, inventory)
 		_remove_from_sale(item_stack)
@@ -197,13 +197,13 @@ func _on_Inventory_grab_attempted(item_stack : ItemStack, success : bool):
 
 
 func _restock_item(item_stack : ItemStack, inventory : Inventory):
-	var stash_idx = item_stack.extra_properties[&"seller_stash_index"]
+	var stash_idx : int = item_stack.extra_properties[&"seller_stash_index"]
 	if stash_idx == -1:
 		return
 
-	var left_in_stock = item_stack.extra_properties.get(&"left_in_stock", -1)
-	var restock_item = get_stock(stash_idx)
-	var restock_pos = item_stack.position_in_inventory
+	var left_in_stock : int = item_stack.extra_properties.get(&"left_in_stock", -1)
+	var restock_item := get_stock(stash_idx)
+	var restock_pos := item_stack.position_in_inventory
 
 	# The item is not yet removed, only attempted to remove.
 	# Wait until the restock can be placed 
@@ -229,8 +229,8 @@ func _on_Inventory_item_stack_added(item_stack : ItemStack):
 	
 	item_received.emit(item_stack)
 	if item_stack.extra_properties.has(&"price") && has_node(sell_reward_into_inventory):
-		var inventory = get_node(sell_reward_into_inventory).inventory
-		var reward = item_stack.extra_properties[&"price"]
+		var inventory : Inventory = get_node(sell_reward_into_inventory).inventory
+		var reward : Dictionary = item_stack.extra_properties[&"price"]
 		for k in reward:
 			inventory.try_add_item(ItemStack.new(load(k) if k is String else k, reward[k] * item_stack.count))
 	
