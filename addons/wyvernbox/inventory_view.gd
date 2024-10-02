@@ -25,6 +25,8 @@ signal item_stack_changed(item_stack : ItemStack, count_delta : int)
 signal item_stack_removed(item_stack : ItemStack)
 ## Emitted when a grab is attempted by the user. [code]false[/code] if [member interaction_mode] disallows it completely, or if it states this is a vendor and item price isn't fulfilled.
 signal grab_attempted(item_stack : ItemStack, success : bool)
+## Emitted when a quick transfer (default: Shift + Left-Click) is attempted, before it makes changes to any inventories. On failure or after transferring all items, [signal grab_attempted] is emitted.
+signal before_quick_transfer(potential_targets : Array[InventoryView], stack_transfered : ItemStack, stack_view_local_rect : Rect2)
 
 ## Emitted when an item stack's view receives GUI input. Use [member ItemStackView]
 signal item_stack_gui_input(event : InputEvent, item_view : ItemStackView)
@@ -451,7 +453,7 @@ func get_item_view_at_positionv(pos : Vector2) -> ItemStackView:
 
 	return _view_nodes[found_item.index_in_inventory]
 
-## Returns the [Rect2] that encloses the item or cell, as if it was selected, in cell coordinates.
+## Returns the [Rect2] that encloses the item or cell at the specified position in cell coordinates. Returns a [Rect2] in this view's local coordinates.
 func get_selected_rect(cell : Vector2 = selected_cell) -> Rect2:
 	if !inventory.has_cell(cell.x, cell.y):
 		return Rect2()
@@ -671,13 +673,15 @@ func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	return inventory.try_place_stackv(stack, pos)
 
 
-func _quick_transfer_anywhere(stack : ItemStack):
+func _quick_transfer_anywhere(stack_view : ItemStackView):
+	var stack := stack_view.stack
 	if (interaction_mode & InteractionFlags.CAN_TAKE) == 0 || !_try_buy(stack):
 		grab_attempted.emit(stack, false)
 		return
 
 	var original_pos := stack.position_in_inventory
 	var targets := _get_quick_transfer_targets(stack.extra_properties.has(&"price"))
+	before_quick_transfer.emit(targets, stack_view.stack, stack_view.get_rect())
 	if targets.size() == 0: return
 
 	if stack.count > stack.item_type.max_stack_count:
@@ -685,12 +689,14 @@ func _quick_transfer_anywhere(stack : ItemStack):
 		stack = stack.duplicate_with_count(stack.item_type.max_stack_count)
 
 	else:
-		grab_attempted.emit(stack, true)
 		inventory.remove_item(stack)
 
-	var returned_stack
+	var returned_stack : ItemStack
+	var deposited_into_inventories : Array[InventoryView] = []
 	for x in targets:
 		returned_stack = x.inventory.try_quick_transfer(stack)
+		deposited_into_inventories.append(x)
+
 		# No item returned - slot empty.
 		if returned_stack == null: break
 		# Same stack returned, not all items delivered.
@@ -711,11 +717,11 @@ func _quick_transfer_anywhere(stack : ItemStack):
 		# 	if is_instance_valid(grabbed):
 		# 		grabbed.drop_on_ground(returned_stack)
 
-		grab_attempted.emit(stack, true)
+	grab_attempted.emit(stack, true)
 
 
-func _get_quick_transfer_targets(has_price) -> Array:
-	var result := []
+func _get_quick_transfer_targets(has_price) -> Array[InventoryView]:
+	var result : Array[InventoryView] = []
 	for x in InventoryView.get_instances():
 		if (
 			x == self
@@ -753,7 +759,7 @@ func _item_stack_selected(stack_view : ItemStackView):
 		var old_stack_pos := stack_view.stack.position_in_inventory
 		if _last_quick_transfer == old_stack_pos: return
 		_last_quick_transfer = old_stack_pos
-		_quick_transfer_anywhere(stack_view.stack)
+		_quick_transfer_anywhere(stack_view)
 		force_drag(0, null)
 		_selection_node.size = Vector2.ZERO
 
@@ -777,7 +783,7 @@ func _on_item_stack_gui_input(event : InputEvent, stack_view : ItemStackView):
 				_grab_stack(stack_view.stack.index_in_inventory)
 
 			else:
-				_quick_transfer_anywhere(stack_view.stack)
+				_quick_transfer_anywhere(stack_view)
 
 	if event is InputEventMouseMotion:
 		GrabbedItemStackView.select_cell(self, global_position_to_cell(event.global_position, GrabbedItemStackView.grabbed_stack))
