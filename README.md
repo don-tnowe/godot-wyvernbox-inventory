@@ -22,9 +22,9 @@ The `example/wyvernbox` folder contains some items and equipment stats to start.
 
 ## Features:
 
-- A variety of inventories, such as:
+- A variety of inventories, all compatible with GUI containers, such as:
   - Basic
-  - Grid (*items take up a rectangle of tiles)
+  - Grid (*items take up a rectangle of tiles*)
   - Restricted (*can only put items with certain flags, like Equipment or Ammo*)
   - Currency (*custom max stack size, but only specified items*)
 
@@ -33,7 +33,9 @@ The `example/wyvernbox` folder contains some items and equipment stats to start.
   - Crafting recipes are defined through an `ItemConversion` - can give you pre-determined results, randomized counts, or a fresh new from an `ItemGenerator`!
   - Use `ItemPattern`s to match one of several items in filters or recipes, like different fuel types with different efficiency!
 
+- **Gestures**: quick-transfer (Shift-Click), gather/transfer all items of type (Double-Click), split one/half (Right-Click)
 - Filter ground and inventory items via the versatile `ItemPattern` classes! Use them to control inventory insertion and crafting inputs.
+- Custom Inspector tables to map items to values in YOUR classes - used in ShopManager, ItemGenerator, and ItemPattern objects! Includes an Item Browser popup to easily drag-drop item types, generators and patterns from the project.
 - Tooltips extensible with the `TooltipProperty` class! Just slam a bunch of scripts onto it.
 
 #
