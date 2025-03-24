@@ -176,58 +176,59 @@ func add_items_to_stack(delta : int):
 ## Drop the whole stack onto the first inventory under the cursor.
 func drop():
 	if stack == null: return
-	_any_inventory_try_drop_stack(stack)
-	update_stack(stack, unit_size, false)
+	update_stack(_any_inventory_try_drop_stack(stack), unit_size, false)
 
 ## Drop one item from the stack onto the first inventory under the cursor.
 func drop_one():
 	## If you right-click before scene loads, APPARENTLY an error is thrown here.
 	if stack == null: return
 	if stack.count == 1:
-		_any_inventory_try_drop_stack(stack)
-		update_stack(stack, unit_size, false)
+		update_stack(_any_inventory_try_drop_stack(stack), unit_size, false)
 		return
 	
-	var one = stack
-	var all_but_one = stack.duplicate_with_count(stack.count - 1)
-	stack.count = 1
+	var one := stack
+	var all_but_one := stack.duplicate_with_count(stack.count - 1)
+	one.count = 1
+	stack = null
+
 	## Drop first. This function changes stack to whatever's returned.
-	_any_inventory_try_drop_stack(stack)
+	var drop_result := _any_inventory_try_drop_stack(one)
 
 	## If nothing was there, drop the 1 and keep holding the rest.
-	if stack == null:
-		stack = all_but_one
+	if drop_result == null:
+		drop_result = all_but_one
 	
-	## If the dropped 1 was returned (can't place), combine the stacks._add_random_item
-	elif stack == one:
+	## If the dropped 1 was returned (can't place), combine the stacks.
+	elif drop_result == one:
 		one.count += all_but_one.count
 
 	## If there was something in place, just drop all instead of 1.
 	else:
 		_any_inventory_try_drop_stack(all_but_one)
 		
-	update_stack(stack, unit_size, false)
+	update_stack(drop_result, unit_size, false)
 
 
 func _move_to_mouse():
 	global_position = get_global_mouse_position() - size * 0.5 * scale
 
 
-func _any_inventory_try_drop_stack(stack : ItemStack):
+func _any_inventory_try_drop_stack(stack_to_drop : ItemStack) -> ItemStack:
 	if !is_instance_valid(selected_item_inventory):
-		return
+		return stack_to_drop
 
-	var found_stack = selected_item_inventory.try_place_stackv(stack, selected_item_inventory.selected_cell)
-	if found_stack != stack:
+	var found_stack = selected_item_inventory.try_place_stackv(stack_to_drop, selected_item_inventory.selected_cell)
+	if found_stack != stack_to_drop:
 		get_viewport().set_input_as_handled()
 		if found_stack == null && hide_cursor:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
-		update_stack(found_stack)
-		return
+		return found_stack
+
+	return stack_to_drop
 
 ## Drop the specified stack on the ground at [member drop_at_node]'s position as child of [member drop_ground_item_manager].
-func drop_on_ground(stack : ItemStack, click_pos = null) -> bool:
+func drop_on_ground(stack_to_drop : ItemStack, click_pos = null) -> bool:
 	var node := get_node_or_null(drop_at_node)
 	if !is_instance_valid(node):
 		return false
@@ -252,7 +253,7 @@ func drop_on_ground(stack : ItemStack, click_pos = null) -> bool:
 	var ground_items := get_node(drop_ground_item_manager)
 	assert(is_instance_valid(ground_items), "GrabbedItemStackView can not spawn dropped items without a GroundItemManager! Add one to the scene and check GrabbedItemStackView properties, or connect the input_on_empty(event, item_stack) signal to a script to handle the drop yourself.")
 
-	ground_items.add_item(stack, spawn_at_pos, throw_vec)
+	ground_items.add_item(stack_to_drop, spawn_at_pos, throw_vec)
 	if hide_cursor:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
