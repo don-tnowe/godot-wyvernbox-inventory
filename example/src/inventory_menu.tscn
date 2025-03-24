@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dsoiq0u4jfsqb"]
+[gd_scene load_steps=29 format=3 uid="uid://dsoiq0u4jfsqb"]
 
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://0r7o3wklblhy" path="res://example/src/menu_tabs/equipment_tab.tscn" id="2"]
@@ -10,12 +10,14 @@
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="8"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="9"]
 [ext_resource type="Resource" uid="uid://bd1ddeel6achx" path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" id="10_j5svr"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="10_jrl1x"]
 [ext_resource type="Script" path="res://example/src/inventory_menu.gd" id="11"]
 [ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="11_v8equ"]
-[ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="12"]
+[ext_resource type="Resource" uid="uid://wvo0i5tdhbvl" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="12"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="13"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="14"]
 [ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="16"]
+[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/quick_transfer_anim.gd" id="18_qgajw"]
 
 [sub_resource type="AtlasTexture" id="2"]
 atlas = ExtResource("13")
@@ -63,7 +65,7 @@ width = 12
 
 [sub_resource type="Resource" id="13"]
 script = ExtResource("16")
-items_to_add = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("8"), ExtResource("9"), ExtResource("12")])
+items_to_add = Array[ExtResource("10_jrl1x")]([ExtResource("8"), ExtResource("9"), ExtResource("12")])
 item_repeat_ranges = Array[Vector2]([Vector2(5, 100), Vector2(5, 100), Vector2(16, 16)])
 item_chances = Array[float]([100.0, 100.0, 100.0])
 repeat_post_chance = true
@@ -113,13 +115,15 @@ placeholder_text = "Filter by name..."
 clear_button_enabled = true
 
 [node name="CenterContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 30.0
 offset_top = -145.0
 offset_right = 270.0
 offset_bottom = 130.0
+grow_vertical = 2
 mouse_filter = 2
 alignment = 1
 
@@ -127,11 +131,13 @@ alignment = 1
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1")
+current_tab = 0
 tab_focus_mode = 0
 
 [node name="Inworld" type="MarginContainer" parent="CenterContainer/TabContainer"]
 layout_mode = 2
 mouse_filter = 2
+metadata/_tab_index = 0
 
 [node name="BG" type="TextureRect" parent="CenterContainer/TabContainer/Inworld"]
 show_behind_parent = true
@@ -143,10 +149,12 @@ expand_mode = 1
 [node name="Equip" parent="CenterContainer/TabContainer" instance=ExtResource("2")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="Craft" type="CenterContainer" parent="CenterContainer/TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="Control" parent="CenterContainer/TabContainer/Craft" instance=ExtResource("6")]
 layout_mode = 2
@@ -154,6 +162,13 @@ layout_mode = 2
 [node name="Shop" parent="CenterContainer/TabContainer" instance=ExtResource("7")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="TabContainer" parent="CenterContainer/TabContainer/Shop" index="0"]
+current_tab = 0
+
+[node name="Equipment" parent="CenterContainer/TabContainer/Shop/TabContainer" index="1"]
+metadata/_tab_index = 0
 
 [node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="0"]
 mouse_filter = 2
@@ -161,12 +176,15 @@ mouse_filter = 2
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Equipment" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
 
+[node name="Consumables" parent="CenterContainer/TabContainer/Shop/TabContainer" index="2"]
+metadata/_tab_index = 1
+
 [node name="Inventory" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="0"]
 mouse_filter = 2
 
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
-stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("10_j5svr"), ExtResource("11_v8equ")])
+stock = Array[ExtResource("10_jrl1x")]([ExtResource("10_j5svr"), ExtResource("11_v8equ")])
 stock_counts = Array[int]([1, 1])
 stock_restocks = Array[int]([3, 3])
 
@@ -175,6 +193,7 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 alignment = 1
+metadata/_tab_index = 4
 
 [node name="Inventory" parent="CenterContainer/TabContainer/Stash" instance=ExtResource("3")]
 custom_minimum_size = Vector2(168, 168)
@@ -221,6 +240,20 @@ size_flags_horizontal = 3
 focus_mode = 0
 text = "Clear Filters (Alt+F)"
 script = ExtResource("5")
+
+[node name="QuickTransferAnim" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("18_qgajw")
+easing = 0.25
+anim_ghost_count = 10
+anim_ghost_spacing_sec = 0.02
+anim_ghost_color = Color(1, 1, 1, 0.498039)
 
 [connection signal="text_changed" from="Box/NameFilter" to="HBoxContainer/ClearAllInvViewFilters" method="_on_search_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Sort" to="Box/MainInventory" method="sort_inventory"]

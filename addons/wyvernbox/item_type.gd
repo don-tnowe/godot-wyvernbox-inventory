@@ -120,7 +120,7 @@ const EQUIPMENT_FLAGS := (
 		default_properties_string = v
 		if default_properties_converting: return
 		default_properties_converting = true
-		var converted = str_to_var(v)
+		var converted := str_to_var(v)
 		if converted is Dictionary: default_properties = converted
 		default_properties_converting = false
 

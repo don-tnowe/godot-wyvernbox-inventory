@@ -68,7 +68,6 @@ func _init(item_type : ItemType, item_count : int = 1, item_extra_properties = n
 		if item_extra_properties != null && item_extra_properties.size() > 0 else
 		item_type.default_properties.duplicate(true)
 	)
-	set_name_from_serialized(extra_properties.get(&"name", ""))
 
 ## Creates a copy of the stack with the specified count. [br]
 ## Useful for splitting a stack into multiple.
@@ -76,11 +75,15 @@ func duplicate_with_count(new_count : int) -> ItemStack:
 	var new_stack := ItemStack.new(
 		item_type, new_count, extra_properties.duplicate(true)
 	)
-	new_stack.copy_name(self)
+	new_stack.name_override = name_override
 	return new_stack
 
 ## Sets the count of the item, also updating inventory views.
 func set_count_and_update(new_count : int):
+	if inventory == null:
+		count = new_count
+		return
+
 	inventory.add_items_to_stack(self, new_count - count)
 
 ## Returns how many items would overflow above [member max_stack_count], if [code]count_delta[/code] was to be added. [br]
@@ -98,9 +101,7 @@ func get_delta_if_added(count_delta : int) -> int:
 func can_stack_with(stack : ItemStack, compare_extras : bool = true) -> bool:
 	return (
 		item_type == stack.item_type
-		&& name_prefixes == stack.name_prefixes
 		&& name_override == stack.name_override
-		&& name_suffixes == stack.name_suffixes
 		&& (!compare_extras || extra_properties == stack.extra_properties)
 	)
 
@@ -186,7 +187,6 @@ func set_name_from_serialized(new_name):
 			name_override = ""
 			name_suffixes = new_name.slice(found_at + 1)
 
-
 ## Returns bottom-right corner of the stack's rect in a [GridInventory]. [br]
 ## Equivalent to [method get_rect][code].end[/code].
 func get_bottom_right() -> Vector2:
@@ -218,7 +218,7 @@ static func get_stack_overflow_if_added(count : int, added : int, maxcount : int
 static func get_stack_delta_if_added(count : int, added : int, maxcount : int) -> int:
 	return int(min(maxcount - count, added))
 
-## Display texture on `node`, or its siblings if item has multiple layers. Nodes are created if needed. [br]
+## Display texture on [code]node[/code], or its siblings if item has multiple layers. The node should be a simple node with a [code]texture[/code] property, new nodes are created if needed. [br]
 ## Texture is shown based on [member item_type], but before that, [member extra_properties] is checked. [br]
 ## If [code]"custom_texture"[/code] is a [String] or [Texture], loads it. [br]
 ## If [code]"custom_texture"[/code] is a [Dictionary], tries to load it as an image. See [member Image.data]. [br]
@@ -230,25 +230,23 @@ func display_texture(node : Node):
 		x.modulate = Color.WHITE
 
 	node.texture = item_type.texture
+	node.scale = (Vector3.ONE if node is Node3D else Vector2.ONE) * item_type.texture_scale
+
 	_display_texture_internal(
 		node,
 		extra_properties.get(&"custom_texture", null),
 		extra_properties.get(&"texture_colors", []),
-		(Vector3.ONE if node is Node3D else Vector2.ONE) * item_type.texture_scale
 	)
 
 
-func _display_texture_internal(node : Node, data_or_paths, colors : Array = [], scale = Vector2.ONE, index : int = 0):
+func _display_texture_internal(node : Node, data_or_paths, colors : Array = [], index : int = 0):
 	if colors.size() > index:
 		node.self_modulate = colors[index]
 
-	if node is Control: node.scale = scale
-	else: node.scale = scale
-
 	if data_or_paths is Array:
-		var count = data_or_paths.size() if data_or_paths is Array else 1
-		var icon_parent = node.get_parent()
-		var original = node
+		var count : int = data_or_paths.size() if data_or_paths is Array else 1
+		var icon_parent := node.get_parent()
+		var original := node
 		for i in data_or_paths.size():
 			if icon_parent.get_child_count() > i:
 				node = original.duplicate()
@@ -257,14 +255,14 @@ func _display_texture_internal(node : Node, data_or_paths, colors : Array = [], 
 			else:
 				node = icon_parent.get_child(i)
 
-			_display_texture_internal(node, data_or_paths[i], colors, scale, i)
+			_display_texture_internal(node, data_or_paths[i], colors, i)
 
 		return
 
 	if data_or_paths is Dictionary:
-		var img = Image.new()
+		var img := Image.new()
 		img.data = data_or_paths
-		var tex = ImageTexture.create_from_image(img)
+		var tex := ImageTexture.create_from_image(img)
 		node.texture = tex
 		return
 
@@ -312,13 +310,13 @@ static func new_from_dict(dict : Dictionary) -> ItemStack:
 		dict[&"count"],
 		dict[&"extra"],
 	)
-	new_item.set_name_from_serialized(dict.get(&"name", ""))
 	var new_position = dict.get(&"position", Vector2(-1, -1))
 	if new_position is Vector3:
 		# Can happen if loaded from GroundItemManager.
 		new_position = Vector2(-1, -1)
 
 	new_item.position_in_inventory = new_position
+	new_item.set_name_from_serialized(dict.get(&"name", ""))
 	return new_item
 
 # Returns a dictionary representation of this [ItemStack]. Useful for serialization.
@@ -333,9 +331,7 @@ func to_dict():
 
 
 func _to_string():
-	return (
-		get_name()
-		+ "\nCount: " + str(count)
-		+ ", Data: \n" + str(extra_properties)
-		+ "\n"
-	)
+	return "<ItemStack: %s (x%s), %s Properties%s>" % [
+		get_name(), count, extra_properties.size(),
+		", Cell: " + str(position_in_inventory) if inventory != null else "",
+	]

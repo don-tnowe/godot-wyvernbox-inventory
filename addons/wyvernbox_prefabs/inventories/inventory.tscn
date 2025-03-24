@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cejqdb7jkd2o2"]
+[gd_scene load_steps=7 format=3 uid="uid://cejqdb7jkd2o2"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="3"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventories/inventory.gd" id="4"]
+[ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="4_qt0ti"]
 
 [sub_resource type="Resource" id="1"]
 resource_name = "Inventory"
@@ -17,103 +18,169 @@ script = ExtResource("2")
 inventory = SubResource("1")
 item_scene = ExtResource("1")
 interaction_mode = 5
+selected_item_style = ExtResource("4_qt0ti")
 
 [node name="Cells" type="GridContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 columns = 8
 
 [node name="Cell" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell2" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell3" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell4" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell5" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell6" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell7" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell8" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell9" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell10" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell11" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell12" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell13" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell14" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell15" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell16" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell17" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell18" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell19" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell20" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell21" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell22" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell23" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell24" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell25" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell26" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell27" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell28" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell29" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell30" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell31" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0
 
 [node name="Cell32" parent="Cells" instance=ExtResource("3")]
 layout_mode = 2
+focus_mode = 2
+mouse_filter = 0

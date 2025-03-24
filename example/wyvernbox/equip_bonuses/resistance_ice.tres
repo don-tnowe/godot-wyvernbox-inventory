@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("3")
 id = "resistance_ice+"
-name = "item_bonus_resistance_ice"
+name = &"item_bonus_resistance_ice"
 description = "item_bonus_desc_resistance_ice"
 affix = "item_affix_resistance_ice"
 affix_position = 1

@@ -25,6 +25,8 @@ signal item_stack_changed(item_stack : ItemStack, count_delta : int)
 signal item_stack_removed(item_stack : ItemStack)
 ## Emitted when a grab is attempted by the user. [code]false[/code] if [member interaction_mode] disallows it completely, or if it states this is a vendor and item price isn't fulfilled.
 signal grab_attempted(item_stack : ItemStack, success : bool)
+## Emitted when a quick transfer (default: Shift + Left-Click) is attempted, before it makes changes to any inventories. On failure or after transferring all items, [signal grab_attempted] is emitted.
+signal before_quick_transfer(potential_targets : Array[InventoryView], stack_transfered : ItemStack, stack_view_local_rect : Rect2)
 
 ## Emitted when an item stack's view receives GUI input. Use [member ItemStackView]
 signal item_stack_gui_input(event : InputEvent, item_view : ItemStackView)
@@ -113,61 +115,19 @@ signal selection_out_of_bounds(old_cell : Vector2, direction : Vector2)
 var last_autosave_sec := -1.0
 ## The currently selected inventory cell, for keyboard or controller navigation.
 var selected_cell := Vector2(-1, -1):
-	set(v):
-		var grabbed := GrabbedItemStackView.get_instance()
-		var sel_rect := Rect2()
-		var formerly_selected := inventory.get_item_at_positionv(selected_cell)
-		if v == Vector2(-1, -1):
-			selected_cell = v
-			_selection_node.queue_redraw()
-			if formerly_selected != null:
-				_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
-
-			return
-
-		if inventory is GridInventory && GrabbedItemStackView.grabbed_stack != null:
-			var item_size := grabbed.stack.item_type.get_size_in_inventory()
-			if inventory.has_cellv(v) && inventory.has_cellv(v + item_size - Vector2.ONE):
-				sel_rect = Rect2(cell_size * v, cell_size * item_size)
-
-		else:
-			sel_rect = get_selected_rect(v)
-
-		_selection_node.size = sel_rect.size
-		_selection_node.rotation = 0.0
-		_selection_node.position = sel_rect.position
-		if has_node(grid_background):
-			var xform : Transform2D = _selection_node.get_transform() * get_node(grid_background).get_transform()
-			_selection_node.size *= xform.get_scale()
-			_selection_node.rotation = xform.get_rotation()
-			_selection_node.position = xform.origin
-
-		_selection_node.queue_redraw()
-
-		var newly_selected := inventory.get_item_at_positionv(v)
-		if formerly_selected != newly_selected:
-			if formerly_selected != null:
-				_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
-
-			if newly_selected != null:
-				_item_stack_selected(_view_nodes[newly_selected.index_in_inventory])
-
-		if !inventory.has_cell(v.x, v.y):
-			v = Vector2(-1, -1)
-			if has_focus(): release_focus()
-
-		selected_cell = v
+	set = _set_selected_cell
 
 
 static var _instances : Array[InventoryView] = []:
 	set(v): return
 
+var _cell_parent : Control
 var _dragged_node : Control
 var _dragged_stack : ItemStack
-var _view_nodes := []
+var _view_nodes : Array[Control] = []
 var _deselect_signal_interrupted := false
 var _selection_node : Control
-var _last_quick_transfer := Vector2(-1, -1)
+var _last_quick_transfer_stack : ItemStack
 
 
 func _ready():
@@ -176,7 +136,8 @@ func _ready():
 		return
 
 	if has_node("Cells"):
-		for x in get_node("Cells").get_children():
+		_cell_parent = get_node("Cells")
+		for x in _cell_parent.get_children():
 			_connect_cell(x)
 
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -256,7 +217,7 @@ static func get_instances() -> Array[InventoryView]:
 	return _instances.duplicate()
 
 
-func _set_cell_size(v):
+func _set_cell_size(v : Vector2):
 	cell_size = v
 	if !grid_resize_cell.is_empty():
 		get_node(grid_resize_cell).size = v
@@ -264,12 +225,12 @@ func _set_cell_size(v):
 	_regenerate_view()
 
 
-func _set_view_filter(v):
+func _set_view_filter(v : Array):
 	view_filter_patterns = v
 	apply_view_filters()
 
 
-func _set_inventory(v):
+func _set_inventory(v : Inventory):
 	if inventory != null:
 		inventory.changed.disconnect(_regenerate_view)
 		inventory.item_stack_added.disconnect(_on_item_stack_added)
@@ -287,8 +248,9 @@ func _set_inventory(v):
 
 	if !is_inside_tree(): await self.ready
 	if has_node("Cells"):
+		_cell_parent = get_node("Cells")
 		if !v is GridInventory:
-			v.width = get_node("Cells").get_child_count()
+			v.width = _cell_parent.get_child_count()
 
 	if Engine.is_editor_hint(): return
 
@@ -302,6 +264,52 @@ func _set_inventory(v):
 		_on_item_stack_added(x)
 
 	_regenerate_view()
+
+
+func _set_selected_cell(v : Vector2):
+	var grabbed := GrabbedItemStackView.get_instance()
+	var sel_rect := Rect2()
+	var formerly_selected := inventory.get_item_at_positionv(selected_cell)
+	if v == Vector2(-1, -1):
+		selected_cell = v
+		_selection_node.queue_redraw()
+		if formerly_selected != null:
+			_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
+
+		return
+
+	if inventory is GridInventory && GrabbedItemStackView.grabbed_stack != null:
+		var item_size := grabbed.stack.item_type.get_size_in_inventory()
+		if inventory.has_cellv(v) && inventory.has_cellv(v + item_size - Vector2.ONE):
+			sel_rect = Rect2(cell_size * v, cell_size * item_size)
+
+	else:
+		sel_rect = get_selected_rect(v)
+
+	_selection_node.size = sel_rect.size
+	_selection_node.rotation = 0.0
+	_selection_node.position = sel_rect.position
+	if has_node(grid_background):
+		var xform : Transform2D = _selection_node.get_transform() * get_node(grid_background).get_transform()
+		_selection_node.size *= xform.get_scale()
+		_selection_node.rotation = xform.get_rotation()
+		_selection_node.position = xform.origin
+
+	_selection_node.queue_redraw()
+
+	var newly_selected := inventory.get_item_at_positionv(v)
+	if formerly_selected != newly_selected:
+		if formerly_selected != null:
+			_item_stack_deselected(_view_nodes[formerly_selected.index_in_inventory])
+
+		if newly_selected != null:
+			_item_stack_selected(_view_nodes[newly_selected.index_in_inventory])
+
+	if !inventory.has_cell(v.x, v.y):
+		v = Vector2(-1, -1)
+		if has_focus(): release_focus()
+
+	selected_cell = v
 
 
 func _regenerate_view():
@@ -328,6 +336,7 @@ func _regenerate_view():
 			cells.name = "Cells"
 			add_child(cells)
 			cells.owner = owner if owner != null else self
+			_cell_parent = cells
 
 		cells.mouse_filter = MOUSE_FILTER_IGNORE
 		if cells.get_child_count() == 0:
@@ -405,7 +414,7 @@ func global_position_to_cell(pos : Vector2, item : ItemStack = null) -> Vector2:
 		return result_pos
 
 	else:
-		var cells := $"Cells".get_children()
+		var cells := _cell_parent.get_children()
 		for i in cells.size():
 			if cells[i].get_global_rect().has_point(pos):
 				return Vector2(i, 0)
@@ -413,7 +422,6 @@ func global_position_to_cell(pos : Vector2, item : ItemStack = null) -> Vector2:
 		return Vector2(-1, -1)
 
 ## Returns the global position of the center of a cell, or top-left if [code]topleft[/code] is set. [br]
-## Providing an [ItemStack] returns the cell into which the item would be placed. [br]
 ## Returns cell with nearest cell position if provided cell is not in inventory.
 func cell_position_to_global(pos : Vector2, topleft : bool = false) -> Vector2:
 	pos.x = clamp(pos.x, 0, inventory.width)
@@ -426,10 +434,9 @@ func cell_position_to_global(pos : Vector2, topleft : bool = false) -> Vector2:
 		return get_global_transform() * (pos * cell_size)
 
 	else:
-		var cells := $"Cells".get_children()
+		var cells := _cell_parent.get_children()
 		var xform : Transform2D = cells[pos.x].get_global_transform()
 		return xform.origin if topleft else xform.origin + xform.basis_xform(cells[pos.x].size)
-
 
 ## Returns the [ItemStackView] in cell [code]x[/code]; returns [code]null[/code] if cell empty or out of bounds. [br]
 ## Non-vector counterpart of [method get_item_view_at_positionv]. [br]
@@ -451,7 +458,7 @@ func get_item_view_at_positionv(pos : Vector2) -> ItemStackView:
 
 	return _view_nodes[found_item.index_in_inventory]
 
-## Returns the [Rect2] that encloses the item or cell, as if it was selected, in cell coordinates.
+## Returns the [Rect2] that encloses the item or cell at the specified position in cell coordinates. Returns a [Rect2] in this view's local coordinates.
 func get_selected_rect(cell : Vector2 = selected_cell) -> Rect2:
 	if !inventory.has_cell(cell.x, cell.y):
 		return Rect2()
@@ -466,15 +473,11 @@ func get_selected_rect(cell : Vector2 = selected_cell) -> Rect2:
 			item_selected.item_type.get_size_in_inventory() * cell_size
 		)
 
-	return $"Cells".get_child(cell.x).get_rect()
+	return _cell_parent.get_child(cell.x).get_rect()
 
 
 func _redraw_item(node : Control, item_stack : ItemStack):
 	node.update_stack(item_stack, cell_size, show_backgrounds)
-	_position_item(node, item_stack)
-
-
-func _position_item(node : Control, item_stack : ItemStack):
 	if inventory is GridInventory:
 		var xform := get_global_transform()
 		if has_node(grid_background):
@@ -483,7 +486,7 @@ func _position_item(node : Control, item_stack : ItemStack):
 		node.global_position = xform * (cell_size * item_stack.position_in_inventory)
 		return
 
-	var cell = $"Cells".get_child(item_stack.position_in_inventory.x)
+	var cell : Control = _cell_parent.get_child(item_stack.position_in_inventory.x)
 	node.global_position = cell.global_position
 	node.size = cell.size
 
@@ -516,9 +519,9 @@ func _on_item_stack_removed(item_stack : ItemStack):
 	item_stack_deselected.emit(_view_nodes[item_stack.index_in_inventory])
 	_deselect_signal_interrupted = true
 
-	var nodes = _view_nodes.duplicate()
+	var nodes := _view_nodes.duplicate()
 	_view_nodes.pop_back().queue_free()
-	var items = inventory.items
+	var items := inventory.items
 	var node_idx := -1
 	for inv_idx in items.size():
 		if items[inv_idx] == null: continue
@@ -539,7 +542,7 @@ func _on_item_stack_changed(item_stack : ItemStack, count_delta : int):
 	if inventory.get_item_at_positionv(item_stack.position_in_inventory) != item_stack:
 		return
 
-	var node = _view_nodes[item_stack.index_in_inventory]
+	var node := _view_nodes[item_stack.index_in_inventory]
 	_redraw_item(node, item_stack)
 	item_stack_changed.emit(item_stack, count_delta)
 
@@ -630,7 +633,7 @@ func _try_buy(stack : ItemStack):
 		if (x.interaction_mode & InteractionFlags.CAN_TAKE_AUTO) != 0:
 			x.inventory.count_items(price, counts)
 
-	var items_to_check = {}
+	var items_to_check := {}
 	for k in price:
 		if !counts.has(k) || counts[k] < price[k]:
 			return false
@@ -671,39 +674,46 @@ func try_place_stackv(stack : ItemStack, pos : Vector2) -> ItemStack:
 	return inventory.try_place_stackv(stack, pos)
 
 
-func _quick_transfer_anywhere(stack : ItemStack):
+func _quick_transfer_anywhere(stack_view : ItemStackView, stack : ItemStack = null, transfer_all : bool = false) -> ItemStack:
+	if stack == null:
+		stack = stack_view.stack
+
 	if (interaction_mode & InteractionFlags.CAN_TAKE) == 0 || !_try_buy(stack):
 		grab_attempted.emit(stack, false)
-		return
+		return stack
 
-	var original_pos = stack.position_in_inventory
-	var targets = _get_quick_transfer_targets(stack.extra_properties.has(&"price"))
-	if targets.size() == 0: return
+	var targets := _get_quick_transfer_targets(stack.extra_properties.has(&"price"))
+	if targets.size() == 0:
+		return stack
 
-	if stack.count > stack.item_type.max_stack_count:
+	var original_pos := stack_view.stack.position_in_inventory
+	_last_quick_transfer_stack = stack
+	before_quick_transfer.emit(targets, stack_view.stack, stack_view.get_rect())
+
+	if stack.count > stack.item_type.max_stack_count && !transfer_all:
+		# Only transfer one stack out of big stacks.
 		inventory.add_items_to_stack(stack, -stack.item_type.max_stack_count)
 		stack = stack.duplicate_with_count(stack.item_type.max_stack_count)
 
-	else:
-		grab_attempted.emit(stack, true)
-		inventory.remove_item(stack)
+	var returned_stack : ItemStack
+	var i := 0
+	while i < targets.size():
+		returned_stack = targets[i].inventory.try_quick_transfer(stack)
 
-	var returned_stack
-	for x in targets:
-		returned_stack = x.inventory.try_quick_transfer(stack)
-		# No item returned - slot empty.
+		# No item returned - clicked slot will be empty.
 		if returned_stack == null: break
-		# Same stack returned, not all items delivered.
-		if returned_stack == stack: continue
 		# Returned something different: put it at the transfered item's place.
-		if returned_stack != null: break
+		if returned_stack != stack: break
+		# Same stack returned, not all items delivered.
+		i += 1
 
+	inventory.remove_item(stack)
 	if returned_stack != null:
 		# Went through all destinations, still item in hand. Place it under cursor first.
 		returned_stack = inventory.try_place_stackv(returned_stack, original_pos)
 		# No? Just put anywhere, if can...
-		if returned_stack != null && inventory.try_add_item(returned_stack) != 0:
-			return
+		if returned_stack != null && inventory.try_add_item(returned_stack) == returned_stack.count:
+			returned_stack = null
 
 		# If can't, just drop it.
 		# else:
@@ -711,11 +721,29 @@ func _quick_transfer_anywhere(stack : ItemStack):
 		# 	if is_instance_valid(grabbed):
 		# 		grabbed.drop_on_ground(returned_stack)
 
-		grab_attempted.emit(stack, true)
+	grab_attempted.emit(stack, true)
+	return returned_stack
 
 
-func _get_quick_transfer_targets(has_price) -> Array:
-	var result := []
+func _quick_transfer_same_anywhere() -> bool:
+	if _last_quick_transfer_stack == null || !GrabbedItemStackView.double_click_valid():
+		return false
+
+	# On double-click, quick transfer all items of same type (no need to check extra props)
+	var transferring_type := _last_quick_transfer_stack.item_type
+	var nodes_reverse := _view_nodes.duplicate()
+	nodes_reverse.reverse()
+	for x in nodes_reverse:
+		if x.stack.item_type == transferring_type:
+			if _quick_transfer_anywhere(x, null, true) != null:
+				break
+
+	_last_quick_transfer_stack = null
+	return true
+
+
+func _get_quick_transfer_targets(has_price : bool) -> Array[InventoryView]:
+	var result : Array[InventoryView] = []
 	for x in InventoryView.get_instances():
 		if (
 			x == self
@@ -729,16 +757,15 @@ func _get_quick_transfer_targets(has_price) -> Array:
 		result.append(x)
 
 	return result
-	
+
 
 func _on_item_stack_mouse_entered(stack_view : ItemStackView):
 	_deselect_signal_interrupted = false
-	var cells_node := get_node_or_null("Cells")
 	if GrabbedItemStackView.grabbed_stack == null:
 		GrabbedItemStackView.select_cell(self, stack_view.stack.position_in_inventory)
 
-	if is_instance_valid(cells_node):
-		cells_node.get_child(stack_view.stack.position_in_inventory.x).grab_focus()
+	if is_instance_valid(_cell_parent):
+		_cell_parent.get_child(stack_view.stack.position_in_inventory.x).grab_focus()
 
 
 func _item_stack_deselected(stack_view : ItemStackView):
@@ -750,10 +777,9 @@ func _item_stack_selected(stack_view : ItemStackView):
 	var stack_index := stack_view.stack.index_in_inventory
 	item_stack_selected.emit(_view_nodes[stack_index])
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && Input.is_action_pressed(&"inventory_more"):
-		var old_stack_pos := stack_view.stack.position_in_inventory
-		if _last_quick_transfer == old_stack_pos: return
-		_last_quick_transfer = old_stack_pos
-		_quick_transfer_anywhere(stack_view.stack)
+		if _last_quick_transfer_stack == stack_view.stack: return
+		_last_quick_transfer_stack = stack_view.stack
+		_quick_transfer_anywhere(stack_view)
 		force_drag(0, null)
 		_selection_node.size = Vector2.ZERO
 
@@ -763,6 +789,7 @@ func _on_item_stack_mouse_exited(stack_view : ItemStackView):
 		return
 
 	selected_cell = Vector2(-1, -1)
+	_last_quick_transfer_stack = null
 
 
 func _on_item_stack_gui_input(event : InputEvent, stack_view : ItemStackView):
@@ -770,20 +797,38 @@ func _on_item_stack_gui_input(event : InputEvent, stack_view : ItemStackView):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
 			var stack := stack_view.stack
-			_grab_stack(stack.index_in_inventory, ceili(mini(stack.count, stack.item_type.max_stack_count) * 0.5))
+			if GrabbedItemStackView.get_instance() != null && !Input.is_action_pressed(&"inventory_more"):
+				_grab_stack(stack.index_in_inventory, ceili(mini(stack.count, stack.item_type.max_stack_count) * 0.5))
 
-		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			if !Input.is_action_pressed(&"inventory_more"):
-				_grab_stack(stack_view.stack.index_in_inventory)
+			elif stack_view.stack.count <= 1:
+				_quick_transfer_anywhere(stack_view)
 
 			else:
-				_quick_transfer_anywhere(stack_view.stack)
+				# Quick transfer only one item
+				inventory.add_items_to_stack(stack_view.stack, -1)
+				var returned := _quick_transfer_anywhere(stack_view, stack.duplicate_with_count(1))
+				if returned != null:
+					returned = inventory.try_place_stackv(returned, stack_view.stack.position_in_inventory)
+
+				if returned != null:
+					inventory.try_add_item(returned)
+
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
+			if _quick_transfer_same_anywhere():
+				pass
+
+			elif GrabbedItemStackView.get_instance() != null && !Input.is_action_pressed(&"inventory_more"):
+				_grab_stack(stack_view.stack.index_in_inventory)
+				if GrabbedItemStackView.double_click_valid():
+					GrabbedItemStackView.get_instance().gather_same(inventory)
+
+			else:
+				_quick_transfer_anywhere(stack_view)
+
+			GrabbedItemStackView._last_click_time_msec = Time.get_ticks_msec()
 
 	if event is InputEventMouseMotion:
 		GrabbedItemStackView.select_cell(self, global_position_to_cell(event.global_position, GrabbedItemStackView.grabbed_stack))
-
-	elif !event.is_pressed():
-		_last_quick_transfer = Vector2(-1, -1)
 
 
 func _on_cell_gui_input(event : InputEvent, cell_index : int = -1):
@@ -792,8 +837,12 @@ func _on_cell_gui_input(event : InputEvent, cell_index : int = -1):
 		var cell_pos := global_position_to_cell(event.global_position, grabbed.stack)
 		GrabbedItemStackView.select_cell(self, cell_pos, true)
 
+	if event is InputEventMouseButton && event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
+		_quick_transfer_same_anywhere()
+		GrabbedItemStackView._last_click_time_msec = Time.get_ticks_msec()
 
-func _can_drop_data(position, data):
+
+func _can_drop_data(position : Vector2, data):
 	return true
 
 ## Updates item visibility based on [member view_filter_patterns]. Call manually after editing the pattern array instead of setting.
@@ -821,11 +870,11 @@ func sort_inventory():
 	inventory.sort()
 
 ## Saves the inventory to disk into the specified file, or the one set in [member autosave_file_path].
-func save_state(filepath = ""):
+func save_state(filepath : String = ""):
 	if Engine.is_editor_hint(): return  # Called in editor by connected signals
 	if last_autosave_sec < 0.0: return  # Fixes empty if saving before first load
 
-	var extras = _get_saved_properties()
+	var extras := _get_saved_properties()
 	if save_extra_data != null:
 		extras.merge(save_extra_data, true)
 
@@ -833,12 +882,12 @@ func save_state(filepath = ""):
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 
 ## Loads the inventory from disk from the specified file, or the one set in [member autosave_file_path].
-func load_state(filepath = ""):
+func load_state(filepath : String = ""):
 	inventory.load_state(autosave_file_path if filepath == "" else filepath)
 	last_autosave_sec = Time.get_ticks_usec() * 0.000001
 
 
-func _get_saved_properties():
+func _get_saved_properties() -> Dictionary:
 	return {
 		&"$_init_contents" : init_contents,
 	}
@@ -853,7 +902,7 @@ func _on_loaded_from_dict(dict : Dictionary):
 			save_extra_data[k] = dict[k]
 
 
-func _compare_inventory_priority(a, b):
+func _compare_inventory_priority(a : InventoryView, b : InventoryView):
 	return a.auto_take_priority <= b.auto_take_priority
 
 

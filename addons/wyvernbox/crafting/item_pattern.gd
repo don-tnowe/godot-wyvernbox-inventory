@@ -60,7 +60,7 @@ func matches(item_stack : ItemStack) -> bool:
 ## Used to define how many of an item is needed to fulfill an [ItemConversion]'s requirement. [br]
 ## Override to define special item patterns that define value based on specific properties.
 func get_value(of_stack : ItemStack) -> float:
-	var found_at = -1
+	var found_at := -1
 	for i in items.size():
 		if items[i].matches(of_stack):
 			found_at = i

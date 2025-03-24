@@ -26,8 +26,8 @@ var grid_r := GridContainer.new()
 
 var columns_are_int := []
 var allowed_types := []
-var columns = {}
-var column_defaults = []
+var columns := {}
+var column_defaults := []
 
 
 func _init(

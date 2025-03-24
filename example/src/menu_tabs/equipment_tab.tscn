@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://0r7o3wklblhy"]
+[gd_scene load_steps=19 format=3 uid="uid://0r7o3wklblhy"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://cs30fdktbayf1" path="res://example/src/menu_tabs/equip_bonus_list.tscn" id="3"]
+[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="4_2fh1p"]
 [ext_resource type="Resource" uid="uid://ba1ie6jofkmu8" path="res://example/wyvernbox/item_types/consumable/coin_gold.tres" id="4_hpc6g"]
 [ext_resource type="Resource" uid="uid://duga6dcb1u8qe" path="res://example/wyvernbox/item_types/consumable/arrows.tres" id="4_yln8c"]
 [ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="5"]
@@ -25,7 +26,7 @@ fill_to = Vector2(0.5, 2)
 [sub_resource type="Resource" id="5"]
 resource_name = "CurrencyInventory"
 script = ExtResource("10")
-restricted_to_types = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("4_yln8c"), ExtResource("4_hpc6g"), ExtResource("5_8nmbe")])
+restricted_to_types = Array[ExtResource("4_2fh1p")]([ExtResource("4_yln8c"), ExtResource("4_hpc6g"), ExtResource("5_8nmbe")])
 max_stack = 99999999
 width = 3
 
@@ -75,7 +76,7 @@ offset_left = 0.0
 offset_top = 6.0
 offset_right = 0.0
 offset_bottom = 6.0
-selected_item_empty_only = false
+selected_item_style = ExtResource("8_wco16")
 autosave_file_path = "items/hero/equip.dat"
 
 [node name="Money" type="Control" parent="Control"]

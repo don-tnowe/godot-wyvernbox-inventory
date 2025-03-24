@@ -27,7 +27,7 @@ var _restricted_to_types_changing := false
 ## Returns the first cell the [code]item_stack[/code] can be placed without stacking.
 ## Returns [code](-1, -1)[/code] if no empty cells in inventory, or the item type doesn't fit due to flags.
 func get_free_position(item_stack : ItemStack) -> Vector2:
-	var flags = item_stack.item_type.slot_flags
+	var flags := item_stack.item_type.slot_flags
 	for i in _cells.size():
 		if _cells[i] == null && flags & restricted_to_types[i] != 0 && matches_entry_filter(item_stack):
 			return Vector2(i, 0)
@@ -48,7 +48,7 @@ func _shift_contents(to_fit_item : ItemStack) -> ItemStack:
 			last_viable_position = returned_item.position_in_inventory
 			continue
 		
-		var item_pos = _cells[i].position_in_inventory
+		var item_pos : Vector2 = _cells[i].position_in_inventory
 		move_item_to_pos(_cells[i], last_viable_position)
 		last_viable_position = item_pos
 
@@ -67,7 +67,7 @@ func _has_fitting_slot(flags : int) -> bool:
 ## If [member allow_rotation] is set, this will shift the items by 1 cell if the inventory is full.
 ## Returns the stack that appears where the clicked stack was, which is [code]null[/code] on success and the same stack on fail.
 func try_quick_transfer(item_stack : ItemStack) -> ItemStack:
-	var init_count = item_stack.count
+	var init_count := item_stack.count
 	var count_transferred := try_add_item(item_stack)
 	item_stack.count -= count_transferred
 	if count_transferred < init_count:

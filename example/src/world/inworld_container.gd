@@ -10,7 +10,7 @@ func _ready():
 func _on_body_entered(body):
 	if !body.is_in_group("hero"): return
 	get_node("Button").show()
-	var _3 = get_node("Button").connect("pressed", body._on_inworld_inv_button_pressed.bind(get_node(stored_gui), name))
+	get_node("Button").connect("pressed", body._on_inworld_inv_button_pressed.bind(get_node(stored_gui), name))
 
 
 func _on_body_exited(body):

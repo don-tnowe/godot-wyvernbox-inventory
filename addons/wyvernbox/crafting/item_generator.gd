@@ -52,8 +52,8 @@ func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], in
 	if results[0] == null:
 		assert(input_stacks.size() > 0, "Generator with blank Result received no Inputs!\n\nPerhaps you called consume_inputs() without passing its return value to get_items()?")
 
-	var item_index = weighted_random(weights, rng) if results.size() > 0 else 0
-	var item = results[item_index]
+	var item_index := weighted_random(weights, rng) if results.size() > 0 else 0
+	var item := results[item_index]
 	if item == null:
 		return []
 
@@ -65,8 +65,8 @@ func get_items(rng : RandomNumberGenerator = null, input_stacks : Array = [], in
 		)]
 
 	else:  # If nested ItemGenerator
-		var repeats = rng.randi_range(count_ranges[item_index].x, count_ranges[item_index].y)
-		var arr = []
+		var repeats := rng.randi_range(count_ranges[item_index].x, count_ranges[item_index].y)
+		var arr := []
 		for i in repeats:
 			arr.append_array(item.get_items(rng, input_stacks, input_types))
 
@@ -92,11 +92,11 @@ func _get_wyvernbox_item_lists() -> Array:
 ## Returns a random number. Non-normalized chances are defined inside [member weights]. [br]
 ## If [code]rng[/code] not set, uses global RNG.
 static func weighted_random(weights : Array, rng : RandomNumberGenerator = null) -> int:
-	var sum = 0.0
+	var sum := 0.0
 	for i in weights.size():
 		sum += weights[i]
 
-	var val = 0.0
+	var val := 0.0
 	if rng == null:
 		val = randf() * sum
 	
