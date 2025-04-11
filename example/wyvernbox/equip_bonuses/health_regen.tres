@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cgn3ge62o533w" path="res://example/graphics/gradients/red1.tres" id="1"]
 [ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_11.tres" id="2"]
-[ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus.gd" id="3"]
+[ext_resource type="Script" uid="uid://bsc11nfytqsww" path="res://addons/wyvernbox/equip_bonus.gd" id="3"]
 
 [resource]
 script = ExtResource("3")

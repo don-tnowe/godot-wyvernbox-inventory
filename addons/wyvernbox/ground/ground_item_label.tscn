@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://pueodad43okn"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_item_label.gd" id="2"]
+[ext_resource type="Script" uid="uid://2timdi7pyxli" path="res://addons/wyvernbox/ground/ground_item_label.gd" id="2"]
 
 [sub_resource type="Gradient" id="9"]
 offsets = PackedFloat32Array(1)

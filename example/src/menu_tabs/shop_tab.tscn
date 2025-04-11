@@ -3,12 +3,12 @@
 [ext_resource type="Resource" uid="uid://ddeg8trd3hwno" path="res://example/wyvernbox/item_generators/enchant_item.tres" id="1"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_kfwxf"]
 [ext_resource type="Resource" uid="uid://bd1ddeel6achx" path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" id="2"]
-[ext_resource type="Script" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="2_aqjqv"]
+[ext_resource type="Script" uid="uid://x44616hdokxc" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="2_aqjqv"]
 [ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="19"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="20"]
 [ext_resource type="Resource" uid="uid://cdmceeucy4oik" path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" id="22"]
-[ext_resource type="Script" path="res://example/src/menu_tabs/vendor_response.gd" id="32"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/vendor.gd" id="33"]
+[ext_resource type="Script" uid="uid://bhidwy1ttwwax" path="res://example/src/menu_tabs/vendor_response.gd" id="32"]
+[ext_resource type="Script" uid="uid://blnwlr4rpofn3" path="res://addons/wyvernbox/crafting/vendor.gd" id="33"]
 [ext_resource type="Resource" uid="uid://c7o8imyt2lakx" path="res://example/wyvernbox/item_types/equipment/ring_1.tres" id="36"]
 [ext_resource type="Resource" uid="uid://cdffrl8qjklra" path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" id="37"]
 [ext_resource type="Resource" uid="uid://dwr5x0eblj1sl" path="res://example/wyvernbox/item_types/equipment/ring_2.tres" id="38"]
@@ -54,7 +54,7 @@ vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
 price_markup = 2.0
 apply_to_all_stock = ExtResource("1")
-stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("37"), ExtResource("22"), ExtResource("39"), ExtResource("40"), ExtResource("44"), ExtResource("43"), ExtResource("42"), ExtResource("41"), ExtResource("36"), ExtResource("38")])
+stock = [ExtResource("37"), ExtResource("22"), ExtResource("39"), ExtResource("40"), ExtResource("44"), ExtResource("43"), ExtResource("42"), ExtResource("41"), ExtResource("36"), ExtResource("38")]
 stock_counts = Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 stock_restocks = Array[int]([3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
 infinite_restocks = false
@@ -78,7 +78,7 @@ vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
 price_markup = 2.0
 apply_to_all_stock = null
-stock = Array[Resource("res://addons/wyvernbox/crafting/item_like.gd")]([ExtResource("2"), null])
+stock = [ExtResource("2"), null]
 stock_counts = Array[int]([1, 0])
 stock_restocks = Array[int]([3, 0])
 infinite_restocks = true

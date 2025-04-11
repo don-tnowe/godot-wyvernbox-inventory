@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemConversion" load_steps=4 format=3 uid="uid://cl078kqrru8d1"]
 
 [ext_resource type="Resource" uid="uid://c30h5hufp3auc" path="res://example/wyvernbox/item_types/materials/herb.tres" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="2"]
+[ext_resource type="Script" uid="uid://87bt3x1bw5w0" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="2"]
 [ext_resource type="Resource" uid="uid://clo84qvakpfew" path="res://example/wyvernbox/item_types/consumable/potion_red.tres" id="4"]
 
 [resource]

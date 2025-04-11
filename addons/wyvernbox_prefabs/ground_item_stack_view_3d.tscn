@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://cesxtk10fira3"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_item_stack_view_3d.gd" id="2"]
+[ext_resource type="Script" uid="uid://b5ddf430li30q" path="res://addons/wyvernbox/ground/ground_item_stack_view_3d.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://pueodad43okn" path="res://addons/wyvernbox/ground/ground_item_label.tscn" id="4"]
 
 [sub_resource type="Gradient" id="1"]
@@ -57,8 +57,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fcqm7"]
 _data = {
-"RESET": SubResource("16"),
-"init": SubResource("11")
+&"RESET": SubResource("16"),
+&"init": SubResource("11")
 }
 
 [node name="Item" type="CharacterBody3D" node_paths=PackedStringArray("display_icon", "display_mesh", "display_colorable") groups=["ground_item"]]

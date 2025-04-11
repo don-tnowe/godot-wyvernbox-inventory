@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="ItemGenerator" load_steps=13 format=3 uid="uid://j00pm6bkeql3"]
+[gd_resource type="Resource" script_class="ItemGenerator" load_steps=13 format=3 uid="uid://dxqc13lixn731"]
 
 [ext_resource type="Resource" uid="uid://cdmceeucy4oik" path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="1_eiy52"]
+[ext_resource type="Script" uid="uid://dkgqgnggn2ik0" path="res://addons/wyvernbox/crafting/item_like.gd" id="1_eiy52"]
 [ext_resource type="Resource" uid="uid://cdffrl8qjklra" path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" id="3"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_generator.gd" id="5"]
+[ext_resource type="Script" uid="uid://cdy2hsjx5brt0" path="res://addons/wyvernbox/crafting/item_generator.gd" id="5"]
 [ext_resource type="Resource" uid="uid://c7o8imyt2lakx" path="res://example/wyvernbox/item_types/equipment/ring_1.tres" id="6"]
 [ext_resource type="Resource" uid="uid://b554u70ufbdta" path="res://example/wyvernbox/item_types/equipment/chestplate_2.tres" id="7"]
 [ext_resource type="Resource" uid="uid://c7m3wh35aweno" path="res://example/wyvernbox/item_types/equipment/head_helmet.tres" id="8"]

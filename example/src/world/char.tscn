@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://coca3cj5aa8qc"]
 
-[ext_resource type="Resource" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="1"]
-[ext_resource type="Script" path="res://example/src/test_2d_char.gd" id="2"]
+[ext_resource type="Resource" uid="uid://wvo0i5tdhbvl" path="res://example/wyvernbox/item_generators/basic_loot.tres" id="1"]
+[ext_resource type="Script" uid="uid://cs3fta8cpgw07" path="res://example/src/test_2d_char.gd" id="2"]
 
 [sub_resource type="RectangleShape2D" id="4"]
 

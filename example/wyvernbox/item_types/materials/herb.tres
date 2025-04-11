@@ -1,22 +1,6 @@
-[gd_resource type="Resource" script_class="ItemType" load_steps=4 format=3 uid="uid://c30h5hufp3auc"]
+[gd_resource type="Resource" script_class="ItemType" load_steps=2 format=3 uid="uid://c30h5hufp3auc"]
 
-[ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/item_type.gd" id="2"]
-
-[sub_resource type="AtlasTexture" id="1"]
-atlas = ExtResource("1")
-region = Rect2(12, 36, 24, 12)
+[ext_resource type="Script" uid="uid://dnu1iwmhm37ma" path="res://addons/wyvernbox/item_type.gd" id="2"]
 
 [resource]
 script = ExtResource("2")
-name = "item_name_herb"
-description = "item_desc_herb"
-tags = Array[StringName]([])
-texture = SubResource("1")
-texture_scale = 1.0
-max_stack_count = 20
-in_inventory_width = 2
-in_inventory_height = 1
-slot_flags = 513
-default_properties_string = "{}"
-default_properties = {}

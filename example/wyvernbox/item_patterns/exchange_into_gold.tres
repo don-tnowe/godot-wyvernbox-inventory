@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemPattern" load_steps=11 format=3 uid="uid://mf27rmudythr"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_pattern.gd" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="1_okfeg"]
+[ext_resource type="Script" uid="uid://bab5iyachyefu" path="res://addons/wyvernbox/crafting/item_pattern.gd" id="1"]
+[ext_resource type="Script" uid="uid://dkgqgnggn2ik0" path="res://addons/wyvernbox/crafting/item_like.gd" id="1_okfeg"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="2"]
 [ext_resource type="Resource" uid="uid://c8gdxqqb85pht" path="res://example/wyvernbox/item_types/materials/metalscrap_iron.tres" id="4"]
 [ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="5"]

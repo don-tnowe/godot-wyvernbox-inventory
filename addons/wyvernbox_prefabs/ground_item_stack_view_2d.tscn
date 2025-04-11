@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://cjdtl6ek4qp7d"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd" id="1"]
+[ext_resource type="Script" uid="uid://cnekoafbmis63" path="res://addons/wyvernbox/ground/ground_item_stack_view_2d.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://pueodad43okn" path="res://addons/wyvernbox/ground/ground_item_label.tscn" id="4"]
 
 [sub_resource type="Gradient" id="12"]
@@ -272,8 +272,8 @@ tracks/8/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_12fv6"]
 _data = {
-"RESET": SubResource("7"),
-"init": SubResource("4")
+&"RESET": SubResource("7"),
+&"init": SubResource("4")
 }
 
 [node name="Item" type="Area2D" groups=["ground_item"]]

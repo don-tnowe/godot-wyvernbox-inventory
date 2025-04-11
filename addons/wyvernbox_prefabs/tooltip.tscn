@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://cqa45c6lfsffv"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/tooltip.gd" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_stats.gd" id="5"]
-[ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_price.gd" id="6"]
-[ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_key_hints.gd" id="7"]
-[ext_resource type="Script" path="res://addons/wyvernbox/extension/tooltip_property_description.gd" id="8"]
+[ext_resource type="Script" uid="uid://c8t0b4v15uii6" path="res://addons/wyvernbox/view_extra/tooltip.gd" id="1"]
+[ext_resource type="Script" uid="uid://c7qpu332c1hbg" path="res://addons/wyvernbox/extension/tooltip_property_stats.gd" id="5"]
+[ext_resource type="Script" uid="uid://dexloakhql4al" path="res://addons/wyvernbox/extension/tooltip_property_price.gd" id="6"]
+[ext_resource type="Script" uid="uid://bg8k78vdhgvtj" path="res://addons/wyvernbox/extension/tooltip_property_key_hints.gd" id="7"]
+[ext_resource type="Script" uid="uid://dqo7a7uvd5fc0" path="res://addons/wyvernbox/extension/tooltip_property_description.gd" id="8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnyc7"]
 bg_color = Color(0, 0, 0, 0.752941)

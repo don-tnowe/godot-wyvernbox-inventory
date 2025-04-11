@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://ddeg8trd3hwno" path="res://example/wyvernbox/item_generators/enchant_item.tres" id="1"]
 [ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="2"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="33"]
+[ext_resource type="Script" uid="uid://87bt3x1bw5w0" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="33"]
 [ext_resource type="Resource" uid="uid://cdffrl8qjklra" path="res://example/wyvernbox/item_types/equipment/melee_battleaxe.tres" id="36"]
 
 [resource]

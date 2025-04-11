@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bqu2js8tntbjn"]
 
-[ext_resource type="Script" path="res://example/src/world/touch_dropper.gd" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/item_instantiator.gd" id="2"]
+[ext_resource type="Script" uid="uid://rvrghcplvpw3" path="res://example/src/world/touch_dropper.gd" id="1"]
+[ext_resource type="Script" uid="uid://ccsg0kr6syq7i" path="res://addons/wyvernbox/item_instantiator.gd" id="2"]
 
 [sub_resource type="Resource" id="7"]
 resource_local_to_scene = true

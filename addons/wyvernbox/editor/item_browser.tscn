@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://boowgq71db85j"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/editor/item_browser.gd" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/item_type.gd" id="2_fmwve"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_generator.gd" id="3_7rvej"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_pattern.gd" id="4_7dj7b"]
+[ext_resource type="Script" uid="uid://cpow4skm0m275" path="res://addons/wyvernbox/editor/item_browser.gd" id="1"]
+[ext_resource type="Script" uid="uid://dnu1iwmhm37ma" path="res://addons/wyvernbox/item_type.gd" id="2_fmwve"]
+[ext_resource type="Script" uid="uid://cdy2hsjx5brt0" path="res://addons/wyvernbox/crafting/item_generator.gd" id="3_7rvej"]
+[ext_resource type="Script" uid="uid://bab5iyachyefu" path="res://addons/wyvernbox/crafting/item_pattern.gd" id="4_7dj7b"]
 
 [node name="Browse" type="Panel"]
 offset_right = 719.0

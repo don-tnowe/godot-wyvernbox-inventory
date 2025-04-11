@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://dgxmix0ikbfc2"]
 
 [ext_resource type="PackedScene" uid="uid://b7jlucsddt6dg" path="res://addons/wyvernbox_prefabs/inventory_cell.tscn" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="2_iv47c"]
-[ext_resource type="Script" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="3"]
+[ext_resource type="Script" uid="uid://bkl7kfiyxsb8h" path="res://addons/wyvernbox/inventory_view.gd" id="2"]
+[ext_resource type="Script" uid="uid://dkgqgnggn2ik0" path="res://addons/wyvernbox/crafting/item_like.gd" id="2_iv47c"]
+[ext_resource type="Script" uid="uid://dqefhufhn8nb8" path="res://addons/wyvernbox/inventories/currency_inventory.gd" id="3"]
 [ext_resource type="StyleBox" uid="uid://cqx3opxr50d2o" path="res://addons/wyvernbox_prefabs/graphics/selected_cell.tres" id="5_bj4tn"]
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="6"]
 

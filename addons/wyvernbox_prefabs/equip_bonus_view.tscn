@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://buk5dqg0uoud3"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus_view.gd" id="1"]
+[ext_resource type="Script" uid="uid://dsflpig3s4xdg" path="res://addons/wyvernbox/equip_bonus_view.gd" id="1"]
 
 [sub_resource type="Gradient" id="Gradient_bkcxj"]
 colors = PackedColorArray(0.372549, 0.372549, 0.431373, 1, 0.597656, 0.597656, 0.597656, 1)

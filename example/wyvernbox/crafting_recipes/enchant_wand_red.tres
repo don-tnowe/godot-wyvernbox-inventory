@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemConversion" load_steps=5 format=3 uid="uid://in0jr5vbr5rt"]
 
 [ext_resource type="Resource" uid="uid://ddeg8trd3hwno" path="res://example/wyvernbox/item_generators/enchant_item.tres" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="33"]
+[ext_resource type="Script" uid="uid://87bt3x1bw5w0" path="res://addons/wyvernbox/crafting/item_conversion.gd" id="33"]
 [ext_resource type="Resource" uid="uid://uhwf6cm33oja" path="res://example/wyvernbox/item_types/equipment/wand_red.tres" id="36"]
 [ext_resource type="Resource" uid="uid://w102d7q6r3j4" path="res://example/wyvernbox/item_types/materials/scroll_enchant.tres" id="37"]
 

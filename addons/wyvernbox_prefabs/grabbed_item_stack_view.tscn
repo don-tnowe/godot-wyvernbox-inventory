@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://boij7wcxmvnq7"]
 
 [ext_resource type="PackedScene" uid="uid://co5ok1mm2s7vu" path="res://addons/wyvernbox_prefabs/item_stack_view.tscn" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="2"]
+[ext_resource type="Script" uid="uid://c6nvaldh7oun1" path="res://addons/wyvernbox/view_extra/grabbed_item_stack.gd" id="2"]
 
 [node name="Item" instance=ExtResource("1")]
 z_index = 1

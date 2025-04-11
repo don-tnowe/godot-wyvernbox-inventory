@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemType" load_steps=4 format=3 uid="uid://dwr5x0eblj1sl"]
 
-[ext_resource type="Script" path="res://addons/wyvernbox/item_type.gd" id="1"]
+[ext_resource type="Script" uid="uid://dnu1iwmhm37ma" path="res://addons/wyvernbox/item_type.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="2"]
 
 [sub_resource type="AtlasTexture" id="1"]

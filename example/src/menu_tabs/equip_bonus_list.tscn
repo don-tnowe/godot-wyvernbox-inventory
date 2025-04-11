@@ -22,7 +22,7 @@
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="20"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_body.tres" id="21"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_numbers.tres" id="22"]
-[ext_resource type="Script" path="res://example/src/menu_tabs/equip_bonus_list.gd" id="23"]
+[ext_resource type="Script" uid="uid://dpytlh6x7pdte" path="res://example/src/menu_tabs/equip_bonus_list.gd" id="23"]
 
 [node name="StatsDisplay" type="VBoxContainer"]
 offset_right = 225.0

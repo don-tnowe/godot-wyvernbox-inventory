@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemGeneratorEquipmentBonus" load_steps=34 format=3 uid="uid://bc5mn5etsfr76"]
+[gd_resource type="Resource" script_class="ItemGeneratorEquipmentBonus" load_steps=32 format=3 uid="uid://bc5mn5etsfr76"]
 
 [ext_resource type="Resource" uid="uid://8aroi58f1m7q" path="res://example/wyvernbox/equip_bonuses/defense.tres" id="1"]
-[ext_resource type="Script" path="res://addons/wyvernbox/equip_bonus.gd" id="1_lg6pw"]
+[ext_resource type="Script" uid="uid://bsc11nfytqsww" path="res://addons/wyvernbox/equip_bonus.gd" id="1_lg6pw"]
 [ext_resource type="Resource" uid="uid://b2yydul3vsxl1" path="res://example/wyvernbox/equip_bonuses/crit_chance.tres" id="2"]
 [ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="3"]
 [ext_resource type="Resource" uid="uid://eo1p2kljsv6n" path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" id="4"]
@@ -19,7 +19,7 @@
 [ext_resource type="Resource" uid="uid://p7yosvl1cug8" path="res://example/wyvernbox/equip_bonuses/health_regen.tres" id="16"]
 [ext_resource type="Resource" uid="uid://jsi7l5ly6yfq" path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" id="17"]
 [ext_resource type="Resource" uid="uid://ow3ooxrppuja" path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" id="18"]
-[ext_resource type="Script" path="res://addons/wyvernbox/extension/item_generator_equipment_bonus.gd" id="19"]
+[ext_resource type="Script" uid="uid://dukhbkwv38ew2" path="res://addons/wyvernbox/extension/item_generator_equipment_bonus.gd" id="19"]
 [ext_resource type="Resource" uid="uid://ceekyscfqxmct" path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" id="20"]
 [ext_resource type="Resource" uid="uid://wjd1g8usdw4v" path="res://example/wyvernbox/equip_bonuses/loot_gold.tres" id="21"]
 [ext_resource type="Resource" uid="uid://0k8hc4iugbn7" path="res://example/wyvernbox/equip_bonuses/magic.tres" id="22"]
@@ -30,8 +30,6 @@
 [ext_resource type="Resource" uid="uid://ceaw81htlpxck" path="res://example/wyvernbox/equip_bonuses/resistance_fire.tres" id="27"]
 [ext_resource type="Resource" uid="uid://j5675exjev4k" path="res://example/wyvernbox/equip_bonuses/loot_gear.tres" id="28"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="29"]
-[ext_resource type="Script" path="res://addons/wyvernbox/crafting/item_like.gd" id="29_h23f0"]
-[ext_resource type="Resource" uid="uid://j00pm6bkeql3" path="res://example/wyvernbox/item_generators/equip_loot.tres" id="30"]
 
 [sub_resource type="AtlasTexture" id="1"]
 atlas = ExtResource("29")
@@ -48,6 +46,6 @@ price_increase_item = ExtResource("3")
 price_increase_per_level = 10
 name = "item_generator_item_enchanted"
 texture = SubResource("1")
-results = Array[ExtResource("29_h23f0")]([ExtResource("30")])
-weights = Array[float]([1.0])
-count_ranges = Array[Vector2]([Vector2(1, 1)])
+results = null
+weights = null
+count_ranges = null
