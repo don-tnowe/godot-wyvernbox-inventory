@@ -1,7 +1,47 @@
-[gd_resource type="Resource" script_class="ItemGeneratorEquipmentBonus" load_steps=2 format=3 uid="uid://ddeg8trd3hwno"]
+[gd_resource type="Resource" script_class="ItemGeneratorEquipmentBonus" load_steps=31 format=3 uid="uid://ddeg8trd3hwno"]
 
+[ext_resource type="Resource" uid="uid://8aroi58f1m7q" path="res://example/wyvernbox/equip_bonuses/defense.tres" id="1"]
+[ext_resource type="Script" uid="uid://bsc11nfytqsww" path="res://addons/wyvernbox/equip_bonus.gd" id="1_3g5p6"]
+[ext_resource type="Resource" uid="uid://b2yydul3vsxl1" path="res://example/wyvernbox/equip_bonuses/crit_chance.tres" id="2"]
+[ext_resource type="Resource" uid="uid://bdo8mj57sn4es" path="res://example/wyvernbox/item_types/consumable/coin_purple.tres" id="3"]
+[ext_resource type="Resource" uid="uid://eo1p2kljsv6n" path="res://example/wyvernbox/equip_bonuses/weapon_to_ice.tres" id="4"]
+[ext_resource type="Resource" uid="uid://cuglsf8233a1f" path="res://example/wyvernbox/equip_bonuses/resistance_lightning.tres" id="5"]
+[ext_resource type="Resource" uid="uid://c78dtcec4la61" path="res://example/wyvernbox/equip_bonuses/weapon_to_fire.tres" id="6"]
+[ext_resource type="Resource" uid="uid://b2ste6hjec8ep" path="res://example/wyvernbox/equip_bonuses/resistance_ice.tres" id="7"]
+[ext_resource type="Resource" uid="uid://dcwgf0qsvyfby" path="res://example/wyvernbox/equip_bonuses/elemental_fire_damage.tres" id="8"]
+[ext_resource type="Resource" uid="uid://ctado0tbv8u75" path="res://example/wyvernbox/equip_bonuses/spell_damage.tres" id="9"]
+[ext_resource type="Resource" uid="uid://bed3bc52ua4oh" path="res://example/wyvernbox/equip_bonuses/weapon_speed.tres" id="10"]
+[ext_resource type="Resource" uid="uid://bbpa5pcdc3t82" path="res://example/wyvernbox/equip_bonuses/weapon_damage.tres" id="11"]
+[ext_resource type="Resource" uid="uid://bvxkv6wly8ab2" path="res://example/wyvernbox/equip_bonuses/loot_xp.tres" id="12"]
+[ext_resource type="Resource" uid="uid://0sx2o2b4x1yu" path="res://example/wyvernbox/equip_bonuses/crit_power.tres" id="13"]
+[ext_resource type="Resource" uid="uid://ehvqvbt7ad3e" path="res://example/wyvernbox/equip_bonuses/health.tres" id="14"]
+[ext_resource type="Resource" uid="uid://ckynny6ww7mg" path="res://example/wyvernbox/equip_bonuses/elemental_dark_damage.tres" id="15"]
+[ext_resource type="Resource" uid="uid://p7yosvl1cug8" path="res://example/wyvernbox/equip_bonuses/health_regen.tres" id="16"]
+[ext_resource type="Resource" uid="uid://jsi7l5ly6yfq" path="res://example/wyvernbox/equip_bonuses/weapon_to_dark.tres" id="17"]
+[ext_resource type="Resource" uid="uid://ow3ooxrppuja" path="res://example/wyvernbox/equip_bonuses/weapon_to_lightning.tres" id="18"]
 [ext_resource type="Script" uid="uid://dukhbkwv38ew2" path="res://addons/wyvernbox/extension/item_generator_equipment_bonus.gd" id="19"]
+[ext_resource type="Resource" uid="uid://ceekyscfqxmct" path="res://example/wyvernbox/equip_bonuses/dodgerate.tres" id="20"]
+[ext_resource type="Resource" uid="uid://wjd1g8usdw4v" path="res://example/wyvernbox/equip_bonuses/loot_gold.tres" id="21"]
+[ext_resource type="Resource" uid="uid://0k8hc4iugbn7" path="res://example/wyvernbox/equip_bonuses/magic.tres" id="22"]
+[ext_resource type="Resource" uid="uid://bi8f2i1vwevnn" path="res://example/wyvernbox/equip_bonuses/elemental_ice_damage.tres" id="23"]
+[ext_resource type="Resource" uid="uid://bt025phqghlni" path="res://example/wyvernbox/equip_bonuses/elemental_lightning_damage.tres" id="24"]
+[ext_resource type="Resource" uid="uid://daexmtarbqvql" path="res://example/wyvernbox/equip_bonuses/magic_regen.tres" id="25"]
+[ext_resource type="Resource" uid="uid://bafkaxwavrgm0" path="res://example/wyvernbox/equip_bonuses/resistance_dark.tres" id="26"]
+[ext_resource type="Resource" uid="uid://ceaw81htlpxck" path="res://example/wyvernbox/equip_bonuses/resistance_fire.tres" id="27"]
+[ext_resource type="Resource" uid="uid://j5675exjev4k" path="res://example/wyvernbox/equip_bonuses/loot_gear.tres" id="28"]
+[ext_resource type="Script" uid="uid://dkgqgnggn2ik0" path="res://addons/wyvernbox/crafting/item_like.gd" id="29_tylof"]
 
 [resource]
 resource_name = "The Input, Enchanted"
 script = ExtResource("19")
+possible_affixes = Array[ExtResource("1_3g5p6")]([ExtResource("2"), ExtResource("1"), ExtResource("20"), ExtResource("15"), ExtResource("8"), ExtResource("23"), ExtResource("14"), ExtResource("16"), ExtResource("28"), ExtResource("11"), ExtResource("21"), ExtResource("12"), ExtResource("13"), ExtResource("24"), ExtResource("22"), ExtResource("25"), ExtResource("27"), ExtResource("7"), ExtResource("26"), ExtResource("9"), ExtResource("10"), ExtResource("17"), ExtResource("6"), ExtResource("4"), ExtResource("5"), ExtResource("18")])
+affix_weights = Array[float]([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+affix_count_range = Vector2(1, 4)
+affix_level_range = Vector2(1, 6)
+only_one_affix = false
+price_increase_item = ExtResource("3")
+price_increase_per_level = 10
+name = ""
+results = Array[ExtResource("29_tylof")]([null])
+weights = Array[float]([])
+count_ranges = Array[Vector2]([])
