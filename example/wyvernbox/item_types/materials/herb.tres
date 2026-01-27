@@ -1,6 +1,18 @@
-[gd_resource type="Resource" script_class="ItemType" load_steps=2 format=3 uid="uid://c30h5hufp3auc"]
+[gd_resource type="Resource" script_class="ItemType" format=3 uid="uid://c30h5hufp3auc"]
 
 [ext_resource type="Script" uid="uid://dnu1iwmhm37ma" path="res://addons/wyvernbox/item_type.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="2_qt2ge"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mus4o"]
+atlas = ExtResource("2_qt2ge")
+region = Rect2(12, 36, 24, 12)
 
 [resource]
 script = ExtResource("2")
+name = "item_name_herb"
+description = "item_desc_herb"
+texture = SubResource("AtlasTexture_mus4o")
+max_stack_count = 20
+in_inventory_width = 2
+slot_flags = 513
+default_properties_string = "{}"
