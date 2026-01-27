@@ -110,7 +110,7 @@ var added_scripts := [
 	],
 	# --- GROUND ---
 	[
-		"GroundItemsManager",
+		"GroundItemManager",
 		preload(scripts_dir + "ground/ground_items_manager.gd"),
 		icons_dir + "ground_items_manager.png",
 	],
