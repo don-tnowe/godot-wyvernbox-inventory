@@ -16,7 +16,6 @@ region = Rect2(36, 36, 12, 12)
 
 [resource]
 script = ExtResource("1")
-name = ""
 texture = SubResource("1")
 position_dependent = true
 items = Array[ExtResource("1_okfeg")]([ExtResource("4"), ExtResource("6"), ExtResource("5"), ExtResource("9"), ExtResource("7"), ExtResource("8")])

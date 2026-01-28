@@ -73,8 +73,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Show resources that define an item's properties"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 text = "Items"
 
 [node name="G" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
@@ -82,8 +82,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Show resources that return items from their get_items() method"
 theme_override_colors/font_color = Color(1, 0.839216, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.839216, 0, 1)
 theme_override_colors/font_focus_color = Color(1, 0.839216, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.839216, 0, 1)
 text = "Generators"
 
 [node name="P" type="CheckBox" parent="Box/Panel/Box/TypeFilter"]
@@ -91,8 +91,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Show resources that define the matches() and get_value() methods for defining flexible ItemConversion inputs."
 theme_override_colors/font_color = Color(0, 0.811765, 0.819608, 1)
-theme_override_colors/font_pressed_color = Color(0, 0.811765, 0.819608, 1)
 theme_override_colors/font_focus_color = Color(0, 0.811765, 0.819608, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.811765, 0.819608, 1)
 text = "Patterns"
 
 [node name="ItemList" type="ItemList" parent="Box/Panel/Box"]

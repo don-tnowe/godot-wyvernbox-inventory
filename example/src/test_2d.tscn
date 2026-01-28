@@ -31,12 +31,7 @@ script = ExtResource("13")
 items_to_add = Array[ExtResource("5_pe3l7")]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
-repeat_post_chance = true
-randomize_locations = true
 delay_between_items = 0.1
-spread_distance = 32.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
 [sub_resource type="Resource" id="21"]
 resource_name = "Drop In Circle"
@@ -44,12 +39,8 @@ script = ExtResource("13")
 items_to_add = Array[ExtResource("5_pe3l7")]([ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("7"), ExtResource("8"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5"), ExtResource("5")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
-repeat_post_chance = true
 randomize_locations = false
 delay_between_items = 0.1
-spread_distance = 32.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
 [sub_resource type="Resource" id="Resource_rekcu"]
 resource_name = "GridInventory"
@@ -63,18 +54,11 @@ script = ExtResource("13")
 items_to_add = Array[ExtResource("5_pe3l7")]([ExtResource("9"), ExtResource("8"), ExtResource("8"), ExtResource("7"), ExtResource("7"), ExtResource("7"), ExtResource("7")])
 item_repeat_ranges = Array[Vector2]([Vector2(8, 8), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100)])
 item_chances = Array[float]([100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0])
-repeat_post_chance = true
-randomize_locations = true
-delay_between_items = 0.0
-spread_distance = 32.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
 [sub_resource type="Resource" id="Resource_el05m"]
 resource_name = "GridInventory"
 script = ExtResource("10")
 height = 12
-width = 8
 
 [node name="Node" type="Node"]
 
@@ -265,9 +249,9 @@ text = "(Hold Alt to highlight items)"
 visible = false
 
 [node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("14_j0ghj")]
+layout_mode = 0
 drop_at_node = NodePath("../../../Gameplay/Node2D/Char")
 drop_ground_item_manager = NodePath("../../../Gameplay/Node2D/Items")
-double_click_time_msec = 200
 
 [node name="InworlnventoriesTutorial" type="AcceptDialog" parent="Inventory/InventoryMenu"]
 dialog_text = "This inventory has random stuff! An ItemInstantiator put them here.

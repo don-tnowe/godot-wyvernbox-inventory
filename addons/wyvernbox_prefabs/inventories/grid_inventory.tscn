@@ -10,7 +10,6 @@
 resource_name = "GridInventory"
 script = ExtResource("4")
 height = 8
-width = 8
 
 [sub_resource type="Gradient" id="Gradient_c0yux"]
 offsets = PackedFloat32Array(0, 0.66)

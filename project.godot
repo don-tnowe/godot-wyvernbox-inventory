@@ -23,7 +23,7 @@ resources_spreadsheet_view/resource_preview_size=32.0
 
 config/name="Addon: Inventory"
 run/main_scene="res://example/src/test_2d.tscn"
-config/features=PackedStringArray("4.4")
+config/features=PackedStringArray("4.5")
 config/icon="res://icon.png"
 
 [audio]

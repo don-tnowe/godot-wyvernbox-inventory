@@ -68,12 +68,6 @@ script = ExtResource("16")
 items_to_add = Array[ExtResource("10_jrl1x")]([ExtResource("8"), ExtResource("9"), ExtResource("12")])
 item_repeat_ranges = Array[Vector2]([Vector2(5, 100), Vector2(5, 100), Vector2(16, 16)])
 item_chances = Array[float]([100.0, 100.0, 100.0])
-repeat_post_chance = true
-randomize_locations = true
-delay_between_items = 0.0
-spread_distance = 32.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
 [node name="InventoryMenu" type="Control"]
 layout_mode = 3
@@ -184,7 +178,7 @@ mouse_filter = 2
 
 [node name="ShopManager" parent="CenterContainer/TabContainer/Shop/TabContainer/Consumables" index="1"]
 sell_reward_into_inventory = NodePath("../../../../../../Box/MainInventory")
-stock = [ExtResource("10_j5svr"), ExtResource("11_v8equ")]
+stock = Array[ExtResource("10_jrl1x")]([ExtResource("10_j5svr"), ExtResource("11_v8equ")])
 stock_counts = Array[int]([1, 1])
 stock_restocks = Array[int]([3, 3])
 

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EquipBonus" load_steps=4 format=3 uid="uid://ow3ooxrppuja"]
 
 [ext_resource type="Texture2D" uid="uid://dp7qllrxy41ga" path="res://example/graphics/gradients/irid1.tres" id="1"]
-[ext_resource type="Texture2D" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_26.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://bfntuic4yw6dc" path="res://example/graphics/symbol_icons/stats/stat_icons/stat_icons_26.tres" id="2"]
 [ext_resource type="Script" uid="uid://bsc11nfytqsww" path="res://addons/wyvernbox/equip_bonus.gd" id="3"]
 
 [resource]
@@ -13,9 +13,6 @@ affix = "item_affix_weapon_to_lightning"
 affix_position = -3
 texture = ExtResource("2")
 texture_back = ExtResource("1")
-max_level = 10
-bonus_init = 10.0
-bonus_linear = 5.0
 bonus_quad = 1.0
 is_percentage = true
 integer_only = false

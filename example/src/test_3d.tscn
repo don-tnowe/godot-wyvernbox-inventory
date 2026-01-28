@@ -45,12 +45,8 @@ script = ExtResource("10")
 items_to_add = Array[ExtResource("6_po8vd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
-repeat_post_chance = true
-randomize_locations = true
 delay_between_items = 0.1
 spread_distance = 4.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
 [sub_resource type="SphereShape3D" id="14"]
 
@@ -62,19 +58,15 @@ script = ExtResource("10")
 items_to_add = Array[ExtResource("6_po8vd")]([ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("14"), ExtResource("15"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8"), ExtResource("8")])
 item_repeat_ranges = Array[Vector2]([Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(5, 100), Vector2(5, 100), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)])
 item_chances = Array[float]([100.0, 50.0, 50.0, 50.0, 100.0, 20.0, 50.0, 50.0, 50.0, 50.0, 50.0])
-repeat_post_chance = true
 randomize_locations = false
 delay_between_items = 0.1
 spread_distance = 4.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_wx6tc"]
+[sub_resource type="Resource" id="Resource_b2j6x"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
 height = 12
-width = 8
 
 [sub_resource type="Resource" id="12"]
 resource_name = "Random Equips"
@@ -82,19 +74,12 @@ script = ExtResource("10")
 items_to_add = Array[ExtResource("6_po8vd")]([ExtResource("13"), ExtResource("15"), ExtResource("15"), ExtResource("14"), ExtResource("14"), ExtResource("14"), ExtResource("14")])
 item_repeat_ranges = Array[Vector2]([Vector2(8, 8), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100), Vector2(5, 100)])
 item_chances = Array[float]([100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0])
-repeat_post_chance = true
-randomize_locations = true
-delay_between_items = 0.0
-spread_distance = 32.0
-spread_cone_degrees = 360.0
-spread_angle_degrees = 0.0
 
-[sub_resource type="Resource" id="Resource_sun7j"]
+[sub_resource type="Resource" id="Resource_i3w5f"]
 resource_local_to_scene = true
 resource_name = "GridInventory"
 script = ExtResource("11")
 height = 12
-width = 8
 
 [sub_resource type="Sky" id="6"]
 
@@ -263,7 +248,7 @@ offset_left = -313.0
 offset_top = -39.0
 offset_right = -201.0
 offset_bottom = 129.0
-inventory = SubResource("Resource_wx6tc")
+inventory = SubResource("Resource_b2j6x")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest1.dat"
@@ -292,7 +277,7 @@ offset_left = -201.0
 offset_top = 20.0
 offset_right = -89.0
 offset_bottom = 188.0
-inventory = SubResource("Resource_sun7j")
+inventory = SubResource("Resource_i3w5f")
 contents = SubResource("12")
 interaction_mode = 5
 autosave_file_path = "items/world/chest2.dat"
@@ -349,6 +334,7 @@ text = "(Hold Alt to highlight items)"
 [node name="InventoryMenu" parent="Inventory" instance=ExtResource("1")]
 
 [node name="GrabbedItem" parent="Inventory/InventoryMenu" instance=ExtResource("14_ucbti")]
+layout_mode = 0
 drop_at_node = NodePath("../../../Node3D/Hero")
 drop_ground_item_manager = NodePath("../../../Node3D/Items")
 

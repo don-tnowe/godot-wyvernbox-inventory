@@ -8,7 +8,6 @@
 [resource]
 script = ExtResource("33")
 name = "craft_enchant_wand_purple"
-tags = Array[StringName]([])
 input_types = Array[Resource]([ExtResource("37"), ExtResource("38")])
 input_counts = Array[int]([1, 4])
 output_types = Array[Resource]([ExtResource("1")])

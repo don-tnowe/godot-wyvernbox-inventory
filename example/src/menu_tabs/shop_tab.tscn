@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://t1f7781n680v"]
+[gd_scene load_steps=22 format=3 uid="uid://t1f7781n680v"]
 
 [ext_resource type="Resource" uid="uid://ddeg8trd3hwno" path="res://example/wyvernbox/item_generators/enchant_item.tres" id="1"]
 [ext_resource type="Theme" uid="uid://75b71yv7xu1e" path="res://example/theme/default.tres" id="1_kfwxf"]
 [ext_resource type="Resource" uid="uid://bd1ddeel6achx" path="res://example/wyvernbox/item_types/consumable/potion_blue.tres" id="2"]
 [ext_resource type="Script" uid="uid://x44616hdokxc" path="res://addons/wyvernbox/inventories/grid_inventory.gd" id="2_aqjqv"]
+[ext_resource type="Script" uid="uid://dkgqgnggn2ik0" path="res://addons/wyvernbox/crafting/item_like.gd" id="6_5bwnt"]
 [ext_resource type="PackedScene" uid="uid://dk2b3ordhblc2" path="res://addons/wyvernbox_prefabs/inventories/grid_inventory.tscn" id="19"]
 [ext_resource type="FontFile" path="res://example/theme/font/font_title.tres" id="20"]
 [ext_resource type="Resource" uid="uid://cdmceeucy4oik" path="res://example/wyvernbox/item_types/equipment/wand_purple.tres" id="22"]
@@ -37,10 +38,12 @@ theme = ExtResource("1_kfwxf")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 2
+current_tab = 0
 tab_focus_mode = 0
 
 [node name="Equipment" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="Inventory" parent="TabContainer/Equipment" instance=ExtResource("19")]
 custom_minimum_size = Vector2(168, 112)
@@ -52,19 +55,16 @@ interaction_mode = 7
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
-price_markup = 2.0
 apply_to_all_stock = ExtResource("1")
-stock = [ExtResource("37"), ExtResource("22"), ExtResource("39"), ExtResource("40"), ExtResource("44"), ExtResource("43"), ExtResource("42"), ExtResource("41"), ExtResource("36"), ExtResource("38")]
+stock = Array[ExtResource("6_5bwnt")]([ExtResource("37"), ExtResource("22"), ExtResource("39"), ExtResource("40"), ExtResource("44"), ExtResource("43"), ExtResource("42"), ExtResource("41"), ExtResource("36"), ExtResource("38")])
 stock_counts = Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 stock_restocks = Array[int]([3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
 infinite_restocks = false
-remove_price_on_buy = false
-clear_sold_items_when_hidden = true
-free_buyback = true
 
 [node name="Consumables" type="MarginContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="Inventory" parent="TabContainer/Consumables" instance=ExtResource("19")]
 custom_minimum_size = Vector2(168, 112)
@@ -76,15 +76,9 @@ interaction_mode = 7
 script = ExtResource("33")
 vendor_inventory = NodePath("../Inventory")
 sell_reward_into_inventory = NodePath("../../../../../../Inventory")
-price_markup = 2.0
-apply_to_all_stock = null
-stock = [ExtResource("2"), null]
+stock = Array[ExtResource("6_5bwnt")]([ExtResource("2"), null])
 stock_counts = Array[int]([1, 0])
 stock_restocks = Array[int]([3, 0])
-infinite_restocks = true
-remove_price_on_buy = false
-clear_sold_items_when_hidden = true
-free_buyback = true
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2

@@ -318,7 +318,7 @@ disabled = true
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_12fv6")
+&"": SubResource("AnimationLibrary_12fv6")
 }
 autoplay = "init"
 

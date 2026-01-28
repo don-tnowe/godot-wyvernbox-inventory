@@ -116,10 +116,10 @@ render_priority = 20
 texture = SubResource("14")
 
 [node name="Anim" type="AnimationPlayer" parent="."]
-autoplay = "init"
 libraries = {
-"": SubResource("AnimationLibrary_fcqm7")
+&"": SubResource("AnimationLibrary_fcqm7")
 }
+autoplay = "init"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

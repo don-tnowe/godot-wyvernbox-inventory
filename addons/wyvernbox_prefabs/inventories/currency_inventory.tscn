@@ -11,7 +11,6 @@
 resource_name = "CurrencyInventory"
 script = ExtResource("3")
 restricted_to_types = Array[ExtResource("2_iv47c")]([null, null, null, null, null])
-max_stack = 99999999
 width = 5
 
 [sub_resource type="Gradient" id="2"]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemGeneratorEquipmentBonus" load_steps=32 format=3 uid="uid://bc5mn5etsfr76"]
+[gd_resource type="Resource" script_class="ItemGeneratorEquipmentBonus" load_steps=33 format=3 uid="uid://bc5mn5etsfr76"]
 
 [ext_resource type="Resource" uid="uid://8aroi58f1m7q" path="res://example/wyvernbox/equip_bonuses/defense.tres" id="1"]
 [ext_resource type="Script" uid="uid://bsc11nfytqsww" path="res://addons/wyvernbox/equip_bonus.gd" id="1_lg6pw"]
@@ -30,6 +30,7 @@
 [ext_resource type="Resource" uid="uid://ceaw81htlpxck" path="res://example/wyvernbox/equip_bonuses/resistance_fire.tres" id="27"]
 [ext_resource type="Resource" uid="uid://j5675exjev4k" path="res://example/wyvernbox/equip_bonuses/loot_gear.tres" id="28"]
 [ext_resource type="Texture2D" uid="uid://bdgy1763wv21a" path="res://example/graphics/item_icons/items.png" id="29"]
+[ext_resource type="Script" uid="uid://dkgqgnggn2ik0" path="res://addons/wyvernbox/crafting/item_like.gd" id="29_fwnfn"]
 
 [sub_resource type="AtlasTexture" id="1"]
 atlas = ExtResource("29")
@@ -40,12 +41,7 @@ script = ExtResource("19")
 possible_affixes = Array[ExtResource("1_lg6pw")]([ExtResource("2"), ExtResource("1"), ExtResource("20"), ExtResource("15"), ExtResource("8"), ExtResource("23"), ExtResource("14"), ExtResource("16"), ExtResource("28"), ExtResource("11"), ExtResource("21"), ExtResource("12"), ExtResource("13"), ExtResource("24"), ExtResource("22"), ExtResource("25"), ExtResource("27"), ExtResource("7"), ExtResource("26"), ExtResource("9"), ExtResource("10"), ExtResource("17"), ExtResource("6"), ExtResource("4"), ExtResource("5"), ExtResource("18")])
 affix_weights = Array[float]([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
 affix_count_range = Vector2(1, 4)
-affix_level_range = Vector2(1, 6)
-only_one_affix = true
 price_increase_item = ExtResource("3")
 price_increase_per_level = 10
 name = "item_generator_item_enchanted"
 texture = SubResource("1")
-results = null
-weights = null
-count_ranges = null
